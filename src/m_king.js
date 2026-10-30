@@ -141,7 +141,7 @@ EVENTS.forEach(e=>(e.pp||'').split(/,\s*/).forEach(n=>{n=n.trim();if(!n)return;c
 function kingOfName(n,T){const b=pbase(n);let best=null;REIGNS.forEach(D=>D.r.forEach((r,i)=>{const nm=r.name.replace('대통령 ','');const inner=(nm.match(/\((.*?)\)/)||[])[1]||'';const keys=[pbase(nm),inner,pbase(nm)+' '+inner].filter(Boolean);
   if(keys.includes(b)||keys.includes(n)){const d=T==null?0:(T>=r.s-1&&T<=r.e+1?0:Math.min(Math.abs(T-r.s),Math.abs(T-r.e)));if(!best||d<best.d)best={D,i,d}}}));return best&&best.d<30?best:null}
 function openPerson(n,T){const K=kingOfName(n,T);if(K){openKing(K.D.n,K.i);return}
-  const b=pbase(n);const P=PEOPLE.get(b)||{n:b,evs:[]};const ids=new Set(P.evs.map(e=>e.id));const evs=[...P.evs,...EVENTS.filter(e=>!ids.has(e.id)&&b.length>1&&(e.t.includes(b)||e.x.includes(b)))].sort((a,c)=>a.T-c.T);const p=$('kpage');
+  const b=pbase(n);const P=PEOPLE.get(b)||{n:b,evs:[]};const ids=new Set(P.evs.map(e=>e.id));const nre=b.length>=3?new RegExp('(^|[^가-힣])'+b.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'(?![가-힣]*(하|한|했|된|되|함|적))'):null;const evs=[...P.evs,...EVENTS.filter(e=>!ids.has(e.id)&&nre&&(nre.test(e.t)||nre.test(e.x||'')))].sort((a,c)=>a.T-c.T);const p=$('kpage');
   const t0=evs.length?evs[0].T:null,t1=evs.length?evs[evs.length-1].T:null;
   const co=new Map();evs.forEach(e=>(e.pp||'').split(/,\s*/).forEach(x=>{x=pbase(x);if(x&&x!==b&&x.length>1)co.set(x,(co.get(x)||0)+1)}));
   const coL=[...co.entries()].sort((a,c)=>c[1]-a[1]).slice(0,14).map(x=>x[0]);
@@ -151,14 +151,14 @@ function openPerson(n,T){const K=kingOfName(n,T);if(K){openKing(K.D.n,K.i);retur
   p.innerHTML=`<div class="kpbar"><button class="ib" data-kx aria-label="뒤로"><svg class="ic" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg></button><span>인물 사전</span></div>
    <div class="kpin" style="--kc:var(--seal)">
     <div class="kph"><h1>${esc(b)}</h1><button class="hrt" type="button" data-kh="p|${esc(b)}" aria-pressed="${on}" aria-label="하트">${HEART_IC}</button></div>
-    <div class="kpsub">${t0!=null?`<span>활동 ${yrTxt(t0)}${t1>t0+.5?' ~ '+yrTxt(t1):''}</span>`:''}${kings.length?`<span>그때 ${kings.map(esc).join(' · ')}</span>`:''}</div>
+    <div class="kpsub">${t0!=null?`<span>활동 ${yrTxt(t0)}${t1>t0+.5?' ~ '+yrTxt(t1):''}</span>`:''}${kings.length?`<span>${kings.map(esc).join(' · ')}</span>`:''}</div>
     ${PINFO[b]?`<section><h3>어떤 사람</h3><p class="kpd">${glx(PINFO[b])}</p></section>`:''}
     ${evs.length?`<section><h3>관련 사건</h3><ul class="kpl">${evs.map(e=>`<li class="ev"><button data-kpe="${e.id}" style="--tc:var(--t-${e.tp[0]})"><em>${esc(shortYear(e))}</em>${e.treaty?'<i class="tseal">조</i>':''}${esc(e.t)}</button><p>${glx(e.x)}</p></li>`).join('')}</ul></section>`:''}
     ${coL.length?`<section><h3>함께 나오는 인물</h3><div class="kpp">${coL.map(x=>`<button data-person="${esc(x)}" data-pt="${t0}"><i></i>${esc(x)}</button>`).join('')}</div></section>`:''}
     ${same.length?`<section><h3>같은 시기 인물</h3><div class="kpp">${same.map(x=>`<button data-person="${esc(x)}" data-pt="${t0}"><i></i>${esc(x)}</button>`).join('')}</div></section>`:''}
    </div>`;
   p.hidden=false;p.scrollTop=0;p.querySelector('[data-kx]').onclick=()=>{p.hidden=true}}
-document.addEventListener('click',ev=>{const k=ev.target.closest('[data-person]');if(!k)return;ev.preventDefault();ev.stopPropagation();closeTree&&$('trpop')&&!$('trpop').hidden&&closeTree();openPerson(k.dataset.person,k.dataset.pt?+k.dataset.pt:null)},true);
+document.addEventListener('click',ev=>{const k=ev.target.closest('[data-person]');if(!k)return;ev.preventDefault();ev.stopPropagation();try{if(!$('srch').hidden)closeSearch()}catch(_){}closeTree&&$('trpop')&&!$('trpop').hidden&&closeTree();openPerson(k.dataset.person,k.dataset.pt?+k.dataset.pt:null)},true);
 
 /* ───────── 인물 탭: 시대마다 같은 시대 인물, 나라별 색 ───────── */
 function personColor(P){const cnt=new Map();P.evs.forEach(e=>{const R=kingRef(e);const c=R?R.D.c:(e.tp.includes('wld')?'wld':(e.era==='colonial'?'ind':null));if(c)cnt.set(c,(cnt.get(c)||0)+1)});let best=null,bn=0;cnt.forEach((v,k)=>{if(v>bn){bn=v;best=k}});
@@ -233,7 +233,7 @@ function natHTML(names,self,t0){const gs=natGroups(names,self,t0);if(!gs.length)
 
 /* 사전 탭 (인물 옆): 낱말 ㄱ~ㅎ */
 function dcShow(){const b=$('dcbody');if(b.dataset.built)return;try{GLOSS;TREE_OF}catch(e){return}b.dataset.built=1;
-  b.innerHTML=`<div class="trcard dccard" style="--trc:#6d28d9">${glossBookHTML(PINFO)}</div>`;
+  b.innerHTML=`<div class="trcard dccard" style="--trc:#6d28d9">${glossBookHTML((()=>{const o=Object.assign({},PINFO);PEOPLE.forEach(P=>{if(o[P.n]||GLOSS[P.n]||(typeof NOT_PERSON!=='undefined'&&NOT_PERSON.has(P.n))||kingOfName(P.n,P.evs[0]&&P.evs[0].T))return;o[P.n]=P.evs.slice().sort((a,c)=>a.T-c.T).slice(0,2).map(e=>`${shortYear(e)} ${e.t}`).join(' · ')});return o})())}</div>`;
   const heads=[...b.querySelectorAll('.gh')].map(h=>h.id.slice(3));const hl=h=>h==='#'?'#숫자':'#'+h;$('dcjump').innerHTML=heads.map(h=>`<button type="button" data-gi="${h}">${hl(h)}</button>`).join('');b.querySelectorAll('.gh').forEach(x=>x.textContent=hl(x.id.slice(3)));
   const rd=$('dcread');const go=el=>el&&rd.scrollTo({top:el.getBoundingClientRect().top-rd.getBoundingClientRect().top+rd.scrollTop-rd.querySelector('.rhead').offsetHeight-10,behavior:'smooth'});
   const onClick=ev=>{const gi=ev.target.closest('[data-gi]');if(gi){go(document.getElementById('gh-'+gi.dataset.gi));return}const t=ev.target.closest('.gtr');if(t){showView('tr');setTimeout(()=>{const s=document.getElementById('tree-'+t.dataset.tj);const r2=$('trread');if(s)r2.scrollTo({top:s.getBoundingClientRect().top-r2.getBoundingClientRect().top+r2.scrollTop-r2.querySelector('.rhead').offsetHeight-8,behavior:'smooth'})},60)}};
