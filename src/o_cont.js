@@ -864,10 +864,14 @@ document.addEventListener('click',e=>{const c=e.target.closest&&e.target.closest
    if(was===false&&playing&&!reduceMotion){try{spreadFill({el:p.el,sp:null},f,p.ll)}catch(_){}}})};
  {const ut=updateTime;updateTime=function(){const r=ut.apply(this,arguments);sync(false);return r}}
  {const af=applyFrame;applyFrame=function(){const r=af.apply(this,arguments);PT.forEach(p=>p.on=null);sync(true);setTimeout(()=>sync(true),2200);return r}}sync(true)}
-/* 해안선을 영토 위로: 확대해도 영토 색에 덮여 안 사라지게 */
-{const all=[...document.querySelectorAll('svg#map .coastl')];if(all.length&&G.terr){let at=G.terr;all.forEach(c=>{at.after(c);at=c;c.classList.add('ontop')})}}
-/* 위로 올린 해안선에서 압록강·두만강(땅끼리 맞닿은 국경) 부분은 지움 */
-document.querySelectorAll('svg .coastl.ontop').forEach(cl=>{{const d=cl.getAttribute('d')||'';const x1=X(124.3),x2=X(130.75),y1=Y(39.9);let out='';
- d.split('M').filter(Boolean).forEach(sub=>{const closed=/Z\s*$/.test(sub);const pts=sub.replace(/Z/g,'').trim().split(/[ L]+/).filter(Boolean);let cur=[];const flush=()=>{if(cur.length>1)out+='M'+cur.join(' ');cur=[]};let cut=false;
-  pts.forEach(t=>{const [x,y]=t.split(',').map(Number);if((x>x1&&x<x2&&y<y1)||(x>X(126.75)&&x<X(128.3)&&y>Y(38.75)&&y<Y(37.6))){cut=true;flush()}else cur.push(t)});if(!cut&&closed){out+='M'+cur.join(' ')+'Z';cur=[]}else flush()});
- cl.setAttribute('d',out)}});
+/* 해안선을 영토 위로: 확대해도 영토 색에 안 덮이게. 바다 쪽 절반만 보이게 가림 + 한국 땅과 바깥 땅이 맞닿은 곳(압록강·두만강)은 아예 가림 */
+{const c1=$('cl1'),c2=$('cl2');if(c1&&c2&&G.terr){const NS='http://www.w3.org/2000/svg',mk=(t,a,p)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);p&&p.appendChild(e);return e};
+ const BIG={x:-1e5,y:-1e5,width:2e5,height:2e5},wide=[],thin=[];
+ const link=(p,src)=>{const s=$(src);if(!s)return;p.setAttribute('d',s.getAttribute('d')||'');new MutationObserver(()=>p.setAttribute('d',s.getAttribute('d')||'')).observe(s,{attributes:true,attributeFilter:['d']})};
+ const mask=(id,own,other)=>{const m=mk('mask',Object.assign({id,maskUnits:'userSpaceOnUse'},BIG),$('defs'));mk('rect',Object.assign({fill:'#fff'},BIG),m);
+  const a=mk('path',{fill:'#000',stroke:'#000','stroke-linejoin':'round'},m);link(a,own);thin.push(a);
+  const b=mk('path',{fill:'#000',stroke:'#000','stroke-linejoin':'round'},m);link(b,other);wide.push(b);return 'url(#'+id+')'};
+ const g=mk('g',{class:'coastg'});G.terr.after(g);
+ [[c1,'landk','landc'],[c2,'landc','landk']].forEach(([c,o,t],i)=>{const w=mk('g',{mask:mask('seam'+i,o,t)},g);w.appendChild(c);c.classList.add('ontop')});
+ const svg=$('map');const fit=()=>{const px=vb.w/((svg&&svg.clientWidth)||1000);thin.forEach(p=>p.setAttribute('stroke-width',(0.8*px).toFixed(3)));wide.forEach(p=>p.setAttribute('stroke-width',(9*px).toFixed(3)))};fit();
+ const sv=setVB;setVB=function(){const r=sv.apply(this,arguments);fit();return r};addEventListener('resize',fit)}}
