@@ -893,14 +893,14 @@ document.addEventListener('click',e=>{const c=e.target.closest&&e.target.closest
  w.after(g);const sync=()=>p.setAttribute('d',wl.getAttribute('d')||'');sync();new MutationObserver(sync).observe(wl,{attributes:true,attributeFilter:['d']});
  const st=document.createElement('style');st.textContent='.wland{stroke-width:2.2!important}.wland2{fill:var(--land);stroke:var(--land);stroke-width:.4;vector-effect:non-scaling-stroke}';document.head.appendChild(st)}}
 /* ───────── 나만의 편집: 글씨 고치기(자동 저장)·별표·형광펜·태그 — 주인만 쓰고, 다른 사람은 보기만 ───────── */
-{const ME={x:new Map(),xc:new Map(),s:new Set(),h:new Map(),g:new Map()};let canW=false,DB=null,editOn=false;window.__ME=ME;
+{const ME={x:new Map(),xc:new Map(),s:new Set(),h:new Map(),g:new Map(),w:new Map()};let canW=false,DB=null,editOn=false;window.__ME=ME;
  const E=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
  const hid=k=>[...new TextEncoder().encode(k)].map(b=>b.toString(16).padStart(2,'0')).join('').slice(0,190);
  const SEL='h1,h2,h3,h4,p,li,dd,dt,td,th,.kpd,.snv,.sri b,.sri span,.ppnames button,.kpp button,.gdr span,.evd b,.evd span,.evd div';
  const SKIP='svg,#map,.tbar,header,.topbar,#srq,textarea,input,.mtool,.snote,.mtags,#medit';
  /* 받은 자료 넣기 */
- const load=docs=>{ME.x.clear();ME.xc.clear();ME.s.clear();ME.h.clear();ME.g.clear();docs.forEach(d=>{if(!d||!d.k)return;const t=d.k[0],key=d.k.slice(2);
-   if(t==='x'&&d.v!=null){ME.x.set(key,String(d.v));if(d.c)ME.xc.set(key,d.c)}else if(t==='s'&&d.v)ME.s.add(key);else if(t==='h'&&Array.isArray(d.v)&&d.v.length)ME.h.set(key,d.v.map(String));else if(t==='g'&&Array.isArray(d.v)&&d.v.length)ME.g.set(key,d.v.map(String))});applyAll()};
+ const load=docs=>{const wOld=JSON.stringify([...ME.w]);ME.x.clear();ME.xc.clear();ME.s.clear();ME.h.clear();ME.g.clear();ME.w.clear();docs.forEach(d=>{if(!d||!d.k)return;const t=d.k[0],key=d.k.slice(2);
+   if(t==='x'&&d.v!=null){ME.x.set(key,String(d.v));if(d.c)ME.xc.set(key,d.c)}else if(t==='s'&&d.v)ME.s.add(key);else if(t==='h'&&Array.isArray(d.v)&&d.v.length)ME.h.set(key,d.v.map(String));else if(t==='g'&&Array.isArray(d.v)&&d.v.length)ME.g.set(key,d.v.map(String));else if(t==='w'&&d.v)ME.w.set(key,String(d.v))});if(JSON.stringify([...ME.w])!==wOld)applyWords();applyAll()};
  const save=(k,v,extra)=>{if(!DB)return;const r=DB.collection('mine').doc(hid(k));const empty=v==null||v===''||(Array.isArray(v)&&!v.length)||v===0;(empty?r.delete():r.set(Object.assign({k,v,at:Date.now()},extra||{}))).then(()=>toast('저장됨')).catch(()=>toast('저장 못 함'))};
  const toast=t=>{let b=$('mtoast');if(!b){b=document.createElement('div');b.id='mtoast';document.body.appendChild(b)}b.textContent=t;b.classList.add('on');clearTimeout(b.t);b.t=setTimeout(()=>b.classList.remove('on'),900)};
  /* 글씨 바꾸기 적용 */
@@ -920,12 +920,24 @@ document.addEventListener('click',e=>{const c=e.target.closest&&e.target.closest
  /* 주인: 고치기 모드 단추 */
  const mkBtn=()=>{if($('medit'))return;const b=document.createElement('button');b.id='medit';b.type='button';b.className='tib';b.setAttribute('aria-label','글씨 고치기 (나만)');b.innerHTML='<svg viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M14 6l4 4"/></svg>';
    const hb=$('heartbtn');if(hb)hb.before(b);else document.body.appendChild(b);
-   b.onclick=()=>{editOn=!editOn;document.body.classList.toggle('medit',editOn);b.setAttribute('aria-pressed',editOn);toast(editOn?'고치기 모드: 글씨를 눌러 고치세요':'고치기 끝')}};
+   b.onclick=()=>{editOn=!editOn;document.body.classList.toggle('medit',editOn);wBtn();b.setAttribute('aria-pressed',editOn);toast(editOn?'고치기 모드: 글씨를 눌러 고치세요':'고치기 끝')}};
  document.addEventListener('click',e=>{if(!editOn||!canW)return;const t=e.target;if(t.closest(SKIP)||t.closest('.mtool'))return;const el=t.closest(SEL);if(!el||el.isContentEditable)return;e.preventDefault();e.stopPropagation();
    const o=el.dataset.xo||el.textContent.trim();if(!o)return;el.dataset.xo=o;const ctx=itemOf(el);const xk=ctx?ctx+'\u0001'+o:o;el.textContent=ME.x.get(xk)||el.textContent;el.contentEditable='plaintext-only';el.classList.add('xing');el.focus();
    let tm=0;const commit=()=>{const v=el.textContent.trim();if(v===o||!v){if(ME.x.has(xk)){ME.x.delete(xk);save('x:'+xk,'')}}else if(v!==ME.x.get(xk)){ME.x.set(xk,v);save('x:'+xk,v)}};
    el.oninput=()=>{clearTimeout(tm);tm=setTimeout(commit,700)};el.onblur=()=>{clearTimeout(tm);commit();el.contentEditable='false';el.removeAttribute('contenteditable');el.classList.remove('xing');if(!ME.x.has(xk)){el.textContent=o}};
    el.onkeydown=k=>{k.stopPropagation();if(k.key==='Escape'||(k.key==='Enter'&&!k.shiftKey&&!k.isComposing)){k.preventDefault();el.blur()}}},true);
+ /* 낱말 추가 (고치기 모드에서만) */
+ const BASE=new Set(Object.keys(GLOSS));
+ function applyWords(){Object.keys(GLOSS).forEach(k=>{if(!BASE.has(k))delete GLOSS[k]});ME.w.forEach((v,k)=>{if(!BASE.has(k))GLOSS[k]=v});
+   try{GLRE=new RegExp('('+Object.keys(GLOSS).sort((a,b)=>b.length-a.length).map(k=>k.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')).join('|')+')','g');GLRE_SET()}catch(_){}
+   const b=$('dcbody');if(b&&b.dataset.built){const nb=b.cloneNode(false);delete nb.dataset.built;b.replaceWith(nb);const j=$('dcjump');if(j){const nj=j.cloneNode(false);j.replaceWith(nj)}if(!$('v-dc')||!$('v-dc').hidden)try{dcShow()}catch(_){}}}
+ const wBtn=()=>{let b=$('mwadd');if(!editOn){if(b)b.hidden=true;return}if(!b){b=document.createElement('button');b.id='mwadd';b.type='button';b.textContent='+ 낱말 추가';document.body.appendChild(b);b.onclick=wForm}b.hidden=false};
+ const wForm=()=>{if($('mwform'))return;const f=document.createElement('div');f.id='mwform';f.innerHTML='<b>낱말 추가</b><input id="mwk" placeholder="낱말 (예: 녹읍)"><textarea id="mwv" rows="3" placeholder="뜻"></textarea><div><button type="button" data-a="ok">저장</button><button type="button" data-a="x">닫기</button></div><small>이미 있는 낱말을 적으면 고치기 · 뜻을 비우면 지우기</small>';document.body.appendChild(f);
+   const k=f.querySelector('#mwk'),v=f.querySelector('#mwv');k.focus();k.addEventListener('input',()=>{const w=k.value.trim();if(ME.w.has(w))v.value=ME.w.get(w)});
+   f.addEventListener('keydown',e=>e.stopPropagation(),true);
+   f.addEventListener('click',e=>{const a=e.target.dataset&&e.target.dataset.a;if(!a)return;e.stopPropagation();if(a==='x'){f.remove();return}
+     const w=k.value.trim(),m=v.value.trim();if(!w){k.focus();return}if(BASE.has(w)){toast('원래 있는 낱말이에요 — 뜻 글씨를 눌러 고치세요');return}
+     if(m)ME.w.set(w,m);else ME.w.delete(w);save('w:'+w,m);applyWords();f.remove();toast(m?'낱말 추가됨':'낱말 지움')},true)};
  /* 별표·형광펜·태그 누르기 */
  document.addEventListener('mousedown',e=>{if(e.target.closest&&e.target.closest('.mhlb'))e.preventDefault()},true);
  document.addEventListener('click',e=>{const tb=e.target.closest&&e.target.closest('.mtool');const mk=e.target.closest&&e.target.closest('mark.mhl');
@@ -951,3 +963,20 @@ document.addEventListener('click',e=>{const c=e.target.closest&&e.target.closest
  /* 자료 불러오기: claude.ai면 공유 저장소, 웹사이트면 mine.json */
  (async()=>{let ok=false;try{if(window.claude&&claude.use){const [db,us]=await Promise.all([claude.use('db'),claude.use('user')]);if(db){ok=true;canW=!!(us&&await us.isOwner());DB=canW?db:null;if(canW)mkBtn();db.collection('mine').onSnapshot(q=>load(q.docs.map(d=>d.data())),()=>{});applyAll()}}}catch(_){}
    if(!ok){try{const r=await fetch('mine.json',{cache:'no-store'});if(r.ok){const j=await r.json();load(j.mine||[]);if(window.__sanonSet&&j.sanon)window.__sanonSet(j.sanon)}}catch(_){}}})()}
+/* 땅 속 구멍(호수 등 안쪽 고리)을 메워 영토 안에 흰 점이 안 생기게 */
+{const P=d=>(d||'').split(/(?=M)/).filter(s=>s.trim());const pts=s=>s.replace(/[MZ]/g,' ').trim().split(/[ L]+/).filter(Boolean).map(t=>t.split(',').map(Number));
+ const A=r=>{let a=0;for(let i=0;i<r.length;i++){const [x1,y1]=r[i],[x2,y2]=r[(i+1)%r.length];a+=x1*y2-x2*y1}return Math.abs(a/2)};
+ const inside=(pt,r)=>{let c=false;for(let i=0,j=r.length-1;i<r.length;j=i++){const [xi,yi]=r[i],[xj,yj]=r[j];if(((yi>pt[1])!=(yj>pt[1]))&&(pt[0]<(xj-xi)*(pt[1]-yi)/(yj-yi)+xi))c=!c}return c};
+ const fix=d=>{const S=P(d),R=S.map(pts),as=R.map(A);return S.filter((s,i)=>!R.some((q,j)=>j!==i&&as[j]>as[i]&&inside(R[i][0],q))).join('')};
+ const was={kor:LAND.kor,korHi:LAND.korHi};LAND.kor=fix(LAND.kor);if(LAND.korHi)LAND.korHi=fix(LAND.korHi);
+ ['landk','coastk','clipk','cl1','sm1','cpk'].forEach(id=>{const n=$(id);if(!n)return;const d=n.getAttribute('d');n.setAttribute('d',d===was.korHi?LAND.korHi:LAND.kor)})}
+/* 주인 없는 땅도 흰색으로 안 남게: 영토 밑에 시대별 밑색(선사·진·탐라·말갈·여진)을 깔기 */
+{const NS='http://www.w3.org/2000/svg';const g=document.createElementNS(NS,'g');g.id='terrunder';g.setAttribute('clip-path','url(#landclip)');G.terr.before(g);
+ const p=document.createElementNS(NS,'path');p.setAttribute('class','tund');g.appendChild(p);
+ const sync=()=>p.setAttribute('d',($('cpk').getAttribute('d')||'')+($('landfill')?$('landfill').getAttribute('d'):''));sync();new MutationObserver(sync).observe($('cpk'),{attributes:true,attributeFilter:['d']});
+ const PRE='#e6dcc6',TAM='#e6d4b8',JUR='#d5ddc6';
+ const CFG={0:[PRE],1:[PRE],2:[PRE,[['진',127.9,35.9]]],3:[PRE],4:[TAM,[['탐라',126.55,33.38]]],5:[TAM,[['탐라',126.55,33.38]]],6:[TAM,[['탐라',126.55,33.38]]],7:[TAM,[['탐라',126.55,33.38]]],
+  8:[JUR,[['말갈',127.15,39.45],['탐라',126.55,33.38]]],9:[TAM,[['탐라',126.55,33.38]]],10:[TAM,[['탐라',126.55,33.38]]],11:[JUR,[['여진',128.7,41.3]]],12:[JUR,[['여진',128.7,41.3]]],13:[JUR,[['여진',128.7,41.3]]],14:[JUR,[['여진',128.7,41.3]]],15:[JUR,[['여진',127.6,41.4]]],16:[JUR,[['여진',127.6,41.4]]]};
+ const labs=[];const mkLab=(n,lo,la)=>{const lg=document.createElementNS(NS,'g');lg.setAttribute('class','ulab');const t=document.createElementNS(NS,'text');t.textContent=n;lg.appendChild(t);$('ovl').appendChild(lg);const o={g:lg,x:X(lo),y:Y(la)};OV.push(o);labs.push({n,lg});return lg};
+ const apply=()=>{const c=CFG[pos.i]||[PRE];p.style.fill=c[0];const want=(c[1]||[]).map(a=>a.join('|'));labs.forEach(L=>L.lg.style.display='none');(c[1]||[]).forEach(([n,lo,la])=>{let L=labs.find(L=>L.key===n+lo+la);if(!L){mkLab(n,lo,la);L=labs[labs.length-1];L.key=n+lo+la}L.lg.style.display=''});placeOV()};
+ const af=applyFrame;applyFrame=function(){const r=af.apply(this,arguments);apply();return r};apply()}
