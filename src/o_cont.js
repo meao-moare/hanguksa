@@ -712,7 +712,7 @@ const DEEP={
 '독립 협회':[['누가','서재필(창립, 『독립신문』), 윤치호·이상재·남궁억'],['왜','아관 파천 뒤 열강의 이권 침탈과 러시아의 간섭'],['무엇을','자주 국권(독립문, 러시아 절영도 조차 요구 저지), 자유 민권, 자강 개혁(관민 공동회, 헌의 6조, 의회식 중추원 관제)'],['결과','보수 세력이 공화정 수립 모함 → 황국 협회 동원, 고종이 해산(1898)']],
 '신간회':[['누가','민족주의 좌파(이상재·안재홍) + 사회주의 세력, 1927'],['왜','일제의 자치론 등장과 정우회 선언 — 함께 손잡자'],['무엇을','민족 단결, 정치·경제적 각성, 기회주의 배격 · 광주 학생 항일 운동 진상 조사단 파견'],['결과','민족 협동 전선 최대 조직 · 1931 해소']]};
 {const gp=$('glpop');const rowsAuto=k=>{const e=EVENTS.find(x=>x.t===k||x.s===k)||EVENTS.find(x=>x.t.startsWith(k));if(!e)return [];const r=[['시기',(typeof yearLabel==='function'?yearLabel(e):e.y)+''],e.pp?['인물',e.pp]:null,e.vs?['대립',e.vs]:null,e.x?['내용',e.x]:null,(typeof STORY!=='undefined'&&STORY[e.t])?['배경 이야기',STORY[e.t]]:null];return r.filter(Boolean)};
- new MutationObserver(()=>{if(gp.hidden||gp.querySelector('.gdmore'))return;const dc=gp.querySelector('[data-dc]');if(!dc)return;const k=dc.dataset.dc;const R=DEEP[k]||rowsAuto(k);dc.textContent='사전에서 보기 →';if(!R.length)return;
+ new MutationObserver(()=>{if(gp.hidden||gp.querySelector('.gdmore'))return;const dc=gp.querySelector('[data-dc]');if(!dc)return;const k=dc.dataset.dc;const R=DEEP[k]||rowsAuto(k);if(dc.textContent!=='사전에서 보기 →')dc.textContent='사전에서 보기 →';if(!R.length)return;
    dc.insertAdjacentHTML('beforebegin',`<button type="button" class="ppgo gdmore">더 자세히 ▾</button>`)}).observe(gp,{childList:true,subtree:true});
  gp.addEventListener('click',ev=>{const b=ev.target.closest('.gdmore');if(!b)return;ev.stopPropagation();ev.preventDefault();const dc=gp.querySelector('[data-dc]');const k=dc&&dc.dataset.dc;let d=gp.querySelector('.gdeep');if(d){d.remove();b.textContent='더 자세히 ▾';return}
    const R=DEEP[k]||rowsAuto(k);b.insertAdjacentHTML('beforebegin',`<div class="gdeep">${R.map(([a,t])=>`<div class="gdr" data-l="${esc(a)}"><i>${esc(a)}</i><span>${typeof glx==='function'?glx(t):esc(t)}</span></div>`).join('')}</div>`);b.textContent='접기 ▴';const r=gp.getBoundingClientRect();if(r.bottom>innerHeight-8)gp.style.top=Math.max(8,innerHeight-8-r.height)+'px'},true)}
@@ -868,11 +868,12 @@ document.addEventListener('click',e=>{const c=e.target.closest&&e.target.closest
    한국 땅과 바깥 땅 사이 틈(압록강·두만강)은 메움 조각으로 채움 */
 {const NS='http://www.w3.org/2000/svg',mk=(t,a,p)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);p&&p.appendChild(e);return e};
  const P=d=>(d||'').split(/(?=M)/).map(s=>s.replace(/[MZ]/g,' ').trim().split(/[ L]+/).filter(Boolean).map(t=>t.split(',').map(Number)));
- const TH=8,HW=4;let fd='';
+ const TH=8,HW=1.6;let fd='';
  const grid=pts=>{const g=new Map();pts.forEach(p=>{const k=Math.floor(p[0]/TH)+','+Math.floor(p[1]/TH);(g.get(k)||g.set(k,[]).get(k)).push(p)});return g};
  const nearIn=(g,[x,y])=>{const gx=Math.floor(x/TH),gy=Math.floor(y/TH);for(let i=-1;i<=1;i++)for(let j=-1;j<=1;j++){const a=g.get((gx+i)+','+(gy+j));if(a)for(const q of a)if((q[0]-x)**2+(q[1]-y)**2<TH*TH)return true}return false};
  const f=v=>v.toFixed(1);
- const band=(r,g)=>{const n=r.map(p=>nearIn(g,p));for(let i=0;i<r.length;i++){const j=(i+1)%r.length;if(!(n[i]&&n[j]))continue;const [x1,y1]=r[i],[x2,y2]=r[j];let dx=x2-x1,dy=y2-y1;const L=Math.hypot(dx,dy)||1;const ox=-dy/L*HW,oy=dx/L*HW,ex=dx/L*HW,ey=dy/L*HW;
+ const nearP=(g,[x,y])=>{const gx=Math.floor(x/TH),gy=Math.floor(y/TH);let b=null,m=TH*TH;for(let i=-1;i<=1;i++)for(let j=-1;j<=1;j++){const a=g.get((gx+i)+','+(gy+j));if(a)for(const q of a){const d=(q[0]-x)**2+(q[1]-y)**2;if(d<m){m=d;b=q}}}return b};
+ const band=(r,g)=>{const n=r.map(p=>nearIn(g,p));const np=r.map(p=>nearP(g,p));for(let i=0;i<r.length;i++){const j=(i+1)%r.length;if(np[i]&&np[j])fd+='M'+[r[i],r[j],np[j],np[i]].map(p=>f(p[0])+','+f(p[1])).join('L')+'Z'+'M'+[r[i],np[i],np[j],r[j]].map(p=>f(p[0])+','+f(p[1])).join('L')+'Z'}for(let i=0;i<r.length;i++){const j=(i+1)%r.length;if(!(n[i]&&n[j]))continue;const [x1,y1]=r[i],[x2,y2]=r[j];let dx=x2-x1,dy=y2-y1;const L=Math.hypot(dx,dy)||1;const ox=-dy/L*HW,oy=dx/L*HW,ex=dx/L*HW,ey=dy/L*HW;
    fd+='M'+f(x1+ox-ex)+','+f(y1+oy-ey)+'L'+f(x2+ox+ex)+','+f(y2+oy+ey)+'L'+f(x2-ox+ex)+','+f(y2-oy+ey)+'L'+f(x1-ox-ex)+','+f(y1-oy-ey)+'Z'}};
  const CR=P(LAND.ctx),gc=grid(CR.flat());
  [LAND.kor,LAND.korHi].forEach(src=>{if(!src)return;const KR=P(src);KR.forEach(r=>band(r,gc));const gk=grid(KR.flat());CR.forEach(r=>band(r,gk))});
@@ -893,14 +894,14 @@ document.addEventListener('click',e=>{const c=e.target.closest&&e.target.closest
  w.after(g);const sync=()=>p.setAttribute('d',wl.getAttribute('d')||'');sync();new MutationObserver(sync).observe(wl,{attributes:true,attributeFilter:['d']});
  const st=document.createElement('style');st.textContent='.wland{stroke-width:2.2!important}.wland2{fill:var(--land);stroke:var(--land);stroke-width:.4;vector-effect:non-scaling-stroke}';document.head.appendChild(st)}}
 /* ───────── 나만의 편집: 글씨 고치기(자동 저장)·별표·형광펜·태그 — 주인만 쓰고, 다른 사람은 보기만 ───────── */
-{const ME={x:new Map(),xc:new Map(),s:new Set(),h:new Map(),g:new Map(),w:new Map()};let canW=false,DB=null,editOn=false;window.__ME=ME;
+{const ME={x:new Map(),xc:new Map(),s:new Set(),h:new Map(),g:new Map(),w:new Map(),l:new Map(),c:new Map(),v:new Map()};let canW=false,DB=null,editOn=false;window.__ME=ME;
  const E=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
  const hid=k=>[...new TextEncoder().encode(k)].map(b=>b.toString(16).padStart(2,'0')).join('').slice(0,190);
  const SEL='h1,h2,h3,h4,p,li,dd,dt,td,th,.kpd,.snv,.sri b,.sri span,.ppnames button,.kpp button,.gdr span,.evd b,.evd span,.evd div';
  const SKIP='svg,#map,.tbar,header,.topbar,#srq,textarea,input,.mtool,.snote,.mtags,#medit';
  /* 받은 자료 넣기 */
- const load=docs=>{const wOld=JSON.stringify([...ME.w]);ME.x.clear();ME.xc.clear();ME.s.clear();ME.h.clear();ME.g.clear();ME.w.clear();docs.forEach(d=>{if(!d||!d.k)return;const t=d.k[0],key=d.k.slice(2);
-   if(t==='x'&&d.v!=null){ME.x.set(key,String(d.v));if(d.c)ME.xc.set(key,d.c)}else if(t==='s'&&d.v)ME.s.add(key);else if(t==='h'&&Array.isArray(d.v)&&d.v.length)ME.h.set(key,d.v.map(String));else if(t==='g'&&Array.isArray(d.v)&&d.v.length)ME.g.set(key,d.v.map(String));else if(t==='w'&&d.v)ME.w.set(key,String(d.v))});if(JSON.stringify([...ME.w])!==wOld)applyWords();applyAll()};
+ const load=docs=>{const wOld=JSON.stringify([...ME.w]);ME.x.clear();ME.xc.clear();ME.s.clear();ME.h.clear();ME.g.clear();ME.w.clear();ME.l.clear();ME.c.clear();ME.v.clear();docs.forEach(d=>{if(!d||!d.k)return;const t=d.k[0],key=d.k.slice(2);
+   if(t==='x'&&d.v!=null){ME.x.set(key,String(d.v));if(d.c)ME.xc.set(key,d.c)}else if(t==='s'&&d.v)ME.s.add(key);else if(t==='h'&&Array.isArray(d.v)&&d.v.length)ME.h.set(key,d.v.map(String));else if(t==='g'&&Array.isArray(d.v)&&d.v.length)ME.g.set(key,d.v.map(String));else if(t==='w'&&d.v)ME.w.set(key,String(d.v));else if(t==='l'&&Array.isArray(d.v)&&d.v.length)ME.l.set(key,d.v.map(String));else if(t==='c'&&Array.isArray(d.v)&&d.v.length)ME.c.set(key,d.v.filter(x=>x&&x.v));else if(t==='v'&&d.v&&d.v.t)ME.v.set(key,d.v)});syncEvents();if(JSON.stringify([...ME.w])!==wOld)applyWords();applyAll()};
  const save=(k,v,extra)=>{if(!DB)return;const r=DB.collection('mine').doc(hid(k));const empty=v==null||v===''||(Array.isArray(v)&&!v.length)||v===0;(empty?r.delete():r.set(Object.assign({k,v,at:Date.now()},extra||{}))).then(()=>toast('저장됨')).catch(()=>toast('저장 못 함'))};
  const toast=t=>{let b=$('mtoast');if(!b){b=document.createElement('div');b.id='mtoast';document.body.appendChild(b)}b.textContent=t;b.classList.add('on');clearTimeout(b.t);b.t=setTimeout(()=>b.classList.remove('on'),900)};
  /* 글씨 바꾸기 적용 */
@@ -911,17 +912,17 @@ document.addEventListener('click',e=>{const c=e.target.closest&&e.target.closest
  const applyHL=(host,item)=>{host.querySelectorAll('mark.mhl').forEach(m=>m.replaceWith(...m.childNodes));host.normalize();const L=ME.h.get(item);if(!L)return;
    L.forEach(str=>{const w=document.createTreeWalker(host,NodeFilter.SHOW_TEXT,{acceptNode:n=>n.parentNode.closest('.mtool,.mtags,.snote,mark,button.hrt')?2:1});let n;while((n=w.nextNode())){const i=n.nodeValue.indexOf(str);if(i<0)continue;const r=document.createRange();r.setStart(n,i);r.setEnd(n,i+str.length);const m=document.createElement('mark');m.className='mhl';m.dataset.hl=str;r.surroundContents(m);break}})};
  /* 별표·형광펜·태그 막대 */
- const bar=item=>{const st=ME.s.has(item),tg=ME.g.get(item)||[];if(!canW&&!st&&!tg.length)return '';
-   return `<div class="mtool" data-item="${E(item)}">${canW||st?`<button type="button" class="mstar${st?' on':''}" ${canW?'':'disabled'} aria-label="별표">${st?'★':'☆'}</button>`:''}${canW?'<button type="button" class="mhlb" aria-label="형광펜">🖍 형광펜</button>':''}<span class="mtags">${tg.map(t=>`<span class="mtag">#${E(t)}${canW?`<i data-rm="${E(t)}">×</i>`:''}</span>`).join('')}${canW?'<button type="button" class="madd">+ 태그</button>':''}</span></div>`};
- const decorate=()=>{const kp=$('kpage');if(kp&&!kp.hidden){const h=kp.querySelector('.kph');const item=itemOf(h||kp);if(h&&item){const old=kp.querySelector('.mtool');const html=bar(item);if(old)old.outerHTML=html||'';else if(html)h.insertAdjacentHTML('afterend',html);const host=kp.querySelector('.kpin');if(host)applyHL(host,item)}}
-   document.querySelectorAll('.evd').forEach(ev=>{const item=itemOf(ev);if(!item)return;const old=ev.querySelector('.mtool');const html=bar(item);if(old)old.outerHTML=html||'';else if(html){const t=ev.querySelector('h2,h3,.ttl,b')||ev.firstElementChild;if(t)t.insertAdjacentHTML('afterend',html)}applyHL(ev,item)})};
+ const bar=item=>{const st=ME.s.has(item),tg=ME.g.get(item)||[];const lk=linksOf(item);if(!canW&&!st&&!tg.length&&!lk.length)return '';const ev=item.startsWith('e:')?EVENTS.find(x=>x.id===+item.slice(2)):null;
+   return `<div class="mtool" data-item="${E(item)}">${canW||st?`<button type="button" class="mstar${st?' on':''}" ${canW?'':'disabled'} aria-label="별표">${st?'★':'☆'}</button>`:''}${canW?'<button type="button" class="mhlb" aria-label="형광펜">🖍 형광펜</button>':''}<span class="mtags">${tg.map(t=>`<span class="mtag">#${E(t)}${canW?`<i data-rm="${E(t)}">×</i>`:''}</span>`).join('')}${canW?'<button type="button" class="madd">+ 태그</button>':''}</span>${lk.length||canW?`<span class="mlinks"><i class="mlk">🔗 연결</i>${lk.map(t=>`<button type="button" class="mlink" data-go="${E(t)}">${E(nameOf(t))}${canW&&(ME.l.get(item)||[]).includes(t)?`<i data-unl="${E(t)}">×</i>`:''}</button>`).join('')}${canW?'<button type="button" class="mladd">+ 연결</button>':''}</span>`:''}${canW?'<button type="button" class="mcadd">+ 내용 추가</button>':''}${canW&&ev&&ev.mid?'<button type="button" class="meved">✎ 사건 고치기</button>':''}</div>`};
+ const decorate=()=>{if(document.activeElement&&document.activeElement.classList.contains('mtagin'))return;const kp=$('kpage');if(kp&&!kp.hidden){const h=kp.querySelector('.kph');const item=itemOf(h||kp);if(h&&item){const old=kp.querySelector('.mtool');const html=bar(item);if(old)old.outerHTML=html||'';else if(html)h.insertAdjacentHTML('afterend',html);const host=kp.querySelector('.kpin');if(host){secs(host,item);applyHL(host,item)}}}
+   document.querySelectorAll('.evd').forEach(ev=>{const item=itemOf(ev);if(!item)return;const old=ev.querySelector('.mtool');const html=bar(item);if(old)old.outerHTML=html||'';else if(html){const t=ev.querySelector('h2,h3,.ttl,b')||ev.firstElementChild;if(t)t.insertAdjacentHTML('afterend',html)}secs(ev,item);applyHL(ev,item)})};
  const applyAll=()=>{applyText(document.body);decorate()};
- let mq=[],mt=0;new MutationObserver(ms=>{if(busy)return;ms.forEach(m=>m.addedNodes.forEach(n=>{if(n.nodeType===1)mq.push(n)}));if(!mq.length)return;clearTimeout(mt);mt=setTimeout(()=>{busy=true;try{const q=mq;mq=[];q.forEach(n=>{if(n.isConnected)applyText(n)});if(q.some(n=>n.isConnected&&(n.closest('#kpage')||n.querySelector&&n.querySelector('.evd')||n.closest('.evd'))))decorate()}finally{setTimeout(()=>busy=false,0)}},60)}).observe(document.body,{childList:true,subtree:true});let busy=false;
+ let mq=[],mt=0;new MutationObserver(ms=>{if(busy)return;ms.forEach(m=>{if(m.target.closest&&m.target.closest('.mtool'))return;m.addedNodes.forEach(n=>{if(n.nodeType===1&&!n.classList.contains('mtool')&&!n.classList.contains('mtagin'))mq.push(n)})});if(!mq.length)return;clearTimeout(mt);mt=setTimeout(()=>{busy=true;try{const q=mq;mq=[];q.forEach(n=>{if(n.isConnected)applyText(n)});if(q.some(n=>n.isConnected&&(n.closest('#kpage')||n.querySelector&&n.querySelector('.evd')||n.closest('.evd'))))decorate()}finally{setTimeout(()=>busy=false,0)}},60)}).observe(document.body,{childList:true,subtree:true});let busy=false;
  /* 주인: 고치기 모드 단추 */
  const mkBtn=()=>{if($('medit'))return;const b=document.createElement('button');b.id='medit';b.type='button';b.className='tib';b.setAttribute('aria-label','글씨 고치기 (나만)');b.innerHTML='<svg viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M14 6l4 4"/></svg>';
    const hb=$('heartbtn');if(hb)hb.before(b);else document.body.appendChild(b);
-   b.onclick=()=>{editOn=!editOn;document.body.classList.toggle('medit',editOn);wBtn();b.setAttribute('aria-pressed',editOn);toast(editOn?'고치기 모드: 글씨를 눌러 고치세요':'고치기 끝')}};
- document.addEventListener('click',e=>{if(!editOn||!canW)return;const t=e.target;if(t.closest(SKIP)||t.closest('.mtool'))return;const el=t.closest(SEL);if(!el||el.isContentEditable)return;e.preventDefault();e.stopPropagation();
+   b.onclick=()=>{editOn=!editOn;document.body.classList.toggle('medit',editOn);fBtn();b.setAttribute('aria-pressed',editOn);toast(editOn?'고치기 모드: 글씨를 눌러 고치세요':'고치기 끝')}};
+ document.addEventListener('click',e=>{if(!editOn||!canW)return;const t=e.target;if(t.closest(SKIP)||t.closest('.mtool,.mform,#mhlfloat,.msec .mced,#mwform,#mwadd'))return;{const sl=getSelection();if(sl&&!sl.isCollapsed&&String(sl).trim())return}const el=t.closest(SEL);if(!el||el.isContentEditable)return;e.preventDefault();e.stopPropagation();
    const o=el.dataset.xo||el.textContent.trim();if(!o)return;el.dataset.xo=o;const ctx=itemOf(el);const xk=ctx?ctx+'\u0001'+o:o;el.textContent=ME.x.get(xk)||el.textContent;el.contentEditable='plaintext-only';el.classList.add('xing');el.focus();
    let tm=0;const commit=()=>{const v=el.textContent.trim();if(v===o||!v){if(ME.x.has(xk)){ME.x.delete(xk);save('x:'+xk,'')}}else if(v!==ME.x.get(xk)){ME.x.set(xk,v);save('x:'+xk,v)}};
    el.oninput=()=>{clearTimeout(tm);tm=setTimeout(commit,700)};el.onblur=()=>{clearTimeout(tm);commit();el.contentEditable='false';el.removeAttribute('contenteditable');el.classList.remove('xing');if(!ME.x.has(xk)){el.textContent=o}};
@@ -938,19 +939,69 @@ document.addEventListener('click',e=>{const c=e.target.closest&&e.target.closest
    f.addEventListener('click',e=>{const a=e.target.dataset&&e.target.dataset.a;if(!a)return;e.stopPropagation();if(a==='x'){f.remove();return}
      const w=k.value.trim(),m=v.value.trim();if(!w){k.focus();return}if(BASE.has(w)){toast('원래 있는 낱말이에요 — 뜻 글씨를 눌러 고치세요');return}
      if(m)ME.w.set(w,m);else ME.w.delete(w);save('w:'+w,m);applyWords();f.remove();toast(m?'낱말 추가됨':'낱말 지움')},true)};
+ /* 연결: 내가 이어 둔 것 + 거꾸로 이어진 것 */
+ function linksOf(item){const out=new Set(ME.l.get(item)||[]);ME.l.forEach((L,k)=>{if(L.includes(item))out.add(k)});out.delete(item);return [...out]}
+ /* 내가 추가한 내용 칸 */
+ function secs(host,item){host.querySelectorAll(':scope>.msec,:scope .msec').forEach(n=>n.remove());const L=ME.c.get(item)||[];if(!L.length)return;const at=host.querySelector('.snote');
+   const html=L.map((c,i)=>`<section class="msec"><h3>${E(c.h||'메모')}${canW?`<span class="mced"><i data-ced="${i}">✎</i><i data-cdel="${i}">×</i></span>`:''}</h3><p class="kpd">${glx(c.v)}</p></section>`).join('');
+   if(at)at.insertAdjacentHTML('beforebegin',html);else host.insertAdjacentHTML('beforeend',html)}
+ /* 고르기 창 (연결 대상) */
+ const CANDS=()=>{const a=[];EVENTS.forEach(e=>a.push({k:'e:'+e.id,n:e.t,s:shortYear(e)+' 사건'}));if(typeof PEOPLE!=='undefined')PEOPLE.forEach(P=>a.push({k:'k:'+P.n,n:P.n,s:'인물'}));Object.keys(GLOSS).forEach(g=>a.push({k:'k:'+g,n:g,s:'낱말'}));return a};
+ const picker=(anchorEl,onPick)=>{const box=document.createElement('div');box.className='mpick';box.innerHTML='<input placeholder="이을 사건·인물·낱말 찾기"><div class="mpl"></div>';anchorEl.after(box);const i=box.querySelector('input'),l=box.querySelector('.mpl');const all=CANDS();
+   const run=()=>{const q=i.value.trim();if(!q){l.innerHTML='';return}const hits=all.filter(c=>c.n.includes(q)).sort((a,b)=>(a.n.indexOf(q)-b.n.indexOf(q))||a.n.length-b.n.length).slice(0,10);l.innerHTML=hits.map(c=>`<button type="button" data-pk="${E(c.k)}"><b>${E(c.n)}</b><span>${E(c.s)}</span></button>`).join('')||'<span class="mpn">없어요</span>'};
+   i.addEventListener('input',run);i.focus();box.addEventListener('mousedown',e=>{if(e.target.closest('[data-pk]'))e.preventDefault()});
+   box.addEventListener('click',e=>{const b=e.target.closest('[data-pk]');if(!b)return;e.stopPropagation();box.remove();onPick(b.dataset.pk)},true);
+   i.onkeydown=k=>{if(k.key==='Escape'){box.remove()}else if(k.key==='Enter'&&!k.isComposing){const f=l.querySelector('[data-pk]');if(f){box.remove();onPick(f.dataset.pk)}}};i.onblur=()=>setTimeout(()=>box.isConnected&&box.remove(),150)};
+ /* 내용 추가 창 */
+ const cForm=(item,idx)=>{if($('mcform'))$('mcform').remove();const L=ME.c.get(item)||[];const cur=idx!=null?L[idx]:{h:'배경',v:''};const f=document.createElement('div');f.id='mcform';f.className='mform';
+   f.innerHTML=`<b>내용 ${idx!=null?'고치기':'추가'}</b><div class="mchips">${['배경','주변 인물','과정','결과','의의','메모'].map(h=>`<button type="button" data-ch="${h}">${h}</button>`).join('')}</div><input id="mch" placeholder="제목" value="${E(cur.h)}"><textarea id="mcv" rows="5" placeholder="내용">${E(cur.v)}</textarea><div><button type="button" data-a="ok">저장</button><button type="button" data-a="x">닫기</button></div>`;document.body.appendChild(f);f.querySelector('#mcv').focus();
+   f.addEventListener('click',e=>{const h=e.target.dataset&&e.target.dataset.ch;if(h){f.querySelector('#mch').value=h;return}const a=e.target.dataset&&e.target.dataset.a;if(!a)return;e.stopPropagation();if(a==='x'){f.remove();return}
+     const hh=f.querySelector('#mch').value.trim()||'메모',vv=f.querySelector('#mcv').value.trim();const N=(ME.c.get(item)||[]).slice();if(idx!=null){if(vv)N[idx]={h:hh,v:vv};else N.splice(idx,1)}else if(vv)N.push({h:hh,v:vv});N.length?ME.c.set(item,N):ME.c.delete(item);save('c:'+item,N);f.remove();decorate()},true)};
+ /* 사건 추가·고치기 */
+ const invLL=(sx,sy)=>{const s=$('map'),P=s.createSVGPoint();P.x=sx;P.y=sy;const q=P.matrixTransform(s.getScreenCTM().inverse());const inv=(F,v,a,b)=>{const up=F(b)>F(a);for(let n=0;n<50;n++){const m=(a+b)/2;((F(m)<v)===up)?a=m:b=m}return (a+b)/2};return [+inv(X,q.x,60,200).toFixed(3),+inv(Y,q.y,-10,80).toFixed(3)]};
+ const vForm=mid=>{if($('mvform'))$('mvform').remove();const cur=mid?ME.v.get(mid):{y:'',t:'',x:'',p:'',tp:['pol']};const f=document.createElement('div');f.id='mvform';f.className='mform';
+   f.innerHTML=`<b>사건 ${mid?'고치기':'추가'}</b><div class="mrow"><input id="mvy" type="number" placeholder="연도 (기원전은 -)" value="${cur.y??''}"><input id="mvm" type="number" min="1" max="12" placeholder="월" value="${cur.m??''}"></div><input id="mvt" placeholder="사건 이름" value="${E(cur.t||'')}"><select id="mvtp">${TOPICS.map(t=>`<option value="${t.k}"${(cur.tp||[])[0]===t.k?' selected':''}>${t.n}</option>`).join('')}</select><textarea id="mvx" rows="3" placeholder="내용">${E(cur.x||'')}</textarea><input id="mvpp" placeholder="인물 (쉼표로)" value="${E(cur.pp||'')}"><div class="mrow"><input id="mvp" placeholder="장소 이름" value="${E(cur.p||'')}"><button type="button" data-a="pick">📍 지도에서</button></div><small id="mvll">${cur.ll?'위치: '+cur.ll.join(', '):'위치 없음 (지도에 핀 없이 목록에만)'}</small><div><button type="button" data-a="ok">저장</button>${mid?'<button type="button" data-a="del">지우기</button>':''}<button type="button" data-a="x">닫기</button></div><small>저장하면 지도·연표·애니메이션에 넣으려고 화면을 한 번 새로 고쳐요</small>`;
+   document.body.appendChild(f);let ll=cur.ll||null;
+   f.addEventListener('click',e=>{const a=e.target.dataset&&e.target.dataset.a;if(!a)return;e.stopPropagation();if(a==='x'){f.remove();return}
+     if(a==='pick'){f.classList.add('picking');showView('map');toast('지도에서 위치를 누르세요');const h=ev=>{if(!ev.target.closest('#map'))return;ev.preventDefault();ev.stopPropagation();document.removeEventListener('click',h,true);ll=invLL(ev.clientX,ev.clientY);f.querySelector('#mvll').textContent='위치: '+ll.join(', ');f.classList.remove('picking')};setTimeout(()=>document.addEventListener('click',h,true),50);return}
+     if(a==='del'){save('v:'+mid,'');ME.v.delete(mid);f.remove();syncEvents(true);return}
+     const y=parseFloat(f.querySelector('#mvy').value),t=f.querySelector('#mvt').value.trim();if(isNaN(y)||!t){toast('연도와 사건 이름을 적어 주세요');return}
+     const m=parseInt(f.querySelector('#mvm').value);const v={y,t,tp:[f.querySelector('#mvtp').value],x:f.querySelector('#mvx').value.trim()||t};if(m>=1&&m<=12)v.m=m;const pp=f.querySelector('#mvpp').value.trim();if(pp)v.pp=pp;const p=f.querySelector('#mvp').value.trim();if(p)v.p=p;if(ll)v.ll=ll;
+     const id=mid||Date.now().toString(36);ME.v.set(id,v);save('v:'+id,v);f.remove();syncEvents(true)},true);
+   f.addEventListener('keydown',e=>e.stopPropagation(),true)};
+ function syncEvents(now){const list=[...ME.v.entries()].sort((a,b)=>a[0]<b[0]?-1:1).map(([id,v])=>Object.assign({mid:id},v));const sig=JSON.stringify(list);if(sig===(window.__MYEV_SIG||'[]'))return;
+   try{localStorage.setItem('hgs_myev',sig)}catch(_){toast('새로 고치면 사건이 보여요');return}
+   let rl='';try{rl=sessionStorage.getItem('hgs_rl')||''}catch(_){}if(rl===sig&&!now)return;try{sessionStorage.setItem('hgs_rl',sig)}catch(_){}
+   toast('사건을 지도에 넣는 중…');setTimeout(()=>location.reload(),now?900:300)}
+ /* 떠 있는 추가 단추: 사전 화면이면 낱말, 지도·연표면 사건 */
+ const fBtn=()=>{let b=$('mwadd');const v=['dc','map','tl'].find(k=>{const e=$('v-'+k);return e&&!e.hidden});const kpOpen=$('kpage')&&!$('kpage').hidden;if(!editOn||!v||kpOpen){if(b)b.hidden=true;return}
+   if(!b){b=document.createElement('button');b.id='mwadd';b.type='button';document.body.appendChild(b);b.onclick=()=>{b.dataset.k==='dc'?wForm():vForm()}}b.dataset.k=v==='dc'?'dc':'ev';b.textContent=v==='dc'?'+ 낱말 추가':'+ 사건 추가';b.hidden=false};
+ setInterval(()=>{if(editOn)fBtn()},400);
+ /* 연필 모드에서 드래그하면 바로 형광펜 */
+ document.addEventListener('mouseup',e=>{if(!editOn||!canW)return;setTimeout(()=>{const sel=getSelection();const str=sel&&String(sel).trim();let b=$('mhlfloat');if(!str||str.length>300||!sel.rangeCount){if(b)b.remove();return}const host=sel.getRangeAt(0).commonAncestorContainer;const el=host.nodeType===1?host:host.parentNode;const item=itemOf(el);if(!item){if(b)b.remove();return}
+   if(!b){b=document.createElement('button');b.id='mhlfloat';b.type='button';b.textContent='🖍 칠하기';document.body.appendChild(b)}const r=sel.getRangeAt(0).getBoundingClientRect();b.style.left=Math.min(innerWidth-90,r.right+4)+'px';b.style.top=Math.max(8,r.top-34)+'px';
+   b.onmousedown=ev=>ev.preventDefault();b.onclick=ev=>{ev.stopPropagation();const L=ME.h.get(item)||[];if(!L.includes(str))L.push(str);ME.h.set(item,L);getSelection().removeAllRanges();b.remove();save('h:'+item,L);decorate()}},10)},true);
+ /* 글 쓰는 중에는 단축키가 안 먹게 (태그 칸·낱말 추가 창·고치는 글씨) */
+ ['keydown','keyup','keypress'].forEach(tp=>window.addEventListener(tp,e=>{const t=e.target;if(!(t&&t.closest&&(t.closest('.mtool,#mwform')||t.classList.contains('xing'))))return;e.stopImmediatePropagation();if(tp==='keydown'&&typeof t.onkeydown==='function')t.onkeydown(e)},true));
  /* 별표·형광펜·태그 누르기 */
  document.addEventListener('mousedown',e=>{if(e.target.closest&&e.target.closest('.mhlb'))e.preventDefault()},true);
  document.addEventListener('click',e=>{const tb=e.target.closest&&e.target.closest('.mtool');const mk=e.target.closest&&e.target.closest('mark.mhl');
    if(mk&&canW&&!editOn){const item=itemOf(mk);const L=(ME.h.get(item)||[]).filter(x=>x!==mk.dataset.hl);L.length?ME.h.set(item,L):ME.h.delete(item);save('h:'+item,L);decorate();e.stopPropagation();return}
-   if(!tb||!canW)return;e.stopPropagation();const item=tb.dataset.item;
+   if(!tb||!canW||e.target.closest('.mpick'))return;e.stopPropagation();const item=tb.dataset.item;
    if(e.target.closest('.mstar')){ME.s.has(item)?ME.s.delete(item):ME.s.add(item);save('s:'+item,ME.s.has(item)?1:0);decorate();return}
    if(e.target.closest('.mhlb')){const sel=getSelection();const str=sel&&String(sel).trim();if(!str||str.length>300){toast('먼저 칠할 글씨를 드래그해서 고르세요');return}const L=ME.h.get(item)||[];if(!L.includes(str))L.push(str);ME.h.set(item,L);sel.removeAllRanges();save('h:'+item,L);decorate();return}
    const rm=e.target.closest('[data-rm]');if(rm){const L=(ME.g.get(item)||[]).filter(x=>x!==rm.dataset.rm);L.length?ME.g.set(item,L):ME.g.delete(item);save('g:'+item,L);decorate();return}
+   const un=e.target.closest('[data-unl]');if(un){const L=(ME.l.get(item)||[]).filter(x=>x!==un.dataset.unl);L.length?ME.l.set(item,L):ME.l.delete(item);save('l:'+item,L);decorate();return}
+   if(e.target.closest('.mladd')){picker(e.target.closest('.mladd'),k=>{const L=ME.l.get(item)||[];if(!L.includes(k)&&k!==item)L.push(k);ME.l.set(item,L);save('l:'+item,L);decorate()});return}
+   if(e.target.closest('.mcadd')){cForm(item);return}
+   if(e.target.closest('.meved')){const ev=EVENTS.find(x=>x.id===+item.slice(2));if(ev&&ev.mid)vForm(ev.mid);return}
    if(e.target.closest('.madd')){const b=e.target.closest('.madd');const i=document.createElement('input');i.className='mtagin';i.placeholder='태그';b.replaceWith(i);i.focus();
-     const done=ok=>{const v=i.value.replace(/^#/,'').trim();if(ok&&v){const L=ME.g.get(item)||[];if(!L.includes(v))L.push(v);ME.g.set(item,L);save('g:'+item,L)}decorate()};
+     const done=ok=>{const v=i.value.replace(/^#/,'').trim();if(ok&&v){const L=ME.g.get(item)||[];if(!L.includes(v))L.push(v);ME.g.set(item,L);save('g:'+item,L)}i.onblur=null;i.blur();decorate()};
      i.onkeydown=k=>{k.stopPropagation();if(k.key==='Enter'&&!k.isComposing){k.preventDefault();done(true)}else if(k.key==='Escape')done(false)};i.onblur=()=>done(true)}},true);
+ document.addEventListener('click',e=>{const g=e.target.closest&&e.target.closest('.mlink[data-go]');if(!g||e.target.closest('[data-unl]'))return;e.preventDefault();e.stopPropagation();openItem(g.dataset.go)},true);
+ document.addEventListener('click',e=>{const c=e.target.closest&&e.target.closest('[data-ced],[data-cdel]');if(!c||!canW)return;e.preventDefault();e.stopPropagation();const item=itemOf(c);if(!item)return;if(c.dataset.ced!=null)cForm(item,+c.dataset.ced);else{const N=(ME.c.get(item)||[]).slice();N.splice(+c.dataset.cdel,1);N.length?ME.c.set(item,N):ME.c.delete(item);save('c:'+item,N);decorate()}},true);
  /* 검색: 내가 고친 글씨·태그·별표도 찾기 */
- const openItem=it=>{try{if(!$('srch').hidden)closeSearch()}catch(_){}if(it.startsWith('e:')){const e=EVENTS.find(x=>String(x.id)===it.slice(2));if(e)gotoMap(e);return}if(it.startsWith('k:')){const n=it.slice(2);if(GLOSS[n])openTerm(n);else if(typeof PEOPLE!=='undefined'&&PEOPLE.has(n))openPerson(n);else openTerm(n)}};
+ const openItem=it=>{try{if(!$('srch').hidden)closeSearch()}catch(_){}if(it.startsWith('e:')){const e=EVENTS.find(x=>String(x.id)===it.slice(2));if(!e)return;const p=$('trpop');p.innerHTML=`<button class="ib trx" type="button" aria-label="닫기"><svg class="ic" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button><div class="evd">${evDetailHTML(e)}<div class="nav">${e.ll?`<button class="btn" data-km>지도에서 보기</button>`:''}<button class="btn" data-kt>연표에서 보기</button></div></div>`;p.hidden=false;$('trdim').hidden=false;p.scrollTop=0;p.querySelector('.trx').onclick=closeTree;const m=p.querySelector('[data-km]');if(m)m.onclick=()=>{closeTree();$('kpage').hidden=true;gotoMap(e)};p.querySelector('[data-kt]').onclick=()=>{closeTree();$('kpage').hidden=true;gotoTimeline(e)};return}if(it.startsWith('k:')){const n=it.slice(2);if(GLOSS[n])openTerm(n);else if(typeof PEOPLE!=='undefined'&&PEOPLE.has(n))openPerson(n);else openTerm(n)}};
  const nameOf=it=>{if(it.startsWith('e:')){const e=EVENTS.find(x=>String(x.id)===it.slice(2));return e?e.t:it.slice(2)}return it.slice(2)};
  {const sr=srRun;srRun=function(q){sr(q);const qq=q.trim().replace(/^#/,'').toLowerCase();if(!qq)return;const box=$('srres');let h='';
    const xs=[...ME.x.entries()].filter(([o,v])=>v.toLowerCase().includes(qq)).slice(0,12);
@@ -975,8 +1026,25 @@ document.addEventListener('click',e=>{const c=e.target.closest&&e.target.closest
  const p=document.createElementNS(NS,'path');p.setAttribute('class','tund');g.appendChild(p);
  const sync=()=>p.setAttribute('d',($('cpk').getAttribute('d')||'')+($('landfill')?$('landfill').getAttribute('d'):''));sync();new MutationObserver(sync).observe($('cpk'),{attributes:true,attributeFilter:['d']});
  const PRE='#e6dcc6',TAM='#e6d4b8',JUR='#d5ddc6';
- const CFG={0:[PRE],1:[PRE],2:[PRE,[['진',127.9,35.9]]],3:[PRE],4:[TAM,[['탐라',126.55,33.38]]],5:[TAM,[['탐라',126.55,33.38]]],6:[TAM,[['탐라',126.55,33.38]]],7:[TAM,[['탐라',126.55,33.38]]],
+ const CFG={0:[PRE],1:[PRE],2:[PRE,[['진국',127.9,35.9]]],3:[PRE],4:[TAM,[['탐라',126.55,33.38]]],5:[TAM,[['탐라',126.55,33.38]]],6:[TAM,[['탐라',126.55,33.38]]],7:[TAM,[['탐라',126.55,33.38]]],
   8:[JUR,[['말갈',127.15,39.45],['탐라',126.55,33.38]]],9:[TAM,[['탐라',126.55,33.38]]],10:[TAM,[['탐라',126.55,33.38]]],11:[JUR,[['여진',128.7,41.3]]],12:[JUR,[['여진',128.7,41.3]]],13:[JUR,[['여진',128.7,41.3]]],14:[JUR,[['여진',128.7,41.3]]],15:[JUR,[['여진',127.6,41.4]]],16:[JUR,[['여진',127.6,41.4]]]};
  const labs=[];const mkLab=(n,lo,la)=>{const lg=document.createElementNS(NS,'g');lg.setAttribute('class','ulab');const t=document.createElementNS(NS,'text');t.textContent=n;lg.appendChild(t);$('ovl').appendChild(lg);const o={g:lg,x:X(lo),y:Y(la)};OV.push(o);labs.push({n,lg});return lg};
  const apply=()=>{const c=CFG[pos.i]||[PRE];p.style.fill=c[0];const want=(c[1]||[]).map(a=>a.join('|'));labs.forEach(L=>L.lg.style.display='none');(c[1]||[]).forEach(([n,lo,la])=>{let L=labs.find(L=>L.key===n+lo+la);if(!L){mkLab(n,lo,la);L=labs[labs.length-1];L.key=n+lo+la}L.lg.style.display=''});placeOV()};
  const af=applyFrame;applyFrame=function(){const r=af.apply(this,arguments);apply();return r};apply()}
+/* 동아시아 상세 지도 북서쪽 귀퉁이(몽골 쪽)가 비어 호수처럼 잘려 보이던 곳 → 세계 지도 땅으로 채움 */
+{const NS='http://www.w3.org/2000/svg',mk=(t,a,p)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);p&&p.appendChild(e);return e};
+ const x1=X(111.4),x2=X(120.6),y1=Y(50.6),y2=Y(44.2);const R={x:x1,y:y1,width:x2-x1,height:y2-y1};
+ const cp=mk('clipPath',{id:'nwc',clipPathUnits:'userSpaceOnUse'},$('defs'));mk('rect',R,cp);
+ const w2=$('world2')||$('world');if(w2){const g=mk('g',{id:'world3','clip-path':'url(#nwc)'});mk('use',{href:'#wl2',class:'wland2'},g);w2.after(g)}
+ const lc=$('landclip');if(lc)mk('use',{href:'#wl','clip-path':'url(#nwc)'},lc);
+ const c2=$('cl2clip');if(c2){const r=c2.querySelector('rect');if(r){const a=+r.getAttribute('x'),b=+r.getAttribute('y'),w=+r.getAttribute('width'),h=+r.getAttribute('height');r.remove();const u1=Math.max(x1,a),v1=Math.max(y1,b),u2=Math.min(x2,a+w),v2=Math.min(y2,b+h);mk('path',{d:`M${a},${b}h${w}v${h}h${-w}Z M${u1},${v1}H${u2}V${v2}H${u1}Z`,'clip-rule':'evenodd'},c2)}}
+ const ls=$('lshg');if(ls){const cq=mk('clipPath',{id:'nwout',clipPathUnits:'userSpaceOnUse'},$('defs'));mk('path',{d:`M-200000,-200000H200000V200000H-200000Z M${x1},${y1}h${x2-x1}v${y2-y1}h${x1-x2}Z`,'clip-rule':'evenodd'},cq);ls.setAttribute('clip-path','url(#nwout)')}}
+/* 남북 본토 두 조각 사이 틈(분단선 근처 흰 틈·검은 선) 메우기 */
+{const P=d=>(d||'').split(/(?=M)/).filter(s=>s.trim()).map(s=>s.replace(/[MZ]/g,' ').trim().split(/[ L]+/).filter(Boolean).map(t=>t.split(',').map(Number)));
+ const A=r=>{let a=0;for(let i=0;i<r.length;i++){const [x1,y1]=r[i],[x2,y2]=r[(i+1)%r.length];a+=x1*y2-x2*y1}return Math.abs(a/2)};
+ const TH=4,HW=2.5,f=v=>v.toFixed(1);let fd='';
+ const band=(r,o)=>{const near=p=>o.some(q=>(q[0]-p[0])**2+(q[1]-p[1])**2<TH*TH);const n=r.map(near);for(let i=0;i<r.length;i++){const j=(i+1)%r.length;if(!(n[i]&&n[j]))continue;const [x1,y1]=r[i],[x2,y2]=r[j];const L=Math.hypot(x2-x1,y2-y1)||1;const ox=-(y2-y1)/L*HW,oy=(x2-x1)/L*HW,ex=(x2-x1)/L*HW,ey=(y2-y1)/L*HW;
+   fd+='M'+f(x1+ox-ex)+','+f(y1+oy-ey)+'L'+f(x2+ox+ex)+','+f(y2+oy+ey)+'L'+f(x2-ox+ex)+','+f(y2-oy+ey)+'L'+f(x1-ox-ex)+','+f(y1-oy-ey)+'Z'}};
+ [LAND.kor,LAND.korHi].forEach(src=>{if(!src)return;const R=P(src).sort((a,b)=>A(b)-A(a));if(R.length<2)return;band(R[0],R[1]);band(R[1],R[0])});
+ if(fd){const lf=$('landfill');if(lf)lf.setAttribute('d',(lf.getAttribute('d')||'')+fd);const cp=$('landclip');if(cp){const p=document.createElementNS('http://www.w3.org/2000/svg','path');p.setAttribute('d',fd);cp.appendChild(p)}
+  const tu=document.querySelector('#terrunder .tund');if(tu)tu.setAttribute('d',($('cpk').getAttribute('d')||'')+(lf?lf.getAttribute('d'):''))}}
