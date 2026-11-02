@@ -1583,3 +1583,18 @@ mark.mhl{background:linear-gradient(transparent 35%,#fde68a 35%);color:inherit;p
 #menupop .mntree .mni{background:none!important;border:0!important;color:var(--ink)!important;font-size:14.5px;padding:8px 10px}
 #menupop .mntree .mni:hover{background:color-mix(in srgb,var(--ink) 6%,transparent)!important;color:var(--seal)!important}
 </style>
+<style>
+#menupop .mni,#menupop .mnq .mni,#menupop .mntree .mni{background:none!important;border:0!important;color:var(--ink)!important;font-size:15px!important;padding:11px 14px!important;border-radius:10px;justify-content:flex-start!important;gap:8px}
+#menupop .mni:hover{background:color-mix(in srgb,var(--ink) 6%,transparent)!important}
+#menupop .mntree{border-left:0!important;margin:0 0 4px 18px!important;padding-left:0!important}
+#menupop .mntree .mni{color:color-mix(in srgb,var(--ink) 55%,transparent)!important;font-size:14.5px!important;padding:8px 14px!important}
+#menupop .mngbtn{color:var(--ink)!important}
+#menupop .mnord{display:inline-flex;gap:2px;flex:none}#menupop .mnord i{font-style:normal;color:#9ca3af;cursor:pointer;padding:2px 5px;border-radius:6px;font-size:13px}#menupop .mnord i:hover{background:color-mix(in srgb,var(--ink) 6%,transparent);color:var(--ink)}
+#menupop .mnx{font-style:normal;color:#9ca3af;cursor:pointer;padding:2px 6px;flex:none}
+#menupop .mni i{display:none}
+</style>
+<style>
+/* 끝까지 끌면 거기서 멈추게: 화면 전체(맨 위 막대 포함)가 같이 끌려 내려가지 않게 */
+html,body{overscroll-behavior:none}
+.read,#kpage,#pbody,.pbody,#menupop,#trpop,#srres,.hzbot,#ovread,#tlread,#dcread,#ppread,#rlread,#kgread,#trread{overscroll-behavior:contain}
+</style>
