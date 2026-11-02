@@ -151,14 +151,14 @@ function openPerson(n,T){const K=kingOfName(n,T);if(K){openKing(K.D.n,K.i);retur
   p.innerHTML=`<div class="kpbar"><button class="ib" data-kx aria-label="뒤로"><svg class="ic" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg></button><span>인물 사전</span></div>
    <div class="kpin" style="--kc:var(--seal)">
     <div class="kph"><h1>${esc(b)}</h1><button class="hrt" type="button" data-kh="p|${esc(b)}" aria-pressed="${on}" aria-label="하트">${HEART_IC}</button></div>
-    <div class="kpsub">${t0!=null?`<span>활동 ${yrTxt(t0)}${t1>t0+.5?' ~ '+yrTxt(t1):''}</span>`:''}${kings.length?`<span>${kings.map(esc).join(' · ')}</span>`:''}</div>
+    <div class="kpsub">${t0!=null?`<span>${yrTxt(t0)}${t1>t0+.5?' ~ '+yrTxt(t1):''}</span>`:''}${kings.length?`<span>${kings.map(esc).join(' · ')}</span>`:''}</div>
     ${PINFO[b]?`<section><h3>어떤 사람</h3><p class="kpd">${glx(PINFO[b])}</p></section>`:''}
     ${evs.length?`<section><h3>관련 사건</h3><ul class="kpl">${evs.map(e=>`<li class="ev"><button data-kpe="${e.id}" style="--tc:var(--t-${e.tp[0]})"><em>${esc(shortYear(e))}</em>${e.treaty?'<i class="tseal">조</i>':''}${esc(e.t)}</button><p>${glx(e.x)}</p></li>`).join('')}</ul></section>`:''}
     ${coL.length?`<section><h3>함께 나오는 인물</h3><div class="kpp">${coL.map(x=>`<button data-person="${esc(x)}" data-pt="${t0}"><i></i>${esc(x)}</button>`).join('')}</div></section>`:''}
     ${same.length?`<section><h3>같은 시기 인물</h3><div class="kpp">${same.map(x=>`<button data-person="${esc(x)}" data-pt="${t0}"><i></i>${esc(x)}</button>`).join('')}</div></section>`:''}
    </div>`;
   p.hidden=false;p.scrollTop=0;p.querySelector('[data-kx]').onclick=()=>{p.hidden=true}}
-document.addEventListener('click',ev=>{const k=ev.target.closest('[data-person]');if(!k)return;ev.preventDefault();ev.stopPropagation();try{if(!$('srch').hidden)closeSearch()}catch(_){}closeTree&&$('trpop')&&!$('trpop').hidden&&closeTree();openPerson(k.dataset.person,k.dataset.pt?+k.dataset.pt:null)},true);
+document.addEventListener('click',ev=>{const k=ev.target.closest('[data-person]');if(!k)return;if(k.classList.contains('gpn')&&document.body.classList.contains('medit'))return;ev.preventDefault();ev.stopPropagation();try{if(!$('srch').hidden)closeSearch()}catch(_){}closeTree&&$('trpop')&&!$('trpop').hidden&&closeTree();openPerson(k.dataset.person,k.dataset.pt?+k.dataset.pt:null)},true);
 
 /* ───────── 인물 탭: 시대마다 같은 시대 인물, 나라별 색 ───────── */
 function personColor(P){const cnt=new Map();P.evs.forEach(e=>{const R=kingRef(e);const c=R?R.D.c:(e.tp.includes('wld')?'wld':(e.era==='colonial'?'ind':null));if(c)cnt.set(c,(cnt.get(c)||0)+1)});let best=null,bn=0;cnt.forEach((v,k)=>{if(v>bn){bn=v;best=k}});
