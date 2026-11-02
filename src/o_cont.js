@@ -1104,7 +1104,11 @@ const RL_KIND=e=>{if(e.kind)return e.kind;const t=e.t;if(e.tp.includes('war')||/
   if(/유적|동굴|패총|암각화|고인돌/.test(t))return '유적';if(/『|대장경|직지|훈민정음|지도|실록/.test(t))return '기록 유산';
   if(/탑|궁|황룡사|부석사|석굴암|불국사|서원|화성|첨성대|왕릉|릉 |천리장성|비 건립|비·|정계비|척화비|순수비|중건/.test(t))return '건축·비석';if(/신종|측우기|금관|토기|동검|청자|백자|활자|불상/.test(t))return '유물';return null};
 const rlName=e=>e.t.replace(/\s*·\s*농경 시작$/,'').replace(/중건 시작$/,'중건').replace(/\s*(건립 시작|건립|완성|제작|축조|편찬|간행|인쇄|완공|창제|발행|반포)$/,'').trim();
-const RL_COL={'유적':'#b45309','건축·비석':'#1d4ed8','유물':'#be185d','기록 유산':'#047857'};let rlKind='';
+const RL_COL={'유적건조물':'#b45309','유물':'#be185d','기록유산':'#047857'};let rlKind='',rlSub='';
+/* 국가유산 유형 분류(대분류 · 중분류)에 맞춘 나눔 */
+const HCLS=e=>{const t=e.t;const R=[[/^『|대장경|직지|훈민정음|대동여지도|한성순보/,'기록유산','전적류'],[/신종/,'유물','불교공예'],[/청자|백자|토기/,'유물','생활공예'],[/측우기|자격루|혼천의/,'유물','과학기술'],[/금관|동검/,'유물','생활공예'],
+  [/비$|비·|비 |정계비|척화비|순수비|릉비/,'유적건조물','인물사건'],[/고인돌|왕릉|무령|고분|무덤/,'유적건조물','무덤'],[/석탑|목탑|불국사|석굴암|황룡사|부석사|종묘/,'유적건조물','종교신앙'],[/궁|화성|산성|장성/,'유적건조물','정치국방'],[/서원|향교|첨성대/,'유적건조물','교육문화'],
+  [/암각화/,'유적건조물','종교신앙'],[/유적|동굴|패총/,'유적건조물','유물산포지·선사 유적']];const n=rlName(e);for(const [r,a,b] of R)if(r.test(n)||r.test(t))return [a,b];const k=RL_KIND(e);return k==='기록 유산'?['기록유산','전적류']:k==='유물'?['유물','기타']:['유적건조물','기타']};
 /* 같은 문화유산은 하나로: 경복궁(창건·소실·중건), 종묘 */
 const RL_MERGE=['경복궁·종묘 건립','경복궁 중건 시작'];
 let RL_CACHE=null;function RLITEMS(){if(RL_CACHE)return RL_CACHE;const byT=t=>EVENTS.find(e=>e.t===t);const L=EVENTS.filter(e=>RL_KIND(e)&&!RL_MERGE.includes(e.t));
@@ -1114,32 +1118,34 @@ let RL_CACHE=null;function RLITEMS(){if(RL_CACHE)return RL_CACHE;const byT=t=>EV
  L.push({id:'x-jm',kind:'건축·비석',t:'종묘',y:1395,T:1395.01,era,yl:'1395',p:'서울',ll:[126.994,37.574],tp:['cul'],cz:[a].filter(Boolean),
   x:'조선 왕과 왕비의 신주를 모신 왕실 사당. 1395년 경복궁과 함께 세웠다. 임진왜란 때 불탔다가 광해군 때 다시 지었다. 종묘 제례와 종묘 제례악이 지금까지 이어진다.'});
  RL_CACHE=L.sort((x,y)=>x.T-y.T);return RL_CACHE}
-function rlShow(){const L=RLITEMS();const kinds=Object.keys(RL_COL);
- $('rlchips').innerHTML=['',...kinds].map(k=>`<button type="button" data-rk="${k}" aria-pressed="${rlKind===k}" style="--kc:${RL_COL[k]||'var(--ink)'}">${k||'전체'} ${L.filter(e=>!k||RL_KIND(e)===k).length}</button>`).join('');
- const by=ERAS.map(E=>({E,xs:L.filter(e=>e.era===E.k&&(!rlKind||RL_KIND(e)===rlKind))})).filter(x=>x.xs.length);
+function rlShow(){const L=RLITEMS();const BIG=Object.keys(RL_COL);
+ const subs=rlKind?[...new Set(L.filter(e=>HCLS(e)[0]===rlKind).map(e=>HCLS(e)[1]))]:[];
+ $('rlchips').innerHTML=['',...BIG].map(k=>`<button type="button" data-rk="${k}" aria-pressed="${rlKind===k}" style="--kc:${RL_COL[k]||'var(--ink)'}">${k||'전체'} ${L.filter(e=>!k||HCLS(e)[0]===k).length}</button>`).join('')+(subs.length?`<span class="rlsubs">${['',...subs].map(x=>`<button type="button" data-rs="${x}" aria-pressed="${rlSub===x}" style="--kc:${RL_COL[rlKind]}">${x||'모두'}</button>`).join('')}</span>`:'');
+ const ok=e=>{const [a,b]=HCLS(e);return (!rlKind||a===rlKind)&&(!rlSub||b===rlSub)};
+ const by=ERAS.map(E=>({E,xs:L.filter(e=>e.era===E.k&&ok(e))})).filter(x=>x.xs.length);
  $('rljump').innerHTML=by.map(({E})=>`<button type="button" data-rj="${E.k}">${E.n}</button>`).join('');
- $('rlbody').innerHTML=by.map(({E,xs})=>`<section class="rlera" id="rl-${E.k}"><h3>${esc(E.n)}<span>${esc(E.rg||'')}</span></h3><div class="rlgrid">${xs.map(e=>{const k=RL_KIND(e);return `<button type="button" class="rlcard" data-rle="${e.id}" style="--kc:${RL_COL[k]}"><span class="rk">${k}</span><b>${esc(rlName(e))}</b><span class="rd">${esc(((e.x||'').split(/(?<=[.다])\s/)[0]||'').replace(/\(.*?\)/g,''))}</span><span class="rm">${esc(e.yl||shortYear(e))}${e.p?' · '+esc(e.p):''}</span></button>`}).join('')}</div></section>`).join('')}
-document.addEventListener('click',ev=>{const k=ev.target.closest('[data-rk]');if(k){rlKind=k.dataset.rk;rlShow();return}
+ $('rlbody').innerHTML=by.map(({E,xs})=>`<section class="rlera" id="rl-${E.k}"><h3>${esc(E.n)}<span>${esc(E.rg||'')}</span></h3><div class="rlgrid">${xs.map(e=>{const [a,b]=HCLS(e);return `<button type="button" class="rlcard" data-rle="${e.id}" style="--kc:${RL_COL[a]}"><span class="rk">${a} · ${b}</span><b>${esc(rlName(e))}</b><span class="rd">${esc(((e.x||'').split(/(?<=[.다])\s/)[0]||'').replace(/\(.*?\)/g,''))}</span><span class="rm">${esc(e.yl||shortYear(e))}${e.p?' · '+esc(e.p):''}</span></button>`}).join('')}</div></section>`).join('')}
+document.addEventListener('click',ev=>{const k=ev.target.closest('[data-rk]');if(k){rlKind=k.dataset.rk;rlSub='';rlShow();return}const rs=ev.target.closest('[data-rs]');if(rs){rlSub=rs.dataset.rs;rlShow();return}
  const j=ev.target.closest('[data-rj]');if(j){const s=document.getElementById('rl-'+j.dataset.rj),rd=$('rlread');if(s)rd.scrollTo({top:s.offsetTop-rd.querySelector('.rhead').offsetHeight-6,behavior:'smooth'});return}
  const c=ev.target.closest('[data-rle]');if(!c)return;const e=RLITEMS().find(x=>String(x.id)===c.dataset.rle);if(!e)return;rlOpen(e);return;const p=$('trpop');
  p.innerHTML=`<button class="ib trx" type="button" aria-label="닫기"><svg class="ic" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button><div class="evd">${evDetailHTML(e)}<div class="nav">${e.ll?`<button class="btn" data-km>지도에서 보기</button>`:''}<button class="btn" data-kt>연표에서 보기</button></div></div>`;
  p.hidden=false;$('trdim').hidden=false;p.scrollTop=0;p.querySelector('.trx').onclick=closeTree;const m=p.querySelector('[data-km]');if(m)m.onclick=()=>{closeTree();gotoMap(e)};p.querySelector('[data-kt]').onclick=()=>{closeTree();gotoTimeline(e)}});
 /* 유적·유물 자세히: 사전처럼 한 화면 */
 Object.assign(SEC_COL,{'설명':'#b45309','배경 이야기':'#7c3aed','자세히':'#0e7490','뜻':'#b91c1c','앞뒤 사건':'#1d4ed8','관련 인물':'#047857','같은 시대 문화유산':'#be185d'});
-function rlOpen(e){const p=$('kpage');const L=RLITEMS();const i=L.findIndex(x=>x.id===e.id);const k=RL_KIND(e);
+function rlOpen(e){const p=$('kpage');const L=RLITEMS();const i=L.findIndex(x=>x.id===e.id);const HC=HCLS(e),k=HC[0];
  const story=typeof STORY!=='undefined'?STORY[e.t]:null;const deep=typeof DEEP!=='undefined'?(DEEP[e.s]||DEEP[e.t]):null;const def=GLOSS[e.s]||GLOSS[e.t];
  const pps=(e.pp||'').split(/,\s*/).map(x=>x.trim()).filter(Boolean);const lk=[...(e.cz||[]),...(e.fx||[])];const near=L.filter(x=>x.era===e.era&&x.id!==e.id).slice(0,10);
  p.innerHTML=`<div class="kpbar"><button class="ib" data-kx aria-label="뒤로"><svg class="ic" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg></button><span>문화유산</span><span class="kpnav rlnav"><button type="button" class="ib" data-rlv="-1" aria-label="이전"${i>0?'':' disabled'}><svg class="ic" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg></button><button type="button" class="ib" data-rlv="1" aria-label="다음"${i<L.length-1?'':' disabled'}><svg class="ic" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button></span></div>
  <div class="kpin" style="--kc:${RL_COL[k]}">
   <div class="kph"><h1>${esc(rlName(e))}</h1><button class="hrt" type="button" data-kh="r|${esc(e.t)}" aria-pressed="${KHEARTS.has('r|'+e.t)}" aria-label="하트">${HEART_IC}</button></div>
-  <div class="kpsub"><span style="color:${RL_COL[k]};font-weight:700">${k}</span><span>${esc(e.yl||shortYear(e))}${e.kind?'':' '+esc(e.t)}</span>${e.p?`<span>${esc(e.p)}</span>`:''}</div>
+  <div class="kpsub"><span style="color:${RL_COL[k]};font-weight:700">${HC[0]} · ${HC[1]}</span><span>${esc(e.yl||shortYear(e))}${e.kind?'':' '+esc(e.t)}</span>${e.p?`<span>${esc(e.p)}</span>`:''}</div>
   <section><h3>설명</h3><p class="kpd">${glx(e.x||'')}</p></section>
   ${def?`<section><h3>뜻</h3><p class="kpd">${glx(def)}</p></section>`:''}
   ${deep?`<section><h3>자세히</h3><div class="tmrows">${deep.map(([a,t])=>`<div class="gdr" data-l="${esc(a)}"><i>${esc(a)}</i><span>${glx(t)}</span></div>`).join('')}</div></section>`:''}
   ${story?`<section><h3>배경 이야기</h3><p class="kpd">${glx(story)}</p></section>`:''}
   ${pps.length?`<section><h3>관련 인물</h3><div class="kpp">${pps.map(x=>`<button class="pchip" data-person="${esc(x)}" data-pt="${e.T}"><i>${esc([...x][0]||'')}</i>${esc(x)}</button>`).join('')}</div></section>`:''}
   ${lk.length?`<section><h3>앞뒤 사건</h3><ul class="kpl">${lk.map(x=>`<li class="ev"><button data-kpe="${x.id}" style="--tc:var(--t-${x.tp[0]})"><em>${esc(shortYear(x))}</em>${esc(x.t)}</button></li>`).join('')}</ul></section>`:''}
-  ${near.length?`<section><h3>같은 시대 문화유산</h3><div class="kpp">${near.map(x=>`<button type="button" data-rle="${x.id}" style="--kc:${RL_COL[RL_KIND(x)]}"><i></i>${esc(rlName(x))}</button>`).join('')}</div></section>`:''}
+  ${near.length?`<section><h3>같은 시대 문화유산</h3><div class="kpp">${near.map(x=>`<button type="button" data-rle="${x.id}" style="--kc:${RL_COL[HCLS(x)[0]]}"><i></i>${esc(rlName(x))}</button>`).join('')}</div></section>`:''}
   <div class="rlgo">${e.ll?'<button class="btn" data-rlmap>지도에서 보기</button>':''}<button class="btn" data-rltl>연표에서 보기</button></div>
  </div>`;
  p.hidden=false;p.scrollTop=0;p.querySelector('[data-kx]').onclick=()=>{p.hidden=true};
