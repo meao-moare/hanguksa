@@ -886,14 +886,14 @@ document.addEventListener('click',e=>{const c=e.target.closest&&e.target.closest
  w.after(g);const sync=()=>p.setAttribute('d',wl.getAttribute('d')||'');sync();new MutationObserver(sync).observe(wl,{attributes:true,attributeFilter:['d']});
  const st=document.createElement('style');st.textContent='.wland{stroke-width:2.2!important}.wland2{fill:var(--land);stroke:var(--land);stroke-width:.4;vector-effect:non-scaling-stroke}';document.head.appendChild(st)}}
 /* ───────── 나만의 편집: 글씨 고치기(자동 저장)·별표·형광펜·태그 — 주인만 쓰고, 다른 사람은 보기만 ───────── */
-{const ME={xg:new Map(),x:new Map(),xc:new Map(),s:new Set(),h:new Map(),g:new Map(),w:new Map(),l:new Map(),c:new Map(),v:new Map()};let canW=false,DB=null,editOn=false;window.__ME=ME;
+{const ME={xg:new Map(),x:new Map(),xc:new Map(),s:new Set(),h:new Map(),g:new Map(),w:new Map(),q:new Map(),l:new Map(),c:new Map(),v:new Map()};let canW=false,DB=null,editOn=false;window.__ME=ME;
  const E=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
  const hid=k=>[...new TextEncoder().encode(k)].map(b=>b.toString(16).padStart(2,'0')).join('').slice(0,190);
  const SEL='h1,h2,h3,h4,p,li,dd,dt,td,th,.kpd,.snv,.sri b,.sri span,.ppnames button,.kpp button,.gdr span,.evd b,.evd span,.evd div';
  const SKIP='svg,#map,.tbar,header,.topbar,#srq,textarea,input,.mtool,.snote,.mtags,#medit';
  /* 받은 자료 넣기 */
- const load=docs=>{const wOld=JSON.stringify([...ME.w]);ME.x.clear();ME.xg.clear();ME.xc.clear();ME.s.clear();ME.h.clear();ME.g.clear();ME.w.clear();ME.l.clear();ME.c.clear();ME.v.clear();docs.forEach(d=>{if(!d||!d.k)return;const t=d.k[0],key=d.k.slice(2);
-   if(t==='x'&&d.v!=null){ME.x.set(key,String(d.v));if(d.c)ME.xc.set(key,d.c);const j=key.indexOf('\u0001');ME.xg.set(j>=0?key.slice(j+1):key,String(d.v))}else if(t==='s'&&d.v)ME.s.add(key);else if(t==='h'&&Array.isArray(d.v)&&d.v.length)ME.h.set(key,d.v.map(String));else if(t==='g'&&Array.isArray(d.v)&&d.v.length)ME.g.set(key,d.v.map(String));else if(t==='w'&&d.v)ME.w.set(key,String(d.v));else if(t==='l'&&Array.isArray(d.v)&&d.v.length)ME.l.set(key,d.v.map(String));else if(t==='c'&&Array.isArray(d.v)&&d.v.length)ME.c.set(key,d.v.filter(x=>x&&x.v));else if(t==='v'&&d.v&&d.v.t)ME.v.set(key,d.v)});syncEvents();if(JSON.stringify([...ME.w])!==wOld)applyWords();applyAll()};
+ const load=docs=>{const wOld=JSON.stringify([...ME.w]);ME.x.clear();ME.xg.clear();ME.xc.clear();ME.s.clear();ME.h.clear();ME.g.clear();ME.w.clear();ME.q.clear();ME.l.clear();ME.c.clear();ME.v.clear();docs.forEach(d=>{if(!d||!d.k)return;const t=d.k[0],key=d.k.slice(2);
+   if(t==='x'&&d.v!=null){ME.x.set(key,String(d.v));if(d.c)ME.xc.set(key,d.c);const j=key.indexOf('\u0001');ME.xg.set(j>=0?key.slice(j+1):key,String(d.v))}else if(t==='s'&&d.v)ME.s.add(key);else if(t==='h'&&Array.isArray(d.v)&&d.v.length)ME.h.set(key,d.v.map(String));else if(t==='g'&&Array.isArray(d.v)&&d.v.length)ME.g.set(key,d.v.map(String));else if(t==='w'&&d.v)ME.w.set(key,String(d.v));else if(t==='q'&&d.v&&d.v.u)ME.q.set(key,d.v);else if(t==='l'&&Array.isArray(d.v)&&d.v.length)ME.l.set(key,d.v.map(String));else if(t==='c'&&Array.isArray(d.v)&&d.v.length)ME.c.set(key,d.v.filter(x=>x&&x.v));else if(t==='v'&&d.v&&d.v.t)ME.v.set(key,d.v)});syncEvents();if(JSON.stringify([...ME.w])!==wOld)applyWords();applyAll()};
  const save=(k,v,extra)=>{if(!DB)return;const r=DB.collection('mine').doc(hid(k));const empty=v==null||v===''||(Array.isArray(v)&&!v.length)||v===0;(empty?r.delete():r.set(Object.assign({k,v,at:Date.now()},extra||{}))).then(()=>toast('저장됨')).catch(()=>toast('저장 못 함'))};
  const toast=t=>{let b=$('mtoast');if(!b){b=document.createElement('div');b.id='mtoast';document.body.appendChild(b)}b.textContent=t;b.classList.add('on');clearTimeout(b.t);b.t=setTimeout(()=>b.classList.remove('on'),900)};
  /* 글씨 바꾸기 적용 */
@@ -1002,6 +1002,20 @@ document.addEventListener('click',e=>{const c=e.target.closest&&e.target.closest
    <div class="tglist">${items.map(it=>{const ev=it.startsWith('e:')?EVENTS.find(x=>String(x.id)===it.slice(2)):null;return `<button type="button" data-go="${E(it)}" class="mlink"><b>${E(nameOf(it))}</b><span>${ev?E(shortYear(ev))+' 사건':(typeof PEOPLE!=='undefined'&&PEOPLE.has(it.slice(2))?'인물':'낱말')}</span></button>`}).join('')||'<p class="kpd">아직 이 태그가 붙은 것이 없어요.</p>'}</div></div>`;
    p.hidden=false;p.scrollTop=0;p.querySelector('[data-kx]').onclick=()=>{p.hidden=true}};
  document.addEventListener('click',e=>{const t=e.target.closest&&e.target.closest('[data-tagq]');if(!t||e.target.closest('[data-rm]'))return;e.preventDefault();e.stopPropagation();try{closeTree()}catch(_){}tagPage(t.dataset.tagq)},true);
+ /* ☰ 메뉴: 화면 바로 가기 + 내가 넣는 바로가기 */
+ {const sb=$('setbtn');if(sb&&!$('menubtn')){const b=document.createElement('button');b.id='menubtn';b.type='button';b.className='tib';b.setAttribute('aria-label','메뉴');b.innerHTML='<svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg>';sb.after(b);
+   const m=document.createElement('div');m.id='menupop';m.hidden=true;document.body.appendChild(m);
+   const VS=[['map','지도'],['tl','연표'],['ov','연대표'],['tr','구조도'],['kg','왕계표'],['pp','인물'],['dc','사전'],['rl','유물']];
+   const render=()=>{const Q=[...ME.q.entries()].sort((a,b)=>(a[1].at||0)-(b[1].at||0));
+     m.innerHTML=`<div class="mnh">화면</div><div class="mnv">${VS.map(([v,n])=>`<button type="button" data-mv="${v}">${n}</button>`).join('')}</div>
+     <div class="mnh">바로가기</div><div class="mnq">${Q.map(([k,q])=>`<a href="${E(q.u)}" target="_blank" rel="noopener">${E(q.n||q.u)}${canW?`<i data-qdel="${E(k)}">×</i>`:''}</a>`).join('')||'<span class="mnempty">아직 없어요</span>'}</div>
+     ${canW?'<div class="mnadd"><input id="mqn" placeholder="이름"><input id="mqu" placeholder="주소 (https://…)"><button type="button" data-qadd>추가</button></div>':''}`};
+   b.onclick=e=>{e.stopPropagation();if(!m.hidden){m.hidden=true;return}render();const r=b.getBoundingClientRect();m.style.top=(r.bottom+6)+'px';m.style.right=Math.max(8,innerWidth-r.right)+'px';m.hidden=false};
+   document.addEventListener('click',e=>{if(!m.hidden&&e.target.isConnected&&!e.target.closest('#menupop,#menubtn'))m.hidden=true});
+   m.addEventListener('keydown',e=>{e.stopPropagation();if(e.key==='Enter'&&!e.isComposing&&e.target.closest('.mnadd'))m.querySelector('[data-qadd]').click()},true);
+   m.addEventListener('click',e=>{const v=e.target.closest('[data-mv]');if(v){m.hidden=true;$('kpage').hidden=true;showView(v.dataset.mv);return}
+     const d=e.target.closest('[data-qdel]');if(d){e.preventDefault();e.stopPropagation();const k=d.dataset.qdel;ME.q.delete(k);save('q:'+k,'');render();return}
+     if(e.target.closest('[data-qadd]')){const n=m.querySelector('#mqn').value.trim();let u=m.querySelector('#mqu').value.trim();if(!u){m.querySelector('#mqu').focus();return}if(!/^https?:\/\//.test(u))u='https://'+u;const id=Date.now().toString(36);const v={n:n||u,u,at:Date.now()};ME.q.set(id,v);save('q:'+id,v);render()}})}}
  /* 검색: 내가 고친 글씨·태그·별표도 찾기 */
  const openItem=it=>{try{if(!$('srch').hidden)closeSearch()}catch(_){}if(it.startsWith('e:')){const e=EVENTS.find(x=>String(x.id)===it.slice(2));if(!e)return;const p=$('trpop');p.innerHTML=`<button class="ib trx" type="button" aria-label="닫기"><svg class="ic" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button><div class="evd">${evDetailHTML(e)}<div class="nav">${e.ll?`<button class="btn" data-km>지도에서 보기</button>`:''}<button class="btn" data-kt>연표에서 보기</button></div></div>`;p.hidden=false;$('trdim').hidden=false;p.scrollTop=0;p.querySelector('.trx').onclick=closeTree;const m=p.querySelector('[data-km]');if(m)m.onclick=()=>{closeTree();$('kpage').hidden=true;gotoMap(e)};p.querySelector('[data-kt]').onclick=()=>{closeTree();$('kpage').hidden=true;gotoTimeline(e)};return}if(it.startsWith('k:')){const n=it.slice(2);if(GLOSS[n])openTerm(n);else if(typeof PEOPLE!=='undefined'&&PEOPLE.has(n))openPerson(n);else openTerm(n)}};
  const nameOf=it=>{if(it.startsWith('e:')){const e=EVENTS.find(x=>String(x.id)===it.slice(2));return e?e.t:it.slice(2)}return it.slice(2)};
@@ -1067,30 +1081,39 @@ arrOf.forEach(ps=>ps.forEach(p=>{if(p.c==='donghak'){p.g.classList.add('thin');p
   const sv=showView;showView=function(v){const r=sv.apply(this,arguments);try{store.set('view',v)}catch(_){}tl.setAttribute('aria-selected',['tl','ov'].includes(v));tl.textContent=(v==='ov'?'연대표':'연표')+' ▾';if(v==='rl')try{rlShow()}catch(_){}return r};
   if(store.get('view','map')==='rl')setTimeout(()=>{showView('rl')},0)}}
 /* 유적·유물 모아 보기 */
-const RL_KIND=e=>{const t=e.t;if(e.tp.includes('war')||/건국|병합|천도|전투|탕평|박해|수신사|전등/.test(t))return null;
+const RL_KIND=e=>{if(e.kind)return e.kind;const t=e.t;if(e.tp.includes('war')||/건국|병합|천도|전투|탕평|박해|수신사|전등/.test(t))return null;
   if(/유적|동굴|패총|암각화|고인돌/.test(t))return '유적';if(/『|대장경|직지|훈민정음|지도|실록/.test(t))return '기록 유산';
   if(/탑|궁|황룡사|부석사|석굴암|불국사|서원|화성|첨성대|왕릉|릉 |천리장성|비 건립|비·|정계비|척화비|순수비|중건/.test(t))return '건축·비석';if(/신종|측우기|금관|토기|동검|청자|백자|활자|불상/.test(t))return '유물';return null};
 const rlName=e=>e.t.replace(/\s*·\s*농경 시작$/,'').replace(/중건 시작$/,'중건').replace(/\s*(건립 시작|건립|완성|제작|축조|편찬|간행|인쇄|완공|창제|발행|반포)$/,'').trim();
 const RL_COL={'유적':'#b45309','건축·비석':'#1d4ed8','유물':'#be185d','기록 유산':'#047857'};let rlKind='';
-function rlShow(){const L=EVENTS.filter(e=>RL_KIND(e)).sort((a,b)=>a.T-b.T);const kinds=Object.keys(RL_COL);
+/* 같은 문화유산은 하나로: 경복궁(창건·소실·중건), 종묘 */
+const RL_MERGE=['경복궁·종묘 건립','경복궁 중건 시작'];
+let RL_CACHE=null;function RLITEMS(){if(RL_CACHE)return RL_CACHE;const byT=t=>EVENTS.find(e=>e.t===t);const L=EVENTS.filter(e=>RL_KIND(e)&&!RL_MERGE.includes(e.t));
+ const a=byT('경복궁·종묘 건립'),b=byT('경복궁 중건 시작');const era=(a&&a.era)||'joseon1';
+ L.push({id:'x-gbg',kind:'건축·비석',t:'경복궁',y:1395,T:1395,era,yl:'1395 창건 · 1867 중건',p:'서울',ll:[126.977,37.579],tp:['cul'],cz:[a,b].filter(Boolean),
+  x:'조선의 법궁(으뜸 궁궐). 1395년 한양 천도와 함께 태조 때 세웠다. 임진왜란(1592) 때 불타 270여 년 동안 빈터로 남았다. 흥선 대원군이 왕실의 권위를 다시 세우려고 1865년부터 다시 지어 1867년에 완공하였다(중건). 이때 원납전을 걷고 당백전을 발행하여 백성의 부담이 커졌다. 일제 강점기에는 많은 건물이 헐리고 조선 총독부 청사가 세워졌다.'});
+ L.push({id:'x-jm',kind:'건축·비석',t:'종묘',y:1395,T:1395.01,era,yl:'1395',p:'서울',ll:[126.994,37.574],tp:['cul'],cz:[a].filter(Boolean),
+  x:'조선 왕과 왕비의 신주를 모신 왕실 사당. 1395년 경복궁과 함께 세웠다. 임진왜란 때 불탔다가 광해군 때 다시 지었다. 종묘 제례와 종묘 제례악이 지금까지 이어진다.'});
+ RL_CACHE=L.sort((x,y)=>x.T-y.T);return RL_CACHE}
+function rlShow(){const L=RLITEMS();const kinds=Object.keys(RL_COL);
  $('rlchips').innerHTML=['',...kinds].map(k=>`<button type="button" data-rk="${k}" aria-pressed="${rlKind===k}" style="--kc:${RL_COL[k]||'var(--ink)'}">${k||'전체'} ${L.filter(e=>!k||RL_KIND(e)===k).length}</button>`).join('');
  const by=ERAS.map(E=>({E,xs:L.filter(e=>e.era===E.k&&(!rlKind||RL_KIND(e)===rlKind))})).filter(x=>x.xs.length);
  $('rljump').innerHTML=by.map(({E})=>`<button type="button" data-rj="${E.k}">${E.n}</button>`).join('');
  $('rlbody').innerHTML=by.map(({E,xs})=>`<section class="rlera" id="rl-${E.k}"><h3>${esc(E.n)}<span>${esc(E.rg||'')}</span></h3><div class="rlgrid">${xs.map(e=>{const k=RL_KIND(e);return `<button type="button" class="rlcard" data-rle="${e.id}" style="--kc:${RL_COL[k]}"><span class="rk">${k}</span><b>${esc(rlName(e))}</b><span class="rd">${esc(((e.x||'').split(/(?<=[.다])\s/)[0]||'').replace(/\(.*?\)/g,''))}</span><span class="rm">${esc(e.yl||shortYear(e))}${e.p?' · '+esc(e.p):''}</span></button>`}).join('')}</div></section>`).join('')}
 document.addEventListener('click',ev=>{const k=ev.target.closest('[data-rk]');if(k){rlKind=k.dataset.rk;rlShow();return}
  const j=ev.target.closest('[data-rj]');if(j){const s=document.getElementById('rl-'+j.dataset.rj),rd=$('rlread');if(s)rd.scrollTo({top:s.offsetTop-rd.querySelector('.rhead').offsetHeight-6,behavior:'smooth'});return}
- const c=ev.target.closest('[data-rle]');if(!c)return;const e=EVENTS.find(x=>x.id===+c.dataset.rle);if(!e)return;rlOpen(e);return;const p=$('trpop');
+ const c=ev.target.closest('[data-rle]');if(!c)return;const e=RLITEMS().find(x=>String(x.id)===c.dataset.rle);if(!e)return;rlOpen(e);return;const p=$('trpop');
  p.innerHTML=`<button class="ib trx" type="button" aria-label="닫기"><svg class="ic" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button><div class="evd">${evDetailHTML(e)}<div class="nav">${e.ll?`<button class="btn" data-km>지도에서 보기</button>`:''}<button class="btn" data-kt>연표에서 보기</button></div></div>`;
  p.hidden=false;$('trdim').hidden=false;p.scrollTop=0;p.querySelector('.trx').onclick=closeTree;const m=p.querySelector('[data-km]');if(m)m.onclick=()=>{closeTree();gotoMap(e)};p.querySelector('[data-kt]').onclick=()=>{closeTree();gotoTimeline(e)}});
 /* 유적·유물 자세히: 사전처럼 한 화면 */
 Object.assign(SEC_COL,{'설명':'#b45309','배경 이야기':'#7c3aed','자세히':'#0e7490','뜻':'#b91c1c','앞뒤 사건':'#1d4ed8','관련 인물':'#047857','같은 시대 유적·유물':'#be185d'});
-function rlOpen(e){const p=$('kpage');const L=EVENTS.filter(x=>RL_KIND(x)).sort((a,b)=>a.T-b.T);const i=L.findIndex(x=>x.id===e.id);const k=RL_KIND(e);
+function rlOpen(e){const p=$('kpage');const L=RLITEMS();const i=L.findIndex(x=>x.id===e.id);const k=RL_KIND(e);
  const story=typeof STORY!=='undefined'?STORY[e.t]:null;const deep=typeof DEEP!=='undefined'?(DEEP[e.s]||DEEP[e.t]):null;const def=GLOSS[e.s]||GLOSS[e.t];
  const pps=(e.pp||'').split(/,\s*/).map(x=>x.trim()).filter(Boolean);const lk=[...(e.cz||[]),...(e.fx||[])];const near=L.filter(x=>x.era===e.era&&x.id!==e.id).slice(0,10);
  p.innerHTML=`<div class="kpbar"><button class="ib" data-kx aria-label="뒤로"><svg class="ic" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg></button><span>유적·유물</span><span class="kpnav rlnav"><button type="button" class="ib" data-rlv="-1" aria-label="이전"${i>0?'':' disabled'}><svg class="ic" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg></button><button type="button" class="ib" data-rlv="1" aria-label="다음"${i<L.length-1?'':' disabled'}><svg class="ic" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button></span></div>
  <div class="kpin" style="--kc:${RL_COL[k]}">
   <div class="kph"><h1>${esc(rlName(e))}</h1><button class="hrt" type="button" data-kh="r|${esc(e.t)}" aria-pressed="${KHEARTS.has('r|'+e.t)}" aria-label="하트">${HEART_IC}</button></div>
-  <div class="kpsub"><span style="color:${RL_COL[k]};font-weight:700">${k}</span><span>${esc(e.yl||shortYear(e))} ${esc(e.t)}</span>${e.p?`<span>${esc(e.p)}</span>`:''}</div>
+  <div class="kpsub"><span style="color:${RL_COL[k]};font-weight:700">${k}</span><span>${esc(e.yl||shortYear(e))}${e.kind?'':' '+esc(e.t)}</span>${e.p?`<span>${esc(e.p)}</span>`:''}</div>
   <section><h3>설명</h3><p class="kpd">${glx(e.x||'')}</p></section>
   ${def?`<section><h3>뜻</h3><p class="kpd">${glx(def)}</p></section>`:''}
   ${deep?`<section><h3>자세히</h3><div class="tmrows">${deep.map(([a,t])=>`<div class="gdr" data-l="${esc(a)}"><i>${esc(a)}</i><span>${glx(t)}</span></div>`).join('')}</div></section>`:''}
@@ -1102,5 +1125,5 @@ function rlOpen(e){const p=$('kpage');const L=EVENTS.filter(x=>RL_KIND(x)).sort(
  </div>`;
  p.hidden=false;p.scrollTop=0;p.querySelector('[data-kx]').onclick=()=>{p.hidden=true};
  p.querySelectorAll('[data-rlv]').forEach(b=>b.onclick=ev=>{ev.stopPropagation();const n=L[i+(+b.dataset.rlv)];if(n)rlOpen(n)});
- const m=p.querySelector('[data-rlmap]');if(m)m.onclick=()=>{p.hidden=true;gotoMap(e)};p.querySelector('[data-rltl]').onclick=()=>{p.hidden=true;gotoTimeline(e)};
+ const real=e.kind?((e.cz||[]).find(x=>x&&x.ll)||(e.cz||[])[0]):e;const m=p.querySelector('[data-rlmap]');if(m)m.onclick=()=>{if(!real)return;p.hidden=true;gotoMap(real)};p.querySelector('[data-rltl]').onclick=()=>{if(!real)return;p.hidden=true;gotoTimeline(real)};
  try{paintSections(p)}catch(_){}}
