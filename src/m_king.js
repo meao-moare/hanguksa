@@ -158,7 +158,7 @@ function openPerson(n,T){const K=kingOfName(n,T);if(K){openKing(K.D.n,K.i);retur
     ${same.length?`<section><h3>같은 시기 인물</h3><div class="kpp">${same.map(x=>`<button data-person="${esc(x)}" data-pt="${t0}"><i></i>${esc(x)}</button>`).join('')}</div></section>`:''}
    </div>`;
   p.hidden=false;p.scrollTop=0;p.querySelector('[data-kx]').onclick=()=>{p.hidden=true}}
-document.addEventListener('click',ev=>{const k=ev.target.closest('[data-person]');if(!k)return;if(k.classList.contains('gpn')&&document.body.classList.contains('medit'))return;ev.preventDefault();ev.stopPropagation();try{if(!$('srch').hidden)closeSearch()}catch(_){}closeTree&&$('trpop')&&!$('trpop').hidden&&closeTree();openPerson(k.dataset.person,k.dataset.pt?+k.dataset.pt:null)},true);
+document.addEventListener('click',ev=>{const k=ev.target.closest('[data-person]');if(!k)return;if(k.classList.contains('gpn')&&document.body.classList.contains('medit')){if(window.__dcEdit)return;ev.preventDefault();ev.stopPropagation();clearTimeout(window.__dcT);const nm=k.dataset.person,pt=k.dataset.pt?+k.dataset.pt:null;window.__dcT=setTimeout(()=>openPerson(nm,pt),280);return}ev.preventDefault();ev.stopPropagation();try{if(!$('srch').hidden)closeSearch()}catch(_){}closeTree&&$('trpop')&&!$('trpop').hidden&&closeTree();openPerson(k.dataset.person,k.dataset.pt?+k.dataset.pt:null)},true);
 
 /* ───────── 인물 탭: 시대마다 같은 시대 인물, 나라별 색 ───────── */
 function personColor(P){const cnt=new Map();P.evs.forEach(e=>{const R=kingRef(e);const c=R?R.D.c:(e.tp.includes('wld')?'wld':(e.era==='colonial'?'ind':null));if(c)cnt.set(c,(cnt.get(c)||0)+1)});let best=null,bn=0;cnt.forEach((v,k)=>{if(v>bn){bn=v;best=k}});
