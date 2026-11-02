@@ -1290,4 +1290,4 @@ function rlOpen(e){const p=$('kpage');const L=RLITEMS();const i=L.findIndex(x=>x
    h.querySelector('h1').insertAdjacentHTML('afterend',`${y?`<span class="kpy">${y}</span>`:''}${nat?`<i class="kpnat">${E2(nat)}</i>`:''}`)}catch(_){}return r};
  function E2(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}}
 
-{const pn=personNation;personNation=function(P){return (P&&PNAT[P.n])||pn.apply(this,arguments)}}
+{NAT_COL['일제강점기']='color-mix(in srgb,var(--t-ind) 85%,var(--ink))';const pn=personNation;personNation=function(P){if(P&&PNAT[P.n])return PNAT[P.n];const n=pn.apply(this,arguments);if(P&&P.evs&&P.evs.length&&['한국','대한민국','대한제국','조선',''].includes(n)){const c=P.evs.filter(e=>e.era==='colonial').length;if(c*2>=P.evs.length&&c>0)return '일제강점기'}return n}}
