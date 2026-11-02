@@ -868,15 +868,7 @@ document.addEventListener('click',e=>{const c=e.target.closest&&e.target.closest
    한국 땅과 바깥 땅 사이 틈(압록강·두만강)은 메움 조각으로 채움 */
 {const NS='http://www.w3.org/2000/svg',mk=(t,a,p)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);p&&p.appendChild(e);return e};
  const P=d=>(d||'').split(/(?=M)/).map(s=>s.replace(/[MZ]/g,' ').trim().split(/[ L]+/).filter(Boolean).map(t=>t.split(',').map(Number)));
- const TH=8,HW=1.6;let fd='';
- const grid=pts=>{const g=new Map();pts.forEach(p=>{const k=Math.floor(p[0]/TH)+','+Math.floor(p[1]/TH);(g.get(k)||g.set(k,[]).get(k)).push(p)});return g};
- const nearIn=(g,[x,y])=>{const gx=Math.floor(x/TH),gy=Math.floor(y/TH);for(let i=-1;i<=1;i++)for(let j=-1;j<=1;j++){const a=g.get((gx+i)+','+(gy+j));if(a)for(const q of a)if((q[0]-x)**2+(q[1]-y)**2<TH*TH)return true}return false};
- const f=v=>v.toFixed(1);
- const nearP=(g,[x,y])=>{const gx=Math.floor(x/TH),gy=Math.floor(y/TH);let b=null,m=TH*TH;for(let i=-1;i<=1;i++)for(let j=-1;j<=1;j++){const a=g.get((gx+i)+','+(gy+j));if(a)for(const q of a){const d=(q[0]-x)**2+(q[1]-y)**2;if(d<m){m=d;b=q}}}return b};
- const band=(r,g)=>{const n=r.map(p=>nearIn(g,p));const np=r.map(p=>nearP(g,p));for(let i=0;i<r.length;i++){const j=(i+1)%r.length;if(np[i]&&np[j])fd+='M'+[r[i],r[j],np[j],np[i]].map(p=>f(p[0])+','+f(p[1])).join('L')+'Z'+'M'+[r[i],np[i],np[j],r[j]].map(p=>f(p[0])+','+f(p[1])).join('L')+'Z'}for(let i=0;i<r.length;i++){const j=(i+1)%r.length;if(!(n[i]&&n[j]))continue;const [x1,y1]=r[i],[x2,y2]=r[j];let dx=x2-x1,dy=y2-y1;const L=Math.hypot(dx,dy)||1;const ox=-dy/L*HW,oy=dx/L*HW,ex=dx/L*HW,ey=dy/L*HW;
-   fd+='M'+f(x1+ox-ex)+','+f(y1+oy-ey)+'L'+f(x2+ox+ex)+','+f(y2+oy+ey)+'L'+f(x2-ox+ex)+','+f(y2-oy+ey)+'L'+f(x1-ox-ex)+','+f(y1-oy-ey)+'Z'}};
- const CR=P(LAND.ctx),gc=grid(CR.flat());
- [LAND.kor,LAND.korHi].forEach(src=>{if(!src)return;const KR=P(src);KR.forEach(r=>band(r,gc));const gk=grid(KR.flat());CR.forEach(r=>band(r,gk))});
+ let fd=LAND.seamFill||'';
  window.__fill=fd;
  /* 땅 색으로도 틈 메우기 */
  const lk=$('landk');if(lk&&fd)lk.after(mk('path',{class:'land',id:'landfill',d:fd}));
@@ -894,18 +886,19 @@ document.addEventListener('click',e=>{const c=e.target.closest&&e.target.closest
  w.after(g);const sync=()=>p.setAttribute('d',wl.getAttribute('d')||'');sync();new MutationObserver(sync).observe(wl,{attributes:true,attributeFilter:['d']});
  const st=document.createElement('style');st.textContent='.wland{stroke-width:2.2!important}.wland2{fill:var(--land);stroke:var(--land);stroke-width:.4;vector-effect:non-scaling-stroke}';document.head.appendChild(st)}}
 /* ───────── 나만의 편집: 글씨 고치기(자동 저장)·별표·형광펜·태그 — 주인만 쓰고, 다른 사람은 보기만 ───────── */
-{const ME={x:new Map(),xc:new Map(),s:new Set(),h:new Map(),g:new Map(),w:new Map(),l:new Map(),c:new Map(),v:new Map()};let canW=false,DB=null,editOn=false;window.__ME=ME;
+{const ME={xg:new Map(),x:new Map(),xc:new Map(),s:new Set(),h:new Map(),g:new Map(),w:new Map(),l:new Map(),c:new Map(),v:new Map()};let canW=false,DB=null,editOn=false;window.__ME=ME;
  const E=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
  const hid=k=>[...new TextEncoder().encode(k)].map(b=>b.toString(16).padStart(2,'0')).join('').slice(0,190);
  const SEL='h1,h2,h3,h4,p,li,dd,dt,td,th,.kpd,.snv,.sri b,.sri span,.ppnames button,.kpp button,.gdr span,.evd b,.evd span,.evd div';
  const SKIP='svg,#map,.tbar,header,.topbar,#srq,textarea,input,.mtool,.snote,.mtags,#medit';
  /* 받은 자료 넣기 */
- const load=docs=>{const wOld=JSON.stringify([...ME.w]);ME.x.clear();ME.xc.clear();ME.s.clear();ME.h.clear();ME.g.clear();ME.w.clear();ME.l.clear();ME.c.clear();ME.v.clear();docs.forEach(d=>{if(!d||!d.k)return;const t=d.k[0],key=d.k.slice(2);
-   if(t==='x'&&d.v!=null){ME.x.set(key,String(d.v));if(d.c)ME.xc.set(key,d.c)}else if(t==='s'&&d.v)ME.s.add(key);else if(t==='h'&&Array.isArray(d.v)&&d.v.length)ME.h.set(key,d.v.map(String));else if(t==='g'&&Array.isArray(d.v)&&d.v.length)ME.g.set(key,d.v.map(String));else if(t==='w'&&d.v)ME.w.set(key,String(d.v));else if(t==='l'&&Array.isArray(d.v)&&d.v.length)ME.l.set(key,d.v.map(String));else if(t==='c'&&Array.isArray(d.v)&&d.v.length)ME.c.set(key,d.v.filter(x=>x&&x.v));else if(t==='v'&&d.v&&d.v.t)ME.v.set(key,d.v)});syncEvents();if(JSON.stringify([...ME.w])!==wOld)applyWords();applyAll()};
+ const load=docs=>{const wOld=JSON.stringify([...ME.w]);ME.x.clear();ME.xg.clear();ME.xc.clear();ME.s.clear();ME.h.clear();ME.g.clear();ME.w.clear();ME.l.clear();ME.c.clear();ME.v.clear();docs.forEach(d=>{if(!d||!d.k)return;const t=d.k[0],key=d.k.slice(2);
+   if(t==='x'&&d.v!=null){ME.x.set(key,String(d.v));if(d.c)ME.xc.set(key,d.c);const j=key.indexOf('\u0001');ME.xg.set(j>=0?key.slice(j+1):key,String(d.v))}else if(t==='s'&&d.v)ME.s.add(key);else if(t==='h'&&Array.isArray(d.v)&&d.v.length)ME.h.set(key,d.v.map(String));else if(t==='g'&&Array.isArray(d.v)&&d.v.length)ME.g.set(key,d.v.map(String));else if(t==='w'&&d.v)ME.w.set(key,String(d.v));else if(t==='l'&&Array.isArray(d.v)&&d.v.length)ME.l.set(key,d.v.map(String));else if(t==='c'&&Array.isArray(d.v)&&d.v.length)ME.c.set(key,d.v.filter(x=>x&&x.v));else if(t==='v'&&d.v&&d.v.t)ME.v.set(key,d.v)});syncEvents();if(JSON.stringify([...ME.w])!==wOld)applyWords();applyAll()};
  const save=(k,v,extra)=>{if(!DB)return;const r=DB.collection('mine').doc(hid(k));const empty=v==null||v===''||(Array.isArray(v)&&!v.length)||v===0;(empty?r.delete():r.set(Object.assign({k,v,at:Date.now()},extra||{}))).then(()=>toast('저장됨')).catch(()=>toast('저장 못 함'))};
  const toast=t=>{let b=$('mtoast');if(!b){b=document.createElement('div');b.id='mtoast';document.body.appendChild(b)}b.textContent=t;b.classList.add('on');clearTimeout(b.t);b.t=setTimeout(()=>b.classList.remove('on'),900)};
  /* 글씨 바꾸기 적용 */
- const applyText=root=>{if(!ME.x.size)return;const list=root.matches&&root.matches(SEL)?[root,...root.querySelectorAll(SEL)]:[...root.querySelectorAll(SEL)];list.forEach(el=>{if(el.isContentEditable||el.closest(SKIP))return;const o=el.dataset.xo||el.textContent.trim();if(!o)return;const cx=itemOf(el),xk=cx&&ME.x.has(cx+'\u0001'+o)?cx+'\u0001'+o:o;if(!ME.x.has(xk))return;const v=ME.x.get(xk);if(el.dataset.xo===o&&el.textContent===v)return;el.dataset.xo=o;el.textContent=v;el.classList.add('xed')})};
+ const applyText=root=>{if(!ME.x.size)return;{const w=document.createTreeWalker(root.nodeType===1?root:document.body,NodeFilter.SHOW_TEXT,{acceptNode:n=>{const p=n.parentNode;return !p||(p.closest&&p.closest(SKIP))||p.isContentEditable?2:1}});const L=[];let n;while((n=w.nextNode())){const t=n.nodeValue.trim();if(t&&ME.xg.has(t))L.push([n,t])}
+   L.forEach(([n,t])=>{const v=ME.xg.get(t);n.nodeValue=n.nodeValue.replace(t,v);const p=n.parentNode;if(p&&p.dataset&&!p.dataset.xo&&p.textContent.trim()===v){p.dataset.xo=t;p.classList.add('xed')}})}const list=root.matches&&root.matches(SEL)?[root,...root.querySelectorAll(SEL)]:[...root.querySelectorAll(SEL)];list.forEach(el=>{if(el.isContentEditable||el.closest(SKIP))return;const o=el.dataset.xo||el.textContent.trim();if(!o)return;const v=ME.xg.get(o);if(v==null)return;if(el.dataset.xo===o&&el.textContent===v)return;el.dataset.xo=o;el.textContent=v;el.classList.add('xed')})};
  /* 지금 열린 자세한 화면의 이름표 */
  const itemOf=el=>{const ev=el&&el.closest&&el.closest('.evd');if(ev){const s=ev.querySelector('.snote[data-sk^="e:"]');if(s)return s.dataset.sk}const kp=$('kpage');if(kp&&!kp.hidden&&kp.contains(el)){const h=kp.querySelector('h1');if(h)return 'k:'+(h.dataset.xo||h.textContent.trim())}return ''};
  /* 형광펜 적용 */
@@ -923,7 +916,7 @@ document.addEventListener('click',e=>{const c=e.target.closest&&e.target.closest
    const hb=$('heartbtn');if(hb)hb.before(b);else document.body.appendChild(b);
    b.onclick=()=>{editOn=!editOn;document.body.classList.toggle('medit',editOn);fBtn();b.setAttribute('aria-pressed',editOn);toast(editOn?'고치기 모드: 글씨를 눌러 고치세요':'고치기 끝')}};
  document.addEventListener('click',e=>{if(!editOn||!canW)return;const t=e.target;if(t.closest(SKIP)||t.closest('.mtool,.mform,#mhlfloat,.msec .mced,#mwform,#mwadd'))return;{const sl=getSelection();if(sl&&!sl.isCollapsed&&String(sl).trim())return}const el=t.closest(SEL);if(!el||el.isContentEditable)return;e.preventDefault();e.stopPropagation();
-   const o=el.dataset.xo||el.textContent.trim();if(!o)return;el.dataset.xo=o;const ctx=itemOf(el);const xk=ctx?ctx+'\u0001'+o:o;el.textContent=ME.x.get(xk)||el.textContent;el.contentEditable='plaintext-only';el.classList.add('xing');el.focus();
+   const o=el.dataset.xo||el.textContent.trim();if(!o)return;el.dataset.xo=o;const ctx=itemOf(el);const xk=o;el.textContent=ME.x.get(xk)||ME.xg.get(o)||el.textContent;el.contentEditable='plaintext-only';el.classList.add('xing');el.focus();
    let tm=0;const commit=()=>{const v=el.textContent.trim();if(v===o||!v){if(ME.x.has(xk)){ME.x.delete(xk);save('x:'+xk,'')}}else if(v!==ME.x.get(xk)){ME.x.set(xk,v);save('x:'+xk,v)}};
    el.oninput=()=>{clearTimeout(tm);tm=setTimeout(commit,700)};el.onblur=()=>{clearTimeout(tm);commit();el.contentEditable='false';el.removeAttribute('contenteditable');el.classList.remove('xing');if(!ME.x.has(xk)){el.textContent=o}};
    el.onkeydown=k=>{k.stopPropagation();if(k.key==='Escape'||(k.key==='Enter'&&!k.shiftKey&&!k.isComposing)){k.preventDefault();el.blur()}}},true);
@@ -1026,7 +1019,7 @@ document.addEventListener('click',e=>{const c=e.target.closest&&e.target.closest
  const p=document.createElementNS(NS,'path');p.setAttribute('class','tund');g.appendChild(p);
  const sync=()=>p.setAttribute('d',($('cpk').getAttribute('d')||'')+($('landfill')?$('landfill').getAttribute('d'):''));sync();new MutationObserver(sync).observe($('cpk'),{attributes:true,attributeFilter:['d']});
  const PRE='#e6dcc6',TAM='#e6d4b8',JUR='#d5ddc6';
- const CFG={0:[PRE],1:[PRE],2:[PRE,[['진국',127.9,35.9]]],3:[PRE],4:[TAM,[['탐라',126.55,33.38]]],5:[TAM,[['탐라',126.55,33.38]]],6:[TAM,[['탐라',126.55,33.38]]],7:[TAM,[['탐라',126.55,33.38]]],
+ const CFG={0:[PRE],1:[PRE],2:[PRE],3:[PRE],4:[TAM,[['탐라',126.55,33.38]]],5:[TAM,[['탐라',126.55,33.38]]],6:[TAM,[['탐라',126.55,33.38]]],7:[TAM,[['탐라',126.55,33.38]]],
   8:[JUR,[['말갈',127.15,39.45],['탐라',126.55,33.38]]],9:[TAM,[['탐라',126.55,33.38]]],10:[TAM,[['탐라',126.55,33.38]]],11:[JUR,[['여진',128.7,41.3]]],12:[JUR,[['여진',128.7,41.3]]],13:[JUR,[['여진',128.7,41.3]]],14:[JUR,[['여진',128.7,41.3]]],15:[JUR,[['여진',127.6,41.4]]],16:[JUR,[['여진',127.6,41.4]]]};
  const labs=[];const mkLab=(n,lo,la)=>{const lg=document.createElementNS(NS,'g');lg.setAttribute('class','ulab');const t=document.createElementNS(NS,'text');t.textContent=n;lg.appendChild(t);$('ovl').appendChild(lg);const o={g:lg,x:X(lo),y:Y(la)};OV.push(o);labs.push({n,lg});return lg};
  const apply=()=>{const c=CFG[pos.i]||[PRE];p.style.fill=c[0];const want=(c[1]||[]).map(a=>a.join('|'));labs.forEach(L=>L.lg.style.display='none');(c[1]||[]).forEach(([n,lo,la])=>{let L=labs.find(L=>L.key===n+lo+la);if(!L){mkLab(n,lo,la);L=labs[labs.length-1];L.key=n+lo+la}L.lg.style.display=''});placeOV()};
@@ -1039,12 +1032,7 @@ document.addEventListener('click',e=>{const c=e.target.closest&&e.target.closest
  const lc=$('landclip');if(lc)mk('use',{href:'#wl','clip-path':'url(#nwc)'},lc);
  const c2=$('cl2clip');if(c2){const r=c2.querySelector('rect');if(r){const a=+r.getAttribute('x'),b=+r.getAttribute('y'),w=+r.getAttribute('width'),h=+r.getAttribute('height');r.remove();const u1=Math.max(x1,a),v1=Math.max(y1,b),u2=Math.min(x2,a+w),v2=Math.min(y2,b+h);mk('path',{d:`M${a},${b}h${w}v${h}h${-w}Z M${u1},${v1}H${u2}V${v2}H${u1}Z`,'clip-rule':'evenodd'},c2)}}
  const ls=$('lshg');if(ls){const cq=mk('clipPath',{id:'nwout',clipPathUnits:'userSpaceOnUse'},$('defs'));mk('path',{d:`M-200000,-200000H200000V200000H-200000Z M${x1},${y1}h${x2-x1}v${y2-y1}h${x1-x2}Z`,'clip-rule':'evenodd'},cq);ls.setAttribute('clip-path','url(#nwout)')}}
-/* 남북 본토 두 조각 사이 틈(분단선 근처 흰 틈·검은 선) 메우기 */
-{const P=d=>(d||'').split(/(?=M)/).filter(s=>s.trim()).map(s=>s.replace(/[MZ]/g,' ').trim().split(/[ L]+/).filter(Boolean).map(t=>t.split(',').map(Number)));
- const A=r=>{let a=0;for(let i=0;i<r.length;i++){const [x1,y1]=r[i],[x2,y2]=r[(i+1)%r.length];a+=x1*y2-x2*y1}return Math.abs(a/2)};
- const TH=4,HW=2.5,f=v=>v.toFixed(1);let fd='';
- const band=(r,o)=>{const near=p=>o.some(q=>(q[0]-p[0])**2+(q[1]-p[1])**2<TH*TH);const n=r.map(near);for(let i=0;i<r.length;i++){const j=(i+1)%r.length;if(!(n[i]&&n[j]))continue;const [x1,y1]=r[i],[x2,y2]=r[j];const L=Math.hypot(x2-x1,y2-y1)||1;const ox=-(y2-y1)/L*HW,oy=(x2-x1)/L*HW,ex=(x2-x1)/L*HW,ey=(y2-y1)/L*HW;
-   fd+='M'+f(x1+ox-ex)+','+f(y1+oy-ey)+'L'+f(x2+ox+ex)+','+f(y2+oy+ey)+'L'+f(x2-ox+ex)+','+f(y2-oy+ey)+'L'+f(x1-ox-ex)+','+f(y1-oy-ey)+'Z'}};
- [LAND.kor,LAND.korHi].forEach(src=>{if(!src)return;const R=P(src).sort((a,b)=>A(b)-A(a));if(R.length<2)return;band(R[0],R[1]);band(R[1],R[0])});
- if(fd){const lf=$('landfill');if(lf)lf.setAttribute('d',(lf.getAttribute('d')||'')+fd);const cp=$('landclip');if(cp){const p=document.createElementNS('http://www.w3.org/2000/svg','path');p.setAttribute('d',fd);cp.appendChild(p)}
-  const tu=document.querySelector('#terrunder .tund');if(tu)tu.setAttribute('d',($('cpk').getAttribute('d')||'')+(lf?lf.getAttribute('d'):''))}}
+/* 해안선: 바다와 맞닿은 변만 미리 골라 둔 선을 영토 위에 그림 (국경·남북 이음매는 처음부터 없음) */
+{const NS='http://www.w3.org/2000/svg';const g=document.createElementNS(NS,'g');g.id='coasttop';const k=document.createElementNS(NS,'path'),c=document.createElementNS(NS,'path');k.setAttribute('class','ctop');c.setAttribute('class','ctop');k.setAttribute('d',LAND.korCoast||'');c.setAttribute('d',LAND.ctxCoast||'');g.appendChild(c);g.appendChild(k);G.terr.after(g);
+ ['cl1','cl2'].forEach(id=>{const n=$(id);if(n)n.style.display='none'});
+ const lk=$('landk');if(lk&&LAND.korHiCoast)new MutationObserver(()=>{const hi=lk.getAttribute('d')===LAND.korHi;k.setAttribute('d',hi?LAND.korHiCoast:LAND.korCoast)}).observe(lk,{attributes:true,attributeFilter:['d']})}
