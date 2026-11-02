@@ -1104,9 +1104,9 @@ const RL_KIND=e=>{if(e.kind)return e.kind;const t=e.t;if(e.tp.includes('war')||/
   if(/유적|동굴|패총|암각화|고인돌/.test(t))return '유적';if(/『|대장경|직지|훈민정음|지도|실록/.test(t))return '기록 유산';
   if(/탑|궁|황룡사|부석사|석굴암|불국사|서원|화성|첨성대|왕릉|릉 |천리장성|비 건립|비·|정계비|척화비|순수비|중건/.test(t))return '건축·비석';if(/신종|측우기|금관|토기|동검|청자|백자|활자|불상/.test(t))return '유물';return null};
 const rlName=e=>e.t.replace(/\s*·\s*농경 시작$/,'').replace(/중건 시작$/,'중건').replace(/\s*(건립 시작|건립|완성|제작|축조|편찬|간행|인쇄|완공|창제|발행|반포)$/,'').trim();
-const RL_COL={'유적건조물':'#b45309','유물':'#be185d','기록유산':'#047857'};let rlKind='',rlSub='';
+const RL_COL={'유적건조물':'#b45309','유물':'#be185d','기록유산':'#047857','무형유산':'#7c3aed','자연유산':'#15803d','등록문화유산':'#0e7490'};let rlKind='',rlSub='';
 /* 국가유산 유형 분류(대분류 · 중분류)에 맞춘 나눔 */
-const HCLS=e=>{const t=e.t;const R=[[/^『|대장경|직지|훈민정음|대동여지도|한성순보/,'기록유산','전적류'],[/신종/,'유물','불교공예'],[/청자|백자|토기/,'유물','생활공예'],[/측우기|자격루|혼천의/,'유물','과학기술'],[/금관|동검/,'유물','생활공예'],
+const HCLS=e=>{if(e.hc)return e.hc;const t=e.t;const R=[[/^『|대장경|직지|훈민정음|대동여지도|한성순보/,'기록유산','전적류'],[/신종/,'유물','불교공예'],[/청자|백자|토기/,'유물','생활공예'],[/측우기|자격루|혼천의/,'유물','과학기술'],[/금관|동검/,'유물','생활공예'],
   [/비$|비·|비 |정계비|척화비|순수비|릉비/,'유적건조물','인물사건'],[/고인돌|왕릉|무령|고분|무덤/,'유적건조물','무덤'],[/석탑|목탑|불국사|석굴암|황룡사|부석사|종묘/,'유적건조물','종교신앙'],[/궁|화성|산성|장성/,'유적건조물','정치국방'],[/서원|향교|첨성대/,'유적건조물','교육문화'],
   [/암각화/,'유적건조물','종교신앙'],[/유적|동굴|패총/,'유적건조물','유물산포지·선사 유적']];const n=rlName(e);for(const [r,a,b] of R)if(r.test(n)||r.test(t))return [a,b];const k=RL_KIND(e);return k==='기록 유산'?['기록유산','전적류']:k==='유물'?['유물','기타']:['유적건조물','기타']};
 /* 같은 문화유산은 하나로: 경복궁(창건·소실·중건), 종묘 */
@@ -1117,6 +1117,13 @@ let RL_CACHE=null;function RLITEMS(){if(RL_CACHE)return RL_CACHE;const byT=t=>EV
   x:'조선의 법궁(으뜸 궁궐). 1395년 한양 천도와 함께 태조 때 세웠다. 임진왜란(1592) 때 불타 270여 년 동안 빈터로 남았다. 흥선 대원군이 왕실의 권위를 다시 세우려고 1865년부터 다시 지어 1867년에 완공하였다(중건). 이때 원납전을 걷고 당백전을 발행하여 백성의 부담이 커졌다. 일제 강점기에는 많은 건물이 헐리고 조선 총독부 청사가 세워졌다.'});
  L.push({id:'x-jm',kind:'건축·비석',t:'종묘',y:1395,T:1395.01,era,yl:'1395',p:'서울',ll:[126.994,37.574],tp:['cul'],cz:[a].filter(Boolean),
   x:'조선 왕과 왕비의 신주를 모신 왕실 사당. 1395년 경복궁과 함께 세웠다. 임진왜란 때 불탔다가 광해군 때 다시 지었다. 종묘 제례와 종묘 제례악이 지금까지 이어진다.'});
+ const ev=t=>EVENTS.find(e=>e.t===t);const eraOf=T=>{let f=0;for(let j=0;j<FRAMES.length;j++)if(FRAMES[j].t<=T)f=j;return FRAMES[f].era};
+ [{id:'x-jmjr',hc:['무형유산','전통 공연·예술'],t:'종묘 제례악',y:1464,T:1464,yl:'조선 전기',p:'서울 종묘',ll:[126.994,37.574],x:'종묘에서 왕실 조상에게 제사를 지낼 때 연주하는 음악과 춤. 세종 때 만든 보태평·정대업을 바탕으로 한다. 종묘 제례와 함께 유네스코 인류무형유산이다.'},
+  {id:'x-psr',hc:['무형유산','전통 공연·예술'],t:'판소리',y:1750,T:1750,yl:'조선 후기',p:'전라도 일대',ll:[127.0,35.3],x:'소리꾼이 고수의 북장단에 맞춰 이야기를 노래(창)·말(아니리)·몸짓(발림)으로 풀어내는 공연. 서민 문화가 발달한 조선 후기에 널리 퍼졌다. 춘향가·심청가 등이 전해진다.'},
+  {id:'x-tch',hc:['무형유산','전통 공연·예술'],t:'탈춤',y:1760,T:1760,yl:'조선 후기',p:'안동 하회 등',ll:[128.52,36.54],x:'양반을 풍자하고 서민의 삶을 담은 탈놀이. 하회 별신굿 탈놀이·봉산 탈춤·양주 별산대놀이 등이 있다.'},
+  {id:'x-dokdo',hc:['자연유산','천연기념물'],t:'독도',y:1900,T:1900.9,yl:'1900 울도군 관할',p:'울릉군',ll:[131.87,37.24],cz:[ev('대한 제국 칙령 제41호')].filter(Boolean),x:'동도·서도와 여러 부속 섬으로 이루어진 섬. 1900년 대한 제국 칙령 제41호로 울도군이 석도(독도)를 관할하게 하였다. 천연보호구역(천연기념물)으로 지정되어 있다.'},
+  {id:'x-jgsf',hc:['등록문화유산','근대 유물'],t:'진관사 태극기',y:1919,T:1919.3,yl:'1919 무렵',p:'서울 진관사',ll:[126.938,37.638],cz:[ev('3·1 운동')].filter(Boolean),x:'2009년 서울 진관사 칠성각을 고치다가 독립 신문들에 싸인 채 발견된 태극기. 일장기 위에 태극과 4괘를 덧그려 만들었다. 3·1 운동 무렵의 독립 의지를 보여 준다.'}
+ ].forEach(o=>{o.era=eraOf(o.T);o.tp=['cul'];o.kind='x';L.push(o)});
  RL_CACHE=L.sort((x,y)=>x.T-y.T);return RL_CACHE}
 function rlShow(){const L=RLITEMS();const BIG=Object.keys(RL_COL);
  const subs=rlKind?[...new Set(L.filter(e=>HCLS(e)[0]===rlKind).map(e=>HCLS(e)[1]))]:[];
@@ -1150,5 +1157,5 @@ function rlOpen(e){const p=$('kpage');const L=RLITEMS();const i=L.findIndex(x=>x
  </div>`;
  p.hidden=false;p.scrollTop=0;p.querySelector('[data-kx]').onclick=()=>{p.hidden=true};
  p.querySelectorAll('[data-rlv]').forEach(b=>b.onclick=ev=>{ev.stopPropagation();const n=L[i+(+b.dataset.rlv)];if(n)rlOpen(n)});
- const real=e.kind?((e.cz||[]).find(x=>x&&x.ll)||(e.cz||[])[0]):e;const m=p.querySelector('[data-rlmap]');if(m)m.onclick=()=>{if(!real)return;p.hidden=true;gotoMap(real)};p.querySelector('[data-rltl]').onclick=()=>{if(!real)return;p.hidden=true;gotoTimeline(real)};
+ const real=e.kind?((e.cz||[]).find(x=>x&&x.ll)||(e.cz||[])[0]):e;if(!real){const g=p.querySelector('.rlgo');if(g)g.remove()}const m=p.querySelector('[data-rlmap]');if(m)m.onclick=()=>{if(!real)return;p.hidden=true;gotoMap(real)};p.querySelector('[data-rltl]').onclick=()=>{if(!real)return;p.hidden=true;gotoTimeline(real)};
  try{paintSections(p)}catch(_){}}
