@@ -1010,7 +1010,7 @@ document.addEventListener('click',e=>{const c=e.target.closest&&e.target.closest
      m.innerHTML=`<div class="mnh">화면</div><div class="mnv">${VS.map(([v,n])=>`<button type="button" data-mv="${v}">${n}</button>`).join('')}</div>
      <div class="mnh">바로가기</div><div class="mnq">${Q.map(([k,q])=>`<a href="${E(q.u)}" target="_blank" rel="noopener">${E(q.n||q.u)}${canW?`<i data-qdel="${E(k)}">×</i>`:''}</a>`).join('')||'<span class="mnempty">아직 없어요</span>'}</div>
      ${canW?'<div class="mnadd"><input id="mqn" placeholder="이름"><input id="mqu" placeholder="주소 (https://…)"><button type="button" data-qadd>추가</button></div>':''}`};
-   b.onclick=e=>{e.stopPropagation();if(!m.hidden){m.hidden=true;return}render();const r=b.getBoundingClientRect();m.style.top=(r.bottom+6)+'px';m.style.right=Math.max(8,innerWidth-r.right)+'px';m.hidden=false};
+   b.onclick=e=>{e.stopPropagation();if(!m.hidden){m.hidden=true;return}render();const tb=document.querySelector('.top').getBoundingClientRect();m.style.setProperty('--mtop',tb.bottom+'px');const cur=store.get('view','map');m.querySelectorAll('[data-mv]').forEach(x=>x.classList.toggle('on',x.dataset.mv===cur));m.hidden=false};
    document.addEventListener('click',e=>{if(!m.hidden&&e.target.isConnected&&!e.target.closest('#menupop,#menubtn'))m.hidden=true});
    m.addEventListener('keydown',e=>{e.stopPropagation();if(e.key==='Enter'&&!e.isComposing&&e.target.closest('.mnadd'))m.querySelector('[data-qadd]').click()},true);
    m.addEventListener('click',e=>{const v=e.target.closest('[data-mv]');if(v){m.hidden=true;$('kpage').hidden=true;showView(v.dataset.mv);return}
