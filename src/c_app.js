@@ -52,7 +52,7 @@ const byFrame=FRAMES.map(()=>[]);EVENTS.forEach(e=>byFrame[e.f].push(e));
 FRAMES.forEach((F,i)=>{const v0=F.view;if(!v0)return;const w0=v0[2]-v0[0],h0=v0[3]-v0[1];let v=[...v0];
   const out=byFrame[i].filter(e=>e.ll&&!(e.ll[0]>=v[0]&&e.ll[0]<=v[2]&&e.ll[1]>=v[1]&&e.ll[1]<=v[3]));
   out.sort((a,b)=>Math.hypot(a.ll[0]-(v0[0]+v0[2])/2,a.ll[1]-(v0[1]+v0[3])/2)-Math.hypot(b.ll[0]-(v0[0]+v0[2])/2,b.ll[1]-(v0[1]+v0[3])/2));
-  out.forEach(e=>{const n=[Math.min(v[0],e.ll[0]-.8),Math.min(v[1],e.ll[1]-.6),Math.max(v[2],e.ll[0]+2.6),Math.max(v[3],e.ll[1]+.6)];if(n[2]-n[0]<=w0*1.15&&n[3]-n[1]<=h0*1.12)v=n});F.view=v});
+  F.view=v});
 /* 장면 안의 시간: 사건마다 같은 시간이 돌아가도록 사건 시점을 기준점으로 나눈다 */
 FRAMES.forEach((F,i)=>{const a=[F.t];byFrame[i].forEach(e=>{if(e.T>a[a.length-1]+1e-6&&e.T<F.t2-1e-6)a.push(e.T)});a.push(F.t2);F.A=a});
 function tOfF(i,f){const A=FRAMES[i].A,n=A.length-1,x=Math.max(0,Math.min(.99999,f))*n,k=Math.floor(x);return A[k]+(A[k+1]-A[k])*(x-k)}
@@ -324,8 +324,9 @@ function recenterIfLost(){if(ptrs.size||bubId!=null||$('v-map').hidden)return;
 const clampW=w=>Math.max(70,Math.min(3000,w));
 function zoomAt(f,cx,cy){const r=svg.getBoundingClientRect();if(cx==null){cx=r.width/2;cy=r.height/2}const k=kNow();const ux=vb.x+cx*k,uy=vb.y+cy*k;const w=clampW(vb.w*f),k2=w/r.width;return {x:ux-cx*k2,y:uy-cy*k2,w,h:w*r.height/r.width}}
 svg.addEventListener('wheel',e=>{e.preventDefault();schedRecenter();const r=svg.getBoundingClientRect();cancelAnimationFrame(vbRAF);setVB(zoomAt(Math.exp(e.deltaY*.0015),e.clientX-r.left,e.clientY-r.top));userMoved=true},{passive:false});
-$('zin').onclick=()=>{animVB(zoomAt(1/1.6),300);userMoved=true};
-$('zout').onclick=()=>{animVB(zoomAt(1.6),300);userMoved=true};
+const zoomSel=f=>{const e=selId!=null?EVENTS.find(x=>x.id===selId):null;const o=e&&pinOf.get(e.id);if(!o||!e.ll)return zoomAt(f);const a=safeArea();const w=clampW(vb.w*f),h=w*a.ch/a.cw;const k=w/a.cw;return {w,h,x:o.x-(a.l+a.w/2)*k,y:o.y-(a.t+a.h/2)*k}};
+$('zin').onclick=()=>{animVB(zoomSel(1/1.6),300);userMoved=true};
+$('zout').onclick=()=>{animVB(zoomSel(1.6),300);userMoved=true};
 $('zfit').onclick=()=>{userMoved=false;abroad=false;animVB(fitVB(FRAMES[pos.i].view));updateInset()};
 svg.addEventListener('click',()=>{if(!dragMoved&&bubId!=null)closeBubble()});
 
@@ -347,8 +348,8 @@ function updateInset(){
     /* 작은 지도 안에서 이름끼리 겹치면 나중 것은 숨김 */
     {const kept=[];[...g.querySelectorAll('text')].forEach(t=>{try{const b=t.getBBox();const pad=1.5*s;const hitK=kept.some(c=>b.x<c.x+c.width+pad&&b.x+b.width+pad>c.x&&b.y<c.y+c.height&&b.y+b.height>c.y);if(hitK)t.style.display='none';else kept.push(b)}catch(_){}})}}
   placeInset();
-  const nm0=[...new Set(outPins.map(e=>(e.p||'').split(' ')[0]).filter(Boolean))];const names=nm0.length?nm0[0]+(nm0.length>1?` 외 ${nm0.length-1}곳`:''):'';
-  $('inlab').textContent=abroad?'한반도로 돌아가기':'해외 · '+names;
+  const nm0=[...new Set(outPins.map(e=>placeName(e)).filter(Boolean))];const names=nm0.length?nm0[0]+(nm0.length>1?` 외 ${nm0.length-1}곳`:''):'';
+  $('inlab').textContent=abroad?'한반도로 돌아가기':names;
 }
 /* 해외 작은 지도: 기본 지도의 사건·이름을 가리지 않는 구석으로 */
 let insetCorner='br';

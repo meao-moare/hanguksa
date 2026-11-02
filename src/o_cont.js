@@ -299,9 +299,9 @@ function rzCluster(e){const deg=X(1)-X(0),L=byFrame[pos.i]||[],k=L.indexOf(e),a=
 const rzIn=(e,b)=>rzPts(e).every(([x,y])=>x>=b.x&&x<=b.x+b.w&&y>=b.y&&y<=b.y+b.h);
 function rzOut(){const now=performance.now(),fi=pos.i;holdUntil=Math.max(holdUntil,now+2500+900+600);clearTimeout(rzOut.t);
   rzOut.t=setTimeout(()=>{if(pos.i!==fi||userMoved)return;rzCur=null;animVB(fitVB(FRAMES[pos.i].view),900)},2500)}
-const RZ_SEQ=[[/^공산 전투/,/^고창 전투/,/^일리천 전투/]];
+const RZ_SEQ=[[/^공산 전투/,/^고창 전투/,/^일리천 전투/],Object.assign([/^고부 농민 봉기/,/^무장 기포/,/^황토현 전투/,/^장성 황룡촌/,/^전주성 점령/,/^집강소/,/^삼례 재봉기/,/^우금치 전투/,/^전봉준 체포/],{mw:1.7})];
 function rzSeq(e){for(const sq of RZ_SEQ){if(!sq[0].test(e.t))continue;const evs=sq.map(r=>EVENTS.find(x=>r.test(x.t))).filter(Boolean);const pts=[].concat(...evs.map(rzPts));if(!pts.length)return null;
-  const deg=X(1)-X(0);let x0=Math.min(...pts.map(p=>p[0])),x1=Math.max(...pts.map(p=>p[0])),y0=Math.min(...pts.map(p=>p[1])),y1=Math.max(...pts.map(p=>p[1]));const minW=deg*3.6;let w=x1-x0,h=y1-y0;if(w<minW){x0-=(minW-w)/2;w=minW}if(h<minW*.8){y0-=(minW*.8-h)/2;h=minW*.8}
+  const deg=X(1)-X(0);let x0=Math.min(...pts.map(p=>p[0])),x1=Math.max(...pts.map(p=>p[0])),y0=Math.min(...pts.map(p=>p[1])),y1=Math.max(...pts.map(p=>p[1]));const minW=deg*(sq.mw||3.6);let w=x1-x0,h=y1-y0;if(w<minW){x0-=(minW-w)/2;w=minW}if(h<minW*.8){y0-=(minW*.8-h)/2;h=minW*.8}
   const fb=fitBox({x:x0-w*.2,y:y0-h*.25,w:w*1.4,h:h*1.5});fb.mem=new Set(evs.map(x=>x.id));fb.last=evs[evs.length-1].id;fb.seq=true;return fb}return null}
 function routeZoom(e){if(typeof playing==='undefined'||!playing||userMoved)return;
   if(rzCur&&rzCur.seq){if(e.id===rzCur.last)rzOut();else if(!rzCur.shown&&rzCur.mem.has(e.id)){rzCur.shown=1;holdUntil=Math.max(holdUntil,performance.now()+RZ_HOLD)}return}
@@ -326,7 +326,7 @@ function routeZoom(e){if(typeof playing==='undefined'||!playing||userMoved)retur
    ps.forEach(e=>{const px=X(e.ll[0]),py=Y(e.ll[1]);el('circle',{cx:px,cy:py,r:4.5*s,style:`fill:var(--t-${e.tp[0]});stroke:var(--panel);stroke-width:${1.5*s}`},g);const right=px>cx0;const tx=el('text',{x:px+(right?-6:6)*s,y:py+4*s,'text-anchor':right?'end':'start',style:`font-size:${10.5*s}px`},g);tx.textContent=e.s||e.t;
      try{const bb=tx.getBBox();const L=vbx+2*s,R=vbx+W*s-2*s;if(bb.x<L)tx.setAttribute('x',+tx.getAttribute('x')+(L-bb.x));else if(bb.x+bb.width>R)tx.setAttribute('x',+tx.getAttribute('x')-(bb.x+bb.width-R))}catch(_){}});
    {const kept=[];[...g.querySelectorAll('text')].forEach(t=>{try{const bb=t.getBBox();const hitK=kept.some(c=>bb.x<c.x+c.width+1.5*s&&bb.x+bb.width>c.x&&bb.y<c.y+c.height&&bb.y+bb.height>c.y);if(hitK)t.style.display='none';else kept.push(bb)}catch(_){}})}
-   const nm=[...new Set(ps.map(e=>(e.p||'').split(' ')[0]).filter(Boolean))];(btn===inset?$('inlab'):btn.querySelector('.inl')).textContent='해외 · '+(nm.length?nm[0]+(nm.length>1?` 외 ${nm.length-1}곳`:''):'')}
+   const nm=[...new Set(ps.map(e=>placeName(e)).filter(Boolean))];(btn===inset?$('inlab'):btn.querySelector('.inl')).textContent=(nm.length?nm[0]+(nm.length>1?` 외 ${nm.length-1}곳`:''):'')}
  const corners=()=>{const wrap=svg.getBoundingClientRect();const dock=$('dock')?$('dock').getBoundingClientRect():{top:wrap.bottom};const card=$('fcard')?$('fcard').getBoundingClientRect():{bottom:wrap.top+90};const hb=document.querySelector('header.top').getBoundingClientRect().bottom-wrap.top;
    return {wrap,dock,card,hb}};
  function placeAll(list){const {wrap,dock,card,hb}=corners();if(!wrap.width)return;const pts=[];document.querySelectorAll('#pins .pin:not(.hide):not(.wait):not(.stale):not(.buried):not(.gone), #ovl text:not(.hide), #arrleg:not([hidden])').forEach(g=>{const r=g.getBoundingClientRect();if(r.width){const lab=g.matches('.pin')?110:0;pts.push([r.left-wrap.left-(lab?40:0),r.top-wrap.top,r.right-wrap.left+lab,r.bottom-wrap.top])}});
@@ -566,7 +566,7 @@ fileStop=function(){if(BGA&&!BGA.paused)fadeTo(BGA,0,600,()=>{if(bgOn!=='file')B
   const A=[X(120.5),Y(38.0)],B=[X(131),Y(41.8)],sd=p=>(B[0]-A[0])*(p[1]-A[1])-(B[1]-A[1])*(p[0]-A[0]),nref=Math.sign(sd([X(124),Y(42)]));
   const cut=(p,q)=>{const a=sd(p),b=sd(q),u=a/(a-b);return [p[0]+(q[0]-p[0])*u,p[1]+(q[1]-p[1])*u]};
   const clip=(d,north)=>d.split('Z').map(x=>x.trim()).filter(Boolean).map(x=>{const P=x.replace(/^M/,'').split('L').map(t=>t.split(',').map(Number));const inn=p=>(sd(p)*nref>=0)===north;const o=[];for(let i=0;i<P.length;i++){const p=P[i],q=P[(i+1)%P.length];if(inn(p)){o.push(p);if(!inn(q))o.push(cut(p,q))}else if(inn(q))o.push(cut(p,q))}return o.length>2?'M'+o.map(p=>p[0].toFixed(1)+','+p[1].toFixed(1)).join('L')+'Z':''}).join('');
-  if(ga&&gb){const mix=clip(gb.d,true)+' '+clip(ga.d,false);const M=MID.find(m=>m.id==='goguryeo'&&m.fr===5);if(M)M.steps=[[F5.t,ga.d,ga.lab],[400,mix,gb.lab,[124.6,41.3]],[475,gb.d,gb.lab]]}
+  if(ga&&gb){const mix=clip(gb.d,true)+' '+clip(ga.d,false);const M=MID.find(m=>m.id==='goguryeo'&&m.fr===5);if(M)M.steps=[[F5.t,ga.d,ga.lab],[400,mix,gb.lab],[475,gb.d,gb.lab]]}
   if(by&&!F5.st.some(s=>s.id==='buyeo')){F5.st.push(Object.assign({},by,{from:undefined}));MID.push({id:'buyeo',fr:5,until:494})}
  }catch(_){}}
  const mor=(c,d1,lab,anim)=>{{const tk=(typeof morphTasks!=='undefined'&&morphTasks||[]).find(k=>k.cur===c);if(tk){tk.to=d1;try{tk.f=flubber.interpolate(tk.from,d1,{maxSegmentLength:7})}catch(_){tk.f=null}if(lab)tk.l1=lab;c.d=d1;return}}const p=c.el,d0=p.getAttribute('d');if(d0===d1)return;cancelAnimationFrame(c.mr);
@@ -860,7 +860,7 @@ document.addEventListener('click',e=>{const c=e.target.closest&&e.target.closest
  const PT=[{fr:6,s:551,e:553,own:'baekje',ll:[126.95,37.5],d:clipC(window.__S6||sil(6),[[125.9,38.2],[127.35,38.2],[127.35,36.85],[125.9,36.85]])},
    {fr:7,s:642,e:660,own:'baekje',ll:[128.17,35.57],d:clipC(sil(7),[[127.25,36.05],[128.42,35.95],[128.5,35.4],[128.35,34.85],[127.25,34.85]])}].filter(p=>p.d);
  const NS='http://www.w3.org/2000/svg';PT.forEach(p=>{const e=document.createElementNS(NS,'path');e.setAttribute('d',p.d);e.setAttribute('class','terr tpatch');e.style.pointerEvents='none';e.style.display='none';G.terr.appendChild(e);p.el=e;p.on=null});
- const sync=(anim)=>{const t=curT();PT.forEach(p=>{const on=pos.i===p.fr&&t>=p.s-1e-6&&t<p.e-1e-6;if(on===p.on&&!anim)return;const was=p.on;p.on=on;const o=shapes.get(p.own);if(!on){p.el.style.display='none';return}if(G.terr.lastChild!==p.el)G.terr.appendChild(p.el);p.el.style.display='';const f=o?getComputedStyle(o.el).fill:'';p.el.style.fill=f;p.el.style.stroke=f;
+ const sync=(anim)=>{const t=curT();PT.forEach(p=>{const on=pos.i===p.fr&&t>=p.s-1e-6&&t<p.e-1e-6;if(on===p.on&&!anim)return;const was=p.on;p.on=on;const o=shapes.get(p.own);if(!on){p.el.style.display='none';return}if(G.terr.lastChild!==p.el)G.terr.appendChild(p.el);p.el.style.display='';const so=FRAMES[p.fr].st.find(x=>x.id===p.own);const f=(so&&so.c&&getComputedStyle(document.documentElement).getPropertyValue('--c-'+so.c).trim())||((o&&getComputedStyle(o.el).fill)||'');p.el.style.fill=f;p.el.style.stroke=f;
    if(was===false&&playing&&!reduceMotion){try{spreadFill({el:p.el,sp:null},f,p.ll)}catch(_){}}})};
  {const ut=updateTime;updateTime=function(){const r=ut.apply(this,arguments);sync(false);return r}}
  {const af=applyFrame;applyFrame=function(){const r=af.apply(this,arguments);PT.forEach(p=>p.on=null);sync(true);setTimeout(()=>sync(true),2200);return r}}sync(true)}
@@ -897,7 +897,7 @@ document.addEventListener('click',e=>{const c=e.target.closest&&e.target.closest
  const save=(k,v,extra)=>{if(!DB)return;const r=DB.collection('mine').doc(hid(k));const empty=v==null||v===''||(Array.isArray(v)&&!v.length)||v===0;(empty?r.delete():r.set(Object.assign({k,v,at:Date.now()},extra||{}))).then(()=>toast('저장됨')).catch(()=>toast('저장 못 함'))};
  const toast=t=>{let b=$('mtoast');if(!b){b=document.createElement('div');b.id='mtoast';document.body.appendChild(b)}b.textContent=t;b.classList.add('on');clearTimeout(b.t);b.t=setTimeout(()=>b.classList.remove('on'),900)};
  /* 글씨 바꾸기 적용 */
- const applyText=root=>{if(!ME.x.size)return;{const w=document.createTreeWalker(root.nodeType===1?root:document.body,NodeFilter.SHOW_TEXT,{acceptNode:n=>{const p=n.parentNode;return !p||(p.closest&&p.closest(SKIP))||p.isContentEditable?2:1}});const L=[];let n;while((n=w.nextNode())){const t=n.nodeValue.trim();if(t&&ME.xg.has(t))L.push([n,t])}
+ const applyText=root=>{if(!ME.x.size)return;{const w=document.createTreeWalker(root.nodeType===1?root:document.body,NodeFilter.SHOW_TEXT,{acceptNode:n=>{const p=n.parentNode;if(!p)return 2;if(p.closest&&p.closest('svg'))return p.tagName==='text'||p.tagName==='tspan'?1:2;return (p.closest&&p.closest(SKIP))||p.isContentEditable?2:1}});const L=[];let n;while((n=w.nextNode())){const t=n.nodeValue.trim();if(t&&ME.xg.has(t))L.push([n,t])}
    L.forEach(([n,t])=>{const v=ME.xg.get(t);n.nodeValue=n.nodeValue.replace(t,v);const p=n.parentNode;if(p&&p.dataset&&!p.dataset.xo&&p.textContent.trim()===v){p.dataset.xo=t;p.classList.add('xed')}})}const list=root.matches&&root.matches(SEL)?[root,...root.querySelectorAll(SEL)]:[...root.querySelectorAll(SEL)];list.forEach(el=>{if(el.isContentEditable||el.closest(SKIP))return;const o=el.dataset.xo||el.textContent.trim();if(!o)return;const v=ME.xg.get(o);if(v==null)return;if(el.dataset.xo===o&&el.textContent===v)return;el.dataset.xo=o;el.textContent=v;el.classList.add('xed')})};
  /* 지금 열린 자세한 화면의 이름표 */
  const itemOf=el=>{const ev=el&&el.closest&&el.closest('.evd');if(ev){const s=ev.querySelector('.snote[data-sk^="e:"]');if(s)return s.dataset.sk}const kp=$('kpage');if(kp&&!kp.hidden&&kp.contains(el)){const h=kp.querySelector('h1');if(h)return 'k:'+(h.dataset.xo||h.textContent.trim())}return ''};
@@ -1016,14 +1016,22 @@ document.addEventListener('click',e=>{const c=e.target.closest&&e.target.closest
  const was={kor:LAND.kor,korHi:LAND.korHi};LAND.kor=fix(LAND.kor);if(LAND.korHi)LAND.korHi=fix(LAND.korHi);
  ['landk','coastk','clipk','cl1','sm1','cpk'].forEach(id=>{const n=$(id);if(!n)return;const d=n.getAttribute('d');n.setAttribute('d',d===was.korHi?LAND.korHi:LAND.kor)})}
 /* 주인 없는 땅도 흰색으로 안 남게: 영토 밑에 시대별 밑색(선사·진·탐라·말갈·여진)을 깔기 */
-{const NS='http://www.w3.org/2000/svg';const g=document.createElementNS(NS,'g');g.id='terrunder';g.setAttribute('clip-path','url(#landclip)');G.terr.before(g);
+{const NS='http://www.w3.org/2000/svg';const g=document.createElementNS(NS,'g');g.id='terrunder';g.setAttribute('clip-path','url(#landclip)');$('chn').before(g);
  const p=document.createElementNS(NS,'path');p.setAttribute('class','tund');g.appendChild(p);
  const sync=()=>p.setAttribute('d',($('cpk').getAttribute('d')||'')+($('landfill')?$('landfill').getAttribute('d'):''));sync();new MutationObserver(sync).observe($('cpk'),{attributes:true,attributeFilter:['d']});
- const PRE='#e6dcc6',TAM='#e6d4b8',JUR='#d5ddc6';
- const CFG={0:['none'],1:['none'],2:['none'],3:['none'],4:[TAM,[['탐라',126.55,33.38]]],5:[TAM,[['탐라',126.55,33.38]]],6:[TAM,[['탐라',126.55,33.38]]],7:[TAM,[['탐라',126.55,33.38]]],
-  8:[JUR,[['말갈',127.15,39.45],['탐라',126.55,33.38]]],9:[TAM,[['탐라',126.55,33.38]]],10:[TAM,[['탐라',126.55,33.38]]],11:[JUR,[['여진',128.7,41.3]]],12:[JUR,[['여진',128.7,41.3]]],13:[JUR,[['여진',128.7,41.3]]],14:[JUR,[['여진',128.7,41.3]]],15:[JUR,[['여진',127.6,41.4]]],16:[JUR,[['여진',127.6,41.4]]]};
+ const PRE='#e6dcc6',TAM='#e6d4b8',JUR='#d5ddc6',N='none';
+ /* 만주 쪽(중국 나라와 우리나라 사이) 빈 땅도 그 시대 세력 색으로 */
+ const cpM=document.createElementNS(NS,'clipPath');cpM.id='manch';cpM.setAttribute('clipPathUnits','userSpaceOnUse');const mp=document.createElementNS(NS,'path');
+ mp.setAttribute('d','M'+[[60,8],[60,75],[180,75],[180,52],[142,52],[142,47.6],[138.6,47.6],[138.6,42.3],[131.2,42.3],[130.6,42.6],[129.0,42.0],[128.0,41.6],[126.0,40.9],[124.3,39.95],[124.0,37],[123.5,30],[121,21],[110,8]].map(([lo,la])=>X(lo).toFixed(1)+','+Y(la).toFixed(1)).join('L')+'Z');cpM.appendChild(mp);$('defs').appendChild(cpM);
+ const g2=document.createElementNS(NS,'g');g2.setAttribute('clip-path','url(#manch)');g.appendChild(g2);const p2=document.createElementNS(NS,'path');p2.setAttribute('class','tund');p2.setAttribute('d',$('landc').getAttribute('d')||'');g2.appendChild(p2);{const u=document.createElementNS(NS,'path');u.setAttribute('clip-path','url(#outctx)');u.setAttribute('class','tund tund2');g2.appendChild(u);p2.u=u;const u2=document.createElementNS(NS,'path');u2.setAttribute('class','tund tund2');g2.appendChild(u2);p2.u2=u2;const wl=$('wl');const sy=()=>{const d=(wl&&wl.getAttribute('d'))||'';u.setAttribute('d',d);u2.setAttribute('d',d);if($('nwc'))u2.setAttribute('clip-path','url(#nwc)')};sy();if(wl)new MutationObserver(sy).observe(wl,{attributes:true,attributeFilter:['d']})}
+ const T=['탐라',126.55,33.38];
+ const CFG={0:[N,N],1:[N,N],2:[N,N],3:[N,JUR,[['읍루',132.2,46.6],['선비',119.6,44.6]]],
+  4:[JUR,JUR,[T,['물길',129.6,47]]],5:[JUR,JUR,[T,['물길',129.6,47]]],6:[JUR,JUR,[T,['말갈',129.6,47]]],7:[JUR,JUR,[T,['말갈',129.6,47]]],
+  8:[JUR,JUR,[['말갈',127.15,39.45],T,['말갈',128.6,45]]],9:[JUR,JUR,[T,['흑수 말갈',132.4,48.2]]],10:[JUR,JUR,[T,['여진',128.7,41.3],['여진',131.6,46.5]]],
+  11:[JUR,JUR,[['여진',128.7,41.3],['여진',131.6,46.5]]],12:[JUR,JUR,[['여진',128.7,41.3],['여진',131.6,46.5]]],13:[JUR,JUR,[['여진',128.7,41.3]]],14:[JUR,JUR,[['여진',128.7,41.3]]],
+  15:[JUR,JUR,[['여진',127.6,41.4],['여진',131.2,45.6]]],16:[JUR,JUR,[['여진',127.6,41.4],['여진',131.2,45.6]]],17:[N,JUR,[['여진',131.2,45.6]]],18:[N,JUR,[['여진',131.2,45.6]]]};
  const labs=[];const mkLab=(n,lo,la)=>{const lg=document.createElementNS(NS,'g');lg.setAttribute('class','ulab');const t=document.createElementNS(NS,'text');t.textContent=n;lg.appendChild(t);$('ovl').appendChild(lg);const o={g:lg,x:X(lo),y:Y(la)};OV.push(o);labs.push({n,lg});return lg};
- const apply=()=>{const c=CFG[pos.i]||['none'];p.style.fill=c[0];const want=(c[1]||[]).map(a=>a.join('|'));labs.forEach(L=>L.lg.style.display='none');(c[1]||[]).forEach(([n,lo,la])=>{let L=labs.find(L=>L.key===n+lo+la);if(!L){mkLab(n,lo,la);L=labs[labs.length-1];L.key=n+lo+la}L.lg.style.display=''});placeOV()};
+ const apply=()=>{const c=CFG[pos.i]||[N,N];p.style.fill=c[0];p2.style.fill=c[1];if(p2.u)p2.u.style.fill=c[1];if(p2.u2)p2.u2.style.fill=c[1];labs.forEach(L=>L.lg.style.display='none');(c[2]||[]).forEach(([n,lo,la])=>{let L=labs.find(L=>L.key===n+lo+la);if(!L){mkLab(n,lo,la);L=labs[labs.length-1];L.key=n+lo+la}L.lg.style.display=''});placeOV()};
  const af=applyFrame;applyFrame=function(){const r=af.apply(this,arguments);apply();return r};apply()}
 /* 동아시아 상세 지도 북서쪽 귀퉁이(몽골 쪽)가 비어 호수처럼 잘려 보이던 곳 → 세계 지도 땅으로 채움 */
 {const NS='http://www.w3.org/2000/svg',mk=(t,a,p)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);p&&p.appendChild(e);return e};
@@ -1037,3 +1045,8 @@ document.addEventListener('click',e=>{const c=e.target.closest&&e.target.closest
 {const NS='http://www.w3.org/2000/svg';const g=document.createElementNS(NS,'g');g.id='coasttop';const k=document.createElementNS(NS,'path'),c=document.createElementNS(NS,'path');k.setAttribute('class','ctop');c.setAttribute('class','ctop');k.setAttribute('d',LAND.korCoast||'');c.setAttribute('d',LAND.ctxCoast||'');g.appendChild(c);g.appendChild(k);G.terr.after(g);
  ['cl1','cl2'].forEach(id=>{const n=$(id);if(n)n.style.display='none'});
  const lk=$('landk');if(lk&&LAND.korHiCoast)new MutationObserver(()=>{const hi=lk.getAttribute('d')===LAND.korHi;k.setAttribute('d',hi?LAND.korHiCoast:LAND.korCoast)}).observe(lk,{attributes:true,attributeFilter:['d']})}
+/* 얇은 순서 화살표 */
+arrOf.forEach(ps=>ps.forEach(p=>{if(p.c==='donghak'){p.g.classList.add('thin');p.hg.classList.add('thin')}}));
+/* 고인돌: 탁자식 고인돌 모양 핀 */
+{const DM='<path class="dmc" d="M-11,-11.6Q-6,-14.2,1,-13.8Q8,-13.6,11.4,-11.4Q11.8,-9.8,10,-9.2Q1,-8.2,-9.6,-9.2Q-11.8,-9.8,-11,-11.6Z"/><path class="dms" d="M-7.6,-9.1L-6.8,0.2L-3.4,0.2L-3.8,-9Z"/><path class="dms" d="M3.6,-8.9L3.2,0.2L6.8,0.2L7.4,-9Z"/><path class="dmg" d="M-10,0.6H10"/>';
+ EVENTS.forEach(e=>{if(!/^고인돌/.test(e.t))return;const o=pinOf.get(e.id);if(!o)return;const gl=o.g.querySelector('.gl');if(!gl)return;gl.innerHTML=DM;o.g.classList.add('stelepin','dolpin')})}
