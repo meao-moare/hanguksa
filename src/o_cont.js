@@ -889,7 +889,7 @@ document.addEventListener('click',e=>{const c=e.target.closest&&e.target.closest
 {const ME={xg:new Map(),x:new Map(),xc:new Map(),s:new Set(),h:new Map(),g:new Map(),w:new Map(),q:new Map(),l:new Map(),c:new Map(),v:new Map()};let canW=false,DB=null,editOn=false;window.__ME=ME;
  const E=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
  const hid=k=>[...new TextEncoder().encode(k)].map(b=>b.toString(16).padStart(2,'0')).join('').slice(0,190);
- const SEL='h1,h2,h3,h4,p,li,dd,dt,td,th,.kpd,.snv,.sri b,.sri span,.ppnames button,.kpp button,.gdr span,.evd b,.evd span,.evd div,#menupop .mnv button,#menupop .mnh,.tabs button,#tlmenu button';
+ const SEL='h1,h2,h3,h4,p,li,dd,dt,td,th,.kpd,.snv,.sri b,.sri span,.ppnames button,.kpp button,.gdr span,.evd b,.evd span,.evd div,#menupop .mnv button[data-mv],#menupop .mnh,.tabs button,#tlmenu button';
  const SKIP='svg,#map,.tbar,.tbtns,.search,#srq,textarea,input,.mtool,.snote,.mtags,#medit,#menupop .mnq,#menupop .mnadd';
  /* 받은 자료 넣기 */
  const load=docs=>{const wOld=JSON.stringify([...ME.w]);ME.x.clear();ME.xg.clear();ME.xc.clear();ME.s.clear();ME.h.clear();ME.g.clear();ME.w.clear();ME.q.clear();ME.l.clear();ME.c.clear();ME.v.clear();docs.forEach(d=>{if(!d||!d.k)return;const t=d.k[0],key=d.k.slice(2);
@@ -1021,19 +1021,31 @@ document.addEventListener('click',e=>{const c=e.target.closest&&e.target.closest
      return `<div class="mnrowi">${c}<a class="mni" href="${E(q.u)}" target="_blank" rel="noopener">${lab}${del}</a></div>`};
    const render=()=>{const ed=canW&&editOn;const all=[...ME.q.entries()].sort((a,b)=>(a[1].at||0)-(b[1].at||0));const G=all.filter(([k,q])=>q.kind==='g'),I=all.filter(([k,q])=>q.kind!=='g');
      const inG=([k,q])=>q.g&&ME.q.has(q.g);const grouped=new Set(I.filter(x=>inG(x)&&x[1].v).map(x=>x[1].v));const loose=I.filter(x=>!inG(x)&&!x[1].v);
-     m.innerHTML=`<div class="mnh">화면</div><div class="mnv">${VS.filter(([v])=>!grouped.has(v)).map(([v,n])=>`<div class="mnrowi">${ed?cb('v:'+v):''}<button type="button" data-mv="${v}">${n}</button></div>`).join('')}</div>
-     ${G.length?'<div class="mnh">묶음</div>':''}${G.map(([gk,g])=>{const its=I.filter(([k,q])=>q.g===gk);const f=!!fold[gk];return `<div class="mng${f?' fold':''}"><div class="mngh" data-gfold="${E(gk)}"><span><em class="mnfold">${f?'▸':'▾'}</em>📁 ${E(g.n)} <small>${its.length}</small></span>${ed?`<i data-qdel="${E(gk)}" title="묶음 풀기">×</i>`:''}</div><div class="mngb">${its.map(x=>itemHTML(x,ed)).join('')||'<span class="mnempty">비어 있어요</span>'}</div></div>`}).join('')}
+     m.innerHTML=`<div class="mnh">화면</div><div class="mnv">${VS.filter(([v])=>!grouped.has(v)).map(([v,n])=>`<div class="mnrowi">${ed?cb('v:'+v):''}<button type="button" data-mv="${v}">${n}</button></div>`).join('')}
+     ${G.map(([gk,g])=>{const its=I.filter(([k,q])=>q.g===gk);return `<div class="mnrowi"><button type="button" class="mngbtn" data-gopen="${E(gk)}"><span>${E(g.n)}</span><em>${its.length} ▸</em></button>${ed?`<i class="mngx" data-qdel="${E(gk)}" title="묶음 풀기">×</i>`:''}</div>`}).join('')}</div>
      <div class="mnh">바로가기</div><div class="mnq">${loose.map(x=>itemHTML(x,ed)).join('')||'<span class="mnempty">아직 없어요</span>'}</div>
      ${ed&&pick.size?`<div class="mngrp"><b>${pick.size}개 고름</b><div class="mnrow"><input id="mqgn" placeholder="묶음 이름" list="mqgl"><datalist id="mqgl">${G.map(([gk,g])=>`<option value="${E(g.n)}">`).join('')}</datalist><button type="button" data-gdo>묶기</button></div><button type="button" class="mnlink" data-gclear>고르기 취소</button></div>`:''}
      ${ed?`<div class="mnadd"><div class="mnh2">메뉴 추가</div><input id="mqn" placeholder="메뉴 이름"><div class="mnrow"><input id="mqu" placeholder="주소 (https://…)"><button type="button" class="mnpick" data-qpick>앱 안에서 고르기</button></div><div class="mnsel">${pend?`<span class="mnpend">🔗 ${E(nameOf(pend))}<i data-qunpick>×</i></span>`:''}</div><div class="mnrow"><button type="button" data-qadd>추가</button></div><small class="mnhint">묶으려면 메뉴 왼쪽 네모를 고르고 묶음 이름을 적으세요</small></div>`:''}`};
+   const fly=document.createElement('div');fly.id='mgpop';fly.hidden=true;document.body.appendChild(fly);
+   const openFly=(gk,row)=>{const ed=canW&&editOn;const g=ME.q.get(gk);if(!g){fly.hidden=true;return}const its=[...ME.q.entries()].filter(([k,q])=>q.kind!=='g'&&q.g===gk).sort((a,b)=>(a[1].at||0)-(b[1].at||0));
+     fly.innerHTML=`<div class="mgh">${E(g.n)}</div>${its.map(x=>itemHTML(x,ed)).join('')||'<span class="mnempty">비어 있어요</span>'}`;fly.dataset.g=gk;const r=row.getBoundingClientRect(),mr=m.getBoundingClientRect();
+     fly.hidden=false;const w=fly.offsetWidth;let left=mr.left-w-6;if(left<8)left=Math.min(innerWidth-w-8,mr.left+20);fly.style.left=left+'px';fly.style.top=Math.min(innerHeight-fly.offsetHeight-8,r.top)+'px'};
+   m.openFly=openFly;
+   fly.addEventListener('click',e=>{const v=e.target.closest('[data-mv]');if(v&&!(editOn&&canW)&&!e.target.closest('[data-qdel]')){fly.hidden=true;m.hidden=true;$('kpage').hidden=true;showView(v.dataset.mv);return}
+     const qi=e.target.closest('[data-qit]');if(qi&&!(editOn&&canW)&&!e.target.closest('[data-qdel]')){fly.hidden=true;m.hidden=true;openItem(qi.dataset.qit);return}
+     const a=e.target.closest('a.mni');if(a&&!e.target.closest('[data-qdel]')){fly.hidden=true;return}
+     const d=e.target.closest('[data-qdel]');if(d){e.preventDefault();e.stopPropagation();const k=d.dataset.qdel;const q=ME.q.get(k);if(q){if(q.v){ME.q.delete(k);save('q:'+k,'')}else{q.g='';save('q:'+k,q)}}render();const row=m.querySelector(`[data-gopen="${CSS.escape(fly.dataset.g)}"]`);if(row)openFly(fly.dataset.g,row);else fly.hidden=true}});
+   fly.addEventListener('change',e=>{const c=e.target.closest('[data-sel]');if(!c)return;c.checked?pick.add(c.dataset.sel):pick.delete(c.dataset.sel);render()});
+   document.addEventListener('click',e=>{if(!fly.hidden&&e.target.isConnected&&!e.target.closest('#mgpop,[data-gopen]'))fly.hidden=true});
    m.render=render;
-   b.onclick=e=>{e.stopPropagation();if(!m.hidden){m.hidden=true;return}render();const tb=document.querySelector('.top').getBoundingClientRect();m.style.setProperty('--mtop',tb.bottom+'px');const cur=store.get('view','map');m.querySelectorAll('[data-mv]').forEach(x=>x.classList.toggle('on',x.dataset.mv===cur));m.hidden=false};
-   document.addEventListener('click',e=>{if(!m.hidden&&e.target.isConnected&&!e.target.closest('#menupop,#menubtn,.mpick'))m.hidden=true});
+   b.onclick=e=>{e.stopPropagation();fly.hidden=true;if(!m.hidden){m.hidden=true;return}render();const tb=document.querySelector('.top').getBoundingClientRect();m.style.setProperty('--mtop',tb.bottom+'px');const cur=store.get('view','map');m.querySelectorAll('[data-mv]').forEach(x=>x.classList.toggle('on',x.dataset.mv===cur));m.hidden=false};
+   document.addEventListener('click',e=>{if(!m.hidden&&e.target.isConnected&&!e.target.closest('#menupop,#menubtn,.mpick,#mgpop'))m.hidden=true});
    m.addEventListener('keydown',e=>{e.stopPropagation();if(e.key==='Enter'&&!e.isComposing&&e.target.id==='mqgn'){const g=m.querySelector('[data-gdo]');if(g)g.click()}},true);
    m.addEventListener('change',e=>{const c=e.target.closest('[data-sel]');if(!c)return;c.checked?pick.add(c.dataset.sel):pick.delete(c.dataset.sel);const keep=(m.querySelector('#mqgn')||{}).value;render();const n=m.querySelector('#mqgn');if(n&&keep)n.value=keep});
    m.addEventListener('click',e=>{if(e.target.closest('[data-sel]'))return;
      const v=e.target.closest('[data-mv]');if(v){if(editOn&&canW&&!e.target.closest('[data-qdel]'))return;if(!e.target.closest('[data-qdel]')){m.hidden=true;$('kpage').hidden=true;showView(v.dataset.mv);return}}
      const d=e.target.closest('[data-qdel]');if(d){e.preventDefault();e.stopPropagation();const k=d.dataset.qdel;const q=ME.q.get(k);ME.q.delete(k);save('q:'+k,'');if(q&&q.kind==='g'){[...ME.q.entries()].forEach(([ik,iq])=>{if(iq.g===k){if(iq.v){ME.q.delete(ik);save('q:'+ik,'')}else{iq.g='';save('q:'+ik,iq)}}})}render();return}
+     const go=e.target.closest('[data-gopen]');if(go){if(!fly.hidden&&fly.dataset.g===go.dataset.gopen){fly.hidden=true}else openFly(go.dataset.gopen,go);return}
      const gf=e.target.closest('[data-gfold]');if(gf){const k=gf.dataset.gfold;fold[k]=!fold[k];try{localStorage.setItem('hgs_mfold',JSON.stringify(fold))}catch(_){}render();return}
      const qi=e.target.closest('[data-qit]');if(qi){if(editOn&&canW)return;m.hidden=true;openItem(qi.dataset.qit);return}
      if(e.target.closest('[data-gclear]')){pick.clear();render();return}
