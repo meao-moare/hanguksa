@@ -5547,10 +5547,10 @@ document.addEventListener('click',e=>{const c=e.target.closest&&e.target.closest
  const p=document.createElementNS(NS,'path');p.setAttribute('class','tund');g.appendChild(p);
  const sync=()=>p.setAttribute('d',($('cpk').getAttribute('d')||'')+($('landfill')?$('landfill').getAttribute('d'):''));sync();new MutationObserver(sync).observe($('cpk'),{attributes:true,attributeFilter:['d']});
  const PRE='#e6dcc6',TAM='#e6d4b8',JUR='#d5ddc6';
- const CFG={0:[PRE],1:[PRE],2:['none'],3:[PRE],4:[TAM,[['탐라',126.55,33.38]]],5:[TAM,[['탐라',126.55,33.38]]],6:[TAM,[['탐라',126.55,33.38]]],7:[TAM,[['탐라',126.55,33.38]]],
+ const CFG={0:['none'],1:['none'],2:['none'],3:['none'],4:[TAM,[['탐라',126.55,33.38]]],5:[TAM,[['탐라',126.55,33.38]]],6:[TAM,[['탐라',126.55,33.38]]],7:[TAM,[['탐라',126.55,33.38]]],
   8:[JUR,[['말갈',127.15,39.45],['탐라',126.55,33.38]]],9:[TAM,[['탐라',126.55,33.38]]],10:[TAM,[['탐라',126.55,33.38]]],11:[JUR,[['여진',128.7,41.3]]],12:[JUR,[['여진',128.7,41.3]]],13:[JUR,[['여진',128.7,41.3]]],14:[JUR,[['여진',128.7,41.3]]],15:[JUR,[['여진',127.6,41.4]]],16:[JUR,[['여진',127.6,41.4]]]};
  const labs=[];const mkLab=(n,lo,la)=>{const lg=document.createElementNS(NS,'g');lg.setAttribute('class','ulab');const t=document.createElementNS(NS,'text');t.textContent=n;lg.appendChild(t);$('ovl').appendChild(lg);const o={g:lg,x:X(lo),y:Y(la)};OV.push(o);labs.push({n,lg});return lg};
- const apply=()=>{const c=CFG[pos.i]||[PRE];p.style.fill=c[0];const want=(c[1]||[]).map(a=>a.join('|'));labs.forEach(L=>L.lg.style.display='none');(c[1]||[]).forEach(([n,lo,la])=>{let L=labs.find(L=>L.key===n+lo+la);if(!L){mkLab(n,lo,la);L=labs[labs.length-1];L.key=n+lo+la}L.lg.style.display=''});placeOV()};
+ const apply=()=>{const c=CFG[pos.i]||['none'];p.style.fill=c[0];const want=(c[1]||[]).map(a=>a.join('|'));labs.forEach(L=>L.lg.style.display='none');(c[1]||[]).forEach(([n,lo,la])=>{let L=labs.find(L=>L.key===n+lo+la);if(!L){mkLab(n,lo,la);L=labs[labs.length-1];L.key=n+lo+la}L.lg.style.display=''});placeOV()};
  const af=applyFrame;applyFrame=function(){const r=af.apply(this,arguments);apply();return r};apply()}
 /* 동아시아 상세 지도 북서쪽 귀퉁이(몽골 쪽)가 비어 호수처럼 잘려 보이던 곳 → 세계 지도 땅으로 채움 */
 {const NS='http://www.w3.org/2000/svg',mk=(t,a,p)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);p&&p.appendChild(e);return e};
