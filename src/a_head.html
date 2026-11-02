@@ -1683,3 +1683,40 @@ h1.flash,h2.flash,h3.flash{animation:hflash 1.2s}@keyframes hflash{0%,60%{backgr
 #mpen .mpfmt:not(.on) :is(.mfc,.mfrow,.mfr){opacity:.3;pointer-events:none}</style>
 <style>#mpen [data-pen]{font-size:12.5px!important;font-weight:600;padding:8px 0!important;width:64px!important}
 #mpen .mpfh{font-size:11px!important;font-weight:700;color:color-mix(in srgb,var(--ink) 55%,transparent)!important;padding:0!important}</style>
+<style>#mpen{align-items:stretch!important;width:auto;padding:6px 8px 8px!important}
+#mpen .mpgrip{align-self:center}
+#mpen .mpfmt{width:auto!important;padding:2px 0 8px!important;margin:0 0 4px!important;border-top:0!important;border-bottom:1px solid color-mix(in srgb,var(--ink) 9%,transparent)}
+#mpen .mpfmt .mfrow{display:flex;align-items:center;gap:4px}
+#mpen .mpfmt .mfrow>*{height:30px}
+#mpen .mfdot{width:30px;border-radius:50%!important;padding:0!important;background:none!important;border:1.5px solid color-mix(in srgb,var(--ink) 15%,transparent)!important;display:grid;place-items:center}
+#mpen .mfdot i{width:18px;height:18px;border-radius:50%;background:#94a3b8;display:block}
+#mpen .mpfmt .mfrow [data-fb]{width:30px!important;font-size:15px!important;border-radius:8px!important}
+#mpen [data-fs]{font:inherit;font-size:13px;width:54px;border:1px solid color-mix(in srgb,var(--ink) 14%,transparent);border-radius:8px;background:var(--panel);color:var(--ink);padding:0 4px;font-variant-numeric:tabular-nums}
+#mpen .mpfmt .mfrow [data-fr]{width:30px!important;display:grid;place-items:center;border-radius:8px!important;padding:0!important}
+#mpen [data-fr] svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+#mpen .mfpal{padding-top:8px}#mpen .mfpal .mfc{grid-template-columns:repeat(6,18px)!important;gap:6px!important}
+#mpen .mfpal .mfc button,#mpen .mfpal .mfcc{width:18px!important;height:18px!important}
+#mpen .mpfmt:not(.on) .mfrow{opacity:.35;pointer-events:none}#mpen .mpfmt:not(.on) .mfpal{display:none}
+#mpen [data-pen]{width:auto!important;padding:7px 10px!important;align-items:flex-start!important;font-size:14px!important;font-weight:600;border-radius:10px!important}
+#mpen [data-pen=hl] span{background:linear-gradient(transparent 45%,#fde047 45%,#fde047 90%,transparent 90%);padding:0 3px}
+#mpen [data-pen=gl] span{text-decoration:underline;text-decoration-color:#ef4444;text-decoration-thickness:2px;text-underline-offset:4px}
+#mpen [data-pen=hl].on{background:#fef9c3!important;box-shadow:inset 0 0 0 1.5px #facc15!important}
+#mpen [data-pen=gl].on{background:#fee2e2!important;box-shadow:inset 0 0 0 1.5px #f87171!important}
+#evaddrow{list-style:none;padding:2px 0 6px}
+#evaddrow button{width:100%;font:inherit;font-size:13.5px;font-weight:600;color:#dc2626;background:color-mix(in srgb,#dc2626 4%,transparent);border:1.5px dashed color-mix(in srgb,#dc2626 45%,transparent);border-radius:12px;padding:9px 12px;cursor:pointer;text-align:center}
+#evaddrow button:hover{background:color-mix(in srgb,#dc2626 9%,transparent)}</style>
+<style>#mpen .mptop{display:flex;align-items:center;justify-content:space-between;gap:4px}
+#mpen .mptop [data-undo],#mpen .mptop [data-redo]{width:28px;height:26px;border:0;background:none;border-radius:8px;display:grid;place-items:center;cursor:pointer;color:var(--ink)}
+#mpen .mptop button:hover{background:color-mix(in srgb,var(--ink) 7%,transparent)}
+#mpen .mptop svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+#mpen .mftg{font-size:10.5px;color:color-mix(in srgb,var(--ink) 50%,transparent);text-align:center;padding-top:4px}
+#mpen .mpfmt:not(.on) .mftg{display:none}
+#mpen .mpfmt.box .mfrow [data-fb],#mpen .mpfmt.box [data-fs]{opacity:.3;pointer-events:none}
+.mboxsel{outline:2.5px solid #3b82f6!important;outline-offset:2px}
+body.medit :is(#kpage .kpin>section,.sumblk,.evd>section,#dcbody .gl2>div,.rlcard){cursor:cell}
+.mkind{display:inline-flex;gap:8px;align-items:center;margin-left:10px}
+.mkseg{display:inline-flex;background:color-mix(in srgb,var(--ink) 6%,transparent);border-radius:999px;padding:2px}
+.mkseg button{font:inherit;font-size:12.5px;border:0;background:none;border-radius:999px;padding:3px 12px;cursor:pointer;color:color-mix(in srgb,var(--ink) 60%,transparent)}
+.mkseg button.on{background:var(--panel);color:var(--ink);font-weight:700;box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.mkdel{font:inherit;font-size:12px;border:1px solid color-mix(in srgb,#dc2626 35%,transparent);color:#dc2626;background:none;border-radius:999px;padding:3px 11px;cursor:pointer}
+.mkdel.arm{background:#dc2626;color:#fff}</style>
