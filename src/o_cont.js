@@ -1005,7 +1005,7 @@ document.addEventListener('click',e=>{const c=e.target.closest&&e.target.closest
  /* ☰ 메뉴: 화면 바로 가기 + 내가 넣는 바로가기 */
  {const sb=$('setbtn');if(sb&&!$('menubtn')){const b=document.createElement('button');b.id='menubtn';b.type='button';b.className='tib';b.setAttribute('aria-label','메뉴');b.innerHTML='<svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg>';sb.after(b);
    const m=document.createElement('div');m.id='menupop';m.hidden=true;document.body.appendChild(m);
-   const VS=[['map','지도'],['tl','연표'],['ov','연대표'],['tr','구조도'],['kg','왕계표'],['pp','인물'],['dc','사전'],['rl','유물']];
+   const VS=[['map','지도'],['tl','연표'],['ov','연대표'],['tr','구조도'],['kg','왕계표'],['pp','인물'],['dc','사전'],['rl','문화유산']];
    const render=()=>{const Q=[...ME.q.entries()].sort((a,b)=>(a[1].at||0)-(b[1].at||0));
      m.innerHTML=`<div class="mnh">화면</div><div class="mnv">${VS.map(([v,n])=>`<button type="button" data-mv="${v}">${n}</button>`).join('')}</div>
      <div class="mnh">바로가기</div><div class="mnq">${Q.map(([k,q])=>`<a href="${E(q.u)}" target="_blank" rel="noopener">${E(q.n||q.u)}${canW?`<i data-qdel="${E(k)}">×</i>`:''}</a>`).join('')||'<span class="mnempty">아직 없어요</span>'}</div>
@@ -1106,11 +1106,11 @@ document.addEventListener('click',ev=>{const k=ev.target.closest('[data-rk]');if
  p.innerHTML=`<button class="ib trx" type="button" aria-label="닫기"><svg class="ic" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button><div class="evd">${evDetailHTML(e)}<div class="nav">${e.ll?`<button class="btn" data-km>지도에서 보기</button>`:''}<button class="btn" data-kt>연표에서 보기</button></div></div>`;
  p.hidden=false;$('trdim').hidden=false;p.scrollTop=0;p.querySelector('.trx').onclick=closeTree;const m=p.querySelector('[data-km]');if(m)m.onclick=()=>{closeTree();gotoMap(e)};p.querySelector('[data-kt]').onclick=()=>{closeTree();gotoTimeline(e)}});
 /* 유적·유물 자세히: 사전처럼 한 화면 */
-Object.assign(SEC_COL,{'설명':'#b45309','배경 이야기':'#7c3aed','자세히':'#0e7490','뜻':'#b91c1c','앞뒤 사건':'#1d4ed8','관련 인물':'#047857','같은 시대 유적·유물':'#be185d'});
+Object.assign(SEC_COL,{'설명':'#b45309','배경 이야기':'#7c3aed','자세히':'#0e7490','뜻':'#b91c1c','앞뒤 사건':'#1d4ed8','관련 인물':'#047857','같은 시대 문화유산':'#be185d'});
 function rlOpen(e){const p=$('kpage');const L=RLITEMS();const i=L.findIndex(x=>x.id===e.id);const k=RL_KIND(e);
  const story=typeof STORY!=='undefined'?STORY[e.t]:null;const deep=typeof DEEP!=='undefined'?(DEEP[e.s]||DEEP[e.t]):null;const def=GLOSS[e.s]||GLOSS[e.t];
  const pps=(e.pp||'').split(/,\s*/).map(x=>x.trim()).filter(Boolean);const lk=[...(e.cz||[]),...(e.fx||[])];const near=L.filter(x=>x.era===e.era&&x.id!==e.id).slice(0,10);
- p.innerHTML=`<div class="kpbar"><button class="ib" data-kx aria-label="뒤로"><svg class="ic" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg></button><span>유적·유물</span><span class="kpnav rlnav"><button type="button" class="ib" data-rlv="-1" aria-label="이전"${i>0?'':' disabled'}><svg class="ic" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg></button><button type="button" class="ib" data-rlv="1" aria-label="다음"${i<L.length-1?'':' disabled'}><svg class="ic" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button></span></div>
+ p.innerHTML=`<div class="kpbar"><button class="ib" data-kx aria-label="뒤로"><svg class="ic" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg></button><span>문화유산</span><span class="kpnav rlnav"><button type="button" class="ib" data-rlv="-1" aria-label="이전"${i>0?'':' disabled'}><svg class="ic" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg></button><button type="button" class="ib" data-rlv="1" aria-label="다음"${i<L.length-1?'':' disabled'}><svg class="ic" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button></span></div>
  <div class="kpin" style="--kc:${RL_COL[k]}">
   <div class="kph"><h1>${esc(rlName(e))}</h1><button class="hrt" type="button" data-kh="r|${esc(e.t)}" aria-pressed="${KHEARTS.has('r|'+e.t)}" aria-label="하트">${HEART_IC}</button></div>
   <div class="kpsub"><span style="color:${RL_COL[k]};font-weight:700">${k}</span><span>${esc(e.yl||shortYear(e))}${e.kind?'':' '+esc(e.t)}</span>${e.p?`<span>${esc(e.p)}</span>`:''}</div>
@@ -1120,7 +1120,7 @@ function rlOpen(e){const p=$('kpage');const L=RLITEMS();const i=L.findIndex(x=>x
   ${story?`<section><h3>배경 이야기</h3><p class="kpd">${glx(story)}</p></section>`:''}
   ${pps.length?`<section><h3>관련 인물</h3><div class="kpp">${pps.map(x=>`<button class="pchip" data-person="${esc(x)}" data-pt="${e.T}"><i>${esc([...x][0]||'')}</i>${esc(x)}</button>`).join('')}</div></section>`:''}
   ${lk.length?`<section><h3>앞뒤 사건</h3><ul class="kpl">${lk.map(x=>`<li class="ev"><button data-kpe="${x.id}" style="--tc:var(--t-${x.tp[0]})"><em>${esc(shortYear(x))}</em>${esc(x.t)}</button></li>`).join('')}</ul></section>`:''}
-  ${near.length?`<section><h3>같은 시대 유적·유물</h3><div class="kpp">${near.map(x=>`<button type="button" data-rle="${x.id}" style="--kc:${RL_COL[RL_KIND(x)]}"><i></i>${esc(rlName(x))}</button>`).join('')}</div></section>`:''}
+  ${near.length?`<section><h3>같은 시대 문화유산</h3><div class="kpp">${near.map(x=>`<button type="button" data-rle="${x.id}" style="--kc:${RL_COL[RL_KIND(x)]}"><i></i>${esc(rlName(x))}</button>`).join('')}</div></section>`:''}
   <div class="rlgo">${e.ll?'<button class="btn" data-rlmap>지도에서 보기</button>':''}<button class="btn" data-rltl>연표에서 보기</button></div>
  </div>`;
  p.hidden=false;p.scrollTop=0;p.querySelector('[data-kx]').onclick=()=>{p.hidden=true};
