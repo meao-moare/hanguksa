@@ -1075,9 +1075,31 @@ function rlShow(){const L=EVENTS.filter(e=>RL_KIND(e)).sort((a,b)=>a.T-b.T);cons
  $('rlchips').innerHTML=['',...kinds].map(k=>`<button type="button" data-rk="${k}" aria-pressed="${rlKind===k}" style="--kc:${RL_COL[k]||'var(--ink)'}">${k||'전체'} ${L.filter(e=>!k||RL_KIND(e)===k).length}</button>`).join('');
  const by=ERAS.map(E=>({E,xs:L.filter(e=>e.era===E.k&&(!rlKind||RL_KIND(e)===rlKind))})).filter(x=>x.xs.length);
  $('rljump').innerHTML=by.map(({E})=>`<button type="button" data-rj="${E.k}">${E.n}</button>`).join('');
- $('rlbody').innerHTML=by.map(({E,xs})=>`<section class="rlera" id="rl-${E.k}"><h3>${esc(E.n)}<span>${esc(E.rg||'')}</span></h3><div class="rlgrid">${xs.map(e=>{const k=RL_KIND(e);return `<button type="button" class="rlcard" data-rle="${e.id}" style="--kc:${RL_COL[k]}"><span class="rk">${k}</span><b>${esc(e.t)}</b><span class="rm">${esc(e.yl||shortYear(e))}${e.p?' · '+esc(e.p):''}</span></button>`}).join('')}</div></section>`).join('')}
+ $('rlbody').innerHTML=by.map(({E,xs})=>`<section class="rlera" id="rl-${E.k}"><h3>${esc(E.n)}<span>${esc(E.rg||'')}</span></h3><div class="rlgrid">${xs.map(e=>{const k=RL_KIND(e);return `<button type="button" class="rlcard" data-rle="${e.id}" style="--kc:${RL_COL[k]}"><span class="rk">${k}</span><b>${esc(e.t)}</b><span class="rd">${esc(((e.x||'').split(/(?<=[.다])\s/)[0]||'').replace(/\(.*?\)/g,''))}</span><span class="rm">${esc(e.yl||shortYear(e))}${e.p?' · '+esc(e.p):''}</span></button>`}).join('')}</div></section>`).join('')}
 document.addEventListener('click',ev=>{const k=ev.target.closest('[data-rk]');if(k){rlKind=k.dataset.rk;rlShow();return}
  const j=ev.target.closest('[data-rj]');if(j){const s=document.getElementById('rl-'+j.dataset.rj),rd=$('rlread');if(s)rd.scrollTo({top:s.offsetTop-rd.querySelector('.rhead').offsetHeight-6,behavior:'smooth'});return}
- const c=ev.target.closest('[data-rle]');if(!c)return;const e=EVENTS.find(x=>x.id===+c.dataset.rle);if(!e)return;const p=$('trpop');
+ const c=ev.target.closest('[data-rle]');if(!c)return;const e=EVENTS.find(x=>x.id===+c.dataset.rle);if(!e)return;rlOpen(e);return;const p=$('trpop');
  p.innerHTML=`<button class="ib trx" type="button" aria-label="닫기"><svg class="ic" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button><div class="evd">${evDetailHTML(e)}<div class="nav">${e.ll?`<button class="btn" data-km>지도에서 보기</button>`:''}<button class="btn" data-kt>연표에서 보기</button></div></div>`;
  p.hidden=false;$('trdim').hidden=false;p.scrollTop=0;p.querySelector('.trx').onclick=closeTree;const m=p.querySelector('[data-km]');if(m)m.onclick=()=>{closeTree();gotoMap(e)};p.querySelector('[data-kt]').onclick=()=>{closeTree();gotoTimeline(e)}});
+/* 유적·유물 자세히: 사전처럼 한 화면 */
+Object.assign(SEC_COL,{'설명':'#b45309','배경 이야기':'#7c3aed','자세히':'#0e7490','뜻':'#b91c1c','앞뒤 사건':'#1d4ed8','관련 인물':'#047857','같은 시대 유적·유물':'#be185d'});
+function rlOpen(e){const p=$('kpage');const L=EVENTS.filter(x=>RL_KIND(x)).sort((a,b)=>a.T-b.T);const i=L.findIndex(x=>x.id===e.id);const k=RL_KIND(e);
+ const story=typeof STORY!=='undefined'?STORY[e.t]:null;const deep=typeof DEEP!=='undefined'?(DEEP[e.s]||DEEP[e.t]):null;const def=GLOSS[e.s]||GLOSS[e.t];
+ const pps=(e.pp||'').split(/,\s*/).map(x=>x.trim()).filter(Boolean);const lk=[...(e.cz||[]),...(e.fx||[])];const near=L.filter(x=>x.era===e.era&&x.id!==e.id).slice(0,10);
+ p.innerHTML=`<div class="kpbar"><button class="ib" data-kx aria-label="뒤로"><svg class="ic" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg></button><span>유적·유물</span><span class="kpnav rlnav"><button type="button" class="ib" data-rlv="-1" aria-label="이전"${i>0?'':' disabled'}><svg class="ic" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg></button><button type="button" class="ib" data-rlv="1" aria-label="다음"${i<L.length-1?'':' disabled'}><svg class="ic" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button></span></div>
+ <div class="kpin" style="--kc:${RL_COL[k]}">
+  <div class="kph"><h1>${esc(e.t)}</h1><button class="hrt" type="button" data-kh="r|${esc(e.t)}" aria-pressed="${KHEARTS.has('r|'+e.t)}" aria-label="하트">${HEART_IC}</button></div>
+  <div class="kpsub"><span style="color:${RL_COL[k]};font-weight:700">${k}</span><span>${esc(e.yl||shortYear(e))}</span>${e.p?`<span>${esc(e.p)}</span>`:''}</div>
+  <section><h3>설명</h3><p class="kpd">${glx(e.x||'')}</p></section>
+  ${def?`<section><h3>뜻</h3><p class="kpd">${glx(def)}</p></section>`:''}
+  ${deep?`<section><h3>자세히</h3><div class="tmrows">${deep.map(([a,t])=>`<div class="gdr" data-l="${esc(a)}"><i>${esc(a)}</i><span>${glx(t)}</span></div>`).join('')}</div></section>`:''}
+  ${story?`<section><h3>배경 이야기</h3><p class="kpd">${glx(story)}</p></section>`:''}
+  ${pps.length?`<section><h3>관련 인물</h3><div class="kpp">${pps.map(x=>`<button class="pchip" data-person="${esc(x)}" data-pt="${e.T}"><i>${esc([...x][0]||'')}</i>${esc(x)}</button>`).join('')}</div></section>`:''}
+  ${lk.length?`<section><h3>앞뒤 사건</h3><ul class="kpl">${lk.map(x=>`<li class="ev"><button data-kpe="${x.id}" style="--tc:var(--t-${x.tp[0]})"><em>${esc(shortYear(x))}</em>${esc(x.t)}</button></li>`).join('')}</ul></section>`:''}
+  ${near.length?`<section><h3>같은 시대 유적·유물</h3><div class="kpp">${near.map(x=>`<button type="button" data-rle="${x.id}" style="--kc:${RL_COL[RL_KIND(x)]}"><i></i>${esc(x.t)}</button>`).join('')}</div></section>`:''}
+  <div class="rlgo">${e.ll?'<button class="btn" data-rlmap>지도에서 보기</button>':''}<button class="btn" data-rltl>연표에서 보기</button></div>
+ </div>`;
+ p.hidden=false;p.scrollTop=0;p.querySelector('[data-kx]').onclick=()=>{p.hidden=true};
+ p.querySelectorAll('[data-rlv]').forEach(b=>b.onclick=ev=>{ev.stopPropagation();const n=L[i+(+b.dataset.rlv)];if(n)rlOpen(n)});
+ const m=p.querySelector('[data-rlmap]');if(m)m.onclick=()=>{p.hidden=true;gotoMap(e)};p.querySelector('[data-rltl]').onclick=()=>{p.hidden=true;gotoTimeline(e)};
+ try{paintSections(p)}catch(_){}}
