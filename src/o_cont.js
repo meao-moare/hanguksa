@@ -390,7 +390,7 @@ function personPopHTML(n,T){const nm=pName(n),pair=P_PAIR[nm];const title=pair||
 try{buildTL();renderTLFilter();addTclb()}catch(_){}
 /* 밑줄 낱말 팝업: '사전에서 보기' */
 document.addEventListener('click',ev=>{const w=ev.target.closest('[data-gl]');if(!w||ev.target.closest('#glpop'))return;const gp=$('glpop');if(gp.hidden||gp.querySelector('.ppgo.dc'))return;const k=w.dataset.gl;gp.insertAdjacentHTML('beforeend',`<button type="button" class="ppgo dc" data-dc="${esc(k)}">사전에서 자세히 →</button>`)});
-document.addEventListener('click',ev=>{const b=ev.target.closest('[data-dc]');if(!b)return;ev.stopPropagation();const k=b.dataset.dc;$('glpop').hidden=true;showView('dc');try{dcShow();dcOnlyBk=false;dcFilter()}catch(_){}setTimeout(()=>{const c=$('dcbody').querySelector(`.gl2>div[data-k="${CSS.escape(k)}"]`);if(c){c.scrollIntoView({block:'center'});c.classList.remove('flash');void c.offsetWidth;c.classList.add('flash')}},120)},true);
+document.addEventListener('click',ev=>{const b=ev.target.closest('[data-dc]');if(!b)return;ev.preventDefault();ev.stopImmediatePropagation();const k=b.dataset.dc;$('glpop').hidden=true;try{if(!$('srch').hidden)closeSearch()}catch(_){}if(!GLOSS[k]&&typeof PEOPLE!=='undefined'&&PEOPLE.has(k))openPerson(k);else openTerm(k)},true);
 /* ───────── 이야기로 듣는 사건 배경 ───────── */
 const STORY={
  '고조선 건국':'하늘을 다스리는 환인의 아들 환웅이 인간 세상을 다스리고 싶어 하자, 환인은 천부인 3개를 주어 내려보냈다. 환웅은 무리 3천을 이끌고 태백산 신단수 아래로 내려와 신시를 열고, 바람·비·구름을 맡은 풍백·우사·운사를 거느리며 곡식·생명·질병·형벌·선악 등 인간의 360여 가지 일을 다스렸다(홍익인간). 곰과 호랑이가 사람이 되기를 빌자 쑥 한 줌과 마늘 20개를 주며 100일 동안 햇빛을 보지 말라고 했는데, 호랑이는 견디지 못했고 곰은 21일 만에 여자(웅녀)가 되었다. 웅녀와 환웅 사이에서 태어난 단군왕검이 아사달에 도읍하고 고조선을 세웠다. → 하늘 자손이라는 선민 사상(천손 사상), 풍백·우사·운사로 보는 농경 사회, 곰을 섬기는 부족과의 결합(토테미즘), 단군(제사장)+왕검(정치 지배자) = 제정일치 사회를 보여 준다. 『삼국유사』(일연)에 처음 실렸다.',
@@ -525,7 +525,7 @@ document.addEventListener('keydown',ev=>{if(ev.code!=='Space'&&ev.key!==' ')retu
  const vm=$('v-map');if(vm)new MutationObserver(()=>{if(vm.hidden)stop()}).observe(vm,{attributes:true,attributeFilter:['hidden']})}
 /* 로고(한국사 지도) 누르면: 새로고침하듯 지도 화면으로 */
 {const h=document.querySelector('header.top h1');if(h){h.style.cursor='pointer';h.setAttribute('role','button');h.title='지도 화면으로';
- h.addEventListener('click',()=>{try{if(playing)pause()}catch(_){}
+ h.addEventListener('click',()=>{try{if(playing)pause()}catch(_){}['kpage','trpop','trdim','menupop','srch'].forEach(id=>{const n=$(id);if(n&&!n.hidden){if(id==='srch'){try{closeSearch()}catch(_){}}else n.hidden=true}});
   document.querySelectorAll('.pppop,#pppop,#glpop,.glpop,#setpop').forEach(n=>{if(n.id==='setpop'){if(!n.hidden&&typeof closeSet==='function')closeSet()}else n.hidden=true});
   try{closeBubble(true)}catch(_){}try{selId=null;refreshSel()}catch(_){}abroad=false;userMoved=false;
   const app=document.querySelector('.app');app.classList.add('reloading');showView('map');
@@ -892,14 +892,15 @@ document.addEventListener('click',e=>{const c=e.target.closest&&e.target.closest
  w.after(g);const sync=()=>p.setAttribute('d',wl.getAttribute('d')||'');sync();new MutationObserver(sync).observe(wl,{attributes:true,attributeFilter:['d']});
  const st=document.createElement('style');st.textContent='.wland{stroke-width:2.2!important}.wland2{fill:var(--land);stroke:var(--land);stroke-width:.4;vector-effect:non-scaling-stroke}';document.head.appendChild(st)}}
 /* ───────── 나만의 편집: 글씨 고치기(자동 저장)·별표·형광펜·태그 — 주인만 쓰고, 다른 사람은 보기만 ───────── */
-{const ME={xg:new Map(),x:new Map(),xc:new Map(),s:new Set(),h:new Map(),g:new Map(),w:new Map(),q:new Map(),o:{menu:[]},l:new Map(),c:new Map(),v:new Map()};let canW=false,DB=null,editOn=false;window.__ME=ME;
+{const ME={xg:new Map(),x:new Map(),xc:new Map(),s:new Set(),h:new Map(),g:new Map(),w:new Map(),q:new Map(),o:{menu:[]},l:new Map(),c:new Map(),v:new Map(),u:new Map()};let canW=false,DB=null,editOn=false;window.__ME=ME;
  const E=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
  const hid=k=>[...new TextEncoder().encode(k)].map(b=>b.toString(16).padStart(2,'0')).join('').slice(0,190);
  const SEL='h1,h2,h3,h4,p,li,dd,dt,td,th,.kpd,.snv,.sri b,.sri span,.ppnames button,.kpp button,.gdr span,.evd b,.evd span,.evd div,#menupop .mnv button[data-mv],#menupop .mnh,.tabs button,#tlmenu button';
- const SKIP='svg,#map,.tbar,.tbtns,.search,#srq,textarea,input,.mtool,.snote,.mtags,#medit,#menupop .mnq,#menupop .mnadd';
+ const SKIP='header.top h1,svg,#map,.tbar,.tbtns,.search,#srq,textarea,input,.mtool,.snote,.mtags,#medit,#menupop .mnq,#menupop .mnadd';
  /* 받은 자료 넣기 */
- const load=docs=>{const wOld=JSON.stringify([...ME.w]);ME.x.clear();ME.xg.clear();ME.xc.clear();ME.s.clear();ME.h.clear();ME.g.clear();ME.w.clear();ME.q.clear();ME.o.menu=[];ME.l.clear();ME.c.clear();ME.v.clear();docs.forEach(d=>{if(!d||!d.k)return;const t=d.k[0],key=d.k.slice(2);
-   if(t==='x'&&d.v!=null){ME.x.set(key,String(d.v));if(d.c)ME.xc.set(key,d.c);const j=key.indexOf('\u0001');ME.xg.set(j>=0?key.slice(j+1):key,String(d.v))}else if(t==='s'&&d.v)ME.s.add(key);else if(t==='h'&&Array.isArray(d.v)&&d.v.length)ME.h.set(key,d.v.map(String));else if(t==='g'&&Array.isArray(d.v)&&d.v.length)ME.g.set(key,d.v.map(String));else if(t==='w'&&d.v)ME.w.set(key,String(d.v));else if(t==='q'&&d.v&&(d.v.u||d.v.it||d.v.v||d.v.kind==='g'))ME.q.set(key,d.v);else if(t==='o'&&key==='menu'&&Array.isArray(d.v))ME.o.menu=d.v.map(String);else if(t==='l'&&Array.isArray(d.v)&&d.v.length)ME.l.set(key,d.v.map(String));else if(t==='c'&&Array.isArray(d.v)&&d.v.length)ME.c.set(key,d.v.filter(x=>x&&x.v));else if(t==='v'&&d.v&&d.v.t)ME.v.set(key,d.v)});syncEvents();if(JSON.stringify([...ME.w])!==wOld)applyWords();applyAll()};
+ let pendD=null;const load=docs=>{if(document.querySelector('.xing')){pendD=docs;return}try{localStorage.setItem('hgs_mec',JSON.stringify(docs))}catch(_){}const wOld=JSON.stringify([...ME.w]);ME.x.clear();ME.xg.clear();ME.xc.clear();ME.s.clear();ME.h.clear();ME.g.clear();ME.w.clear();ME.q.clear();ME.o.menu=[];ME.l.clear();ME.c.clear();ME.v.clear();ME.u.clear();docs.forEach(d=>{if(!d||!d.k)return;const t=d.k[0],key=d.k.slice(2);
+   if(t==='x'&&d.v!=null){ME.x.set(key,String(d.v));if(d.c)ME.xc.set(key,d.c);const j=key.indexOf('\u0001');ME.xg.set(j>=0?key.slice(j+1):key,String(d.v))}else if(t==='s'&&d.v)ME.s.add(key);else if(t==='h'&&Array.isArray(d.v)&&d.v.length)ME.h.set(key,d.v.map(String));else if(t==='g'&&Array.isArray(d.v)&&d.v.length)ME.g.set(key,d.v.map(String));else if(t==='w'&&d.v)ME.w.set(key,String(d.v));else if(t==='q'&&d.v&&(d.v.u||d.v.it||d.v.v||d.v.kind==='g'))ME.q.set(key,d.v);else if(t==='o'&&key==='menu'&&Array.isArray(d.v))ME.o.menu=d.v.map(String);else if(t==='l'&&Array.isArray(d.v)&&d.v.length)ME.l.set(key,d.v.map(String));else if(t==='c'&&Array.isArray(d.v)&&d.v.length)ME.c.set(key,d.v.filter(x=>x&&x.v));else if(t==='v'&&d.v&&d.v.t)ME.v.set(key,d.v);else if(t==='u'&&Array.isArray(d.v)&&d.v.length)ME.u.set(key,d.v.map(String))});syncEvents();if(JSON.stringify([...ME.w])!==wOld)applyWords();applyAll()};
+ document.addEventListener('focusout',()=>setTimeout(()=>{if(pendD&&!document.querySelector('.xing')){const d=pendD;pendD=null;load(d)}},30),true);
  const save=(k,v,extra)=>{if(!DB)return;const r=DB.collection('mine').doc(hid(k));const empty=v==null||v===''||(Array.isArray(v)&&!v.length)||v===0;(empty?r.set({k,del:true,at:Date.now()}):r.set(Object.assign({k,v,at:Date.now()},extra||{}))).then(()=>toast('저장됨')).catch(()=>toast('저장 못 함'))};
  const toast=t=>{let b=$('mtoast');if(!b){b=document.createElement('div');b.id='mtoast';document.body.appendChild(b)}b.textContent=t;b.classList.add('on');clearTimeout(b.t);b.t=setTimeout(()=>b.classList.remove('on'),900)};
  /* 글씨 바꾸기 적용 */
@@ -908,8 +909,9 @@ document.addEventListener('click',e=>{const c=e.target.closest&&e.target.closest
  /* 지금 열린 자세한 화면의 이름표 */
  const itemOf=el=>{const ev=el&&el.closest&&el.closest('.evd');if(ev){const s=ev.querySelector('.snote[data-sk^="e:"]');if(s)return s.dataset.sk}const kp=$('kpage');if(kp&&!kp.hidden&&kp.contains(el)){const h=kp.querySelector('h1');if(h)return 'k:'+(h.dataset.xo||h.textContent.trim())}return ''};
  /* 형광펜 적용 */
- const applyHL=(host,item)=>{host.querySelectorAll('mark.mhl').forEach(m=>m.replaceWith(...m.childNodes));host.normalize();const L=ME.h.get(item);if(!L)return;
+ const applyHL=(host,item)=>{host.querySelectorAll('mark.mhl,span.mul').forEach(m=>m.replaceWith(...m.childNodes));host.normalize();applyUL(host,item);const L=ME.h.get(item);if(!L)return;
    L.forEach(str=>{const w=document.createTreeWalker(host,NodeFilter.SHOW_TEXT,{acceptNode:n=>n.parentNode.closest('.mtool,.mtags,.snote,mark,button.hrt')?2:1});let n;while((n=w.nextNode())){const i=n.nodeValue.indexOf(str);if(i<0)continue;const r=document.createRange();r.setStart(n,i);r.setEnd(n,i+str.length);const m=document.createElement('mark');m.className='mhl';m.dataset.hl=str;r.surroundContents(m);break}})};
+ const applyUL=(host,item)=>{const L=ME.u.get(item);if(!L)return;L.forEach(str=>{const w=document.createTreeWalker(host,NodeFilter.SHOW_TEXT,{acceptNode:n=>n.parentNode.closest('.mtool,.mtags,.snote,mark,button,[data-gl],h1,h3')?2:1});let n;while((n=w.nextNode())){const i=n.nodeValue.indexOf(str);if(i<0)continue;const r=document.createRange();r.setStart(n,i);r.setEnd(n,i+str.length);const m=document.createElement('span');m.className='gw mul';m.setAttribute('role','button');m.tabIndex=0;m.dataset.gl=str;r.surroundContents(m);break}})};
  /* 별표·형광펜·태그 막대 */
  const isW=()=>canW;
  const bar=item=>{const st=ME.s.has(item),tg=ME.g.get(item)||[];const lk=linksOf(item);const canW=isW()&&editOn;if(!canW&&!st&&!tg.length&&!lk.length)return '';const ev=item.startsWith('e:')?EVENTS.find(x=>x.id===+item.slice(2)):null;
@@ -917,7 +919,7 @@ document.addEventListener('click',e=>{const c=e.target.closest&&e.target.closest
  const decorate=()=>{if(document.activeElement&&document.activeElement.classList.contains('mtagin'))return;const kp=$('kpage');if(kp&&!kp.hidden){const h=kp.querySelector('.kph');const item=itemOf(h||kp);if(h&&item){const old=kp.querySelector('.mtool');const html=bar(item);if(old)old.outerHTML=html||'';else if(html)h.insertAdjacentHTML('afterend',html);const host=kp.querySelector('.kpin');if(host){secs(host,item);applyHL(host,item)}}}
    document.querySelectorAll('.evd').forEach(ev=>{const item=itemOf(ev);if(!item)return;const old=ev.querySelector('.mtool');const html=bar(item);if(old)old.outerHTML=html||'';else if(html){let t=ev.querySelector('h2,h3,.ttl,b')||ev.firstElementChild;while(t&&t.parentElement&&t.parentElement!==ev)t=t.parentElement;if(t)t.insertAdjacentHTML('afterend',html)}secs(ev,item);applyHL(ev,item)})};
  const applyAll=()=>{applyText(document.body);decorate()};
- let mq=[],mt=0;new MutationObserver(ms=>{if(busy)return;ms.forEach(m=>{if(m.target.closest&&m.target.closest('.mtool'))return;m.addedNodes.forEach(n=>{if(n.nodeType===1&&!n.classList.contains('mtool')&&!n.classList.contains('mtagin'))mq.push(n)})});if(!mq.length)return;clearTimeout(mt);mt=setTimeout(()=>{busy=true;try{const q=mq;mq=[];q.forEach(n=>{if(n.isConnected)applyText(n)});if(q.some(n=>n.isConnected&&(n.closest('#kpage')||n.querySelector&&n.querySelector('.evd')||n.closest('.evd'))))decorate()}finally{setTimeout(()=>busy=false,0)}},60)}).observe(document.body,{childList:true,subtree:true});let busy=false;
+ let mq=[],mt=0;new MutationObserver(ms=>{if(busy)return;ms.forEach(m=>{if(m.target.closest&&m.target.closest('.mtool,.xing'))return;m.addedNodes.forEach(n=>{if(n.nodeType===1&&!n.classList.contains('mtool')&&!n.classList.contains('mtagin'))mq.push(n)})});if(!mq.length)return;clearTimeout(mt);mt=0;(()=>{busy=true;try{const q=mq;mq=[];q.forEach(n=>{if(n.isConnected)applyText(n)});if(q.some(n=>n.isConnected&&(n.closest('#kpage')||n.querySelector&&n.querySelector('.evd')||n.closest('.evd'))))decorate()}finally{setTimeout(()=>busy=false,0)}})()}).observe(document.body,{childList:true,subtree:true});let busy=false;
  /* 주인: 고치기 모드 단추 */
  const mkBtn=()=>{if($('medit'))return;const b=document.createElement('button');b.id='medit';b.type='button';b.className='tib';b.setAttribute('aria-label','글씨 고치기 (나만)');b.innerHTML='<svg viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M14 6l4 4"/></svg>';
    const hb=$('heartbtn');if(hb)hb.before(b);else document.body.appendChild(b);
@@ -927,7 +929,7 @@ document.addEventListener('click',e=>{const c=e.target.closest&&e.target.closest
    let h=el;if(el.tagName==='BUTTON'||el.tagName==='A'){el.textContent='';h=document.createElement('span');h.className='xinner';h.textContent=cur;el.appendChild(h)}else h.textContent=cur;
    h.contentEditable='plaintext-only';h.classList.add('xing');h.focus();try{const r=document.createRange();r.selectNodeContents(h);r.collapse(false);const sl=getSelection();sl.removeAllRanges();sl.addRange(r)}catch(_){}
    let tm=0;const commit=()=>{const v=h.textContent.trim();if(v===o||!v){if(ME.x.has(xk)){ME.x.delete(xk);ME.xg.delete(o);save('x:'+xk,'')}}else if(v!==ME.x.get(xk)){ME.x.set(xk,v);ME.xg.set(o,v);save('x:'+xk,v)}};
-   h.oninput=()=>{clearTimeout(tm);tm=setTimeout(commit,700)};h.onblur=()=>{clearTimeout(tm);commit();h.removeAttribute('contenteditable');h.classList.remove('xing');const fin=ME.x.get(xk)||o;el.textContent=fin;if(fin!==o)el.classList.add('xed')};
+   h.oninput=()=>{clearTimeout(tm);tm=setTimeout(commit,1500)};h.onblur=()=>{clearTimeout(tm);commit();h.removeAttribute('contenteditable');h.classList.remove('xing');const fin=ME.x.get(xk)||o;el.textContent=fin;if(fin!==o)el.classList.add('xed')};
    h.onkeydown=k=>{k.stopPropagation();if(k.key==='Escape'||(k.key==='Enter'&&!k.shiftKey&&!k.isComposing)){k.preventDefault();h.blur()}}},true);
  /* 낱말 추가 (고치기 모드에서만) */
  const BASE=new Set(Object.keys(GLOSS));
@@ -985,11 +987,24 @@ document.addEventListener('click',e=>{const c=e.target.closest&&e.target.closest
    place('wdadd',document.querySelector('#dcread .rhead .rin'),'+ 낱말',()=>wForm())};
  setInterval(fBtn,600);
  /* 연필 모드에서 드래그하면 바로 형광펜 */
- document.addEventListener('mouseup',e=>{if(!editOn||!canW)return;setTimeout(()=>{const sel=getSelection();const str=sel&&String(sel).trim();let b=$('mhlfloat');if(!str||str.length>300||!sel.rangeCount){if(b)b.remove();return}const host=sel.getRangeAt(0).commonAncestorContainer;const el=host.nodeType===1?host:host.parentNode;const item=itemOf(el);if(!item){if(b)b.remove();return}
-   if(!b){b=document.createElement('button');b.id='mhlfloat';b.type='button';b.textContent='🖍 칠하기';document.body.appendChild(b)}const r=sel.getRangeAt(0).getBoundingClientRect();b.style.left=Math.min(innerWidth-90,r.right+4)+'px';b.style.top=Math.max(8,r.top-34)+'px';
-   b.onmousedown=ev=>ev.preventDefault();b.onclick=ev=>{ev.stopPropagation();const L=ME.h.get(item)||[];if(!L.includes(str))L.push(str);ME.h.set(item,L);getSelection().removeAllRanges();b.remove();save('h:'+item,L);decorate()}},10)},true);
+ const selMarks=(rg,root)=>[...root.querySelectorAll('mark.mhl,span.mul')].filter(m=>rg.intersectsNode(m));
+ const selUp=e=>{if(!editOn||!canW)return;if(e.target.closest&&e.target.closest('#mhlfloat,.mpick'))return;setTimeout(()=>{const sel=getSelection();const str=sel&&String(sel).trim();let b=$('mhlfloat');const rm=()=>{if(b)b.remove()};if(!str||str.length>300||!sel.rangeCount)return rm();const rg=sel.getRangeAt(0);const host=rg.commonAncestorContainer;const el=host.nodeType===1?host:host.parentNode;if(el.closest(SKIP))return rm();const item=itemOf(el);if(!item)return rm();
+   const root=el.closest('#kpage,.evd')||document.body;const mk=selMarks(rg,root);
+   if(!b){b=document.createElement('div');b.id='mhlfloat';document.body.appendChild(b)}
+   b.innerHTML=`<button type="button" data-f="hl">🖍 칠하기</button>${mk.length?'<button type="button" data-f="er">⌫ 지우기</button>':''}<button type="button" data-f="gl">📖 낱말 띄우기</button><button type="button" data-f="ln">🔗 연결</button>`;
+   const r=rg.getBoundingClientRect();b.style.left=Math.max(8,Math.min(innerWidth-330,r.left))+'px';b.style.top=(r.top>50?r.top-40:r.bottom+8)+'px';
+   b.onmousedown=ev=>{if(!ev.target.closest('input'))ev.preventDefault()};b.ontouchstart=ev=>ev.stopPropagation();
+   b.onclick=ev=>{const f=ev.target.closest('[data-f]');if(!f)return;ev.stopPropagation();ev.preventDefault();const a=f.dataset.f;
+    if(a==='hl'){const L=ME.h.get(item)||[];if(!L.includes(str))L.push(str);ME.h.set(item,L);getSelection().removeAllRanges();b.remove();save('h:'+item,L);decorate();return}
+    if(a==='er'){const hs=new Set(mk.filter(m=>m.tagName==='MARK').map(m=>m.dataset.hl)),us=new Set(mk.filter(m=>m.tagName!=='MARK').map(m=>m.dataset.gl));if(hs.size){const L=(ME.h.get(item)||[]).filter(x=>!hs.has(x));L.length?ME.h.set(item,L):ME.h.delete(item);save('h:'+item,L)}if(us.size){const L=(ME.u.get(item)||[]).filter(x=>!us.has(x));L.length?ME.u.set(item,L):ME.u.delete(item);save('u:'+item,L)}getSelection().removeAllRanges();b.remove();decorate();toast('지웠어요');return}
+    if(a==='gl'){const L=ME.u.get(item)||[];if(!L.includes(str))L.push(str);ME.u.set(item,L);save('u:'+item,L);getSelection().removeAllRanges();b.remove();decorate();if(!GLOSS[str]){wForm();const k=$('mwk');if(k){k.value=str;const v=$('mwv');if(v)v.focus()}toast('뜻을 적어 주세요')}return}
+    if(a==='ln'){getSelection().removeAllRanges();b.innerHTML='';picker(b.appendChild(document.createElement('span')),k=>{const L=ME.l.get(item)||[];if(!L.includes(k)&&k!==item)L.push(k);ME.l.set(item,L);save('l:'+item,L);b.remove();decorate();toast('연결됨')});const inp=b.querySelector('.mpick input');if(inp){inp.value=str;inp.dispatchEvent(new Event('input'))}return}}},10)};
+ document.addEventListener('mouseup',selUp,true);document.addEventListener('touchend',selUp,true);
+ document.addEventListener('mousedown',e=>{const b=$('mhlfloat');if(b&&!e.target.closest('#mhlfloat'))b.remove()},true);
+ /* 형광펜 눌러서 지우기 (연필 켠 상태) — 다른 클릭보다 먼저 */
+ window.addEventListener('click',e=>{if(!editOn||!canW)return;const mk=e.target.closest&&e.target.closest('mark.mhl');if(!mk)return;{const sl=getSelection();if(sl&&!sl.isCollapsed&&String(sl).trim())return}e.preventDefault();e.stopImmediatePropagation();const item=itemOf(mk);if(!item)return;const L=(ME.h.get(item)||[]).filter(x=>x!==mk.dataset.hl);L.length?ME.h.set(item,L):ME.h.delete(item);save('h:'+item,L);decorate();toast('형광펜 지움')},true);
  /* 글 쓰는 중에는 단축키가 안 먹게 (태그 칸·낱말 추가 창·고치는 글씨) */
- ['keydown','keyup','keypress'].forEach(tp=>window.addEventListener(tp,e=>{const t=e.target;if(!(t&&t.closest&&(t.closest('.mtool,#mwform')||t.classList.contains('xing'))))return;e.stopImmediatePropagation();if(t.classList.contains('xing')&&(e.key===' '||e.key==='Enter')&&t.closest('button')){if(tp!=='keydown'){e.preventDefault();return}if(e.key===' '){e.preventDefault();document.execCommand('insertText',false,' ');return}}if(tp==='keydown'&&typeof t.onkeydown==='function')t.onkeydown(e)},true));
+ ['keydown','keyup','keypress'].forEach(tp=>window.addEventListener(tp,e=>{const t=e.target;if(!(t&&t.closest&&(t.closest('.mtool,#mwform,#mhlfloat')||t.classList.contains('xing'))))return;e.stopImmediatePropagation();if(t.classList.contains('xing')&&(e.key===' '||e.key==='Enter')&&t.closest('button')){if(tp!=='keydown'){e.preventDefault();return}if(e.key===' '){e.preventDefault();document.execCommand('insertText',false,' ');return}}if(tp==='keydown'&&typeof t.onkeydown==='function')t.onkeydown(e)},true));
  /* 별표·형광펜·태그 누르기 */
  document.addEventListener('mousedown',e=>{if(e.target.closest&&e.target.closest('.mhlb'))e.preventDefault()},true);
  document.addEventListener('click',e=>{const tb=e.target.closest&&e.target.closest('.mtool');const mk=e.target.closest&&e.target.closest('mark.mhl');
@@ -1086,6 +1101,7 @@ document.addEventListener('click',e=>{const c=e.target.closest&&e.target.closest
  $('srres').addEventListener('click',e=>{const b=e.target.closest('[data-mitem]');if(!b)return;e.stopPropagation();const it=b.dataset.mitem;if(it)openItem(it);else{const o=b.dataset.mq;const k=Object.keys(GLOSS).find(g=>o.includes(g));if(k)openItem('k:'+k)}},true);
  window.__mineAttach=(db,w)=>{canW=!!w;DB=w?db:null;if(canW)mkBtn();try{db.collection('mine').onSnapshot(q=>load(q.docs.map(d=>d.data())),()=>{})}catch(_){}applyAll()};
  /* 자료 불러오기: claude.ai면 공유 저장소, 웹사이트면 mine.json */
+ try{const c=JSON.parse(localStorage.getItem('hgs_mec')||'null');if(Array.isArray(c)&&c.length)load(c)}catch(_){}
  (async()=>{let ok=false;try{if(window.claude&&claude.use){const [db,us]=await Promise.all([claude.use('db'),claude.use('user')]);if(db){ok=true;canW=!!(us&&await us.isOwner());DB=canW?db:null;if(canW)mkBtn();{let base=[],fs=null;const ap=()=>load(__mergeFS(base,fs));db.collection('mine').onSnapshot(q=>{base=q.docs.map(d=>d.data());ap()},()=>{});__fsPoll('mine',m=>{fs=m;ap()})}applyAll()}}}catch(_){}
    if(!ok){try{const r=await fetch('mine.json',{cache:'no-store'});if(r.ok){const j=await r.json();load(j.mine||[]);if(window.__sanonSet&&j.sanon)window.__sanonSet(j.sanon)}}catch(_){}}})()}
 /* 땅 속 구멍(호수 등 안쪽 고리)을 메워 영토 안에 흰 점이 안 생기게 */
@@ -1205,3 +1221,12 @@ function rlOpen(e){const p=$('kpage');const L=RLITEMS();const i=L.findIndex(x=>x
 /* 사전: 인물은 나라마다 다른 색 (인물 탭과 같은 색) */
 {const paintP=()=>{const b=$('dcbody');if(!b)return;b.querySelectorAll('.gp[data-k]:not([data-nc])').forEach(d=>{const P=typeof PEOPLE!=='undefined'?PEOPLE.get(d.dataset.k):null;let n='';try{n=P?personNation(P):''}catch(_){}const c=(n&&NAT_COL[n])||'#64748b';d.dataset.nc=1;d.style.setProperty('--nc',c);const t=d.querySelector('.gptag');if(t&&n)t.textContent=n})};
  const ds=dcShow;dcShow=function(){const r=ds.apply(this,arguments);paintP();return r};const b=$('dcbody');if(b)new MutationObserver(()=>paintP()).observe(b.parentElement||b,{childList:true,subtree:false});paintP()}
+/* 인물 색 = 지도 영토 색, 생몰년, 인물 자세히 화면 */
+{const V={'고조선':'gojoseon','가야':'gaya','고구려':'goguryeo','백제':'baekje','신라':'silla','발해':'balhae','후고구려':'goguryeo','후백제':'baekje','고려':'goryeo','조선':'joseon','대한제국':'daehan','한국':'south','대한민국':'south','북한':'north','중국':'han','일본':'japan','미국':'us','러시아·소련':'ussr'};
+ Object.keys(V).forEach(n=>{NAT_COL[n]=`color-mix(in srgb,var(--c-${V[n]}) 80%,var(--ink))`});
+ const yrs=k=>{const v=PLIFE[k];return v?v.replace('~',' ~ '):''};
+ const addY=()=>{document.querySelectorAll('#dcbody .gp[data-k]').forEach(g=>{if(g.querySelector('.gpy'))return;const y=yrs(g.dataset.k);if(!y)return;const n=g.querySelector('.gpn');if(n)n.insertAdjacentHTML('afterend',`<small class="gpy">${y}</small>`)})};
+ const b=$('dcbody');if(b)new MutationObserver(addY).observe(b,{childList:true,subtree:true});addY();
+ const op=openPerson;openPerson=function(n,T){const r=op.apply(this,arguments);try{const p=$('kpage');const bar=p.querySelector('.kpbar span');if(!bar||bar.textContent!=='인물 사전')return r;const k=p.querySelector('.kph h1').textContent.trim();const P=PEOPLE.get(k);let nat='';try{nat=P?personNation(P):''}catch(_){}const col=NAT_COL[nat]||'var(--ink)';const kin=p.querySelector('.kpin');kin.classList.add('kpperson');kin.style.setProperty('--pc',col);const h=p.querySelector('.kph');const y=yrs(k);
+   h.querySelector('h1').insertAdjacentHTML('afterend',`${y?`<span class="kpy">${y}</span>`:''}${nat?`<i class="kpnat">${E2(nat)}</i>`:''}`)}catch(_){}return r};
+ function E2(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}}
