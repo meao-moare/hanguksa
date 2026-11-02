@@ -1196,3 +1196,6 @@ function rlOpen(e){const p=$('kpage');const L=RLITEMS();const i=L.findIndex(x=>x
  p.querySelectorAll('[data-rlv]').forEach(b=>b.onclick=ev=>{ev.stopPropagation();const n=L[i+(+b.dataset.rlv)];if(n)rlOpen(n)});
  const real=e.kind?((e.cz||[]).find(x=>x&&x.ll)||(e.cz||[])[0]):e;if(!real){const g=p.querySelector('.rlgo');if(g)g.remove()}const m=p.querySelector('[data-rlmap]');if(m)m.onclick=()=>{if(!real)return;p.hidden=true;gotoMap(real)};p.querySelector('[data-rltl]').onclick=()=>{if(!real)return;p.hidden=true;gotoTimeline(real)};
  try{paintSections(p)}catch(_){}}
+/* 사전: 인물은 나라마다 다른 색 (인물 탭과 같은 색) */
+{const paintP=()=>{const b=$('dcbody');if(!b)return;b.querySelectorAll('.gp[data-k]:not([data-nc])').forEach(d=>{const P=typeof PEOPLE!=='undefined'?PEOPLE.get(d.dataset.k):null;let n='';try{n=P?personNation(P):''}catch(_){}const c=(n&&NAT_COL[n])||'#64748b';d.dataset.nc=1;d.style.setProperty('--nc',c);const t=d.querySelector('.gptag');if(t&&n)t.textContent=n})};
+ const ds=dcShow;dcShow=function(){const r=ds.apply(this,arguments);paintP();return r};const b=$('dcbody');if(b)new MutationObserver(()=>paintP()).observe(b.parentElement||b,{childList:true,subtree:false});paintP()}
