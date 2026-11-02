@@ -971,9 +971,13 @@ document.addEventListener('click',e=>{const c=e.target.closest&&e.target.closest
    let rl='';try{rl=sessionStorage.getItem('hgs_rl')||''}catch(_){}if(rl===sig&&!now)return;try{sessionStorage.setItem('hgs_rl',sig)}catch(_){}
    toast('사건을 지도에 넣는 중…');setTimeout(()=>location.reload(),now?900:300)}
  /* 떠 있는 추가 단추: 사전 화면이면 낱말, 지도·연표면 사건 */
- const fBtn=()=>{let b=$('mwadd');const v=['dc','map','tl'].find(k=>{const e=$('v-'+k);return e&&!e.hidden});const kpOpen=$('kpage')&&!$('kpage').hidden;if(!editOn||!v||kpOpen){if(b)b.hidden=true;return}
-   if(!b){b=document.createElement('button');b.id='mwadd';b.type='button';document.body.appendChild(b);b.onclick=()=>{b.dataset.k==='dc'?wForm():vForm()}}b.dataset.k=v==='dc'?'dc':'ev';b.textContent=v==='dc'?'+ 낱말 추가':'+ 사건 추가';b.hidden=false};
- setInterval(()=>{if(editOn)fBtn()},400);
+ /* 추가 단추는 그 자리에: 사건 목록 머리(지도 옆 사건 칸·연표), 사전 머리 */
+ const fBtn=()=>{const on=editOn&&canW;const old=$('mwadd');if(old)old.hidden=true;
+   const place=(id,host,txt,fn,before)=>{let b=$(id);if(!host){if(b)b.hidden=true;return}if(!b){b=document.createElement('button');b.id=id;b.type='button';b.className='maddbtn';b.textContent=txt;b.onclick=e=>{e.stopPropagation();fn()}}if(b.parentNode!==host){if(before&&host.querySelector(before))host.insertBefore(b,host.querySelector(before));else host.appendChild(b)}b.hidden=!on};
+   place('evaddp',document.querySelector('#panel .ph'),'+ 사건',()=>vForm(),'#ptitle + *');
+   place('evaddt',document.querySelector('#v-tl .tlrow'),'+ 사건',()=>vForm());
+   place('wdadd',document.querySelector('#dcread .rhead .rin'),'+ 낱말',()=>wForm())};
+ setInterval(fBtn,600);
  /* 연필 모드에서 드래그하면 바로 형광펜 */
  document.addEventListener('mouseup',e=>{if(!editOn||!canW)return;setTimeout(()=>{const sel=getSelection();const str=sel&&String(sel).trim();let b=$('mhlfloat');if(!str||str.length>300||!sel.rangeCount){if(b)b.remove();return}const host=sel.getRangeAt(0).commonAncestorContainer;const el=host.nodeType===1?host:host.parentNode;const item=itemOf(el);if(!item){if(b)b.remove();return}
    if(!b){b=document.createElement('button');b.id='mhlfloat';b.type='button';b.textContent='🖍 칠하기';document.body.appendChild(b)}const r=sel.getRangeAt(0).getBoundingClientRect();b.style.left=Math.min(innerWidth-90,r.right+4)+'px';b.style.top=Math.max(8,r.top-34)+'px';
