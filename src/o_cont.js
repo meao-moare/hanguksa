@@ -788,7 +788,7 @@ document.querySelectorAll('.pin.flagpin .flg.tgflag').forEach(f=>{if(f.parentNod
  ['keyup','keypress'].forEach(ev=>window.addEventListener(ev,e=>{const t=e.target;if(t&&t.closest&&t.closest('.snote'))e.stopImmediatePropagation()},true));
  const ev0=evDetailHTML;evDetailHTML=function(e){return ev0.apply(this,arguments)+html('e:'+(e.id!=null?e.id:e.t))};
  const kp=$('kpage');if(kp){const add=()=>{if(kp.querySelector('.snote'))return;const h=kp.querySelector('h2,h1,.kn,.ttl');const key=(h?h.textContent:'').trim();if(!key)return;const host=kp.querySelector('.kpin,.kbody,.pbody')||kp;host.insertAdjacentHTML('beforeend',html('k:'+key))};new MutationObserver(()=>{clearTimeout(add.t);add.t=setTimeout(add,30)}).observe(kp,{childList:true,subtree:false})}
- window.__sanonSet=n=>{NT=n||{};refresh()};(async()=>{try{if(!window.claude||!claude.use)return;const [db,us]=await Promise.all([claude.use('db'),claude.use('user')]);canW=!!(us&&await us.isOwner());DB=canW?db:null;refresh();
+ window.__sanonSet=n=>{NT=n||{};refresh()};window.__sanonAttach=(db,w)=>{canW=!!w;DB=w?db:null;refresh();try{db.collection('sanon').onSnapshot(q=>{const n={};q.docs.forEach(d=>{const x=d.data();if(x&&x.k&&x.v)n[x.k]=String(x.v)});NT=n;refresh()},()=>{})}catch(_){}};(async()=>{try{if(!window.claude||!claude.use)return;const [db,us]=await Promise.all([claude.use('db'),claude.use('user')]);canW=!!(us&&await us.isOwner());DB=canW?db:null;refresh();
    if(db)db.collection('sanon').onSnapshot(q=>{const n={};q.docs.forEach(d=>{const x=d.data();if(x&&x.k&&x.v)n[x.k]=String(x.v)});NT=n;refresh()},()=>{})}catch(_){}})()}
 /* ↑↓: 지금 보이는 설명창 위아래로 움직이기 (Ctrl+방향키는 지도 이동 그대로) */
 {let mx=-1,my=-1;document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY},{passive:true});
@@ -1004,6 +1004,7 @@ document.addEventListener('click',e=>{const c=e.target.closest&&e.target.closest
    if(/^(★|별|별표|star)$/.test(qq)&&ME.s.size)h+=`<div class="srgrp" style="--sc:#ca8a04"><h4>별표</h4>${[...ME.s].map(it=>`<button class="sri" data-mitem="${E(it)}"><b>★ ${E(nameOf(it))}</b></button>`).join('')}</div>`;
    if(!h)return;if(box.querySelector('.srh'))box.innerHTML='';box.insertAdjacentHTML('afterbegin',h)}}
  $('srres').addEventListener('click',e=>{const b=e.target.closest('[data-mitem]');if(!b)return;e.stopPropagation();const it=b.dataset.mitem;if(it)openItem(it);else{const o=b.dataset.mq;const k=Object.keys(GLOSS).find(g=>o.includes(g));if(k)openItem('k:'+k)}},true);
+ window.__mineAttach=(db,w)=>{canW=!!w;DB=w?db:null;if(canW)mkBtn();try{db.collection('mine').onSnapshot(q=>load(q.docs.map(d=>d.data())),()=>{})}catch(_){}applyAll()};
  /* 자료 불러오기: claude.ai면 공유 저장소, 웹사이트면 mine.json */
  (async()=>{let ok=false;try{if(window.claude&&claude.use){const [db,us]=await Promise.all([claude.use('db'),claude.use('user')]);if(db){ok=true;canW=!!(us&&await us.isOwner());DB=canW?db:null;if(canW)mkBtn();db.collection('mine').onSnapshot(q=>load(q.docs.map(d=>d.data())),()=>{});applyAll()}}}catch(_){}
    if(!ok){try{const r=await fetch('mine.json',{cache:'no-store'});if(r.ok){const j=await r.json();load(j.mine||[]);if(window.__sanonSet&&j.sanon)window.__sanonSet(j.sanon)}}catch(_){}}})()}

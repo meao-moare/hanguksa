@@ -5315,7 +5315,7 @@ document.querySelectorAll('.pin.flagpin .flg.tgflag').forEach(f=>{if(f.parentNod
  ['keyup','keypress'].forEach(ev=>window.addEventListener(ev,e=>{const t=e.target;if(t&&t.closest&&t.closest('.snote'))e.stopImmediatePropagation()},true));
  const ev0=evDetailHTML;evDetailHTML=function(e){return ev0.apply(this,arguments)+html('e:'+(e.id!=null?e.id:e.t))};
  const kp=$('kpage');if(kp){const add=()=>{if(kp.querySelector('.snote'))return;const h=kp.querySelector('h2,h1,.kn,.ttl');const key=(h?h.textContent:'').trim();if(!key)return;const host=kp.querySelector('.kpin,.kbody,.pbody')||kp;host.insertAdjacentHTML('beforeend',html('k:'+key))};new MutationObserver(()=>{clearTimeout(add.t);add.t=setTimeout(add,30)}).observe(kp,{childList:true,subtree:false})}
- window.__sanonSet=n=>{NT=n||{};refresh()};(async()=>{try{if(!window.claude||!claude.use)return;const [db,us]=await Promise.all([claude.use('db'),claude.use('user')]);canW=!!(us&&await us.isOwner());DB=canW?db:null;refresh();
+ window.__sanonSet=n=>{NT=n||{};refresh()};window.__sanonAttach=(db,w)=>{canW=!!w;DB=w?db:null;refresh();try{db.collection('sanon').onSnapshot(q=>{const n={};q.docs.forEach(d=>{const x=d.data();if(x&&x.k&&x.v)n[x.k]=String(x.v)});NT=n;refresh()},()=>{})}catch(_){}};(async()=>{try{if(!window.claude||!claude.use)return;const [db,us]=await Promise.all([claude.use('db'),claude.use('user')]);canW=!!(us&&await us.isOwner());DB=canW?db:null;refresh();
    if(db)db.collection('sanon').onSnapshot(q=>{const n={};q.docs.forEach(d=>{const x=d.data();if(x&&x.k&&x.v)n[x.k]=String(x.v)});NT=n;refresh()},()=>{})}catch(_){}})()}
 /* ↑↓: 지금 보이는 설명창 위아래로 움직이기 (Ctrl+방향키는 지도 이동 그대로) */
 {let mx=-1,my=-1;document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY},{passive:true});
@@ -5531,6 +5531,7 @@ document.addEventListener('click',e=>{const c=e.target.closest&&e.target.closest
    if(/^(★|별|별표|star)$/.test(qq)&&ME.s.size)h+=`<div class="srgrp" style="--sc:#ca8a04"><h4>별표</h4>${[...ME.s].map(it=>`<button class="sri" data-mitem="${E(it)}"><b>★ ${E(nameOf(it))}</b></button>`).join('')}</div>`;
    if(!h)return;if(box.querySelector('.srh'))box.innerHTML='';box.insertAdjacentHTML('afterbegin',h)}}
  $('srres').addEventListener('click',e=>{const b=e.target.closest('[data-mitem]');if(!b)return;e.stopPropagation();const it=b.dataset.mitem;if(it)openItem(it);else{const o=b.dataset.mq;const k=Object.keys(GLOSS).find(g=>o.includes(g));if(k)openItem('k:'+k)}},true);
+ window.__mineAttach=(db,w)=>{canW=!!w;DB=w?db:null;if(canW)mkBtn();try{db.collection('mine').onSnapshot(q=>load(q.docs.map(d=>d.data())),()=>{})}catch(_){}applyAll()};
  /* 자료 불러오기: claude.ai면 공유 저장소, 웹사이트면 mine.json */
  (async()=>{let ok=false;try{if(window.claude&&claude.use){const [db,us]=await Promise.all([claude.use('db'),claude.use('user')]);if(db){ok=true;canW=!!(us&&await us.isOwner());DB=canW?db:null;if(canW)mkBtn();db.collection('mine').onSnapshot(q=>load(q.docs.map(d=>d.data())),()=>{});applyAll()}}}catch(_){}
    if(!ok){try{const r=await fetch('mine.json',{cache:'no-store'});if(r.ok){const j=await r.json();load(j.mine||[]);if(window.__sanonSet&&j.sanon)window.__sanonSet(j.sanon)}}catch(_){}}})()}
@@ -5568,7 +5569,7 @@ document.addEventListener('click',e=>{const c=e.target.closest&&e.target.closest
 /* 구글 로그인 + 하트·책갈피·설정 동기화 (GitHub 사이트 전용) */
 import {initializeApp} from "https://www.gstatic.com/firebasejs/13.1.0/firebase-app.js";
 import {getAuth,GoogleAuthProvider,signInWithPopup,signInWithRedirect,onAuthStateChanged,signOut} from "https://www.gstatic.com/firebasejs/13.1.0/firebase-auth.js";
-import {getFirestore,doc,getDoc,setDoc,serverTimestamp} from "https://www.gstatic.com/firebasejs/13.1.0/firebase-firestore.js";
+import {getFirestore,doc,getDoc,setDoc,serverTimestamp,collection,onSnapshot} from "https://www.gstatic.com/firebasejs/13.1.0/firebase-firestore.js";
 const app=initializeApp({apiKey:"AIzaSyAPHs56cX-nqgmU9tR3eVGu8cJo5MqalQY",authDomain:"hanguksa-dbb5e.firebaseapp.com",projectId:"hanguksa-dbb5e",storageBucket:"hanguksa-dbb5e.firebasestorage.app",messagingSenderId:"1038931533852",appId:"1:1038931533852:web:4e919a13ebf9e9be8fffd9"});
 const auth=getAuth(app),db=getFirestore(app);
 const KEYS=['hearts','books','kh','snd','words','hord','hsort'],SETS=['hearts','books','kh','words'],LS=k=>'ksh-'+k;
@@ -5599,5 +5600,19 @@ onAuthStateChanged(auth,async u=>{uid=u?u.uid:null;render(u);if(!u)return;
     put('syncuid',JSON.stringify(uid));await push();
     if(changed){flash('계정의 하트를 불러왔어요');setTimeout(()=>location.reload(),600)}else if(first)flash('로그인했어요 · 하트가 계정에 저장돼요')}
   catch(e){console.warn(e);flash('계정 데이터를 불러오지 못했어요')}});
+
+/* 관리자(주인) 편집: 고친 글씨·사론·태그·사건을 Firebase에 저장 → 사이트 보는 모든 사람에게 바로 보임.
+   쓰기는 Firebase 규칙이 주인 계정만 허락함 (코드에는 계정 정보 없음) */
+{const hidf=k=>[...new TextEncoder().encode(k)].map(b=>b.toString(16).padStart(2,'0')).join('').slice(0,190);
+ let J={mine:[],sanon:{}};const jp=fetch('mine.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).then(j=>{if(j)J={mine:j.mine||[],sanon:j.sanon||{}}}).catch(()=>{});
+ const adapter={collection:name=>({onSnapshot:(cb,err)=>{let fs=new Map(),live=false;
+     const base=()=>name==='mine'?J.mine.filter(d=>d&&d.k).map(d=>[hidf(d.k),d]):Object.entries(J.sanon).map(([k,v])=>[hidf(k),{k,v}]);
+     const emit=()=>{const m=new Map(base());fs.forEach((d,id)=>{if(d&&d.del)m.delete(id);else if(d&&d.k)m.set(id,d)});cb({docs:[...m.values()].map(d=>({data:()=>d}))})};
+     jp.then(emit);return onSnapshot(collection(db,name),snap=>{fs=new Map(snap.docs.map(x=>[x.id,x.data()]));live=true;emit()},e=>{console.warn(e);err&&err(e)})},
+   doc:id=>({set:v=>setDoc(doc(db,name,id),v),delete:()=>setDoc(doc(db,name,id),{del:true,at:Date.now()})})})};
+ let owner=false;const attach=()=>{try{window.__mineAttach&&window.__mineAttach(adapter,owner);window.__sanonAttach&&window.__sanonAttach(adapter,owner)}catch(e){console.warn(e)}};
+ attach();
+ onAuthStateChanged(auth,async u=>{if(!u){if(owner){owner=false;attach()}return}
+   try{await setDoc(doc(db,'mine','_owner'),{k:'_',at:Date.now()});owner=true;flash('관리자로 로그인했어요 · 연필로 고칠 수 있어요');attach()}catch(e){owner=false}})}
 </script>
 </body></html>
