@@ -1017,11 +1017,11 @@ document.addEventListener('click',e=>{const c=e.target.closest&&e.target.closest
    const cb=key=>`<input type="checkbox" class="mncb" data-sel="${E(key)}"${pick.has(key)?' checked':''}>`;
    const ordBtns=key=>`<span class="mnord"><i data-up="${E(key)}">↑</i><i data-dn="${E(key)}">↓</i></span>`;
    const itemHTML=([k,q],ed,inGroup)=>{const lab0=E(q.n||(q.v?VN[q.v]:'')||q.u||nameOf(q.it||''));let host='';try{host=new URL(q.u).hostname}catch(_){}
-     const fav=inGroup?'':(q.u&&host)?`<img class="mnfav" alt="" src="https://www.google.com/s2/favicons?domain=${encodeURIComponent(host)}&sz=64">`:(q.v?'':'<span class="mnic">↗</span>');const lab=fav+'<span class="mnt">'+lab0+'</span>';
+     const fav=inGroup?'':(q.u&&host)?`<img class="mnfav" alt="" src="https://www.google.com/s2/favicons?domain=${encodeURIComponent(host)}&sz=64">`:'';const lab=fav+'<span class="mnt">'+lab0+'</span>';
      const del=ed?`<i class="mnx" data-qdel="${E(k)}">×</i>`:'';const c=ed?cb('q:'+k):'';const ob=ed?ordBtns('q:'+k):'';const cls='mni'+(inGroup?' mnin':'');
      if(q.v)return `<div class="mnrowi">${c}<button type="button" class="${cls}" data-mv="${E(q.v)}">${lab}</button>${ob}${del}</div>`;
      if(q.it)return `<div class="mnrowi">${c}<button type="button" class="${cls}" data-qit="${E(q.it)}">${lab}</button>${ob}${del}</div>`;
-     return `<div class="mnrowi">${c}<a class="${cls}" href="${E(q.u)}" target="_blank" rel="noopener">${lab}</a>${ob}${del}</div>`};
+     return `<div class="mnrowi">${c}<a class="${cls}" href="${E(q.u)}" target="_blank" rel="noopener">${lab}<span class="mnext">↗</span></a>${ob}${del}</div>`};
    const ordIdx=k=>{const i=ME.o.menu.indexOf(k);return i<0?1e6:i};const srt=(arr,keyOf)=>arr.map((x,i)=>[x,i]).sort((a,b)=>(ordIdx(keyOf(a[0]))-ordIdx(keyOf(b[0])))||(a[1]-b[1])).map(x=>x[0]);
    const render=()=>{const ed=canW&&editOn;const all=[...ME.q.entries()].sort((a,b)=>(a[1].at||0)-(b[1].at||0));const G=all.filter(([k,q])=>q.kind==='g'),I=all.filter(([k,q])=>q.kind!=='g');
      const inG=([k,q])=>q.g&&ME.q.has(q.g);const grouped=new Set(I.filter(x=>inG(x)&&x[1].v).map(x=>x[1].v));const loose=I.filter(x=>!inG(x)&&!x[1].v);
