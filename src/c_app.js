@@ -554,7 +554,7 @@ function selectEvent(e,opt={}){
 }
 
 /* ───────── 화면 전환 ───────── */
-const VIEWS=['map','ov','tl','tp','kg','tr','pp','dc'];
+const VIEWS=['map','ov','tl','tp','kg','tr','pp','dc','rl'];
 function showView(v){if(v==='tp')v='tr';{const ap=document.querySelector('.app');ap.classList.toggle('onmap',v==='map');ap.style.setProperty('--toph',document.querySelector('.top').offsetHeight+'px')}VIEWS.forEach(k=>{$('v-'+k).hidden=k!==v;const tb=$('tab-'+k);if(tb)tb.setAttribute('aria-selected',k===v)});document.querySelectorAll('.vmode button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.v===v));if(v==='tl'||v==='ov'||v==='kg')store.set('tlmode',v);if(v==='kg')kgShow(kgSel,false);if(v==='tr')trShow();if(v==='pp')ppShow();store.set('view',v);if(v==='map'){requestAnimationFrame(()=>{placeOV();placeLabels()})}else pause();if(v==='ov'&&(!ovBuilt||(ovDirty&&ovSel==='heart')))ovShow(store.get('overa',FRAMES[pos.i].era))}
 document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>{if(b.dataset.v==='tl'&&tlHeart){tlHeart=false;renderTLFilter()}showView(b.dataset.v)});
 document.querySelectorAll('.vmode button').forEach(b=>b.onclick=()=>{if(b.dataset.v==='bm'){tlHeart=true;showView('tl');renderTLFilter();$('tlread').scrollTop=0}else{if(b.dataset.v==='tl'&&tlHeart){tlHeart=false;renderTLFilter()}showView(b.dataset.v)}syncVmode()});
