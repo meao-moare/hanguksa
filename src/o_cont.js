@@ -1015,7 +1015,7 @@ document.addEventListener('click',e=>{const c=e.target.closest&&e.target.closest
    let fold={};try{fold=JSON.parse(localStorage.getItem('hgs_mfold')||'{}')}catch(_){}
    let pend=null;const pick=new Set();
    const cb=key=>`<input type="checkbox" class="mncb" data-sel="${E(key)}"${pick.has(key)?' checked':''}>`;
-   const itemHTML=([k,q],ed)=>{const lab0=E(q.n||(q.v?VN[q.v]:'')||q.u||nameOf(q.it||''));const lab=(q.v?'<span class="mnic">▦</span>':q.it?'<span class="mnic">🔗</span>':'<span class="mnic">↗</span>')+'<span class="mnt">'+lab0+'</span>';const del=ed?`<i data-qdel="${E(k)}">×</i>`:'';const c=ed?cb('q:'+k):'';
+   const itemHTML=([k,q],ed)=>{const lab0=E(q.n||(q.v?VN[q.v]:'')||q.u||nameOf(q.it||''));let host='';try{host=new URL(q.u).hostname}catch(_){}const lab=(q.v?'<span class="mnic">▦</span>':q.it?'<span class="mnic">🔗</span>':(host?`<img class="mnfav" alt="" src="https://www.google.com/s2/favicons?domain=${encodeURIComponent(host)}&sz=64">`:'<span class="mnic">↗</span>'))+'<span class="mnt">'+lab0+'</span>';const del=ed?`<i data-qdel="${E(k)}">×</i>`:'';const c=ed?cb('q:'+k):'';
      if(q.v)return `<div class="mnrowi">${c}<button type="button" class="mni mniv" data-mv="${E(q.v)}">${lab}${del}</button></div>`;
      if(q.it)return `<div class="mnrowi">${c}<button type="button" class="mni" data-qit="${E(q.it)}">${lab}${del}</button></div>`;
      return `<div class="mnrowi">${c}<a class="mni" href="${E(q.u)}" target="_blank" rel="noopener">${lab}${del}</a></div>`};
@@ -1037,6 +1037,8 @@ document.addEventListener('click',e=>{const c=e.target.closest&&e.target.closest
      const d=e.target.closest('[data-qdel]');if(d){e.preventDefault();e.stopPropagation();const k=d.dataset.qdel;const q=ME.q.get(k);if(q){if(q.v){ME.q.delete(k);save('q:'+k,'')}else{q.g='';save('q:'+k,q)}}render();const row=m.querySelector(`[data-gopen="${CSS.escape(fly.dataset.g)}"]`);if(row)openFly(fly.dataset.g,row);else fly.hidden=true}});
    fly.addEventListener('change',e=>{const c=e.target.closest('[data-sel]');if(!c)return;c.checked?pick.add(c.dataset.sel):pick.delete(c.dataset.sel);render()});
    document.addEventListener('click',e=>{if(!fly.hidden&&e.target.isConnected&&!e.target.closest('#mgpop,[data-gopen]'))fly.hidden=true});
+   const favFix=root=>root.querySelectorAll('img.mnfav').forEach(i=>{if(i.complete&&!i.naturalWidth){const sp=document.createElement('span');sp.className='mnic';sp.textContent='↗';i.replaceWith(sp)}else i.onerror=()=>{const sp=document.createElement('span');sp.className='mnic';sp.textContent='↗';i.replaceWith(sp)}});
+   new MutationObserver(()=>{favFix(m);favFix(fly)}).observe(m,{childList:true});new MutationObserver(()=>favFix(fly)).observe(fly,{childList:true});
    m.render=render;
    b.onclick=e=>{e.stopPropagation();fly.hidden=true;if(!m.hidden){m.hidden=true;return}render();const tb=document.querySelector('.top').getBoundingClientRect();m.style.setProperty('--mtop',tb.bottom+'px');const cur=store.get('view','map');m.querySelectorAll('[data-mv]').forEach(x=>x.classList.toggle('on',x.dataset.mv===cur));m.hidden=false};
    document.addEventListener('click',e=>{if(!m.hidden&&e.target.isConnected&&!e.target.closest('#menupop,#menubtn,.mpick,#mgpop'))m.hidden=true});
