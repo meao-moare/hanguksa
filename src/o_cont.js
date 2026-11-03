@@ -1087,9 +1087,9 @@ document.addEventListener('click',e=>{const c=e.target.closest&&e.target.closest
    /* 다른 기기에서 바뀐 사건: 알림 없이 다음에 열 때 반영 */}
  /* 떠 있는 추가 단추: 사전 화면이면 낱말, 지도·연표면 사건 */
  /* 추가 단추는 그 자리에: 사건 목록 머리(지도 옆 사건 칸·연표), 사전 머리 */
- const fBtn=()=>{const on=editOn&&canW;const old=$('mwadd');if(old)old.hidden=true;
+ let fbN=-1;const fBtn=()=>{if(document.querySelector('.xing'))return;const on=editOn&&canW;const old=$('mwadd');if(old)old.hidden=true;
    const place=(id,host,txt,fn,before)=>{let b=$(id);if(!host){if(b)b.hidden=true;return}if(!b){b=document.createElement('button');b.id=id;b.type='button';b.className='maddbtn';b.textContent=txt;b.onclick=e=>{e.stopPropagation();fn()}}if(b.parentNode!==host){if(before&&host.querySelector(before))host.insertBefore(b,host.querySelector(before));else host.appendChild(b)}b.hidden=!on};
-   {const old=$('evaddp');if(old)old.remove();const r=$('evaddrow');if(r)r.remove();const L=document.querySelectorAll('#pbody li[data-id],#v-tl ol.tl>li[data-id]');L.forEach(li=>{const has=li.querySelector(':scope>.mevplus');if(on&&!has)li.insertAdjacentHTML('beforeend','<button type="button" class="mevplus top" data-evplus="0" aria-label="위에 사건 넣기"><svg viewBox="0 0 24 24"><path d="M12 6v12M6 12h12"/></svg></button><button type="button" class="mevplus bot" data-evplus="1" aria-label="아래에 사건 넣기"><svg viewBox="0 0 24 24"><path d="M12 6v12M6 12h12"/></svg></button>');else if(!on&&has)li.querySelectorAll(':scope>.mevplus').forEach(x=>x.remove())})}
+   {const old=$('evaddp');if(old)old.remove();const r=$('evaddrow');if(r)r.remove();const L=document.querySelectorAll('#pbody li[data-id],#v-tl ol.tl>li[data-id]');const nP=document.querySelectorAll('.mevplus').length;if(fbN===L.length*10+(on?1:0)&&nP===(on?L.length*2:0))return;fbN=L.length*10+(on?1:0);L.forEach(li=>{const has=li.querySelector(':scope>.mevplus');if(on&&!has)li.insertAdjacentHTML('beforeend','<button type="button" class="mevplus top" data-evplus="0" aria-label="위에 사건 넣기"><svg viewBox="0 0 24 24"><path d="M12 6v12M6 12h12"/></svg></button><button type="button" class="mevplus bot" data-evplus="1" aria-label="아래에 사건 넣기"><svg viewBox="0 0 24 24"><path d="M12 6v12M6 12h12"/></svg></button>');else if(!on&&has)li.querySelectorAll(':scope>.mevplus').forEach(x=>x.remove())})}
    {const t=$('evaddt');if(t)t.remove()}
    place('wdadd',document.querySelector('#dcread .rhead .rin'),'+ 낱말',()=>wForm())};
  setInterval(fBtn,600);
@@ -1353,13 +1353,13 @@ function rlOpen(e){const p=$('kpage');const L=RLITEMS();const i=L.findIndex(x=>x
  try{paintSections(p)}catch(_){}}
 /* 사전: 인물은 나라마다 다른 색 (인물 탭과 같은 색) */
 {const paintP=()=>{const b=$('dcbody');if(!b)return;b.querySelectorAll('.gp[data-k]:not([data-nc])').forEach(d=>{const P=typeof PEOPLE!=='undefined'?PEOPLE.get(d.dataset.k):null;let n='';try{n=P?personNation(P):(PNAT[d.dataset.k]||'')}catch(_){}const c=(n&&NAT_COL[n])||'#64748b';d.dataset.nc=1;d.style.setProperty('--nc',c);const t=d.querySelector('.gptag');if(t&&n)t.textContent=n})};
- const ds=dcShow;dcShow=function(){const r=ds.apply(this,arguments);paintP();return r};const b=$('dcbody');if(b)new MutationObserver(()=>paintP()).observe(b.parentElement||b,{childList:true,subtree:false});paintP()}
+ const ds=dcShow;dcShow=function(){const r=ds.apply(this,arguments);paintP();return r};const b=$('dcbody');if(b)new MutationObserver(()=>{if(document.querySelector('.xing'))return;paintP()}).observe(b.parentElement||b,{childList:true,subtree:false});paintP()}
 /* 인물 색 = 지도 영토 색, 생몰년, 인물 자세히 화면 */
 {const V={'고조선':'gojoseon','가야':'gaya','고구려':'goguryeo','백제':'baekje','신라':'silla','발해':'balhae','후고구려':'goguryeo','후백제':'baekje','고려':'goryeo','조선':'joseon','대한제국':'daehan','한국':'south','대한민국':'south','북한':'north','중국':'han','일본':'japan','미국':'us','러시아·소련':'ussr'};
  Object.keys(V).forEach(n=>{NAT_COL[n]=`color-mix(in srgb,var(--c-${V[n]}) 80%,var(--ink))`});
  const yrs=k=>{const v=PLIFE[k];return v?v.replace('~',' ~ '):''};
  const addY=()=>{document.querySelectorAll('#dcbody .gp[data-k]').forEach(g=>{if(g.querySelector('.gpy'))return;const y=yrs(g.dataset.k);if(!y)return;const n=g.querySelector('.gpn');if(n)n.insertAdjacentHTML('afterend',`<small class="gpy">${y}</small>`)})};
- const b=$('dcbody');if(b)new MutationObserver(addY).observe(b,{childList:true,subtree:true});addY();
+ const b=$('dcbody');if(b)new MutationObserver(()=>{if(document.querySelector('.xing'))return;addY()}).observe(b,{childList:true,subtree:true});addY();
  const op=openPerson;openPerson=function(n,T){const r=op.apply(this,arguments);try{const p=$('kpage');const bar=p.querySelector('.kpbar span');if(!bar||bar.textContent!=='인물 사전')return r;const k=p.querySelector('.kph h1').textContent.trim();const P=PEOPLE.get(k);let nat='';try{nat=P?personNation(P):(PNAT[k]||'')}catch(_){}const col=NAT_COL[nat]||'var(--ink)';const kin=p.querySelector('.kpin');kin.classList.add('kpperson');kin.style.setProperty('--pc',col);const h=p.querySelector('.kph');const y=yrs(k);
    h.querySelector('h1').insertAdjacentHTML('afterend',`${y?`<span class="kpy">${y}</span>`:''}${nat?`<i class="kpnat">${E2(nat)}</i>`:''}`);try{const sub=p.querySelector('.kpsub');if(sub)sub.innerHTML=lifeKings(k,nat,P)}catch(_){}}catch(_){}return r};
  const yv=t=>{t=String(t).trim();if(!t||t==='?')return null;const m=t.match(/^(BC|AD)?\s*(\d+)$/);if(!m)return null;return m[1]==='BC'?-+m[2]:+m[2]};
@@ -1383,7 +1383,7 @@ function openEvPage(id){const e=EVENTS.find(x=>String(x.id)===String(id));if(!e)
  p.innerHTML=`<div class="kpbar"><button class="ib" data-kx aria-label="뒤로"><svg class="ic" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg></button><span>사건</span></div>
  <div class="kpin kpev" data-ev="${e.id}" style="--kc:var(--t-${e.tp[0]})">
   <div class="kph"><h1>${esc(e.t)}</h1></div>
-  <div class="kpsub"><span>${esc(yearLabel(e))}</span>${typeof eventKing==='function'&&eventKing(e)?`<span>${esc(eventKing(e))}</span>`:''}</div>
+  <div class="kpsub"><span>${esc(yearLabel(e))}</span>${typeof eventKing==='function'&&eventKing(e)?`<span>${esc(eventKing(e).txt)}</span>`:''}</div>
   <section><h3>내용</h3><p class="kpd">${glx(e.x||'')}</p>${story?`<p class="kpd">${glx(story)}</p>`:''}</section>
   <section><h3>자세히</h3><dl class="kprows">${rows.map(r=>`<div><dt>${esc(r[0])}</dt><dd>${r[0]==='시기'||r[0]==='분류'?esc(r[1]):glx(r[1])}</dd></div>`).join('')}</dl></section>
   ${pps.length?`<section><h3>관련 인물</h3><div class="kpp">${pps.map(x=>`<button class="pchip" data-person="${esc(x)}" data-pt="${e.T}"><i>${esc([...x][0]||'')}</i>${esc(x)}</button>`).join('')}</div></section>`:''}
@@ -1399,7 +1399,7 @@ document.addEventListener('click',ev=>{const b=ev.target.closest&&ev.target.clos
 /* 사건 칸·연표 줄에 '자세히 보기' */
 {const evMore=()=>{document.querySelectorAll('.evd').forEach(d=>{if(d.closest('#kpage'))return;const s=d.querySelector('.snote[data-sk^="e:"]');let id=s?s.dataset.sk.slice(2):null;if(!id){const h=d.querySelector('.hrow>h2');const t=h&&(h.dataset.xo||h.textContent).trim();const e=t&&EVENTS.find(x=>x.t===t);id=e&&e.id}if(id==null)return;let b=d.querySelector('.mevmore');if(!b){const h=d.querySelector('.hrow>h2');b=document.createElement('button');b.className='mevmore mevm2 mevm3';b.type='button';b.textContent='자세히 →';if(h)h.appendChild(b);else d.appendChild(b)}b.dataset.evpage=id});
   document.querySelectorAll('#v-tl ol.tl>li[data-id]').forEach(li=>{if(li.querySelector('.mevmore'))return;const h=li.querySelector('h3');if(!h)return;h.insertAdjacentHTML('beforeend',`<button type="button" class="mevmore mevm2" data-evpage="${li.dataset.id}" aria-label="자세히 보기">자세히 →</button>`)})};
- new MutationObserver(()=>{clearTimeout(evMore.t);evMore.t=setTimeout(evMore,80)}).observe(document.body,{childList:true,subtree:true});setTimeout(evMore,500)}
+ new MutationObserver(ms=>{if(document.querySelector('.xing'))return;if(ms.every(m=>m.target.closest&&m.target.closest('.mtool,#mpen,#mtoast')))return;clearTimeout(evMore.t);evMore.t=setTimeout(evMore,150)}).observe(document.body,{childList:true,subtree:true});setTimeout(evMore,500)}
 /* 사건 칸 크기 조절: 가로 화면은 너비, 세로 화면은 높이 */
 {const p=$('panel');if(p){const g=document.createElement('div');g.className='pgrip';g.title='끌어서 크기 조절';p.prepend(g);
  const vert=()=>{if(p.style.position==='relative')p.style.position='';const ps=getComputedStyle(p).position;if(ps==='static')p.style.position='relative';return ps==='absolute'||ps==='fixed'};
