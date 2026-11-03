@@ -1196,7 +1196,8 @@ html,html *{font-synthesis-weight:none!important;font-synthesis:none!important}
     </div>
   </section>
 
-  <section class="view" id="v-rl" hidden>
+  <section class="view" id="v-ty" hidden><div class="read" id="tyread"><div class="rhead"><div class="rin"><div class="rlhd"><h2>조약</h2><span class="tycnt" id="tycount"></span></div></div></div><div class="rin" id="tybody"></div></div></section>
+<section class="view" id="v-rl" hidden>
     <div class="read" id="rlread">
       <div class="rhead"><div class="rin"><div class="rlhd"><h2>문화유산</h2><div class="rlchips" id="rlchips"></div></div><div class="jump" id="rljump"></div></div></div>
       <div class="rin" id="rlbody"></div>
@@ -1997,6 +1998,18 @@ body.medit #trbody>.trcard>.htitle,body.medit #trbody>.trcard>h2:first-child{pad
 .gw,.gw.tr{text-decoration:none!important;border-bottom:0!important;color:var(--gwc)!important;font-weight:600}
 .gw:hover{background:color-mix(in srgb,var(--gwc) 10%,transparent);border-radius:3px}
 body.pen-gl span.mul.gw:hover{text-decoration:line-through!important}
+</style>
+<style>
+#dcmenu{position:fixed;z-index:9000;background:var(--panel);border:1px solid var(--rule);border-radius:12px;box-shadow:0 10px 26px rgba(0,0,0,.14);padding:5px;display:flex;flex-direction:column;min-width:130px}
+#dcmenu[hidden]{display:none}
+#dcmenu button{font:inherit;font-size:14px;text-align:left;border:0;background:none;padding:8px 12px;border-radius:8px;cursor:pointer;color:var(--ink)}
+#dcmenu button:hover{background:color-mix(in srgb,var(--ink) 6%,transparent)}
+#dcmenu button[aria-pressed=true]{font-weight:700;color:var(--seal)}
+#tree-laws section.laws:first-child{display:none}
+.tycnt{font-size:13px;color:var(--muted)}
+#tybody .laws{margin-top:4px}
+.mngbtn::after{content:'▾';font-size:13px;color:var(--muted);transition:transform .15s;margin-left:8px}
+.mngbtn.fold::after{transform:rotate(-90deg)}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/flubber@0.4.2/build/flubber.min.js"></script>
 <script>
@@ -6384,7 +6397,8 @@ document.addEventListener('touchend',selUp,true);
  /* ☰ 메뉴: 화면 + 내가 넣는 메뉴(주소·앱 안 항목) + 고른 메뉴를 묶음으로 */
  {const sb=$('setbtn');if(sb&&!$('menubtn')){const b=document.createElement('button');b.id='menubtn';b.type='button';b.className='tib';b.setAttribute('aria-label','메뉴');b.innerHTML='<svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg>';sb.after(b);
    const m=document.createElement('div');m.id='menupop';m.hidden=true;document.body.appendChild(m);
-   const VS=[['map','지도'],['tl','연표'],['ov','연대표'],['tr','구조도'],['kg','왕계표'],['pp','인물'],['dc','사전'],['rl','문화유산']];const VN=Object.fromEntries(VS);
+   const VS0=[['map','지도'],['tl','연표'],['ov','연대표'],['ev','사건 모아보기'],['tr','구조도'],['kg','왕계표'],['dc','용어 사전'],['pp','인물'],['ty','조약'],['rl','문화유산']];const VN=Object.fromEntries(VS0);const VS=[['map','지도'],['tr','구조도'],['kg','왕계표'],['rl','문화유산']];const BG=[{b:'@tl',n:'연표',items:[['tl','연표'],['ov','연대표'],['ev','사건 모아보기']],at:1},{b:'@dc',n:'사전',items:[['dc','용어 사전'],['pp','인물'],['ty','조약']],at:4}];
+   const goV=v=>{if(v==='ev'){const t=document.querySelector('#tlmenu [data-tv=ev]');if(t){t.click();return}}showView(v)};
    let fold={};try{fold=JSON.parse(localStorage.getItem('hgs_mfold')||'{}')}catch(_){}
    let pend=null;const pick=new Set();
    const cb=key=>`<input type="checkbox" class="mncb" data-sel="${E(key)}"${pick.has(key)?' checked':''}>`;
@@ -6398,18 +6412,18 @@ document.addEventListener('touchend',selUp,true);
    const ordIdx=k=>{const i=ME.o.menu.indexOf(k);return i<0?1e6:i};const srt=(arr,keyOf)=>arr.map((x,i)=>[x,i]).sort((a,b)=>(ordIdx(keyOf(a[0]))-ordIdx(keyOf(b[0])))||(a[1]-b[1])).map(x=>x[0]);
    const render=()=>{const ed=canW&&editOn;const all=[...ME.q.entries()].sort((a,b)=>(a[1].at||0)-(b[1].at||0));const G=all.filter(([k,q])=>q.kind==='g'),I=all.filter(([k,q])=>q.kind!=='g');
      const inG=([k,q])=>q.g&&ME.q.has(q.g);const grouped=new Set(I.filter(x=>inG(x)&&x[1].v).map(x=>x[1].v));const loose=I.filter(x=>!inG(x)&&!x[1].v);
-     const top=srt([...VS.filter(([v])=>!grouped.has(v)).map(([v,n])=>({key:'v:'+v,v,n})),...G.map(([gk,g])=>({key:'g:'+gk,gk,g}))],x=>x.key);
-     m.innerHTML=`<div class="mnh">화면</div><div class="mnv">${top.map(x=>{if(x.v)return `<div class="mnrowi">${ed?cb(x.key):''}<button type="button" data-mv="${x.v}">${x.n}</button>${ed?ordBtns(x.key):''}</div>`;
-       const its=srt(I.filter(([k,q])=>q.g===x.gk),([k])=>'q:'+k);const f=!!fold[x.gk];return `<div class="mnrowi"><button type="button" class="mngbtn" data-gfold="${E(x.gk)}"><span>${E(x.g.n)}</span></button>${ed?ordBtns(x.key):''}${ed?`<i class="mnx" data-qdel="${E(x.gk)}" title="묶음 풀기">×</i>`:''}</div>${f?'':`<div class="mntree">${its.map(y=>itemHTML(y,ed,true)).join('')||'<span class="mnempty">비어 있어요</span>'}</div>`}`}).join('')}</div>
+     const top0=VS.filter(([v])=>!grouped.has(v)).map(([v,n])=>({key:'v:'+v,v,n}));BG.forEach(g=>top0.splice(Math.min(g.at,top0.length),0,{key:'b:'+g.b,bg:g}));const top=srt([...top0,...G.map(([gk,g])=>({key:'g:'+gk,gk,g}))],x=>x.key);
+     m.innerHTML=`<div class="mnh">화면</div><div class="mnv">${top.map(x=>{if(x.bg){const g=x.bg;const f=fold[g.b]!==false;return `<div class="mnrowi"><button type="button" class="mngbtn${f?' fold':''}" data-gfold="${g.b}" data-bfold="1"><span>${g.n}</span></button>${ed?ordBtns(x.key):''}</div>${f?'':`<div class="mntree">${g.items.map(([v,n])=>`<div class="mnrowi"><button type="button" class="mni mnin" data-mv="${v}"><span class="mnt">${n}</span></button></div>`).join('')}</div>`}`}if(x.v)return `<div class="mnrowi">${ed?cb(x.key):''}<button type="button" data-mv="${x.v}">${x.n}</button>${ed?ordBtns(x.key):''}</div>`;
+       const its=srt(I.filter(([k,q])=>q.g===x.gk),([k])=>'q:'+k);const f=!!fold[x.gk];return `<div class="mnrowi"><button type="button" class="mngbtn${f?' fold':''}" data-gfold="${E(x.gk)}"><span>${E(x.g.n)}</span></button>${ed?ordBtns(x.key):''}${ed?`<i class="mnx" data-qdel="${E(x.gk)}" title="묶음 풀기">×</i>`:''}</div>${f?'':`<div class="mntree">${its.map(y=>itemHTML(y,ed,true)).join('')||'<span class="mnempty">비어 있어요</span>'}</div>`}`}).join('')}</div>
      <div class="mnh">바로가기</div><div class="mnq">${srt(loose,([k])=>'q:'+k).map(x=>itemHTML(x,ed)).join('')||'<span class="mnempty">아직 없어요</span>'}</div>
      ${ed&&pick.size?`<div class="mngrp"><b>${pick.size}개 고름</b><div class="mnrow"><input id="mqgn" placeholder="묶음 이름" list="mqgl"><datalist id="mqgl">${G.map(([gk,g])=>`<option value="${E(g.n)}">`).join('')}</datalist><button type="button" data-gdo>묶기</button></div><button type="button" class="mnlink" data-gclear>고르기 취소</button></div>`:''}
-     ${ed?`<div class="mnadd"><div class="mnh2">메뉴 추가</div><input id="mqn" placeholder="메뉴 이름"><div class="mnrow"><input id="mqu" placeholder="주소 (https://…)"><button type="button" class="mnpick" data-qpick>앱 안에서 고르기</button></div><div class="mnsel">${pend?`<span class="mnpend">🔗 ${E(nameOf(pend))}<i data-qunpick>×</i></span>`:''}</div><div class="mnrow"><button type="button" data-qadd>추가</button></div><small class="mnhint">묶으려면 메뉴 왼쪽 네모를 고르고 묶음 이름을 적으세요</small></div>`:''}`};
+     ${ed?`<div class="mnadd"><div class="mnh2">메뉴 추가</div><input id="mqn" placeholder="메뉴 이름"><div class="mnrow"><input id="mqu" placeholder="주소 (https://…)"><button type="button" class="mnpick" data-qpick>앱 안에서 고르기</button></div><div class="mnsel">${pend?`<span class="mnpend">${E(nameOf(pend))}<i data-qunpick>×</i></span>`:''}</div><div class="mnrow"><button type="button" data-qadd>추가</button></div><small class="mnhint">묶으려면 메뉴 왼쪽 네모를 고르고 묶음 이름을 적으세요</small></div>`:''}`};
    const fly=document.createElement('div');fly.id='mgpop';fly.hidden=true;document.body.appendChild(fly);
    const openFly=(gk,row)=>{const ed=canW&&editOn;const g=ME.q.get(gk);if(!g){fly.hidden=true;return}const its=[...ME.q.entries()].filter(([k,q])=>q.kind!=='g'&&q.g===gk).sort((a,b)=>(a[1].at||0)-(b[1].at||0));
      fly.innerHTML=`<div class="mgh">${E(g.n)}</div>${its.map(x=>itemHTML(x,ed)).join('')||'<span class="mnempty">비어 있어요</span>'}`;fly.dataset.g=gk;const r=row.getBoundingClientRect(),mr=m.getBoundingClientRect();
      fly.hidden=false;const w=fly.offsetWidth;let left=mr.left-w-6;if(left<8)left=Math.min(innerWidth-w-8,mr.left+20);fly.style.left=left+'px';fly.style.top=Math.min(innerHeight-fly.offsetHeight-8,r.top)+'px'};
    m.openFly=openFly;
-   fly.addEventListener('click',e=>{const v=e.target.closest('[data-mv]');if(v&&!(editOn&&canW)&&!e.target.closest('[data-qdel]')){fly.hidden=true;m.hidden=true;$('kpage').hidden=true;showView(v.dataset.mv);return}
+   fly.addEventListener('click',e=>{const v=e.target.closest('[data-mv]');if(v&&!(editOn&&canW)&&!e.target.closest('[data-qdel]')){fly.hidden=true;m.hidden=true;$('kpage').hidden=true;goV(v.dataset.mv);return}
      const qi=e.target.closest('[data-qit]');if(qi&&!(editOn&&canW)&&!e.target.closest('[data-qdel]')){fly.hidden=true;m.hidden=true;openItem(qi.dataset.qit);return}
      const a=e.target.closest('a.mni');if(a&&!e.target.closest('[data-qdel]')){fly.hidden=true;return}
      const d=e.target.closest('[data-qdel]');if(d){e.preventDefault();e.stopPropagation();const k=d.dataset.qdel;const q=ME.q.get(k);if(q){if(q.v){ME.q.delete(k);save('q:'+k,'')}else{q.g='';save('q:'+k,q)}}render();const row=m.querySelector(`[data-gopen="${CSS.escape(fly.dataset.g)}"]`);if(row)openFly(fly.dataset.g,row);else fly.hidden=true}});
@@ -6423,13 +6437,13 @@ document.addEventListener('touchend',selUp,true);
    m.addEventListener('keydown',e=>{e.stopPropagation();if(e.key==='Enter'&&!e.isComposing&&e.target.id==='mqgn'){const g=m.querySelector('[data-gdo]');if(g)g.click()}},true);
    m.addEventListener('change',e=>{const c=e.target.closest('[data-sel]');if(!c)return;c.checked?pick.add(c.dataset.sel):pick.delete(c.dataset.sel);const keep=(m.querySelector('#mqgn')||{}).value;render();const n=m.querySelector('#mqgn');if(n&&keep)n.value=keep});
    m.addEventListener('click',e=>{if(e.target.closest('[data-sel]'))return;
-     const v=e.target.closest('[data-mv]');if(v){if(editOn&&canW&&!e.target.closest('[data-qdel]'))return;if(!e.target.closest('[data-qdel]')){m.hidden=true;$('kpage').hidden=true;showView(v.dataset.mv);return}}
+     const v=e.target.closest('[data-mv]');if(v){if(editOn&&canW&&!e.target.closest('[data-qdel]'))return;if(!e.target.closest('[data-qdel]')){m.hidden=true;$('kpage').hidden=true;goV(v.dataset.mv);return}}
      const d=e.target.closest('[data-qdel]');if(d){e.preventDefault();e.stopPropagation();const k=d.dataset.qdel;const q=ME.q.get(k);ME.q.delete(k);save('q:'+k,'');if(q&&q.kind==='g'){[...ME.q.entries()].forEach(([ik,iq])=>{if(iq.g===k){if(iq.v){ME.q.delete(ik);save('q:'+ik,'')}else{iq.g='';save('q:'+ik,iq)}}})}render();return}
      const mv=e.target.closest('[data-up],[data-dn]');if(mv){e.preventDefault();e.stopPropagation();const key=mv.dataset.up||mv.dataset.dn,dir=mv.dataset.up?-1:1;const row=mv.closest('.mnrowi');const list=row.parentElement;
        const keys=[...list.children].filter(c=>c.classList.contains('mnrowi')).map(c=>{const o=c.querySelector('[data-up]');return o&&o.dataset.up}).filter(Boolean);const i=keys.indexOf(key),j=i+dir;if(i<0||j<0||j>=keys.length)return;[keys[i],keys[j]]=[keys[j],keys[i]];
        const rest=ME.o.menu.filter(k=>!keys.includes(k));ME.o.menu=[...keys,...rest];save('o:menu',ME.o.menu);render();return}
      const go=e.target.closest('[data-gopen]');if(go){if(!fly.hidden&&fly.dataset.g===go.dataset.gopen){fly.hidden=true}else openFly(go.dataset.gopen,go);return}
-     const gf=e.target.closest('[data-gfold]');if(gf){const k=gf.dataset.gfold;fold[k]=!fold[k];try{localStorage.setItem('hgs_mfold',JSON.stringify(fold))}catch(_){}render();return}
+     const gf=e.target.closest('[data-gfold]');if(gf){const k=gf.dataset.gfold;if(gf.dataset.bfold)fold[k]=fold[k]===false;else fold[k]=!fold[k];try{localStorage.setItem('hgs_mfold',JSON.stringify(fold))}catch(_){}render();return}
      const qi=e.target.closest('[data-qit]');if(qi){if(editOn&&canW)return;m.hidden=true;openItem(qi.dataset.qit);return}
      if(e.target.closest('[data-gclear]')){pick.clear();render();return}
      if(e.target.closest('[data-gdo]')){const n=(m.querySelector('#mqgn').value||'').trim();if(!n){m.querySelector('#mqgn').focus();return}
@@ -6706,6 +6720,17 @@ function rlForm(key){if(!(window.__MEX&&window.__MEX.can()))return;const H=windo
    addEventListener('pointermove',mv);addEventListener('pointerup',up)},true);
  new MutationObserver(()=>{if(!busy)try{trUser()}catch(_){}}).observe(document.body,{attributes:true,attributeFilter:['class']});
 }
+
+/* 사전 ▾ (용어 사전 · 인물 · 조약) + 조약 화면 */
+try{VIEWS.push('ty')}catch(_){}
+function tyShow(){const b=$('tybody');if(!b)return;const tmp=document.createElement('div');tmp.innerHTML=lawsHTML();const s=tmp.querySelector('section.laws');b.innerHTML='';if(s){const h=s.querySelector('h2');if(h)h.remove();b.appendChild(s)}const n=EVENTS.filter(e=>e.treaty).length;const c=$('tycount');if(c)c.textContent=n+'개';b.querySelectorAll('[data-tl]').forEach(li=>li.onclick=ev=>{if(ev.target.closest('[data-gl]'))return;gotoTimeline(EVENTS.find(x=>x.id===+li.dataset.tl))});try{glossify&&glossify(b)}catch(_){}}
+{const dc=$('tab-dc'),pp=$('tab-pp');if(dc){if(pp)pp.style.display='none';const NM={dc:'사전',pp:'인물',ty:'조약'};dc.textContent='사전 ▾';
+ const m=document.createElement('div');m.id='dcmenu';m.className='tabmenu';m.hidden=true;m.innerHTML='<button type="button" data-dv="dc">용어 사전</button><button type="button" data-dv="pp">인물</button><button type="button" data-dv="ty">조약</button>';document.body.appendChild(m);
+ dc.onclick=e=>{e.stopPropagation();e.preventDefault();if(!m.hidden){m.hidden=true;return}const r=dc.getBoundingClientRect();m.style.left=r.left+'px';m.style.top=(r.bottom+6)+'px';const v=store.get('view','map');m.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.dv===v));m.hidden=false};
+ m.addEventListener('click',e=>{const b=e.target.closest('[data-dv]');if(!b)return;m.hidden=true;try{$('kpage').hidden=true}catch(_){}showView(b.dataset.dv)});
+ document.addEventListener('click',e=>{if(!m.hidden&&!e.target.closest('#dcmenu,#tab-dc'))m.hidden=true});
+ const sv=showView;showView=function(v){const r=sv.apply(this,arguments);const on=['dc','pp','ty'].includes(v);dc.setAttribute('aria-selected',on);dc.textContent=(on?NM[v]:'사전')+' ▾';if(v==='ty')try{tyShow()}catch(_){}return r};
+ if(store.get('view','map')==='ty')setTimeout(()=>showView('ty'),0);else{const v=store.get('view','map');if(['dc','pp'].includes(v)){dc.setAttribute('aria-selected','true');dc.textContent=NM[v]+' ▾'}}}}
 </script>
 <script type="module">
 /* 구글 로그인 + 하트·책갈피·설정 동기화 (GitHub 사이트 전용) */

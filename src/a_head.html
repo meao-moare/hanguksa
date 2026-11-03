@@ -1195,7 +1195,8 @@ html,html *{font-synthesis-weight:none!important;font-synthesis:none!important}
     </div>
   </section>
 
-  <section class="view" id="v-rl" hidden>
+  <section class="view" id="v-ty" hidden><div class="read" id="tyread"><div class="rhead"><div class="rin"><div class="rlhd"><h2>조약</h2><span class="tycnt" id="tycount"></span></div></div></div><div class="rin" id="tybody"></div></div></section>
+<section class="view" id="v-rl" hidden>
     <div class="read" id="rlread">
       <div class="rhead"><div class="rin"><div class="rlhd"><h2>문화유산</h2><div class="rlchips" id="rlchips"></div></div><div class="jump" id="rljump"></div></div></div>
       <div class="rin" id="rlbody"></div>
@@ -1996,4 +1997,16 @@ body.medit #trbody>.trcard>.htitle,body.medit #trbody>.trcard>h2:first-child{pad
 .gw,.gw.tr{text-decoration:none!important;border-bottom:0!important;color:var(--gwc)!important;font-weight:600}
 .gw:hover{background:color-mix(in srgb,var(--gwc) 10%,transparent);border-radius:3px}
 body.pen-gl span.mul.gw:hover{text-decoration:line-through!important}
+</style>
+<style>
+#dcmenu{position:fixed;z-index:9000;background:var(--panel);border:1px solid var(--rule);border-radius:12px;box-shadow:0 10px 26px rgba(0,0,0,.14);padding:5px;display:flex;flex-direction:column;min-width:130px}
+#dcmenu[hidden]{display:none}
+#dcmenu button{font:inherit;font-size:14px;text-align:left;border:0;background:none;padding:8px 12px;border-radius:8px;cursor:pointer;color:var(--ink)}
+#dcmenu button:hover{background:color-mix(in srgb,var(--ink) 6%,transparent)}
+#dcmenu button[aria-pressed=true]{font-weight:700;color:var(--seal)}
+#tree-laws section.laws:first-child{display:none}
+.tycnt{font-size:13px;color:var(--muted)}
+#tybody .laws{margin-top:4px}
+.mngbtn::after{content:'▾';font-size:13px;color:var(--muted);transition:transform .15s;margin-left:8px}
+.mngbtn.fold::after{transform:rotate(-90deg)}
 </style>
