@@ -1370,22 +1370,23 @@ function rlOpen(e){const p=$('kpage');const L=RLITEMS();const i=L.findIndex(x=>x
 {NAT_COL['일제강점기']='color-mix(in srgb,var(--t-ind) 85%,var(--ink))';const pn=personNation;personNation=function(P){if(P&&PNAT[P.n])return PNAT[P.n];const n=pn.apply(this,arguments);if(P&&P.evs&&P.evs.length&&['한국','대한민국','대한제국','조선',''].includes(n)){const c=P.evs.filter(e=>e.era==='colonial').length;if(c*2>=P.evs.length&&c>0)return '일제강점기'}return n}}
 
 /* 사건 자세히 보기 (낱말·인물처럼 한 화면) */
-function openEvPage(id){const e=EVENTS.find(x=>String(x.id)===String(id));if(!e)return;const p=$('kpage');
+function accessionOf(e){if(!/즉위|왕위에 오름|왕이 됨/.test(e.t))return null;const nm=e.t.replace(/\s*(즉위|왕위에 오름|왕이 됨).*$/,'').replace(/^(고구려|백제|신라|고려|조선|발해|가야)\s*,?\s*/,'').replace(/\(.*?\)/g,'').trim();const key=nm.replace(/\s/g,'').slice(0,2);let best=null;REIGNS.forEach(D=>D.r.forEach((r,i)=>{const rn=r.name.replace(/\(.*?\)/g,'').replace(/\s/g,'');const ok=key&&rn.includes(key);const dt=Math.abs(r.s-e.T);if((ok&&dt<4)||(!best&&dt<0.6)){const sc=(ok?0:10)+dt;if(!best||sc<best.sc)best={D,i,r,sc}}}));if(!best)return null;const {D,i,r}=best;const pv=i>0?D.r[i-1]:null;const cl=n=>n.replace('대통령 ','');if(D.n==='고조선'||D.n==='남한'||D.n==='북한')return {txt:`${D.n==='고조선'?'고조선 왕 ':''}${cl(r.name)}`,prev:pv&&D.n!=='고조선'?cl(pv.name):''};return {txt:`${D.n} 제${i+1}대 ${cl(r.name)}`,prev:pv?`제${i}대 ${cl(pv.name)}`:''}}
+function openEvPage(id){const e=EVENTS.find(x=>String(x.id)===String(id));if(!e)return;const p=$('kpage');const ACC=accessionOf(e);
  const TOPN={};try{TOPICS.forEach(t=>TOPN[t.k]=t.n)}catch(_){}
  const pps=(e.pp||'').split(/,\s*/).map(x=>(typeof pbase==='function'?pbase(x):x).trim()).filter(x=>x.length>1);
  const chain=e.c?EVENTS.filter(x=>x.c===e.c&&x.id!==e.id):[];
  const ppSet=new Set(pps);const byP=EVENTS.filter(x=>x.id!==e.id&&!chain.includes(x)&&(x.pp||'').split(/,\s*/).some(n=>ppSet.has((typeof pbase==='function'?pbase(n):n).trim()))).slice(0,10);
  const near=EVENTS.filter(x=>x.id!==e.id&&!chain.includes(x)&&!byP.includes(x)&&(x.f===e.f||Math.abs(x.T-e.T)<=12)&&x.tp[0]!=='wld').sort((a,b)=>Math.abs(a.T-e.T)-Math.abs(b.T-e.T)).slice(0,10).sort((a,b)=>a.T-b.T);
- const rows=[['시기',yearLabel(e)],e.p?['장소',typeof placeName==='function'?placeName(e):e.p]:null,e.pp?['인물',e.pp]:null,e.vs?['대립',e.vs]:null,['분류',e.tp.map(t=>TOPN[t]||t).join(' · ')]].filter(Boolean);
+ const rows=[ACC?['왕위',ACC.txt+(ACC.prev?' (이전: '+ACC.prev+')':'')]:['시기',yearLabel(e)],e.p?['장소',typeof placeName==='function'?placeName(e):e.p]:null,e.pp?['인물',e.pp]:null,e.vs?['대립',e.vs]:null,['분류',e.tp.map(t=>TOPN[t]||t).join(' · ')]].filter(Boolean);
  const story=typeof STORY!=='undefined'?STORY[e.t]:null;
  const li=x=>`<li class="ev"><button data-evpage="${x.id}" style="--tc:var(--t-${x.tp[0]})"><em>${esc(shortYear(x))}</em>${esc(x.t)}</button><p>${glx(x.x||'')}</p></li>`;
  const kw=(e.t+' '+(e.x||'')+' '+(story||''));const rel=Object.keys(GLOSS).filter(g=>g.length>1&&kw.includes(g)).sort((a,b)=>b.length-a.length).slice(0,14);
  p.innerHTML=`<div class="kpbar"><button class="ib" data-kx aria-label="뒤로"><svg class="ic" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg></button><span>사건</span></div>
  <div class="kpin kpev" data-ev="${e.id}" style="--kc:var(--t-${e.tp[0]})">
   <div class="kph"><h1>${esc(e.t)}</h1></div>
-  <div class="kpsub"><span>${esc(yearLabel(e))}</span>${typeof eventKing==='function'&&eventKing(e)?`<span>${esc(eventKing(e).txt)}</span>`:''}</div>
+  <div class="kpsub"><span>${esc(yearLabel(e))}</span>${ACC?`<span>${esc(ACC.txt)}${ACC.prev?` <small>(이전: ${esc(ACC.prev)})</small>`:''}</span>`:(typeof eventKing==='function'&&eventKing(e)?`<span>${esc(eventKing(e).txt)}</span>`:'')}</div>
   <section><h3>내용</h3><p class="kpd">${glx(e.x||'')}</p>${story?`<p class="kpd">${glx(story)}</p>`:''}</section>
-  <section><h3>자세히</h3><dl class="kprows">${rows.map(r=>`<div><dt>${esc(r[0])}</dt><dd>${r[0]==='시기'||r[0]==='분류'?esc(r[1]):glx(r[1])}</dd></div>`).join('')}</dl></section>
+  <section><h3>자세히</h3><dl class="kprows">${rows.map(r=>`<div><dt>${esc(r[0])}</dt><dd>${r[0]==='시기'||r[0]==='분류'||r[0]==='왕위'?esc(r[1]):glx(r[1])}</dd></div>`).join('')}</dl></section>
   ${pps.length?`<section><h3>관련 인물</h3><div class="kpp">${pps.map(x=>`<button class="pchip" data-person="${esc(x)}" data-pt="${e.T}"><i>${esc([...x][0]||'')}</i>${esc(x)}</button>`).join('')}</div></section>`:''}
   ${chain.length?`<section><h3>이어지는 사건</h3><ul class="kpl">${chain.sort((a,b)=>a.T-b.T).map(li).join('')}</ul></section>`:''}
   ${byP.length?`<section><h3>같은 인물이 나오는 사건</h3><ul class="kpl">${byP.map(li).join('')}</ul></section>`:''}
