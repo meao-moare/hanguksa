@@ -6064,7 +6064,7 @@ document.addEventListener('click',e=>{const c=e.target.closest&&e.target.closest
    f.addEventListener('keydown',e=>e.stopPropagation(),true)};
  function syncEvents(now){const canon=o=>{if(Array.isArray(o))return o.map(canon);if(o&&typeof o==='object'){const r={};Object.keys(o).filter(k=>k!=='at'&&o[k]!==undefined&&o[k]!==null&&o[k]!=='').sort().forEach(k=>r[k]=canon(o[k]));return r}return o};const list=[...ME.v.entries()].sort((a,b)=>a[0]<b[0]?-1:1).map(([id,v])=>canon(Object.assign({mid:id},v)));const sig=JSON.stringify(list);let old='[]';try{old=JSON.stringify(canon(JSON.parse(window.__MYEV_SIG||'[]')))}catch(_){}if(sig===old)return;
    try{localStorage.setItem('hgs_myev',sig)}catch(_){toast('새로 고치면 사건이 보여요');return}
-   let rl='';try{rl=sessionStorage.getItem('hgs_rl')||''}catch(_){}if(rl===sig&&!now)return;try{sessionStorage.setItem('hgs_rl',sig)}catch(_){}
+   let rl='';try{rl=sessionStorage.getItem('hgs_rl')||''}catch(_){}if(rl===sig&&!now)return;let lt=0;try{lt=+sessionStorage.getItem('hgs_rlt')||0}catch(_){}if(Date.now()-lt<20000){try{sessionStorage.setItem('hgs_rl',sig)}catch(_){}return}try{sessionStorage.setItem('hgs_rl',sig);sessionStorage.setItem('hgs_rlt',String(Date.now()))}catch(_){}
    toast('새 사건 반영 중…');setTimeout(()=>location.reload(),now?900:300)}
  /* 떠 있는 추가 단추: 사전 화면이면 낱말, 지도·연표면 사건 */
  /* 추가 단추는 그 자리에: 사건 목록 머리(지도 옆 사건 칸·연표), 사전 머리 */
