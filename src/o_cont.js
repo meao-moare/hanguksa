@@ -1237,7 +1237,7 @@ document.addEventListener('touchend',selUp,true);
  /* ☰ 메뉴: 화면 + 내가 넣는 메뉴(주소·앱 안 항목) + 고른 메뉴를 묶음으로 */
  {const sb=$('setbtn');if(sb&&!$('menubtn')){const b=document.createElement('button');b.id='menubtn';b.type='button';b.className='tib';b.setAttribute('aria-label','메뉴');b.innerHTML='<svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg>';sb.after(b);
    const m=document.createElement('div');m.id='menupop';m.hidden=true;document.body.appendChild(m);
-   const VS0=[['map','지도'],['tl','연표'],['ov','연대표'],['ev','사건 모아보기'],['tr','구조도'],['kg','왕계표'],['dc','용어 사전'],['pp','인물'],['ty','조약'],['rl','문화유산']];const VN=Object.fromEntries(VS0);const VS=[['map','지도'],['tr','구조도'],['kg','왕계표'],['rl','문화유산']];const BG=[{b:'@tl',n:'연표',items:[['tl','연표'],['ov','연대표'],['ev','사건 모아보기']],at:1},{b:'@dc',n:'사전',items:[['dc','용어 사전'],['pp','인물'],['ty','조약']],at:4}];
+   const VS0=[['map','지도'],['tl','연표'],['ov','연대표'],['ev','사건 모아보기'],['tr','구조도'],['kg','왕계표'],['dc','용어 사전'],['pp','인물'],['ty','조약'],['rl','문화유산']];const VN=Object.fromEntries(VS0);const VS=[['map','지도'],['tr','구조도'],['kg','왕계표'],['ty','조약'],['rl','문화유산']];const BG=[{b:'@tl',n:'연표',items:[['tl','연표'],['ov','연대표'],['ev','사건 모아보기']],at:1},{b:'@dc',n:'사전',items:[['dc','용어 사전'],['pp','인물']],at:4}];
    const goV=v=>{if(v==='ev'){const t=document.querySelector('#tlmenu [data-tv=ev]');if(t){t.click();return}}showView(v)};
    let fold={};try{fold=JSON.parse(localStorage.getItem('hgs_mfold')||'{}')}catch(_){}
    let pend=null;const pick=new Set();
@@ -1564,10 +1564,10 @@ function rlForm(key){if(!(window.__MEX&&window.__MEX.can()))return;const H=windo
 /* 사전 ▾ (용어 사전 · 인물 · 조약) + 조약 화면 */
 try{VIEWS.push('ty')}catch(_){}
 function tyShow(){const b=$('tybody');if(!b)return;const tmp=document.createElement('div');tmp.innerHTML=lawsHTML();const s=tmp.querySelector('section.laws');b.innerHTML='';if(s){const h=s.querySelector('h2');if(h)h.remove();b.appendChild(s)}const n=EVENTS.filter(e=>e.treaty).length;const c=$('tycount');if(c)c.textContent=n+'개';b.querySelectorAll('[data-tl]').forEach(li=>li.onclick=ev=>{if(ev.target.closest('[data-gl]'))return;gotoTimeline(EVENTS.find(x=>x.id===+li.dataset.tl))});try{glossify&&glossify(b)}catch(_){}}
-{const dc=$('tab-dc'),pp=$('tab-pp');if(dc){if(pp)pp.style.display='none';const NM={dc:'사전',pp:'인물',ty:'조약'};dc.textContent='사전 ▾';
- const m=document.createElement('div');m.id='dcmenu';m.className='tabmenu';m.hidden=true;m.innerHTML='<button type="button" data-dv="dc">용어 사전</button><button type="button" data-dv="pp">인물</button><button type="button" data-dv="ty">조약</button>';document.body.appendChild(m);
+{const dc=$('tab-dc'),pp=$('tab-pp');if(dc){if(pp)pp.style.display='none';const NM={dc:'사전',pp:'인물'};dc.textContent='사전 ▾';const tyb=document.createElement('button');tyb.id='tab-ty';tyb.setAttribute('role','tab');tyb.setAttribute('aria-selected','false');tyb.dataset.v='ty';tyb.textContent='조약';dc.after(tyb);tyb.onclick=e=>{e.preventDefault();e.stopPropagation();try{$('kpage').hidden=true}catch(_){}showView('ty')};
+ const m=document.createElement('div');m.id='dcmenu';m.className='tabmenu';m.hidden=true;m.innerHTML='<button type="button" data-dv="dc">용어 사전</button><button type="button" data-dv="pp">인물</button>';document.body.appendChild(m);
  dc.onclick=e=>{e.stopPropagation();e.preventDefault();if(!m.hidden){m.hidden=true;return}const r=dc.getBoundingClientRect();m.style.left=r.left+'px';m.style.top=(r.bottom+6)+'px';const v=store.get('view','map');m.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.dv===v));m.hidden=false};
  m.addEventListener('click',e=>{const b=e.target.closest('[data-dv]');if(!b)return;m.hidden=true;try{$('kpage').hidden=true}catch(_){}showView(b.dataset.dv)});
  document.addEventListener('click',e=>{if(!m.hidden&&!e.target.closest('#dcmenu,#tab-dc'))m.hidden=true});
- const sv=showView;showView=function(v){const r=sv.apply(this,arguments);const on=['dc','pp','ty'].includes(v);dc.setAttribute('aria-selected',on);dc.textContent=(on?NM[v]:'사전')+' ▾';if(v==='ty')try{tyShow()}catch(_){}return r};
+ const sv=showView;showView=function(v){const r=sv.apply(this,arguments);const on=['dc','pp'].includes(v);if(tyb)tyb.setAttribute('aria-selected',v==='ty');dc.setAttribute('aria-selected',on);dc.textContent=(on?NM[v]:'사전')+' ▾';if(v==='ty')try{tyShow()}catch(_){}return r};
  if(store.get('view','map')==='ty')setTimeout(()=>showView('ty'),0);else{const v=store.get('view','map');if(['dc','pp'].includes(v)){dc.setAttribute('aria-selected','true');dc.textContent=NM[v]+' ▾'}}}}
