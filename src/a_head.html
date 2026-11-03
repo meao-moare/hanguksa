@@ -1858,3 +1858,8 @@ li[data-id]>button.mevplus:hover{background:var(--ink)!important;color:var(--pan
 <style>#v-map.listonly .panel{padding-top:var(--toph,58px)!important}</style>
 <style>.kpl>li{position:relative}.mlix{position:absolute;top:6px;right:0;width:22px;height:22px;border-radius:50%;border:0;background:color-mix(in srgb,var(--ink) 8%,transparent);color:color-mix(in srgb,var(--ink) 55%,transparent);font-size:14px;line-height:1;cursor:pointer;padding:0;display:grid;place-items:center;opacity:0;transition:opacity .15s}
 .kpl>li:hover>.mlix{opacity:1}@media (hover:none){.mlix{opacity:.75}}.mlix:hover{background:#ef4444;color:#fff}</style>
+<style>#mpen .mptop [data-pmin]{width:24px;height:24px;border:0;background:none;border-radius:7px;display:grid;place-items:center;cursor:pointer;color:var(--ink)}
+#mpen .mptop [data-pmin] svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;transition:transform .15s}
+#mpen.mini>*:not(.mptop){display:none!important}#mpen.mini .mptop [data-undo],#mpen.mini .mptop [data-redo]{display:none}
+#mpen.mini .mptop [data-pmin] svg{transform:rotate(180deg)}
+#mpen.mini{padding:4px 6px!important;cursor:pointer}#mpen.mini .mptop::after{content:"필통";font-size:11.5px;font-weight:700;color:color-mix(in srgb,var(--ink) 65%,transparent);padding-right:4px}</style>
