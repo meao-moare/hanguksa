@@ -6062,10 +6062,10 @@ document.addEventListener('click',e=>{const c=e.target.closest&&e.target.closest
      const m=parseInt(f.querySelector('#mvm').value);const v={y,t,tp:[f.querySelector('#mvtp').value],x:f.querySelector('#mvx').value.trim()||t};if(m>=1&&m<=12)v.m=m;const pp=f.querySelector('#mvpp').value.trim();if(pp)v.pp=pp;const p=f.querySelector('#mvp').value.trim();if(p)v.p=p;if(ll)v.ll=ll;
      const id=mid||Date.now().toString(36);ME.v.set(id,v);save('v:'+id,v);f.remove();syncEvents(true)},true);
    f.addEventListener('keydown',e=>e.stopPropagation(),true)};
- function syncEvents(now){const list=[...ME.v.entries()].sort((a,b)=>a[0]<b[0]?-1:1).map(([id,v])=>Object.assign({mid:id},v));const sig=JSON.stringify(list);if(sig===(window.__MYEV_SIG||'[]'))return;
+ function syncEvents(now){const canon=o=>{if(Array.isArray(o))return o.map(canon);if(o&&typeof o==='object'){const r={};Object.keys(o).filter(k=>k!=='at'&&o[k]!==undefined&&o[k]!==null&&o[k]!=='').sort().forEach(k=>r[k]=canon(o[k]));return r}return o};const list=[...ME.v.entries()].sort((a,b)=>a[0]<b[0]?-1:1).map(([id,v])=>canon(Object.assign({mid:id},v)));const sig=JSON.stringify(list);let old='[]';try{old=JSON.stringify(canon(JSON.parse(window.__MYEV_SIG||'[]')))}catch(_){}if(sig===old)return;
    try{localStorage.setItem('hgs_myev',sig)}catch(_){toast('새로 고치면 사건이 보여요');return}
    let rl='';try{rl=sessionStorage.getItem('hgs_rl')||''}catch(_){}if(rl===sig&&!now)return;try{sessionStorage.setItem('hgs_rl',sig)}catch(_){}
-   toast('사건을 지도에 넣는 중…');setTimeout(()=>location.reload(),now?900:300)}
+   toast('새 사건 반영 중…');setTimeout(()=>location.reload(),now?900:300)}
  /* 떠 있는 추가 단추: 사전 화면이면 낱말, 지도·연표면 사건 */
  /* 추가 단추는 그 자리에: 사건 목록 머리(지도 옆 사건 칸·연표), 사전 머리 */
  const fBtn=()=>{const on=editOn&&canW;const old=$('mwadd');if(old)old.hidden=true;
