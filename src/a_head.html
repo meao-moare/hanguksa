@@ -1831,3 +1831,13 @@ body.medit :is(.kpin,.evd,#dcbody,#ppbody,.hzall,#srres) :is(h1,h2,h3,h4,p,li,dd
 .pgrip.pgv{left:0;right:0;top:-6px;bottom:auto;width:auto;height:16px;cursor:ns-resize}.pgrip.pgv::after{left:50%;top:5px;width:44px;height:5px;margin:0 0 0 -22px;opacity:1}@media (hover:none){.pgrip::after{opacity:.7}}
 body.presize{user-select:none;cursor:grabbing}</style>
 <style>.pgrip.pgv{height:26px!important;top:-4px!important}.pgrip.pgv::after{display:none!important}</style>
+<style>#pbody li[data-id],#v-tl ol.tl>li[data-id]{position:relative}
+.mevplus{position:absolute;left:50%;transform:translateX(-50%);z-index:5;width:24px;height:24px;border-radius:50%;border:1.5px solid color-mix(in srgb,var(--ink) 18%,transparent);background:var(--panel);color:color-mix(in srgb,var(--ink) 55%,transparent);font-size:16px;line-height:1;display:grid;place-items:center;cursor:pointer;padding:0;opacity:0;pointer-events:none;transition:opacity .15s;box-shadow:0 2px 6px rgba(15,23,42,.1)}
+.mevplus.top{top:-12px}.mevplus.bot{bottom:-12px}
+li[data-id]:hover>.mevplus,li[data-id].on>.mevplus,li[data-id].sel>.mevplus,li[data-id]:focus-within>.mevplus{opacity:1;pointer-events:auto}
+@media (hover:none){li[data-id]>.mevplus{opacity:.6;pointer-events:auto}}
+.mevplus:hover{background:var(--ink);color:var(--panel);border-color:var(--ink)}</style>
+<style>li[data-id]>button.mevplus{position:absolute!important;width:24px!important;min-width:0!important;height:24px!important;padding:0!important;margin:0!important;border-radius:50%!important;display:grid!important;place-items:center;text-align:center!important;background:var(--panel)!important;border:1.5px solid color-mix(in srgb,var(--ink) 20%,transparent)!important;font-size:16px!important;color:color-mix(in srgb,var(--ink) 60%,transparent)!important;left:50%!important;right:auto!important;transform:translateX(-50%)!important}
+li[data-id]>button.mevplus.top{top:-12px!important;bottom:auto!important}li[data-id]>button.mevplus.bot{bottom:-12px!important;top:auto!important}
+li[data-id]>button.mevplus:hover{background:var(--ink)!important;color:var(--panel)!important}</style>
+<style>li[data-id]>button.mevplus{font-size:0!important;grid-template-columns:none!important;gap:0!important}li[data-id]>button.mevplus svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;display:block;margin:auto}li[data-id]>button.mevplus::before,li[data-id]>button.mevplus::after{display:none!important}</style>
