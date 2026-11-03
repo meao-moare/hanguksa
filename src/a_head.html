@@ -1897,3 +1897,39 @@ body.pen-hr ::selection{background:#bfdbfe}
 .mln{display:block}
 .kpd.mblank,.msbody p.mblank{min-height:1em;margin:0}
 </style>
+<style>
+.rlmode{position:relative}
+.rlmb{display:flex;align-items:center;gap:6px;font:inherit;font-size:13px;border:1px solid var(--rule);background:var(--panel);border-radius:10px;padding:5px 8px 5px 11px;cursor:pointer;color:var(--ink)}
+.rlmb span{color:var(--muted)}.rlmb b{font-weight:700}
+.rlmb svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2}
+.rlmp{position:absolute;top:calc(100% + 4px);left:0;z-index:30;display:flex;flex-direction:column;min-width:130px;background:var(--panel);border:1px solid var(--rule);border-radius:12px;box-shadow:0 10px 28px rgb(0 0 0/.14);padding:5px}
+.rlmp[hidden]{display:none}
+.rlmp button{font:inherit;font-size:14px;text-align:left;border:0;background:none;border-radius:8px;padding:8px 10px;cursor:pointer;color:var(--ink)}
+.rlmp button:hover{background:color-mix(in srgb,var(--ink) 6%,transparent)}
+.rlmp button[aria-pressed=true]{font-weight:700;color:#1d4ed8;background:#dbeafe}
+.rladd{font:inherit;font-size:13px;font-weight:600;border:1px dashed #2563eb;color:#1d4ed8;background:none;border-radius:999px;padding:4px 12px;cursor:pointer}
+.rladd[hidden]{display:none}
+.kpsub .rlnat{font-weight:700}
+#mrlform{position:fixed;inset:0;z-index:200;background:rgb(0 0 0/.3);display:grid;place-items:center;padding:16px}
+#mrlform .mrlin{width:min(460px,100%);max-height:90vh;overflow:auto;background:var(--panel);border-radius:16px;padding:18px;box-shadow:0 20px 50px rgb(0 0 0/.25);display:flex;flex-direction:column;gap:10px}
+#mrlform h3{margin:0 0 2px;font-size:17px;color:#1d4ed8}
+#mrlform label{display:flex;flex-direction:column;gap:3px;font-size:12px;font-weight:600;color:var(--muted);flex:1;min-width:0}
+#mrlform input,#mrlform select,#mrlform textarea{font:inherit;font-size:14px;font-weight:400;color:var(--ink);border:1px solid var(--rule);border-radius:9px;padding:7px 9px;background:var(--panel)}
+#mrlform .mrl2{display:flex;gap:8px}
+#mrlform .mrlbt{display:flex;justify-content:flex-end;gap:8px;margin-top:4px}
+#mrlform .btn.pri{background:#2563eb;color:#fff;border-color:#2563eb}
+.rlgo .rldel{color:#b91c1c}
+</style>
+<style>.rladd{display:none!important}body.medit .rladd{display:inline-block!important}</style>
+<style>
+.pw{font-weight:700;color:color-mix(in srgb,var(--trc,var(--seal)) 78%,var(--ink));cursor:pointer;text-decoration:none}
+.pw:hover{background:color-mix(in srgb,var(--trc,var(--seal)) 10%,transparent);border-radius:3px}
+body.pen-pp span.mul.pw:hover{text-decoration:line-through}
+body.pen-pp ::selection{background:#bbf7d0}
+#mpen [data-pen=pp].on{background:#dcfce7;box-shadow:inset 0 0 0 1.5px #16a34a}
+#mpen [data-pen=pp] span{font-weight:800}
+#mpenon.pp{background:#dcfce7;color:#166534}
+#mglpick.pppick .mgh{color:#166534}
+#mglpick.pppick .mgl button{border-left:3px solid var(--kc)}
+#mglpick.pppick .mgl span{color:var(--kc)}
+</style>
