@@ -1585,3 +1585,6 @@ function tyShow(){const b=$('tybody');if(!b)return;const tmp=document.createElem
  document.addEventListener('click',e=>{if(!m.hidden&&!e.target.closest('#dcmenu,#tab-dc'))m.hidden=true});
  const sv=showView;showView=function(v){const r=sv.apply(this,arguments);const on=['dc','pp'].includes(v);if(tyb)tyb.setAttribute('aria-selected',v==='ty');dc.setAttribute('aria-selected',on);dc.textContent=(on?NM[v]:'사전')+' ▾';if(v==='ty')try{tyShow()}catch(_){}return r};
  if(store.get('view','map')==='ty')setTimeout(()=>showView('ty'),0);else{const v=store.get('view','map');if(['dc','pp'].includes(v)){dc.setAttribute('aria-selected','true');dc.textContent=NM[v]+' ▾'}}}}
+
+/* 구조도 화면에서는 필통을 숨겨 상자 오른쪽 버튼·손잡이를 가리지 않게 */
+{const sv=showView;showView=function(v){const r=sv.apply(this,arguments);document.body.classList.toggle('ontr',v==='tr'||v==='tp');return r};try{const v=store.get('view','map');document.body.classList.toggle('ontr',v==='tr')}catch(_){}}
