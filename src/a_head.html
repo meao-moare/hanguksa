@@ -2321,4 +2321,13 @@ body[data-tysec="ref"] #tybody .tyref{margin-top:0}
 .ogml p{margin:4px 0 0;font-size:13.5px;color:color-mix(in srgb,var(--ink) 75%,var(--muted))}
 .ogorgs .laws>h2,.ogorgs section>h2:first-child{display:none}
 #v-og .rhead{position:static!important}
+/* 사절단·조직 가로 배열 */
+#ogbody .ogml{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
+#ogbody .ogml li{display:flex;flex-direction:column;gap:4px;border:1px solid var(--rule);border-radius:12px;padding:12px 14px;border-top:3px solid #b03a2e}
+#ogbody .ogml li .ogy{font-size:13px}
+#ogbody .ogorgs .orgl{display:grid!important;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px;padding:0!important;list-style:none}
+#ogbody .ogorgs .orgl li{display:flex!important;flex-direction:column;gap:3px;border:1px solid var(--rule)!important;border-radius:12px;padding:11px 13px!important;background:var(--panel);border-top:3px solid #0f766e!important;margin:0!important}
+#ogbody .ogorgs .orgl li .ly{font-weight:800;color:#0f766e;font-size:13px;width:auto!important}
+#ogbody .ogorgs .orgl li p{margin:3px 0 0;font-size:13px}
+#ogbody .ogorgs .orgh{font-size:15px;font-weight:800;margin:22px 0 10px;padding-left:10px;border-left:3px solid #0f766e}
 </style>

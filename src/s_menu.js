@@ -60,5 +60,7 @@ function dropdown(tab,items,id){const m=document.createElement('div');m.id=id;m.
   /* 선택 표시: 왕계표·구조도 중 하나면 이 탭이 켜짐 */
   const mark=()=>{const v=store.get('view','map');tr.setAttribute('aria-selected',v==='kg'||v==='tr')};
   const sv=showView;showView=function(v){const r=sv.apply(this,arguments);mark();if(v==='og')try{ogShow()}catch(_){}{const t=$('tab-og');if(t)t.setAttribute('aria-selected',v==='og')}{const t=$('tab-ty');if(t)t.setAttribute('aria-selected',v==='ty')}return r};mark()}}
+/* ▾ 메뉴는 한 번에 하나만 */
+{const ids=['dcmenu','tlmenu','tymenu','tsmenu'];const mo=new MutationObserver(ms=>{ms.forEach(m=>{const t=m.target;if(t.hidden)return;ids.forEach(id=>{const o=$(id);if(o&&o!==t&&!o.hidden)o.hidden=true})})});setTimeout(()=>ids.forEach(id=>{const o=$(id);if(o)mo.observe(o,{attributes:true,attributeFilter:['hidden']})}),300)}
 if(store.get('view','map')==='og')setTimeout(()=>{showView('og')},0);
 }
