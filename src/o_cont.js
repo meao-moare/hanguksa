@@ -1549,7 +1549,12 @@ function rlForm(key){if(!(window.__MEX&&window.__MEX.can()))return;const H=windo
    const box=n=>({x:n.offsetLeft,y:n.offsetTop,w:n.offsetWidth,h:n.offsetHeight});const cen=b=>[b.x+b.w/2,b.y+b.h/2];
    const clip=(b,tx,ty)=>{const [cx,cy]=cen(b);const dx=tx-cx,dy=ty-cy;if(!dx&&!dy)return [cx,cy];const sx=dx?(b.w/2)/Math.abs(dx):1e9,sy=dy?(b.h/2)/Math.abs(dy):1e9;const s=Math.min(sx,sy);return [cx+dx*s,cy+dy*s]};
    let h='<defs><marker id="tfa'+keyOf(c)+'" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="currentColor"/></marker></defs>';
-   edgesOf(c,ns).forEach(([a,b,arrow])=>{const A=ns[a],B=ns[b];if(!A||!B)return;const ba=box(A),bb=box(B);const [ax,ay]=cen(ba),[bx,by]=cen(bb);const p=clip(ba,bx,by),q=clip(bb,ax,ay);h+=`<line x1="${p[0]}" y1="${p[1]}" x2="${q[0]}" y2="${q[1]}"${arrow?` marker-end="url(#tfa${keyOf(c)})"`:''}/>`});sv.innerHTML=h}
+   edgesOf(c,ns).forEach(([a,b,arrow])=>{const A=ns[a],B=ns[b];if(!A||!B)return;const P=box(A),Q=box(B);let d;
+     if(Q.x>=P.x+P.w-2){const sx=P.x+P.w,sy=P.y+P.h/2,ex=Q.x,ey=Q.y+Q.h/2;const mx=sx+Math.max(6,Math.min(20,(ex-sx)/2));d=`M${sx} ${sy}H${mx}V${ey}H${ex}`}
+     else if(Q.x+Q.w<=P.x+2){const sx=P.x,sy=P.y+P.h/2,ex=Q.x+Q.w,ey=Q.y+Q.h/2;const mx=sx-Math.max(6,Math.min(20,(sx-ex)/2));d=`M${sx} ${sy}H${mx}V${ey}H${ex}`}
+     else if(Q.y>=P.y+P.h){const sx=P.x+P.w/2,sy=P.y+P.h,ex=Q.x+Q.w/2,ey=Q.y;const my=sy+Math.max(6,Math.min(18,(ey-sy)/2));d=`M${sx} ${sy}V${my}H${ex}V${ey}`}
+     else{const sx=P.x+P.w/2,sy=P.y,ex=Q.x+Q.w/2,ey=Q.y+Q.h;const my=sy-Math.max(6,Math.min(18,(sy-ey)/2));d=`M${sx} ${sy}V${my}H${ex}V${ey}`}
+     h+=`<path d="${d}"${arrow?` marker-end="url(#tfa${keyOf(c)})"`:''}/>`});sv.innerHTML=h}
  function nodeFree(c,k){const P=TR().get('@n:'+k);if(!P||typeof P!=='object')return;let fin=c.querySelector('.tfin');const host=c.querySelector('.htree,.hchain');
    if(!fin){if(!host)return;const ns=markTree(c);fin=document.createElement('div');fin.className='tfin';host.after(fin);ns.forEach(n=>fin.appendChild(n));host.style.display='none';c.classList.add('trnf')}
    const ns=[...fin.querySelectorAll(':scope>.hn')];ns.forEach(n=>{const p=P[n.dataset.ni];if(!p)return;n.style.left=p[0]+'px';n.style.top=p[1]+'px';n.style.width=p[2]?p[2]+'px':'';n.style.maxWidth='none'});
