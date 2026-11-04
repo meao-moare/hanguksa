@@ -68,7 +68,7 @@ function shortYear(e){if(e.yl&&e.y<-9000)return e.yl;if(e.yl)return e.yl.replace
 function tg(k){return `<span class="tg" style="--tc:var(--t-${k})">${TOPIC[k].n}</span>`}
 /* 그 사건 때의 왕 */
 const DYN=Object.fromEntries(REIGNS.map(D=>[D.n,D]));
-function eventKing(e){const R=kingRef(e);if(!R)return null;const {D,r}=R;return {c:D.c,txt:r.name==='미군정'?'미군정':(r.n==='대한민국'?r.name:r.n+' '+r.name)}}
+function eventKing(e){const R=kingRef(e);if(!R)return null;const {D,r}=R;if(D.n==='조선'&&r.s!=null){let pt=true;try{pt=!String(yearLabel(e)).includes('~')}catch(_){}if(pt){const nm=r.name.replace(/\s*\(.*\)\s*/,'');const sameYr=/^(태조|중종|인조)$/.test(nm);const n=Math.floor(e.T)-Math.floor(r.s)+(sameYr?1:0);return {c:D.c,txt:nm+' '+(n<=0?'즉위년':n+'년')}}}return {c:D.c,txt:r.name==='미군정'?'미군정':(r.n==='대한민국'?r.name:r.n+' '+r.name)}}
 function kingRef(e){
   let st=e.st;
   if(!st){const NM=['후백제','후고구려','고구려','백제','신라','발해','고려','조선'];const find=src=>{let best=null,pos=1e9;for(const n of NM){const i=src.indexOf(n);if(i>=0&&i<pos&&!(n==='백제'&&src.slice(Math.max(0,i-1),i)==='후')&&!(n==='고구려'&&src.slice(Math.max(0,i-1),i)==='후')){best=n;pos=i}}return best};st=find(e.t)||find(e.x)}

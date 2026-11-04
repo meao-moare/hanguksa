@@ -70,12 +70,15 @@ function dropdown(tab,items,id){const m=document.createElement('div');m.id=id;m.
 /* 3. 표·구조 ▾ (왕계표 + 구조도) */
 {const tr=$('tab-tr'),kg=$('tab-kg');if(tr){if(kg)kg.style.display='none';tr.textContent='표·구조 ▾';
   const old=$('trmenu');
-  const items=()=>{const v=store.get('view','map');const grp=window.__TRMENUHTML?window.__TRMENUHTML():(old?old.innerHTML:'');return `<div class="tdtop"><button type="button" class="tdbig" data-tdv="kg" aria-pressed="${v==='kg'}">왕계표</button><button type="button" class="tdbig" data-tdv="tr" aria-pressed="${v==='tr'}">구조도 <i>목차</i></button></div>${grp?`<div class="tdsub">구조도 바로 가기</div><div class="trmenu tdgrid">${grp}</div>`:''}`};
+  const KGG=[['고조선',['고조선']],['삼국',['고구려','백제','신라']],['남북국',['발해']],['후삼국',['후백제','후고구려']],['고려',['고려']],['조선',['조선','대한제국']],['현대',['남한','북한']]];
+  const kgName=n=>n==='남한'?'대한민국':n==='대한제국'?'대한 제국':n;
+  const items=()=>{const v=store.get('view','map');const grp=window.__TRMENUHTML?window.__TRMENUHTML():(old?old.innerHTML:'');let ks=[];try{ks=REIGNS.map(D=>D.n)}catch(_){}const cur=typeof kgSel!=='undefined'?kgSel:'';
+    return `<div class="tdsplit"><div class="tdcol tdkg"><button type="button" class="tdbig" data-tdv="kg" aria-pressed="${v==='kg'}">왕계표</button><div class="tdkgl">${KGG.map(([g,L])=>{const l=L.filter(n=>ks.includes(n));return l.length?`<div class="trmg" style="--gc:#9a3412"><span class="trmh">${g}</span>${l.map(n=>`<button type="button" class="trmk" data-kgn="${n}" aria-pressed="${v==='kg'&&cur===n}">${kgName(n)}</button>`).join('')}</div>`:''}).join('')}</div></div><div class="tdcol tdtr"><button type="button" class="tdbig" data-tdv="tr" aria-pressed="${v==='tr'}">구조도</button><div class="trmenu tdgrid">${grp}</div></div></div>`};
   if(old){old.remove();old.id='trmenu-src'}
   const dd=dropdown(tr,items,'tsmenu');
   /* 기존 구조도 탭 동작(목차 열기)보다 먼저 */
   tr.addEventListener('click',e=>{e.preventDefault();e.stopImmediatePropagation();if(matchMedia('(hover:hover)').matches){const v=store.get('view','map');if(v!=='kg'&&v!=='tr'){dd.hide();showView(store.get('tsview','kg')==='tr'?'tr':'kg')}else dd.show();return}if(!dd.m.hidden){dd.hide();return}dd.show()},true);
-  dd.m.addEventListener('click',e=>{const b=e.target.closest('[data-tdv],[data-trg]');if(!b)return;dd.hide();try{$('kpage').hidden=true}catch(_){}
+  dd.m.addEventListener('click',e=>{const kb=e.target.closest('[data-kgn]');if(kb){dd.hide();try{$('kpage').hidden=true}catch(_){}store.set('tsview','kg');showView('kg');try{kgShow(kb.dataset.kgn,true)}catch(_){}return}const b=e.target.closest('[data-tdv],[data-trg]');if(!b)return;dd.hide();try{$('kpage').hidden=true}catch(_){}
     if(b.dataset.tdv==='kg'){store.set('tsview','kg');showView('kg');return}
     store.set('tsview','tr');if(b.dataset.tdv==='tr'){showView('tr');setTimeout(()=>{try{window.__TRINDEX&&window.__TRINDEX()}catch(_){}},0);return}
     showView('tr');setTimeout(()=>{try{window.__TROPENG&&window.__TROPENG(+b.dataset.trg,b.dataset.trk||null)}catch(_){}},0)});

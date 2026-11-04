@@ -74,7 +74,7 @@ window.__TROPEN=k=>{syncOrder();const i=ALLP.findIndex(x=>x.p.includes(k));if(i>
 window.__TRINDEX=()=>toIndex();window.__TROPENG=(i,k)=>openG(i,k);
 
 /* 한 화면에 맞추기 (카드마다 zoom) — 지금 쪽 근처부터, 나머지는 천천히 */
-const MINZ=0.68,MAXZ=1;let GEO={W:0,H:0},FITQ=[],FITT=0,FITGEN=0;
+const MINZ=1,MAXZ=1;let GEO={W:0,H:0},FITQ=[],FITT=0,FITGEN=0;
 function geo(){const tb=$('trbody'),rd=$('trread');const top=tb.getBoundingClientRect().top-rd.getBoundingClientRect().top;GEO={W:tb.clientWidth,H:Math.max(260,rd.clientHeight-top-12)};tb.style.height=GEO.H+'px'}
 function pageW(k){const x=ALLP.find(x=>x.p.includes(k));return Math.floor(GEO.W/(x?x.p.length:1))}
 function fitCard(c){const k0=c.id.replace(/^tree-/,'');const x=ALLP.find(x=>x.p.includes(k0))||{p:[k0]};const PW=pageW(k0),PH=GEO.H-4;const mul=Math.max(1,(window.__TRS&&window.__TRS())||1);
@@ -84,7 +84,7 @@ function fitCard(c){const k0=c.id.replace(/^tree-/,'');const x=ALLP.find(x=>x.p.
   const best=()=>{let [aw,ah]=m('max-content');let zA=Math.min(MAXZ,PW/aw,PH/ah);let w=PW,zB=1;for(let it=0;it<4;it++){const [iw,ih]=m(w+'px');const nz=Math.min(MAXZ,PW/Math.max(iw,1),PH/Math.max(ih,1));if(Math.abs(nz-zB)<0.01&&it){zB=nz;break}zB=nz;w=Math.max(PW,Math.round(PW/Math.min(1,zB)))}return Math.max(zA,zB)};
   const LC=['vtr','vfit','vauto','uv','uh','ut'];
   if(PREF[k0]&&!c.querySelector('.tfin')){c.classList.remove(...LC);PREF[k0].forEach(x=>c.classList.add(x))}
-  else if(c.querySelector('.htree')&&!c.querySelector('.tfin')){let bz=-1,bc=null;[['vtr'],['ut'],[]].forEach(cl=>{c.classList.remove(...LC);cl.forEach(x=>c.classList.add(x));const z=best();if(z>bz+0.02){bz=z;bc=cl}});c.classList.remove(...LC);bc.forEach(x=>c.classList.add(x))}
+  /* 모양(가로·세로)은 원래 설정 그대로 */
   const base=Math.max(MINZ,best());c.dataset.fz=base;let zz=Math.max(MINZ,base*mul);
   const set=z=>{c.style.width=Math.round(PW/z)+'px';c.style.zoom=z;c.style.height=Math.round(PH/z)+'px'};set(zz);
   for(let i=0;i<6&&zz>MINZ;i++){if(c.scrollHeight<=c.clientHeight+2&&iwOf()<=c.clientWidth+2)break;zz=Math.max(MINZ,zz*0.94);set(zz)}
