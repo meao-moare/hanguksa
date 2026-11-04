@@ -2215,4 +2215,16 @@ body:not(.ontr) #trzoomf{display:none}
 #trbody #tree-bungdang2.ut .htree .hn{max-width:150px!important;width:auto!important;min-width:96px!important}#trbody #tree-bungdang2.ut .htree .hkid{padding-left:3px!important;padding-right:3px!important}
 #tybody .tysh{font-size:17px;font-weight:800;margin:6px 0 10px;padding:0 0 8px 12px;border-left:4px solid var(--ink);border-bottom:1px solid var(--rule);display:flex;align-items:baseline;gap:8px}#tybody .tysh small{font-size:12.5px;font-weight:600;color:var(--muted)}#tybody .tyref{margin-top:34px}#tybody .tyref .tysh{border-left-color:#b03a2e}#tybody .tyref .lawl em{font-style:normal;font-size:12.5px;color:var(--muted);margin-left:6px}
 .htree .hextra{display:flex;flex-wrap:wrap;gap:12px;margin-top:22px;padding-top:14px;border-top:1px dashed var(--rule)}.htree .hextra .hn{border-style:dashed!important;flex:0 1 220px}
+.hnbar{position:absolute;left:50%;bottom:-13px;transform:translateX(-50%);display:flex;gap:3px;z-index:3;opacity:0;transition:opacity .12s}
+.hn:hover>.hnbar,.hn:focus-within>.hnbar,.hnlk>.hnbar{opacity:1}
+@media (hover:none){.hnbar{opacity:.85}}
+.hnbar button{width:24px;height:24px;border-radius:50%;border:1px solid color-mix(in srgb,var(--trc,var(--ink)) 45%,var(--rule));background:var(--panel);display:grid;place-items:center;padding:0;cursor:pointer;color:color-mix(in srgb,var(--trc,var(--ink)) 80%,var(--ink));box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.hnbar button svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.hnbar button[data-hndel]{color:#b03a2e}
+.hnlk{outline:2px dashed var(--trc,#2563eb)!important;outline-offset:3px}
+body.trlinking #trbody .tfin>.hn{cursor:crosshair}
+.trh .trnew{margin-left:auto;font:inherit;font-size:12.5px;font-weight:700;padding:3px 10px;border-radius:999px;border:1px dashed color-mix(in srgb,var(--trc) 60%,var(--rule));background:var(--panel);color:color-mix(in srgb,var(--trc) 80%,var(--ink));cursor:pointer}
+.trh{display:flex;align-items:baseline;gap:8px}
+.hadd{border-style:solid}
+.hadd .xing,#trbody .hn .xing{outline:2px solid color-mix(in srgb,var(--trc,#2563eb) 50%,transparent);border-radius:4px;background:var(--panel)}
 </style>
