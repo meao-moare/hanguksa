@@ -196,11 +196,12 @@ function samgukTable(){const cols=[['1~3세기',-100,300],['4세기',300,400],['
   return `<section class="samguk"><div class="kghd"><h2>삼국 한눈에</h2><span>세기별 왕과 업적</span></div><div class="stscroll"><table class="stab"><thead><tr><th></th>${cols.map(c=>`<th>${c[0]}</th>`).join('')}</tr></thead><tbody>${rows.map(n=>{const D=DYN[n];return `<tr style="--kc:var(--c-${D.c})"><th>${n}</th>${cols.map(c=>`<td>${cell(D,c[1],c[2])}</td>`).join('')}</tr>`}).join('')}</tbody></table></div></section>`}
 {const ks=kgShow;kgShow=function(n,go){const first=!kgBuilt;ks(n,go);if(first&&!document.querySelector('#kgbody .samguk'))$('kgbody').insertAdjacentHTML('afterbegin',samgukTable())}}
 /* 구조도 속 인물 이름 → 누르면 인물 사전 */
+const PARTYW=new Set(['동인','서인','남인','북인','대북','소북','노론','소론','벽파','시파','사림','훈구','준소','완소']);
 function linkPeople(root){if(!root)return;const btn=(n,lab)=>`<button type="button" class="pl" data-person="${esc(n)}">${esc(lab||n)}</button>`;
   root.querySelectorAll('.hn em:not([data-pl])').forEach(em=>{em.dataset.pl=1;let t=em.textContent.trim();const wrap=/^\(.*\)$/.test(t);if(wrap)t=t.slice(1,-1);
     em.innerHTML=(wrap?'(':'')+t.split(/\s*,\s*/).map(part=>{const m=part.match(/^([^()]+?)(\s*\(.*\))?$/);const W=x=>`<span class="plw">${x}</span>`;if(!m)return W(esc(part));const nm=m[1].trim();if(nm.length<2||/[0-9]|등$|세력|파$/.test(nm))return W(esc(part));return W(btn(nm)+esc((m[2]||'').trim()))}).join(', ')+(wrap?')':'')});
-  const known=new Set([...PEOPLE.keys(),...Object.keys(PINFO||{}),...REIGNS.flatMap(D=>D.r.map(r=>pbase(r.name.replace('대통령 ',''))))].filter(n=>n.length>=2));
-  root.querySelectorAll('.hn>b:not([data-pl])').forEach(b=>{b.dataset.pl=1;const t=b.textContent.trim();if(known.has(t)||kingOfName(t))b.innerHTML=btn(t)});
+  const known=new Set([...PEOPLE.keys(),...Object.keys(PINFO||{}),...REIGNS.flatMap(D=>D.r.map(r=>pbase(r.name.replace('대통령 ',''))))].filter(n=>n.length>=2&&!PARTYW.has(n)));
+  root.querySelectorAll('.hn>b:not([data-pl])').forEach(b=>{b.dataset.pl=1;const t=b.textContent.trim();if(b.querySelector('.gw')||PARTYW.has(t))return;if(known.has(t)||kingOfName(t))b.innerHTML=btn(t)});
   const names=[...known].sort((a,b)=>b.length-a.length).map(n=>n.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'));if(!names.length)return;const RE=new RegExp(names.join('|'),'g');
   root.querySelectorAll('.hn small,.trflow li,.hchain small,.orgl em,.orgl p').forEach(el=>{const w=document.createTreeWalker(el,NodeFilter.SHOW_TEXT,{acceptNode:n=>n.parentElement.closest('.gw,button,.pl')?NodeFilter.FILTER_REJECT:NodeFilter.FILTER_ACCEPT});const ns=[];while(w.nextNode())ns.push(w.currentNode);
     ns.forEach(tn=>{const s=tn.nodeValue;RE.lastIndex=0;if(!RE.test(s))return;RE.lastIndex=0;const span=document.createElement('span');span.innerHTML=esc(s).replace(RE,m=>btn(m));tn.replaceWith(...span.childNodes)})})}

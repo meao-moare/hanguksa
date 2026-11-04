@@ -256,18 +256,24 @@ const NEIGH=[
 function ongHTML(t){const on=ONGOING.filter(o=>o[0]<=t&&t<o[1]).slice(-3),nb=NEIGH.filter(o=>o[0]<=t&&t<o[1]);
   return on.map(o=>`<span class="ong" style="--tc:var(--t-${o[3]})"><i></i><em>진행 중</em>${esc(o[2])}</span>`).join('')+nb.map(o=>`<span class="ong nb">${esc(o[2])}</span>`).join('')}
 /* 낱말 → 구조도 */
-const TREE_OF={'붕당':'bungdang','동인':'bungdang','서인':'bungdang','남인':'bungdang','북인':'bungdang','노론':'bungdang','소론':'bungdang','환국':'bungdang','예송':'bungdang','탕평책':'bungdang','사림':'bungdang','세도 정치':'bungdang',
+const TREE_OF={'붕당':'bungdang2','동인':'bungdang2','서인':'bungdang2','남인':'bungdang2','북인':'bungdang2','노론':'bungdang2','소론':'bungdang2','환국':'bungdang2','예송':'bungdang2','탕평책':'bungdang2','사림':'hungu','훈구':'hungu','사화':'hungu','세도 정치':'bungdang2','완소':'bungdang2','준소':'bungdang2','시파':'bungdang2','벽파':'bungdang2','소북':'bungdang2','대북':'bungdang2',
  '개화파':'gaehwa','급진 개화파':'gaehwa','온건 개화파':'gaehwa','위정척사':'wijeong','북벌':'bukbeol','북학':'bukbeol','북학파':'bukbeol','실학':'silhak','중농학파':'silhak','중상학파':'silhak',
  '호족':'goryeo','문벌 귀족':'goryeo','권문세족':'goryeo','신진 사대부':'goryeo','무신 정권':'musin','교정도감':'musin','정방':'musin','동학':'donghak','남접':'donghak','북접':'donghak',
  '을미의병':'uibyeong','을사의병':'uibyeong','정미의병':'uibyeong','13도 창의군':'uibyeong','신간회':'minjok1920','문화 통치':'minjok1920','물산 장려 운동':'minjok1920',
  '대한민국 임시 정부':'dongnip','의열단':'dongnip','한국광복군':'dongnip','좌우 합작 운동':'haebang','신탁 통치':'haebang','남북 협상':'haebang'};
 Object.assign(GLOSS,{
+ '대북':'북인에서 갈라진 강경파. 이산해·정인홍 중심으로 광해군을 지지해 집권하였으나 인조반정으로 몰락하였다.',
+ '소북':'북인에서 갈라진 온건파. 영창 대군을 지지했다가 광해군 때 대북에 밀려났다.',
+ '벽파':'사도 세자의 죽음이 옳았다고 본 세력. 주로 노론 강경파로, 정조의 정책에 반대하였다.',
+ '시파':'사도 세자를 동정하고 정조의 정책을 지지한 세력. 남인과 일부 노론·소론이 속하였다.',
+ '준소':'소론 강경파. 경종을 끝까지 지지했고 이인좌의 난(1728) 뒤 크게 몰락하였다.',
+ '완소':'소론 온건파. 영조의 탕평책에 참여하였다.',
  '동인':'선조 때 사림이 처음 갈라질 때 김효원을 중심으로 모인 세력. 이황·조식·서경덕의 제자가 많았다.',
  '서인':'선조 때 심의겸을 중심으로 모인 세력. 이이·성혼의 제자가 많았고 인조반정으로 집권하였다.',
- '남인':'동인에서 갈라진 온건파(이황 학파). 예송에서 서인과 대립하였다.',
- '북인':'동인에서 갈라진 강경파(조식·서경덕 학파). 광해군 때 대북이 집권하였다.',
- '노론':'서인에서 갈라진 송시열 중심 세력. 영조 이후 가장 큰 세력이 되었다.',
- '소론':'서인에서 갈라진 윤증 중심 세력.',
+ '남인':'동인에서 갈라진 온건파(이황 학파). 예송에서 서인과 대립하였고 숙종 때 환국으로 몰락하였다. 정조 때 채제공 등이 다시 등용되었다.',
+ '북인':'동인에서 갈라진 강경파(조식·서경덕 학파). 광해군 때 대북이 집권하였으나 인조반정(1623) 뒤 정치 세력으로서 사실상 사라졌다.',
+ '노론':'숙종 때 서인에서 갈라진 송시열 중심 세력. 영조를 지지했고 영조 이후 가장 큰 세력이 되었다. 사도 세자 문제로 벽파와 시파로 나뉘었다.',
+ '소론':'숙종 때 서인에서 갈라진 윤증 중심 세력. 경종을 지지했고, 이인좌의 난(1728) 뒤 강경파(준소)가 몰락하고 온건파(완소)만 영조의 탕평에 참여하였다.',
  '개화파':'서양 문물을 받아들여 나라를 개혁하자는 세력. 온건 개화파와 급진 개화파로 나뉘었다.',
  '실학':'조선 후기 현실 문제를 해결하려 한 학문. 중농학파와 중상학파(북학파)로 나뉜다.',
  '중농학파':'토지 제도를 개혁해 자영농을 기르자고 한 실학자들. 유형원·이익·정약용.',
@@ -281,7 +287,7 @@ Object.assign(GLOSS,{
 GLRE_SET();
 function GLRE_SET(){window.GLRE2=new RegExp('('+Object.keys(GLOSS).sort((a,b)=>b.length-a.length).map(k=>k.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')).join('|')+')','g')}
 /* 낱말이 더 긴 다른 말의 일부일 때는 표시하지 않음 (동인도의 '동인' 등) */
-const GL_NOT={'동인':/^도/,'서인':/^도|^주/,'남인':/^도/,'북인':/^도/,'노론':/^문/,'사림':/^원/};
+const GL_NOT={'대북':/^\s?(정책|송금|지원|관계|특사|전단|방송|협상|제재)/,'동인':/^도/,'서인':/^도|^주/,'남인':/^도/,'북인':/^도/,'노론':/^문/,'사림':/^원/};
 glx=function(s,skip){const seen=new Set();return esc(s).replace(GLRE2,(m,...a)=>{const off=a[a.length-2],str=a[a.length-1];const nx=str.slice(off+m.length,off+m.length+2);if(GL_NOT[m]&&GL_NOT[m].test(nx))return m;if(seen.has(m)||(skip&&skip.includes(m)))return m;seen.add(m);return `<span class="gw${TREE_OF[m]?' tr':''}" role="button" tabindex="0" data-gl="${m}">${m}</span>`})};
 
 /* 자주 나오는 사건 이름도 낱말 풀이에 */

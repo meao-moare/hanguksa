@@ -10,20 +10,24 @@ const TREES={
     N_('기묘사화','중종. 조광조의 개혁(현량과, 위훈 삭제, 소격서 폐지)에 훈구가 반발','조광조',[],'1519'),
     N_('을사사화','명종. 외척 대윤(윤임)과 소윤(윤원형)의 다툼','윤원형',[],'1545')])]),
   flow:['성종: 김종직 등 사림을 등용해 훈구를 견제','연산군: 무오사화(1498) · 갑자사화(1504)','중종: 조광조의 개혁 → 기묘사화(1519)','명종: 을사사화(1545) → 사림은 서원·향약을 바탕으로 향촌에서 세력을 키움','선조: 사림이 정권 장악 → 동서 분당(1575)으로 붕당 정치 시작']},
- bungdang:{title:'붕당 정치의 전개',sub:'선조 ~ 정조, 사림이 갈라지는 과정',root:
+ bungdang2:{title:'붕당 정치의 전개',sub:'선조 ~ 순조, 사림이 갈라지고 예송·환국을 거쳐 세도 정치로',root:
   N_('사림','선조 때 훈구를 누르고 정권을 잡은 성리학자 세력','',[
    N_('동인','이황·조식·서경덕 학파. 척신 정치 청산에 적극적','김효원',[
-    N_('남인','이황 학파, 온건파. 예송에서 서인과 대립, 기사환국으로 재집권했다가 갑술환국 뒤 몰락. 정조 때 일부 등용','유성룡, 허목, 윤휴, 채제공',[],'1591 분열'),
+    N_('남인','이황 학파, 온건파. 예송에서 서인과 대립해 갑인예송(1674)으로 집권, 기사환국(1689)으로 재집권했다가 갑술환국(1694) 뒤 몰락. 정조 때 일부 등용','유성룡, 허목, 윤휴, 채제공',[],'1591 분열'),
     N_('북인','조식·서경덕 학파, 강경파. 임진왜란 때 의병장 다수 배출. 인조반정(1623) 뒤 정치 세력으로서 사실상 사라짐','정인홍, 이산해',[
      N_('대북','광해군을 지지하며 집권(중립 외교). 인조반정(1623)으로 몰락','정인홍, 이이첨',[]),
      N_('소북','영창 대군을 지지. 광해군 때 대북에 밀려남','유영경',[])],'1591 분열')],'1575 동서 분당'),
-   N_('서인','이이·성혼 학파. 인조반정으로 집권하고 남인과 공존','심의겸, 정철',[
-    N_('노론','대의명분·민생 안정 강조. 영조 즉위를 도와 우세','송시열, 김수항',[
-     N_('벽파','사도 세자의 죽음이 옳았다는 쪽. 정조의 정책에 반대','김종수, 심환지',[],'1762 이후'),
-     N_('시파','사도 세자를 동정하며 정조를 지지(남인 일부 포함)','',[],'1762 이후')],'1683 분열'),
-    N_('소론','실리·적극적 북방 개척 주장. 경종을 지지','윤증, 최석정',[
-     N_('소론 강경파 (준소)','영조 즉위에 반발 → 이인좌의 난(1728)을 일으켰다가 몰락','이인좌',[],'1728'),
-     N_('소론 온건파 (완소)','영조의 탕평책에 참여해 노론과 함께 등용','',[],'영조')],'1683 분열')],'1575 동서 분당')],'16세기 후반'),
+   N_('서인','이이·성혼 학파. 인조반정(1623)으로 집권하고 남인과 공존','심의겸, 정철',[
+    N_('예송','현종. 효종·효종 비가 죽었을 때 자의 대비의 상복 기간을 두고 남인과 다툼. 기해예송(1659) 서인 승리 → 갑인예송(1674) 남인 승리','송시열 ↔ 허목, 윤휴',[
+     N_('환국','숙종. 집권 붕당을 한꺼번에 바꿈. 경신환국(1680) 서인 집권 → 기사환국(1689) 남인 집권 → 갑술환국(1694) 서인 집권, 남인 몰락','숙종',[
+      N_('노론','대의명분·민생 안정 강조. 영조 즉위를 도와 우세','송시열, 김수항',[
+       N_('사도 세자','영조 때 뒤주에 갇혀 죽음(임오화변). 이 일을 두고 노론이 갈라짐','',[
+        N_('벽파','사도 세자의 죽음이 옳았다는 쪽. 정조의 정책에 반대','김종수, 심환지',[]),
+        N_('시파','사도 세자를 동정하며 정조를 지지(남인 일부 포함)','김조순',[
+         N_('세도 정치','순조·헌종·철종 60여 년 동안 안동 김씨·풍양 조씨 등 외척 가문이 권력 독점 → 삼정 문란','김조순',[],'1800~1863')])],'1762')],'1683 분열'),
+      N_('소론','실리·적극적 북방 개척 주장. 경종을 지지','윤증, 최석정',[
+       N_('소론 강경파 (준소)','영조 즉위에 반발 → 이인좌의 난(1728)을 일으켰다가 몰락','이인좌',[],'1728'),
+       N_('소론 온건파 (완소)','영조의 탕평책에 참여해 노론과 함께 등용','',[],'영조')],'1683 분열')],'1680~1694')],'1659·1674')],'1575 동서 분당')],'16세기 후반'),
   flow:['1575 이조 전랑 자리 다툼 → 동서 분당','1589 정여립 모반 사건(기축옥사) · 1591 건저의 사건 → 남북 분당','1623 인조반정 → 서인 집권, 남인과 공존','1659·1674 예송(기해·갑인)','1680 경신환국 → 서인 집권, 노론·소론으로 분열','1689 기사환국 → 남인 집권 · 1694 갑술환국 → 서인 집권','영조·정조 탕평책','1800~ 세도 정치(안동 김씨·풍양 조씨)']},
  yesong:{title:'예송',sub:'현종, 왕실 상복 기간을 두고 서인과 남인이 다투다',root:
   N_('효종의 정통성 문제','효종은 인조의 둘째 아들(형 소현 세자가 일찍 죽음). 계모 자의 대비가 상복을 얼마나 입을지가 쟁점','',[
@@ -174,12 +178,12 @@ const TREES={
    N_('우익','신탁 통치 반대','',[N_('이승만','정읍 발언(1946)으로 남한 단독 정부 수립 주장','이승만',[]),N_('김구','한국 독립당, 단독 정부 반대 → 남북 협상(1948)','김구',[])])])}
 };
 /* 구조도는 시대 순서로 */
-{const ORD=['goryeo','musin','bungdang','bukbeol','silhak','wijeong','donghak','gaehwa','uibyeong','gyemong','abroad','org1910','armed1920','uiyeol','dongnip','minjok1920','society1920','china1930','haebang'];const cp={...TREES};Object.keys(TREES).forEach(k=>delete TREES[k]);[...ORD.filter(k=>cp[k]),...Object.keys(cp).filter(k=>!ORD.includes(k))].forEach(k=>TREES[k]=cp[k])}
+{const ORD=['goryeo','musin','bungdang2','bukbeol','silhak','wijeong','donghak','gaehwa','uibyeong','gyemong','abroad','org1910','armed1920','uiyeol','dongnip','minjok1920','society1920','china1930','haebang'];const cp={...TREES};Object.keys(TREES).forEach(k=>delete TREES[k]);[...ORD.filter(k=>cp[k]),...Object.keys(cp).filter(k=>!ORD.includes(k))].forEach(k=>TREES[k]=cp[k])}
 function treeNode(n){const kids=n.c&&n.c.length;
-  const lab=`<div class="hn">${n.t?`<i class="ht">${esc(n.t)}</i>`:''}<b>${esc(n.n)}</b>${n.p?`<em>${esc(n.p)}</em>`:''}${n.d?`<small>${glx(n.d)}</small>`:''}${n.a?(()=>{const [h,...r]=n.a[1].split(/\s*→\s*/);const sub=r.join(' → ').split(/\s*\/\s*/).filter(Boolean);return `<span class="ha" style="--ac:${n.a[2]}"><i>${esc(n.a[0])}</i><span class="hab"><span>${esc(h)}${sub.length?' →':''}</span>${sub.length?`<span class="hasw">${sub.map(x=>`<span class="has">${esc(x)}</span>`).join('')}</span>`:''}</span></span>`})():''}</div>`;
+  const lab=`<div class="hn">${n.t?`<i class="ht">${esc(n.t)}</i>`:''}<b>${glx(n.n)}</b>${n.p?`<em>${esc(n.p)}</em>`:''}${n.d?`<small>${glx(n.d)}</small>`:''}${n.a?(()=>{const [h,...r]=n.a[1].split(/\s*→\s*/);const sub=r.join(' → ').split(/\s*\/\s*/).filter(Boolean);return `<span class="ha" style="--ac:${n.a[2]}"><i>${esc(n.a[0])}</i><span class="hab"><span>${esc(h)}${sub.length?' →':''}</span>${sub.length?`<span class="hasw">${sub.map(x=>`<span class="has">${esc(x)}</span>`).join('')}</span>`:''}</span></span>`})():''}</div>`;
   return `<div class="hrow">${lab}${kids?`<span class="hlink"></span><div class="hkids${n.c.length===1?' one':''}${n.c.every(c=>c.c&&c.c.length)?' grp':''}">${n.c.map(c=>`<div class="hkid">${treeNode(c)}</div>`).join('')}</div>`:''}</div>`}
 function treeHTML(k){const T=TREES[k];return `<div class="tree"><div class="trh"><h3>${esc(T.title)}</h3><span>${esc(T.sub)}</span></div>
-  ${T.root?`<div class="htree">${treeNode(T.root)}</div>`:''}${T.chain?`<div class="hchain">${T.chain.map(n=>`<div class="hn">${n.t?`<i class="ht">${esc(n.t)}</i>`:''}<b>${esc(n.n)}</b>${n.p?`<em>${esc(n.p)}</em>`:''}${n.d?`<small>${glx(n.d)}</small>`:''}</div>`).join('<span class="harr">→</span>')}</div>`:''}
+  ${T.root?`<div class="htree">${treeNode(T.root)}</div>`:''}${T.chain?`<div class="hchain">${T.chain.map(n=>`<div class="hn">${n.t?`<i class="ht">${esc(n.t)}</i>`:''}<b>${glx(n.n)}</b>${n.p?`<em>${esc(n.p)}</em>`:''}${n.d?`<small>${glx(n.d)}</small>`:''}</div>`).join('<span class="harr">→</span>')}</div>`:''}
   ${T.flow?`<div class="trflow"><h4>흐름</h4><ol>${T.flow.map(f=>`<li>${glx(f)}</li>`).join('')}</ol></div>`:''}</div>`}
 function openTree(k){const p=$('trpop');p.innerHTML=`<button class="ib trx" type="button" aria-label="닫기"><svg class="ic" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>${treeHTML(k)}`;p.hidden=false;$('trdim').hidden=false;p.scrollTop=0;$('glpop').hidden=true;
   p.querySelector('.trx').onclick=closeTree}

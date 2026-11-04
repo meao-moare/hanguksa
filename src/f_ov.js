@@ -150,7 +150,7 @@ function closeOvPop(){$('ovpop').hidden=true;$('ovdim').hidden=true;if(ovDirty&&
 $('ovdim').onclick=closeOvPop;
 
 /* ───────── 왕별 ───────── */
-const NATION_TREES={'고려':['goryeo','musin'],'조선':['bungdang','bukbeol','silhak','wijeong','gaehwa','donghak','uibyeong'],'남한':['haebang']};
+const NATION_TREES={'고려':['goryeo','musin'],'조선':['bungdang2','bukbeol','silhak','wijeong','gaehwa','donghak','uibyeong'],'남한':['haebang']};
 function ordOf(D,r){let n=0;for(const x of D.r){const base=x.name.replace(/\(.*\)/,'');const prev=D.r[D.r.indexOf(x)-1];if(!(prev&&prev.name.replace(/\(.*\)/,'')===base))n++;if(x===r)return n}return ''}
 let kgSel=store.get('kg','고구려');
 function kgChips(){const c=$('kgchips');c.innerHTML=REIGNS.map(D=>`<button class="chip" data-k="${esc(D.n)}" style="--tc:var(--c-${D.c})"><i></i>${D.n==='남한'?'대한민국':esc(D.n)}</button>`).join('');c.querySelectorAll('.chip').forEach(b=>b.onclick=()=>kgShow(b.dataset.k,true))}

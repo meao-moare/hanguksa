@@ -2212,6 +2212,7 @@ body:not(.ontr) #trzoomf{display:none}
 #trbody .hn>b{flex:0 1 auto}
 #trbody .hn>small.hsb{flex:0 1 auto;margin-left:0}
 #trbody .hn>.hngrip{flex:none}
+#trbody #tree-bungdang2.ut .htree .hn{max-width:150px!important;width:auto!important;min-width:96px!important}#trbody #tree-bungdang2.ut .htree .hkid{padding-left:3px!important;padding-right:3px!important}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/flubber@0.4.2/build/flubber.min.js"></script>
 <script>
@@ -3421,18 +3422,24 @@ const NEIGH=[
 function ongHTML(t){const on=ONGOING.filter(o=>o[0]<=t&&t<o[1]).slice(-3),nb=NEIGH.filter(o=>o[0]<=t&&t<o[1]);
   return on.map(o=>`<span class="ong" style="--tc:var(--t-${o[3]})"><i></i><em>진행 중</em>${esc(o[2])}</span>`).join('')+nb.map(o=>`<span class="ong nb">${esc(o[2])}</span>`).join('')}
 /* 낱말 → 구조도 */
-const TREE_OF={'붕당':'bungdang','동인':'bungdang','서인':'bungdang','남인':'bungdang','북인':'bungdang','노론':'bungdang','소론':'bungdang','환국':'bungdang','예송':'bungdang','탕평책':'bungdang','사림':'bungdang','세도 정치':'bungdang',
+const TREE_OF={'붕당':'bungdang2','동인':'bungdang2','서인':'bungdang2','남인':'bungdang2','북인':'bungdang2','노론':'bungdang2','소론':'bungdang2','환국':'bungdang2','예송':'bungdang2','탕평책':'bungdang2','사림':'hungu','훈구':'hungu','사화':'hungu','세도 정치':'bungdang2','완소':'bungdang2','준소':'bungdang2','시파':'bungdang2','벽파':'bungdang2','소북':'bungdang2','대북':'bungdang2',
  '개화파':'gaehwa','급진 개화파':'gaehwa','온건 개화파':'gaehwa','위정척사':'wijeong','북벌':'bukbeol','북학':'bukbeol','북학파':'bukbeol','실학':'silhak','중농학파':'silhak','중상학파':'silhak',
  '호족':'goryeo','문벌 귀족':'goryeo','권문세족':'goryeo','신진 사대부':'goryeo','무신 정권':'musin','교정도감':'musin','정방':'musin','동학':'donghak','남접':'donghak','북접':'donghak',
  '을미의병':'uibyeong','을사의병':'uibyeong','정미의병':'uibyeong','13도 창의군':'uibyeong','신간회':'minjok1920','문화 통치':'minjok1920','물산 장려 운동':'minjok1920',
  '대한민국 임시 정부':'dongnip','의열단':'dongnip','한국광복군':'dongnip','좌우 합작 운동':'haebang','신탁 통치':'haebang','남북 협상':'haebang'};
 Object.assign(GLOSS,{
+ '대북':'북인에서 갈라진 강경파. 이산해·정인홍 중심으로 광해군을 지지해 집권하였으나 인조반정으로 몰락하였다.',
+ '소북':'북인에서 갈라진 온건파. 영창 대군을 지지했다가 광해군 때 대북에 밀려났다.',
+ '벽파':'사도 세자의 죽음이 옳았다고 본 세력. 주로 노론 강경파로, 정조의 정책에 반대하였다.',
+ '시파':'사도 세자를 동정하고 정조의 정책을 지지한 세력. 남인과 일부 노론·소론이 속하였다.',
+ '준소':'소론 강경파. 경종을 끝까지 지지했고 이인좌의 난(1728) 뒤 크게 몰락하였다.',
+ '완소':'소론 온건파. 영조의 탕평책에 참여하였다.',
  '동인':'선조 때 사림이 처음 갈라질 때 김효원을 중심으로 모인 세력. 이황·조식·서경덕의 제자가 많았다.',
  '서인':'선조 때 심의겸을 중심으로 모인 세력. 이이·성혼의 제자가 많았고 인조반정으로 집권하였다.',
- '남인':'동인에서 갈라진 온건파(이황 학파). 예송에서 서인과 대립하였다.',
- '북인':'동인에서 갈라진 강경파(조식·서경덕 학파). 광해군 때 대북이 집권하였다.',
- '노론':'서인에서 갈라진 송시열 중심 세력. 영조 이후 가장 큰 세력이 되었다.',
- '소론':'서인에서 갈라진 윤증 중심 세력.',
+ '남인':'동인에서 갈라진 온건파(이황 학파). 예송에서 서인과 대립하였고 숙종 때 환국으로 몰락하였다. 정조 때 채제공 등이 다시 등용되었다.',
+ '북인':'동인에서 갈라진 강경파(조식·서경덕 학파). 광해군 때 대북이 집권하였으나 인조반정(1623) 뒤 정치 세력으로서 사실상 사라졌다.',
+ '노론':'숙종 때 서인에서 갈라진 송시열 중심 세력. 영조를 지지했고 영조 이후 가장 큰 세력이 되었다. 사도 세자 문제로 벽파와 시파로 나뉘었다.',
+ '소론':'숙종 때 서인에서 갈라진 윤증 중심 세력. 경종을 지지했고, 이인좌의 난(1728) 뒤 강경파(준소)가 몰락하고 온건파(완소)만 영조의 탕평에 참여하였다.',
  '개화파':'서양 문물을 받아들여 나라를 개혁하자는 세력. 온건 개화파와 급진 개화파로 나뉘었다.',
  '실학':'조선 후기 현실 문제를 해결하려 한 학문. 중농학파와 중상학파(북학파)로 나뉜다.',
  '중농학파':'토지 제도를 개혁해 자영농을 기르자고 한 실학자들. 유형원·이익·정약용.',
@@ -3446,7 +3453,7 @@ Object.assign(GLOSS,{
 GLRE_SET();
 function GLRE_SET(){window.GLRE2=new RegExp('('+Object.keys(GLOSS).sort((a,b)=>b.length-a.length).map(k=>k.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')).join('|')+')','g')}
 /* 낱말이 더 긴 다른 말의 일부일 때는 표시하지 않음 (동인도의 '동인' 등) */
-const GL_NOT={'동인':/^도/,'서인':/^도|^주/,'남인':/^도/,'북인':/^도/,'노론':/^문/,'사림':/^원/};
+const GL_NOT={'대북':/^\s?(정책|송금|지원|관계|특사|전단|방송|협상|제재)/,'동인':/^도/,'서인':/^도|^주/,'남인':/^도/,'북인':/^도/,'노론':/^문/,'사림':/^원/};
 glx=function(s,skip){const seen=new Set();return esc(s).replace(GLRE2,(m,...a)=>{const off=a[a.length-2],str=a[a.length-1];const nx=str.slice(off+m.length,off+m.length+2);if(GL_NOT[m]&&GL_NOT[m].test(nx))return m;if(seen.has(m)||(skip&&skip.includes(m)))return m;seen.add(m);return `<span class="gw${TREE_OF[m]?' tr':''}" role="button" tabindex="0" data-gl="${m}">${m}</span>`})};
 
 /* 자주 나오는 사건 이름도 낱말 풀이에 */
@@ -4546,7 +4553,7 @@ function closeOvPop(){$('ovpop').hidden=true;$('ovdim').hidden=true;if(ovDirty&&
 $('ovdim').onclick=closeOvPop;
 
 /* ───────── 왕별 ───────── */
-const NATION_TREES={'고려':['goryeo','musin'],'조선':['bungdang','bukbeol','silhak','wijeong','gaehwa','donghak','uibyeong'],'남한':['haebang']};
+const NATION_TREES={'고려':['goryeo','musin'],'조선':['bungdang2','bukbeol','silhak','wijeong','gaehwa','donghak','uibyeong'],'남한':['haebang']};
 function ordOf(D,r){let n=0;for(const x of D.r){const base=x.name.replace(/\(.*\)/,'');const prev=D.r[D.r.indexOf(x)-1];if(!(prev&&prev.name.replace(/\(.*\)/,'')===base))n++;if(x===r)return n}return ''}
 let kgSel=store.get('kg','고구려');
 function kgChips(){const c=$('kgchips');c.innerHTML=REIGNS.map(D=>`<button class="chip" data-k="${esc(D.n)}" style="--tc:var(--c-${D.c})"><i></i>${D.n==='남한'?'대한민국':esc(D.n)}</button>`).join('');c.querySelectorAll('.chip').forEach(b=>b.onclick=()=>kgShow(b.dataset.k,true))}
@@ -4784,20 +4791,24 @@ const TREES={
     N_('기묘사화','중종. 조광조의 개혁(현량과, 위훈 삭제, 소격서 폐지)에 훈구가 반발','조광조',[],'1519'),
     N_('을사사화','명종. 외척 대윤(윤임)과 소윤(윤원형)의 다툼','윤원형',[],'1545')])]),
   flow:['성종: 김종직 등 사림을 등용해 훈구를 견제','연산군: 무오사화(1498) · 갑자사화(1504)','중종: 조광조의 개혁 → 기묘사화(1519)','명종: 을사사화(1545) → 사림은 서원·향약을 바탕으로 향촌에서 세력을 키움','선조: 사림이 정권 장악 → 동서 분당(1575)으로 붕당 정치 시작']},
- bungdang:{title:'붕당 정치의 전개',sub:'선조 ~ 정조, 사림이 갈라지는 과정',root:
+ bungdang2:{title:'붕당 정치의 전개',sub:'선조 ~ 순조, 사림이 갈라지고 예송·환국을 거쳐 세도 정치로',root:
   N_('사림','선조 때 훈구를 누르고 정권을 잡은 성리학자 세력','',[
    N_('동인','이황·조식·서경덕 학파. 척신 정치 청산에 적극적','김효원',[
-    N_('남인','이황 학파, 온건파. 예송에서 서인과 대립, 기사환국으로 재집권했다가 갑술환국 뒤 몰락. 정조 때 일부 등용','유성룡, 허목, 윤휴, 채제공',[],'1591 분열'),
+    N_('남인','이황 학파, 온건파. 예송에서 서인과 대립해 갑인예송(1674)으로 집권, 기사환국(1689)으로 재집권했다가 갑술환국(1694) 뒤 몰락. 정조 때 일부 등용','유성룡, 허목, 윤휴, 채제공',[],'1591 분열'),
     N_('북인','조식·서경덕 학파, 강경파. 임진왜란 때 의병장 다수 배출. 인조반정(1623) 뒤 정치 세력으로서 사실상 사라짐','정인홍, 이산해',[
      N_('대북','광해군을 지지하며 집권(중립 외교). 인조반정(1623)으로 몰락','정인홍, 이이첨',[]),
      N_('소북','영창 대군을 지지. 광해군 때 대북에 밀려남','유영경',[])],'1591 분열')],'1575 동서 분당'),
-   N_('서인','이이·성혼 학파. 인조반정으로 집권하고 남인과 공존','심의겸, 정철',[
-    N_('노론','대의명분·민생 안정 강조. 영조 즉위를 도와 우세','송시열, 김수항',[
-     N_('벽파','사도 세자의 죽음이 옳았다는 쪽. 정조의 정책에 반대','김종수, 심환지',[],'1762 이후'),
-     N_('시파','사도 세자를 동정하며 정조를 지지(남인 일부 포함)','',[],'1762 이후')],'1683 분열'),
-    N_('소론','실리·적극적 북방 개척 주장. 경종을 지지','윤증, 최석정',[
-     N_('소론 강경파 (준소)','영조 즉위에 반발 → 이인좌의 난(1728)을 일으켰다가 몰락','이인좌',[],'1728'),
-     N_('소론 온건파 (완소)','영조의 탕평책에 참여해 노론과 함께 등용','',[],'영조')],'1683 분열')],'1575 동서 분당')],'16세기 후반'),
+   N_('서인','이이·성혼 학파. 인조반정(1623)으로 집권하고 남인과 공존','심의겸, 정철',[
+    N_('예송','현종. 효종·효종 비가 죽었을 때 자의 대비의 상복 기간을 두고 남인과 다툼. 기해예송(1659) 서인 승리 → 갑인예송(1674) 남인 승리','송시열 ↔ 허목, 윤휴',[
+     N_('환국','숙종. 집권 붕당을 한꺼번에 바꿈. 경신환국(1680) 서인 집권 → 기사환국(1689) 남인 집권 → 갑술환국(1694) 서인 집권, 남인 몰락','숙종',[
+      N_('노론','대의명분·민생 안정 강조. 영조 즉위를 도와 우세','송시열, 김수항',[
+       N_('사도 세자','영조 때 뒤주에 갇혀 죽음(임오화변). 이 일을 두고 노론이 갈라짐','',[
+        N_('벽파','사도 세자의 죽음이 옳았다는 쪽. 정조의 정책에 반대','김종수, 심환지',[]),
+        N_('시파','사도 세자를 동정하며 정조를 지지(남인 일부 포함)','김조순',[
+         N_('세도 정치','순조·헌종·철종 60여 년 동안 안동 김씨·풍양 조씨 등 외척 가문이 권력 독점 → 삼정 문란','김조순',[],'1800~1863')])],'1762')],'1683 분열'),
+      N_('소론','실리·적극적 북방 개척 주장. 경종을 지지','윤증, 최석정',[
+       N_('소론 강경파 (준소)','영조 즉위에 반발 → 이인좌의 난(1728)을 일으켰다가 몰락','이인좌',[],'1728'),
+       N_('소론 온건파 (완소)','영조의 탕평책에 참여해 노론과 함께 등용','',[],'영조')],'1683 분열')],'1680~1694')],'1659·1674')],'1575 동서 분당')],'16세기 후반'),
   flow:['1575 이조 전랑 자리 다툼 → 동서 분당','1589 정여립 모반 사건(기축옥사) · 1591 건저의 사건 → 남북 분당','1623 인조반정 → 서인 집권, 남인과 공존','1659·1674 예송(기해·갑인)','1680 경신환국 → 서인 집권, 노론·소론으로 분열','1689 기사환국 → 남인 집권 · 1694 갑술환국 → 서인 집권','영조·정조 탕평책','1800~ 세도 정치(안동 김씨·풍양 조씨)']},
  yesong:{title:'예송',sub:'현종, 왕실 상복 기간을 두고 서인과 남인이 다투다',root:
   N_('효종의 정통성 문제','효종은 인조의 둘째 아들(형 소현 세자가 일찍 죽음). 계모 자의 대비가 상복을 얼마나 입을지가 쟁점','',[
@@ -4948,12 +4959,12 @@ const TREES={
    N_('우익','신탁 통치 반대','',[N_('이승만','정읍 발언(1946)으로 남한 단독 정부 수립 주장','이승만',[]),N_('김구','한국 독립당, 단독 정부 반대 → 남북 협상(1948)','김구',[])])])}
 };
 /* 구조도는 시대 순서로 */
-{const ORD=['goryeo','musin','bungdang','bukbeol','silhak','wijeong','donghak','gaehwa','uibyeong','gyemong','abroad','org1910','armed1920','uiyeol','dongnip','minjok1920','society1920','china1930','haebang'];const cp={...TREES};Object.keys(TREES).forEach(k=>delete TREES[k]);[...ORD.filter(k=>cp[k]),...Object.keys(cp).filter(k=>!ORD.includes(k))].forEach(k=>TREES[k]=cp[k])}
+{const ORD=['goryeo','musin','bungdang2','bukbeol','silhak','wijeong','donghak','gaehwa','uibyeong','gyemong','abroad','org1910','armed1920','uiyeol','dongnip','minjok1920','society1920','china1930','haebang'];const cp={...TREES};Object.keys(TREES).forEach(k=>delete TREES[k]);[...ORD.filter(k=>cp[k]),...Object.keys(cp).filter(k=>!ORD.includes(k))].forEach(k=>TREES[k]=cp[k])}
 function treeNode(n){const kids=n.c&&n.c.length;
-  const lab=`<div class="hn">${n.t?`<i class="ht">${esc(n.t)}</i>`:''}<b>${esc(n.n)}</b>${n.p?`<em>${esc(n.p)}</em>`:''}${n.d?`<small>${glx(n.d)}</small>`:''}${n.a?(()=>{const [h,...r]=n.a[1].split(/\s*→\s*/);const sub=r.join(' → ').split(/\s*\/\s*/).filter(Boolean);return `<span class="ha" style="--ac:${n.a[2]}"><i>${esc(n.a[0])}</i><span class="hab"><span>${esc(h)}${sub.length?' →':''}</span>${sub.length?`<span class="hasw">${sub.map(x=>`<span class="has">${esc(x)}</span>`).join('')}</span>`:''}</span></span>`})():''}</div>`;
+  const lab=`<div class="hn">${n.t?`<i class="ht">${esc(n.t)}</i>`:''}<b>${glx(n.n)}</b>${n.p?`<em>${esc(n.p)}</em>`:''}${n.d?`<small>${glx(n.d)}</small>`:''}${n.a?(()=>{const [h,...r]=n.a[1].split(/\s*→\s*/);const sub=r.join(' → ').split(/\s*\/\s*/).filter(Boolean);return `<span class="ha" style="--ac:${n.a[2]}"><i>${esc(n.a[0])}</i><span class="hab"><span>${esc(h)}${sub.length?' →':''}</span>${sub.length?`<span class="hasw">${sub.map(x=>`<span class="has">${esc(x)}</span>`).join('')}</span>`:''}</span></span>`})():''}</div>`;
   return `<div class="hrow">${lab}${kids?`<span class="hlink"></span><div class="hkids${n.c.length===1?' one':''}${n.c.every(c=>c.c&&c.c.length)?' grp':''}">${n.c.map(c=>`<div class="hkid">${treeNode(c)}</div>`).join('')}</div>`:''}</div>`}
 function treeHTML(k){const T=TREES[k];return `<div class="tree"><div class="trh"><h3>${esc(T.title)}</h3><span>${esc(T.sub)}</span></div>
-  ${T.root?`<div class="htree">${treeNode(T.root)}</div>`:''}${T.chain?`<div class="hchain">${T.chain.map(n=>`<div class="hn">${n.t?`<i class="ht">${esc(n.t)}</i>`:''}<b>${esc(n.n)}</b>${n.p?`<em>${esc(n.p)}</em>`:''}${n.d?`<small>${glx(n.d)}</small>`:''}</div>`).join('<span class="harr">→</span>')}</div>`:''}
+  ${T.root?`<div class="htree">${treeNode(T.root)}</div>`:''}${T.chain?`<div class="hchain">${T.chain.map(n=>`<div class="hn">${n.t?`<i class="ht">${esc(n.t)}</i>`:''}<b>${glx(n.n)}</b>${n.p?`<em>${esc(n.p)}</em>`:''}${n.d?`<small>${glx(n.d)}</small>`:''}</div>`).join('<span class="harr">→</span>')}</div>`:''}
   ${T.flow?`<div class="trflow"><h4>흐름</h4><ol>${T.flow.map(f=>`<li>${glx(f)}</li>`).join('')}</ol></div>`:''}</div>`}
 function openTree(k){const p=$('trpop');p.innerHTML=`<button class="ib trx" type="button" aria-label="닫기"><svg class="ic" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>${treeHTML(k)}`;p.hidden=false;$('trdim').hidden=false;p.scrollTop=0;$('glpop').hidden=true;
   p.querySelector('.trx').onclick=closeTree}
@@ -5232,11 +5243,12 @@ function samgukTable(){const cols=[['1~3세기',-100,300],['4세기',300,400],['
   return `<section class="samguk"><div class="kghd"><h2>삼국 한눈에</h2><span>세기별 왕과 업적</span></div><div class="stscroll"><table class="stab"><thead><tr><th></th>${cols.map(c=>`<th>${c[0]}</th>`).join('')}</tr></thead><tbody>${rows.map(n=>{const D=DYN[n];return `<tr style="--kc:var(--c-${D.c})"><th>${n}</th>${cols.map(c=>`<td>${cell(D,c[1],c[2])}</td>`).join('')}</tr>`}).join('')}</tbody></table></div></section>`}
 {const ks=kgShow;kgShow=function(n,go){const first=!kgBuilt;ks(n,go);if(first&&!document.querySelector('#kgbody .samguk'))$('kgbody').insertAdjacentHTML('afterbegin',samgukTable())}}
 /* 구조도 속 인물 이름 → 누르면 인물 사전 */
+const PARTYW=new Set(['동인','서인','남인','북인','대북','소북','노론','소론','벽파','시파','사림','훈구','준소','완소']);
 function linkPeople(root){if(!root)return;const btn=(n,lab)=>`<button type="button" class="pl" data-person="${esc(n)}">${esc(lab||n)}</button>`;
   root.querySelectorAll('.hn em:not([data-pl])').forEach(em=>{em.dataset.pl=1;let t=em.textContent.trim();const wrap=/^\(.*\)$/.test(t);if(wrap)t=t.slice(1,-1);
     em.innerHTML=(wrap?'(':'')+t.split(/\s*,\s*/).map(part=>{const m=part.match(/^([^()]+?)(\s*\(.*\))?$/);const W=x=>`<span class="plw">${x}</span>`;if(!m)return W(esc(part));const nm=m[1].trim();if(nm.length<2||/[0-9]|등$|세력|파$/.test(nm))return W(esc(part));return W(btn(nm)+esc((m[2]||'').trim()))}).join(', ')+(wrap?')':'')});
-  const known=new Set([...PEOPLE.keys(),...Object.keys(PINFO||{}),...REIGNS.flatMap(D=>D.r.map(r=>pbase(r.name.replace('대통령 ',''))))].filter(n=>n.length>=2));
-  root.querySelectorAll('.hn>b:not([data-pl])').forEach(b=>{b.dataset.pl=1;const t=b.textContent.trim();if(known.has(t)||kingOfName(t))b.innerHTML=btn(t)});
+  const known=new Set([...PEOPLE.keys(),...Object.keys(PINFO||{}),...REIGNS.flatMap(D=>D.r.map(r=>pbase(r.name.replace('대통령 ',''))))].filter(n=>n.length>=2&&!PARTYW.has(n)));
+  root.querySelectorAll('.hn>b:not([data-pl])').forEach(b=>{b.dataset.pl=1;const t=b.textContent.trim();if(b.querySelector('.gw')||PARTYW.has(t))return;if(known.has(t)||kingOfName(t))b.innerHTML=btn(t)});
   const names=[...known].sort((a,b)=>b.length-a.length).map(n=>n.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'));if(!names.length)return;const RE=new RegExp(names.join('|'),'g');
   root.querySelectorAll('.hn small,.trflow li,.hchain small,.orgl em,.orgl p').forEach(el=>{const w=document.createTreeWalker(el,NodeFilter.SHOW_TEXT,{acceptNode:n=>n.parentElement.closest('.gw,button,.pl')?NodeFilter.FILTER_REJECT:NodeFilter.FILTER_ACCEPT});const ns=[];while(w.nextNode())ns.push(w.currentNode);
     ns.forEach(tn=>{const s=tn.nodeValue;RE.lastIndex=0;if(!RE.test(s))return;RE.lastIndex=0;const span=document.createElement('span');span.innerHTML=esc(s).replace(RE,m=>btn(m));tn.replaceWith(...span.childNodes)})})}
@@ -5764,9 +5776,9 @@ const P_PAIR={'원종':'원종과 애노','애노':'원종과 애노','망이':'
 Object.assign(PINFO,{'원종과 애노':'신라 말 진성 여왕 때(889) 사벌주(상주)에서 함께 봉기한 농민 지도자. 세금 독촉에 반발한 이 봉기를 시작으로 전국에서 반란이 잇따랐다.',
  '망이와 망소이':'고려 무신 집권기(1176) 공주 명학소에서 함께 봉기한 형제(소민). 소(所) 주민에 대한 차별에 맞섰고, 명학소는 한때 충순현으로 승격되었다.'});
 function pName(n){return String(n).replace(/\s*\(.*\)\s*/,'').trim()}
-function personPopHTML(n,T){const nm=pName(n),pair=P_PAIR[nm];const title=pair||nm;const k=aliasKing(n)||(()=>{const K=kingOfName(n,T);return K?{dn:K.D.n,i:K.i}:null})();
+function personPopHTML(n,T){const nm=pName(n),pair=P_PAIR[nm];const title=pair||nm;const kT=(()=>{if(T==null||isNaN(T)||T==='')return null;const K=kingOfName(n,T);if(K)return {dn:K.D.n,i:K.i};const nm0=String(n).replace(/\s*\(.*\)\s*/,'').trim();let best=null,bd=1e9;try{Object.entries(DYN).forEach(([dn,D])=>(D.r||[]).forEach((r,i)=>{if(r.name!==nm0&&r.name.replace(/^대통령 /,'')!==nm0)return;const d=T<r.s?r.s-T:T>r.e?T-r.e:0;if(d<bd){bd=d;best={dn,i}}}))}catch(_){}return best&&bd<200?best:null})();const k=kT||aliasKing(n)||(()=>{const K=kingOfName(n,T);return K?{dn:K.D.n,i:K.i}:null})();
   let sub='',body='';if(k){const D=DYN[k.dn],r=D.r[k.i];sub=`${k.dn==='남한'?'대한민국':k.dn} · ${yrTxt(Math.floor(r.s))}~${yrTxt(Math.floor(r.e))}`;const a=(typeof kAch==='function'?kAch(D,r):[])||[];body=a.slice(0,3).map(x=>`<li>${esc(x)}</li>`).join('');body=body?`<ul>${body}</ul>`:''}
-  const info=PINFO[title]||PINFO[nm]||'';const evs=EVENTS.filter(e=>(e.pp||'').split(/,\s*/).some(x=>pName(x)===nm||(pair&&P_PAIR[pName(x)]===pair))).sort((a,b)=>a.T-b.T).slice(0,4);
+  const KR=k?DYN[k.dn].r[k.i]:null;const info=(KR&&kT&&!aliasKing(n))?(PINFO[title]||PINFO[nm]||''):(PINFO[title]||PINFO[nm]||'');const evs=EVENTS.filter(e=>(e.pp||'').split(/,\s*/).some(x=>pName(x)===nm||(pair&&P_PAIR[pName(x)]===pair))&&(!KR||(e.T>=KR.s-1&&e.T<=KR.e+1))).sort((a,b)=>a.T-b.T).slice(0,4);
   return `<b>${esc(title)}</b>${sub?`<em>${esc(sub)}</em>`:''}${info?`<p>${glx(info)}</p>`:''}${body}${evs.length?`<div class="ppev">${evs.map(e=>`<span>${esc(e.yl||yrTxt(Math.floor(e.T)))} ${esc(e.t)}</span>`).join('')}</div>`:''}<button type="button" class="ppgo" data-go-person="${esc(n)}" data-pt="${T??''}">자세히 보기 →</button>`}
 {const pop=document.createElement('div');pop.id='pppop';pop.className='glpop pppop';pop.hidden=true;document.body.appendChild(pop);
  const place=(el)=>{const r=el.getBoundingClientRect();pop.hidden=false;const w=pop.offsetWidth,h=pop.offsetHeight;let x=Math.max(8,Math.min(innerWidth-w-8,r.left+r.width/2-w/2)),y=r.bottom+8;if(y+h>innerHeight-8)y=Math.max(8,r.top-h-8);pop.style.left=x+'px';pop.style.top=y+'px'};
@@ -7009,11 +7021,12 @@ function rlForm(key){if(!(window.__MEX&&window.__MEX.can()))return;const H=windo
  function nodeGrips(c){if(c.querySelector('.tfin'))return;const ed=can();c.querySelectorAll('.htree .hn,.hchain .hn').forEach(n=>{let g=n.querySelector(':scope>.hngrip');if(ed&&!g)n.insertAdjacentHTML('beforeend','<span class="hngrip hgw" data-hngrip="w" title="가로 크기"></span><span class="hngrip hgh" data-hngrip="h" title="세로 크기"></span><span class="hngrip hgb" data-hngrip="b" title="가로·세로 크기"></span>');else if(!ed&&g)n.querySelectorAll(':scope>.hngrip').forEach(x=>x.remove())})}
  function trUser(){const tb=$('trbody');const M=TR();if(!tb||!M)return;busy=true;unwrap();try{const cs=[...tb.children].filter(c=>c.classList.contains('trcard'));const ord=M.get('@order');const oi=Array.isArray(ord)?ord:null;const ed=can();const board=boardOn();const BP=M.get('@pos')||{};
    tb.classList.toggle('trboard',board);
-   cs.forEach((c,i)=>{const k=keyOf(c),v=Object.assign({},({goryeo:{d:'h'},musin:{d:'h'}})[k]||{},M.get(k)||{});c.classList.remove('uv','uh','ut');if(v.d==='v'){c.classList.remove('vfit','vauto');c.classList.add('vtr','uv')}else if(v.d==='h'){c.classList.remove('vtr','vfit','vauto');c.classList.add('uh')}else if(v.d==='t'&&c.querySelector('.htree')){c.classList.remove('vtr','vfit','vauto');c.classList.add('ut')}
+   cs.forEach((c,i)=>{const k=keyOf(c),v=Object.assign({},({goryeo:{d:'h'},musin:{d:'h'},bungdang2:{d:'t'}})[k]||{},M.get(k)||{});c.classList.remove('uv','uh','ut');if(v.d==='v'){c.classList.remove('vfit','vauto');c.classList.add('vtr','uv')}else if(v.d==='h'){c.classList.remove('vtr','vfit','vauto');c.classList.add('uh')}else if(v.d==='t'&&c.querySelector('.htree')){c.classList.remove('vtr','vfit','vauto');c.classList.add('ut')}
     const bp=board?BP[k]:null;const TWB=tb.clientWidth;let w=v.w||(bp&&bp[2]);if(board&&w&&w>TWB)w=TWB;c.style.width=w?w+'px':'';c.style.height=v.h?v.h+'px':'';c.classList.toggle('usz',!!(w||v.h));c.style.order=oi?(oi.indexOf(k)>=0?oi.indexOf(k):oi.length+i):'';
     if(board&&bp){const cw=w||c.offsetWidth;c.style.left=Math.max(0,Math.min(bp[0],TWB-cw))+'px';c.style.top=bp[1]+'px'}else{c.style.left='';c.style.top=''}
     let t=c.querySelector(':scope>.trut');if(ed&&!t){c.insertAdjacentHTML('beforeend',`<div class="trut"><button type="button" class="trmv" data-trmv title="끌어서 자리 옮기기" aria-label="자리 옮기기"><svg viewBox="0 0 24 24"><circle cx="9" cy="6" r="1.4"/><circle cx="15" cy="6" r="1.4"/><circle cx="9" cy="12" r="1.4"/><circle cx="15" cy="12" r="1.4"/><circle cx="9" cy="18" r="1.4"/><circle cx="15" cy="18" r="1.4"/></svg></button><span class="trseg" data-trseg><button type="button" data-trset="h">가로</button><button type="button" data-trset="t">아래로</button><button type="button" data-trset="v">세로</button></span><button type="button" data-tralign title="칸 끝 맞추기">끝 맞추기</button><button type="button" data-trrs title="이 상자 원래대로" aria-label="원래대로"><svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 2.4-5.7M4 4v4h4"/></svg></button></div><span class="trgrip" data-trgrip title="끌어서 크기 바꾸기"></span>`)}else if(!ed&&t){t.remove();const g=c.querySelector(':scope>.trgrip');if(g)g.remove()}
     t=c.querySelector(':scope>.trut');if(t){const sg=t.querySelector('[data-trseg]');if(sg){const hasT=!!(c.querySelector('.htree')||(c.querySelector('.tfin')&&c.dataset.chain!=='1'));const hasAny=hasT||!!c.querySelector('.hchain')||c.dataset.chain==='1';sg.hidden=!hasAny;const vert=v.d?v.d==='v':(c.classList.contains('vtr')||c.classList.contains('vfit')||!!(c.querySelector('.hchain')&&getComputedStyle(c.querySelector('.hchain')).flexDirection==='column'));const cur=v.d==='t'||c.classList.contains('ut')?'t':vert?'v':'h';sg.querySelectorAll('[data-trset]').forEach(b=>{b.hidden=b.dataset.trset==='t'&&!hasT;b.setAttribute('aria-pressed',b.dataset.trset===cur)})}}
+    try{if(!c.dataset.tt){const ys=[...c.textContent.matchAll(/(?<![0-9])(\d{3,4})(?![0-9]|세기|년대)/g)].map(m=>+m[1]).filter(y=>y>=300&&y<=2000).sort((a,b)=>a-b);c.dataset.tt=ys.length?ys[Math.floor(ys.length/2)]:''}if(c.dataset.tt)c.querySelectorAll('[data-person]:not([data-pt])').forEach(b=>b.dataset.pt=c.dataset.tt)}catch(_){}
     try{c.querySelectorAll('.hn').forEach(n=>{if(n.dataset.sb)return;n.dataset.sb=1;const b=n.querySelector(':scope>b'),sm=n.querySelector(':scope>small');if(b&&sm){b.after(sm);sm.classList.add('hsb')}})}catch(_){}
     try{nodeFree(c,k);nodeGrips(c);flowPos(c,k)}catch(_){}});
    if(!board)stackApply();try{tb.querySelectorAll('#tree-abroad .hkids.grp>.hkid').forEach(k=>{const n=k.querySelector('.hn');if(n&&/^\s*(\d+\s*)?미주/.test(n.textContent))k.style.gridColumnStart='1'})}catch(_){}
