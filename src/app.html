@@ -2227,6 +2227,56 @@ body.trlinking #trbody .tfin>.hn{cursor:crosshair}
 .trh{display:flex;align-items:baseline;gap:8px}
 .hadd{border-style:solid}
 .hadd .xing,#trbody .hn .xing{outline:2px solid color-mix(in srgb,var(--trc,#2563eb) 50%,transparent);border-radius:4px;background:var(--panel)}
+
+/* 구조도 쪽 넘기기 */
+body.trpgon #trjump{display:none!important}
+#trbody.trpg{display:flex!important;flex-wrap:nowrap!important;gap:28px!important;overflow-x:auto!important;overflow-y:hidden!important;scroll-snap-type:x mandatory;position:relative!important;scrollbar-width:thin;align-items:flex-start;padding:0 14px!important;box-sizing:border-box}
+#trbody.trpg>*:not(.trcard.trpon){display:none!important}
+#trbody.trpg>.trcard.trpon{position:relative!important;left:auto!important;top:auto!important;flex:none!important;scroll-snap-align:start;margin:0!important;overflow:hidden;box-sizing:border-box}
+#trbody.trpg .htree{overflow:visible!important}
+body.trix #trbody{display:none!important}
+body.trpgon:not(.trix) #trindex{display:none}
+body:not(.trpgon) #trindex,body:not(.trpgon) #trpbar{display:none}
+#trindex{padding:18px 0 40px}
+.trih{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin:4px 0 16px}.trih h2{margin:0;font-size:22px;font-weight:800}.trih span{color:var(--muted);font-size:13.5px}
+.trig{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+.trgc{border:1px solid var(--rule);border-radius:14px;background:var(--panel);overflow:hidden;border-top:4px solid var(--gc)}
+.trgh{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;width:100%;text-align:left;border:0;background:color-mix(in srgb,var(--gc) 9%,var(--panel));padding:12px 14px 10px;font:inherit;cursor:pointer;color:var(--ink)}
+.trgh b{font-size:16px;font-weight:800;color:color-mix(in srgb,var(--gc) 75%,var(--ink))}.trgh i{font-style:normal;font-size:12px;color:var(--muted)}.trgh em{font-style:normal;margin-left:auto;font-size:12px;color:var(--muted)}
+.trgh:hover{background:color-mix(in srgb,var(--gc) 16%,var(--panel))}
+.trgc ol{list-style:none;margin:0;padding:6px 8px 10px}
+.trgc li button{display:block;width:100%;text-align:left;border:0;background:none;font:inherit;font-size:14px;padding:6px 8px;border-radius:8px;cursor:pointer;color:var(--ink)}
+.trgc li button::before{content:'';display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--gc);margin-right:9px;vertical-align:2px}
+.trgc li button:hover{background:color-mix(in srgb,var(--gc) 10%,transparent)}
+#trpbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:8px 0}
+body.trix #trpbar{display:none}
+#trpbar button{font:inherit;font-size:13px;border:1px solid var(--rule);background:var(--panel);border-radius:999px;padding:4px 11px;cursor:pointer;color:var(--ink);display:inline-flex;align-items:center;gap:5px}
+#trpbar .tpx svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2}
+#trpbar .tpg{font-weight:800;font-size:15px;padding-left:9px;border-left:4px solid var(--gc);margin:0 4px}
+#trpbar .tpks{display:flex;gap:4px;flex-wrap:wrap}
+#trpbar .tpks button[aria-pressed=true]{background:var(--ink);color:var(--panel);border-color:var(--ink)}
+#trpbar .tpgo{margin-left:auto;display:flex;gap:4px}#trpbar .tpgo button{color:var(--muted)}
+.trnav{position:fixed;top:55%;z-index:30;width:40px;height:40px;border-radius:50%;border:1px solid var(--rule);background:var(--panel);box-shadow:0 2px 8px rgba(0,0,0,.14);display:grid;place-items:center;cursor:pointer;padding:0}
+.trnav svg{width:20px;height:20px;fill:none;stroke:var(--ink);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+#trnavl{left:10px}#trnavr{right:10px}
+body:not(.trpgon) .trnav,body.trix .trnav{display:none}
+#v-tr[hidden]~.trnav{display:none}
+.trmenu{display:grid;grid-template-columns:repeat(3,minmax(170px,1fr));gap:4px 14px;padding:12px 14px;max-width:min(760px,calc(100vw - 16px));max-height:72vh;overflow:auto}
+.trmg{display:flex;flex-direction:column;padding:4px 0}
+.trmenu .trmh{font-weight:800;font-size:13.5px;color:color-mix(in srgb,var(--gc) 75%,var(--ink));border-left:3px solid var(--gc);border-radius:0;padding:3px 8px;text-align:left}
+.trmenu .trmk{font-size:13px;padding:3px 8px 3px 11px;text-align:left;color:var(--ink)}
+@media (max-width:700px){.trmenu{grid-template-columns:1fr 1fr}}
+#trmenu{position:fixed;z-index:9000;background:var(--panel);border:1px solid var(--rule);border-radius:12px;box-shadow:0 10px 26px rgba(0,0,0,.14)}#trmenu[hidden]{display:none}#trmenu button{font:inherit;border:0;background:none;border-radius:6px;cursor:pointer}#trmenu button:hover{background:color-mix(in srgb,var(--ink) 6%,transparent)}
+#trbody.trpg>.trcard.trpon>.tree{display:grid;grid-template-columns:minmax(0,auto) minmax(240px,340px);column-gap:26px;align-items:start;justify-content:center}
+#trbody.trpg>.trcard.trpon>.tree>.trh{grid-column:1/-1}
+#trbody.trpg>.trcard.trpon>.tree>.trflow:not(.flfree){grid-column:2;grid-row:2;margin-top:0!important}
+#trbody.trpg>.trcard.trpon>.tree>:not(.trh):not(.trflow){grid-column:1}
+#trbody.trpg>.trcard.trpon>.tree:not(:has(>.trflow)){grid-template-columns:minmax(0,auto)}
+#trbody.trpg .htree:has(>.hextra){display:flex;align-items:flex-start;gap:22px}
+#trbody.trpg .htree>.hextra{flex-direction:column;flex-wrap:nowrap;margin-top:0;padding:0 0 0 18px;border-top:0;border-left:1px dashed var(--rule);flex:none;width:200px}
+#trbody.trpg .htree>.hextra .hn{flex:none}
+#trbody.trpg>.trcard[data-po="0"]{order:0!important}#trbody.trpg>.trcard[data-po="1"]{order:1!important}#trbody.trpg>.trcard[data-po="2"]{order:2!important}#trbody.trpg>.trcard[data-po="3"]{order:3!important}#trbody.trpg>.trcard[data-po="4"]{order:4!important}#trbody.trpg>.trcard[data-po="5"]{order:5!important}#trbody.trpg>.trcard[data-po="6"]{order:6!important}#trbody.trpg>.trcard[data-po="7"]{order:7!important}#trbody.trpg>.trcard[data-po="8"]{order:8!important}#trbody.trpg>.trcard[data-po="9"]{order:9!important}#trbody.trpg>.trcard[data-po="10"]{order:10!important}#trbody.trpg>.trcard[data-po="11"]{order:11!important}
+#trindex{box-sizing:border-box;padding-left:16px!important;padding-right:16px!important}body.trix #trzoomf,body.trix #trfloat,body.trix #trreset{display:none!important}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/flubber@0.4.2/build/flubber.min.js"></script>
 <script>
@@ -7001,13 +7051,13 @@ function rlForm(key){if(!(window.__MEX&&window.__MEX.can()))return;const H=windo
 {const TR=()=>window.__ME&&window.__ME.tr;const can=()=>window.__MEX&&window.__MEX.can();let busy=false;
  const keyOf=c=>c.id.replace(/^tree-/,'');const SN=v=>Math.round(v/4)*4;
  let S=1;try{S=Math.min(1.6,Math.max(0.4,+localStorage.getItem('hgs_trz')||1))}catch(_){}
- const applyZ=()=>{const tb=$('trbody');if(!tb)return;const on=S!==1;const z=on?S:1;tb.style.transformOrigin='0 0';tb.style.transform=z===1?'':`scale(${z})`;tb.style.width=z===1?'':(100/z)+'%';tb.style.marginBottom=z===1?'':((z-1)*tb.offsetHeight)+'px';const lb=document.querySelector('#trzoomf [data-trz0]');if(lb)lb.textContent=Math.round(S*100)+'%'};
- const ZS=()=>S;
+ const applyZ=()=>{const tb=$('trbody');if(!tb)return;if(tb.classList.contains('trpg')){tb.style.transform='';tb.style.width='';tb.style.marginBottom='';const lb=document.querySelector('#trzoomf [data-trz0]');if(lb)lb.textContent=Math.round(S*100)+'%';try{window.__TRFIT&&window.__TRFIT()}catch(_){}return}const on=S!==1;const z=on?S:1;tb.style.transformOrigin='0 0';tb.style.transform=z===1?'':`scale(${z})`;tb.style.width=z===1?'':(100/z)+'%';tb.style.marginBottom=z===1?'':((z-1)*tb.offsetHeight)+'px';const lb=document.querySelector('#trzoomf [data-trz0]');if(lb)lb.textContent=Math.round(S*100)+'%'};
+ const ZS=()=>{const tb=$('trbody');return tb&&tb.classList.contains('trpg')&&window.__TRZC?window.__TRZC():S};window.__TRS=()=>S;
  const setZ=v=>{S=Math.min(1.6,Math.max(0.4,Math.round(v*100)/100));try{localStorage.setItem('hgs_trz',S)}catch(_){}applyZ()};
  const unwrap=()=>{const tb=$('trbody');if(!tb)return;tb.querySelectorAll(':scope>.trcol').forEach(w=>{[...w.children].forEach(ch=>tb.insertBefore(ch,w));w.remove()})};
  const stackApply=()=>{const tb=$('trbody');const M=TR();const S=M&&M.get('@stack');if(!tb||!S||typeof S!=='object')return;Object.entries(S).forEach(([root,kids])=>{const r=document.getElementById('tree-'+root);if(!r||r.parentElement!==tb||!Array.isArray(kids))return;const ks=kids.map(k=>document.getElementById('tree-'+k)).filter(x=>x&&x!==r&&x.parentElement===tb);if(!ks.length)return;const rw=r.getBoundingClientRect().width;const w=document.createElement('div');w.className='trcol';w.style.order=r.style.order;w.style.width=Math.round((M.get(root)||{}).w||rw)+'px';tb.insertBefore(w,r);w.appendChild(r);ks.forEach(k=>w.appendChild(k))})};
  const cards=()=>{const tb=$('trbody');return tb?[...tb.querySelectorAll(':scope>.trcard,:scope>.trcol>.trcard')]:[]};
- const boardOn=()=>{const tb=$('trbody');const P=TR()&&TR().get('@pos');return !!(tb&&P&&typeof P==='object'&&Object.keys(P).length&&tb.clientWidth>=700)};
+ const boardOn=()=>{const tb=$('trbody');const P=TR()&&TR().get('@pos');return !!(tb&&!tb.classList.contains('trpg')&&P&&typeof P==='object'&&Object.keys(P).length&&tb.clientWidth>=700)};
  /* 안쪽 칸 */
  const nodesOf=c=>[...c.querySelectorAll('.htree .hn,.hchain .hn,.tfin>.hn')];
  function edgesOf(c,ns){const E0=edgesOf0(c,ns);const k=keyOf(c),M=TR();const X=new Set((M&&M.get('@x:'+k))||[]);const E=E0.filter(([a,b])=>!X.has(a+'-'+b));((M&&M.get('@e:'+k))||[]).forEach(([a,b])=>{if(ns[a]&&ns[b])E.push([a,b,0])});return E}
@@ -7194,4 +7244,91 @@ const PEG_IMG={"stand": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABsC
  /* 지도 시대가 바뀌거나 다른 화면으로 가면 지우기 */
  try{const sv=showView;showView=function(v){if(v!=='map')clear();return sv.apply(this,arguments)}}catch(_){}
 }}
+
+/* ───────── 구조도: 목차 → 묶음별로 가로 넘기기, 한 화면에 통째로 ───────── */
+{
+const TRG=[
+ {t:'고려의 지배층',s:'고려',c:'#9a3412',k:['goryeo','musin']},
+ {t:'조선의 정치 세력',s:'조선 전기 ~ 후기',c:'#0f766e',k:['hungu','bungdang2','yesong','tangpyeong']},
+ {t:'조선 후기 사상',s:'17 ~ 18세기',c:'#7c3aed',k:['bukbeol','silhak']},
+ {t:'개항기 사상과 운동',s:'19세기 후반',c:'#b45309',k:['wijeong','gaehwa','donghak']},
+ {t:'국권 수호 운동',s:'1890 ~ 1910년대',c:'#be123c',k:['uibyeong','gyemong']},
+ {t:'1910년대 독립운동',s:'국내 · 국외',c:'#1d4ed8',k:['org1910','abroad']},
+ {t:'1920년대 독립운동',s:'무장 · 의열 · 국내 운동',c:'#0369a1',k:['armed1920','uiyeol','society1920','minjok1920']},
+ {t:'1930 ~ 40년대와 노선',s:'중국 관내 · 독립운동 노선',c:'#4338ca',k:['china1930','dongnip']},
+ {t:'광복 직후',s:'1945 ~ 1948',c:'#334155',k:['haebang']},
+ {t:'단체 · 조직 모아 보기',s:'개항기 ~ 광복',c:'#0f766e',k:['orgs']}
+];
+const $=id=>document.getElementById(id);
+const title=k=>{if(k==='orgs')return '단체 · 조직';try{return TREES[k]?TREES[k].title:k}catch(_){return k}};
+const has=k=>{try{return k==='orgs'||!!TREES[k]}catch(_){return false}};
+TRG.forEach(g=>g.k=g.k.filter(has));
+{const seen=new Set(TRG.flatMap(g=>g.k));let rest=[];try{rest=Object.keys(TREES).filter(k=>!seen.has(k))}catch(_){}if(rest.length)TRG.splice(TRG.length-1,0,{t:'더 보기',s:'',c:'#475569',k:rest})}
+let G=-1,PAGE=0;
+const groupOf=k=>TRG.findIndex(g=>g.k.includes(k));
+const esc2=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+const relX=(tb,c)=>c.getBoundingClientRect().left-tb.getBoundingClientRect().left+tb.scrollLeft;
+/* 목차 */
+function ensureUI(){const rd=$('trread');if(!rd)return false;
+  if(!$('trindex')){const d=document.createElement('div');d.id='trindex';d.className='rin';rd.querySelector('.rhead').after(d);
+    d.innerHTML=`<div class="trih"><h2>구조도</h2><span>보고 싶은 묶음이나 구조도를 고르세요. 같은 묶음은 옆으로 넘겨 봐요.</span></div><div class="trig">${TRG.map((g,i)=>`<section class="trgc" style="--gc:${g.c}"><button type="button" class="trgh" data-trg="${i}"><b>${esc2(g.t)}</b><i>${esc2(g.s)}</i><em>${g.k.length}개</em></button><ol>${g.k.map(k=>`<li><button type="button" data-trg="${i}" data-trk="${k}">${esc2(title(k))}</button></li>`).join('')}</ol></section>`).join('')}</div>`;
+    d.addEventListener('click',e=>{const b=e.target.closest('[data-trg]');if(!b)return;openG(+b.dataset.trg,b.dataset.trk||null)})}
+  if(!$('trpbar')){const r=rd.querySelector('.rhead .rin');const d=document.createElement('div');d.id='trpbar';d.innerHTML='';r.appendChild(d);
+    d.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.tpx!=null)return toIndex();if(b.dataset.tpg!=null)return openG(+b.dataset.tpg);if(b.dataset.tpk!=null)return goPage(+b.dataset.tpk)})}
+  if(!$('trnavl')){['l','r'].forEach(s=>{const b=document.createElement('button');b.type='button';b.id='trnav'+s;b.className='trnav';b.setAttribute('aria-label',s==='l'?'이전 구조도':'다음 구조도');b.innerHTML=s==='l'?'<svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg>':'<svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>';b.onclick=()=>goPage(PAGE+(s==='l'?-1:1));rd.appendChild(b)})}
+  return true}
+function bar(){const d=$('trpbar');if(!d)return;if(G<0){d.innerHTML='';return}const g=TRG[G];
+  d.innerHTML=`<button type="button" class="tpx" data-tpx><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>목차</button><span class="tpg" style="--gc:${g.c}">${esc2(g.t)}</span><span class="tpks">${g.k.map((k,i)=>`<button type="button" data-tpk="${i}" aria-pressed="${i===PAGE}">${esc2(title(k))}</button>`).join('')}</span><span class="tpgo">${G>0?`<button type="button" data-tpg="${G-1}" title="${esc2(TRG[G-1].t)}">← 이전 묶음</button>`:''}${G<TRG.length-1?`<button type="button" data-tpg="${G+1}" title="${esc2(TRG[G+1].t)}">다음 묶음 →</button>`:''}</span>`}
+function apply(){const tb=$('trbody'),rd=$('trread');if(!tb||!ensureUI())return;tb.classList.add('trpg');document.body.classList.toggle('trix',G<0);document.body.classList.add('trpgon');
+  const ks=G<0?[]:TRG[G].k;[...tb.children].forEach(c=>{if(!c.classList||!c.classList.contains('trcard'))return;const k=c.id.replace(/^tree-/,'');const on=ks.includes(k);c.classList.toggle('trpon',on);if(on)c.dataset.po=ks.indexOf(k);else delete c.dataset.po});
+  bar();fit();nav()}
+function nav(){const l=$('trnavl'),r=$('trnavr');if(!l)return;const n=G<0?0:TRG[G].k.length;l.hidden=G<0||PAGE<=0;r.hidden=G<0||PAGE>=n-1}
+function cur(){const tb=$('trbody');if(!tb||G<0)return null;return tb.querySelector('#tree-'+TRG[G].k[PAGE])}
+function goPage(i,instant){if(G<0)return;const n=TRG[G].k.length;PAGE=Math.max(0,Math.min(n-1,i));const tb=$('trbody');const c=cur();if(tb&&c)tb.scrollTo({left:relX(tb,c),behavior:instant?'auto':'smooth'});$('trpbar')&&$('trpbar').querySelectorAll('[data-tpk]').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.tpk===PAGE));nav()}
+function openG(i,k){if(store&&store.get('view','map')!=='tr'){try{showView('tr')}catch(_){}}G=i;PAGE=k?Math.max(0,TRG[i].k.indexOf(k)):0;apply();requestAnimationFrame(()=>{goPage(PAGE,true);const rd=$('trread');if(rd)rd.scrollTop=0})}
+function toIndex(){G=-1;PAGE=0;apply();const rd=$('trread');if(rd)rd.scrollTop=0}
+window.__TROPEN=(k)=>{const i=groupOf(k);if(i>=0)openG(i,k)};
+
+/* 한 화면에 맞추기: 카드마다 zoom */
+let FITTING=false;
+function fit(){const tb=$('trbody'),rd=$('trread');if(!tb||G<0||!tb.offsetParent)return;FITTING=true;
+  const top=tb.getBoundingClientRect().top-rd.getBoundingClientRect().top;const W=tb.clientWidth,H=Math.max(260,rd.clientHeight-top-14);tb.style.height=H+'px';
+  const mul=(window.__TRS&&window.__TRS())||1;
+  tb.querySelectorAll(':scope>.trcard.trpon').forEach(c=>{c.style.zoom=1;c.style.minWidth='';c.style.height='';c.style.maxHeight='';
+    const PW=W-28,PH=H-6;
+    const m=w=>{c.style.width=w;const iw=Math.max(c.scrollWidth,...[...c.querySelectorAll('.htree,.hchain,.tfin')].map(x=>x.scrollWidth+x.offsetLeft+28));return [iw,c.scrollHeight]};
+    let [aw,ah]=m('max-content');let zA=Math.min(1,PW/aw,PH/ah),wA=aw;
+    let w=PW,zB=1;for(let it=0;it<4;it++){const [iw,ih]=m(w+'px');const nz=Math.min(1,PW/Math.max(iw,1),PH/Math.max(ih,1));if(Math.abs(nz-zB)<0.01&&it){zB=nz;break}zB=nz;w=Math.max(PW,Math.round(PW/zB))}
+    let z=Math.max(zA,zB);
+    const base=Math.max(0.3,z);c.dataset.fz=base;const zz=Math.max(0.3,base*mul);c.style.width=Math.round(PW/zz)+'px';c.style.zoom=zz;c.style.height=Math.round(PH/zz)+'px'});
+  FITTING=false;requestAnimationFrame(()=>goPage(PAGE,true))}
+window.__TRFIT=()=>fit();
+let LASTC=null;window.addEventListener('pointerdown',e=>{LASTC=e.target.closest&&e.target.closest('#trbody .trcard')},true);
+window.__TRZC=()=>{const c=LASTC;return c&&c.style.zoom?(+c.style.zoom||1):1};
+
+/* 스크롤로 넘기면 쪽 번호 따라가기 */
+{let st=0;document.addEventListener('scroll',e=>{const tb=$('trbody');if(e.target!==tb||G<0)return;clearTimeout(st);st=setTimeout(()=>{const x=tb.scrollLeft;let best=0,bd=1e9;TRG[G].k.forEach((k,i)=>{const c=tb.querySelector('#tree-'+k);if(!c)return;const d=Math.abs(relX(tb,c)-x);if(d<bd){bd=d;best=i}});if(best!==PAGE){PAGE=best;$('trpbar').querySelectorAll('[data-tpk]').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.tpk===PAGE));nav()}},120)},true)}
+window.addEventListener('keydown',e=>{if(G<0||$('v-tr').hidden)return;if(e.target.closest&&e.target.closest('input,textarea,[contenteditable]'))return;if(e.key==='ArrowRight'||e.key==='ArrowLeft'){const t=PAGE+(e.key==='ArrowRight'?1:-1);e.preventDefault();goPage(t,true)}else if(e.key==='Escape')toIndex();else return;e.stopImmediatePropagation()},true);
+
+/* 기존 함수에 연결 */
+{const t0=trPack;trPack=function(){const r=t0.apply(this,arguments);try{if(store.get('view','map')==='tr'){apply()}}catch(_){}return r}}
+{const sv=showView;showView=function(v){const r=sv.apply(this,arguments);if(v==='tr'||v==='tp'){requestAnimationFrame(()=>{try{apply()}catch(_){}})}else{document.body.classList.remove('trpgon','trix')}return r}}
+let rt=0;addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(()=>{if(G>=0)fit()},250)});
+
+/* 구조도 탭: 누르면 목차, 올리면 목록 */
+{const tab=$('tab-tr');if(tab){
+  tab.addEventListener('click',()=>{G=-1;PAGE=0;setTimeout(()=>{try{apply()}catch(_){}},0)},true);
+  const m=document.createElement('div');m.id='trmenu';m.className='tabmenu trmenu';m.hidden=true;
+  m.innerHTML=TRG.map((g,i)=>`<div class="trmg" style="--gc:${g.c}"><button type="button" class="trmh" data-trg="${i}">${esc2(g.t)}</button>${g.k.map(k=>`<button type="button" class="trmk" data-trg="${i}" data-trk="${k}">${esc2(title(k))}</button>`).join('')}</div>`).join('');
+  document.body.appendChild(m);let ht=0;
+  const show=()=>{clearTimeout(ht);const r=tab.getBoundingClientRect();m.hidden=false;const mw=m.offsetWidth;m.style.left=Math.max(8,Math.min(innerWidth-mw-8,r.left+r.width/2-mw/2))+'px';m.style.top=(r.bottom+6)+'px'};
+  const hide=()=>{clearTimeout(ht);ht=setTimeout(()=>{m.hidden=true},180)};
+  tab.addEventListener('mouseenter',e=>{if(matchMedia('(hover:hover)').matches)show()});tab.addEventListener('mouseleave',hide);m.addEventListener('mouseenter',()=>clearTimeout(ht));m.addEventListener('mouseleave',hide);
+  m.addEventListener('click',e=>{const b=e.target.closest('[data-trg]');if(!b)return;m.hidden=true;openG(+b.dataset.trg,b.dataset.trk||null)})}}
+
+/* 낱말 → 구조도 열기도 묶음으로 */
+document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('[data-tj]');if(!b||!document.body.classList.contains('trpgon'))return;const k=b.dataset.tj;if(groupOf(k)>=0){e.preventDefault();e.stopImmediatePropagation();window.__TROPEN(k)}},true);
+if(store.get('view','map')==='tr')setTimeout(()=>{try{apply()}catch(_){}},50);
+}
 </script>

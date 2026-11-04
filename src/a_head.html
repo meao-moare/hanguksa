@@ -2227,4 +2227,54 @@ body.trlinking #trbody .tfin>.hn{cursor:crosshair}
 .trh{display:flex;align-items:baseline;gap:8px}
 .hadd{border-style:solid}
 .hadd .xing,#trbody .hn .xing{outline:2px solid color-mix(in srgb,var(--trc,#2563eb) 50%,transparent);border-radius:4px;background:var(--panel)}
+
+/* 구조도 쪽 넘기기 */
+body.trpgon #trjump{display:none!important}
+#trbody.trpg{display:flex!important;flex-wrap:nowrap!important;gap:28px!important;overflow-x:auto!important;overflow-y:hidden!important;scroll-snap-type:x mandatory;position:relative!important;scrollbar-width:thin;align-items:flex-start;padding:0 14px!important;box-sizing:border-box}
+#trbody.trpg>*:not(.trcard.trpon){display:none!important}
+#trbody.trpg>.trcard.trpon{position:relative!important;left:auto!important;top:auto!important;flex:none!important;scroll-snap-align:start;margin:0!important;overflow:hidden;box-sizing:border-box}
+#trbody.trpg .htree{overflow:visible!important}
+body.trix #trbody{display:none!important}
+body.trpgon:not(.trix) #trindex{display:none}
+body:not(.trpgon) #trindex,body:not(.trpgon) #trpbar{display:none}
+#trindex{padding:18px 0 40px}
+.trih{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin:4px 0 16px}.trih h2{margin:0;font-size:22px;font-weight:800}.trih span{color:var(--muted);font-size:13.5px}
+.trig{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+.trgc{border:1px solid var(--rule);border-radius:14px;background:var(--panel);overflow:hidden;border-top:4px solid var(--gc)}
+.trgh{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;width:100%;text-align:left;border:0;background:color-mix(in srgb,var(--gc) 9%,var(--panel));padding:12px 14px 10px;font:inherit;cursor:pointer;color:var(--ink)}
+.trgh b{font-size:16px;font-weight:800;color:color-mix(in srgb,var(--gc) 75%,var(--ink))}.trgh i{font-style:normal;font-size:12px;color:var(--muted)}.trgh em{font-style:normal;margin-left:auto;font-size:12px;color:var(--muted)}
+.trgh:hover{background:color-mix(in srgb,var(--gc) 16%,var(--panel))}
+.trgc ol{list-style:none;margin:0;padding:6px 8px 10px}
+.trgc li button{display:block;width:100%;text-align:left;border:0;background:none;font:inherit;font-size:14px;padding:6px 8px;border-radius:8px;cursor:pointer;color:var(--ink)}
+.trgc li button::before{content:'';display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--gc);margin-right:9px;vertical-align:2px}
+.trgc li button:hover{background:color-mix(in srgb,var(--gc) 10%,transparent)}
+#trpbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:8px 0}
+body.trix #trpbar{display:none}
+#trpbar button{font:inherit;font-size:13px;border:1px solid var(--rule);background:var(--panel);border-radius:999px;padding:4px 11px;cursor:pointer;color:var(--ink);display:inline-flex;align-items:center;gap:5px}
+#trpbar .tpx svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2}
+#trpbar .tpg{font-weight:800;font-size:15px;padding-left:9px;border-left:4px solid var(--gc);margin:0 4px}
+#trpbar .tpks{display:flex;gap:4px;flex-wrap:wrap}
+#trpbar .tpks button[aria-pressed=true]{background:var(--ink);color:var(--panel);border-color:var(--ink)}
+#trpbar .tpgo{margin-left:auto;display:flex;gap:4px}#trpbar .tpgo button{color:var(--muted)}
+.trnav{position:fixed;top:55%;z-index:30;width:40px;height:40px;border-radius:50%;border:1px solid var(--rule);background:var(--panel);box-shadow:0 2px 8px rgba(0,0,0,.14);display:grid;place-items:center;cursor:pointer;padding:0}
+.trnav svg{width:20px;height:20px;fill:none;stroke:var(--ink);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+#trnavl{left:10px}#trnavr{right:10px}
+body:not(.trpgon) .trnav,body.trix .trnav{display:none}
+#v-tr[hidden]~.trnav{display:none}
+.trmenu{display:grid;grid-template-columns:repeat(3,minmax(170px,1fr));gap:4px 14px;padding:12px 14px;max-width:min(760px,calc(100vw - 16px));max-height:72vh;overflow:auto}
+.trmg{display:flex;flex-direction:column;padding:4px 0}
+.trmenu .trmh{font-weight:800;font-size:13.5px;color:color-mix(in srgb,var(--gc) 75%,var(--ink));border-left:3px solid var(--gc);border-radius:0;padding:3px 8px;text-align:left}
+.trmenu .trmk{font-size:13px;padding:3px 8px 3px 11px;text-align:left;color:var(--ink)}
+@media (max-width:700px){.trmenu{grid-template-columns:1fr 1fr}}
+#trmenu{position:fixed;z-index:9000;background:var(--panel);border:1px solid var(--rule);border-radius:12px;box-shadow:0 10px 26px rgba(0,0,0,.14)}#trmenu[hidden]{display:none}#trmenu button{font:inherit;border:0;background:none;border-radius:6px;cursor:pointer}#trmenu button:hover{background:color-mix(in srgb,var(--ink) 6%,transparent)}
+#trbody.trpg>.trcard.trpon>.tree{display:grid;grid-template-columns:minmax(0,auto) minmax(240px,340px);column-gap:26px;align-items:start;justify-content:center}
+#trbody.trpg>.trcard.trpon>.tree>.trh{grid-column:1/-1}
+#trbody.trpg>.trcard.trpon>.tree>.trflow:not(.flfree){grid-column:2;grid-row:2;margin-top:0!important}
+#trbody.trpg>.trcard.trpon>.tree>:not(.trh):not(.trflow){grid-column:1}
+#trbody.trpg>.trcard.trpon>.tree:not(:has(>.trflow)){grid-template-columns:minmax(0,auto)}
+#trbody.trpg .htree:has(>.hextra){display:flex;align-items:flex-start;gap:22px}
+#trbody.trpg .htree>.hextra{flex-direction:column;flex-wrap:nowrap;margin-top:0;padding:0 0 0 18px;border-top:0;border-left:1px dashed var(--rule);flex:none;width:200px}
+#trbody.trpg .htree>.hextra .hn{flex:none}
+#trbody.trpg>.trcard[data-po="0"]{order:0!important}#trbody.trpg>.trcard[data-po="1"]{order:1!important}#trbody.trpg>.trcard[data-po="2"]{order:2!important}#trbody.trpg>.trcard[data-po="3"]{order:3!important}#trbody.trpg>.trcard[data-po="4"]{order:4!important}#trbody.trpg>.trcard[data-po="5"]{order:5!important}#trbody.trpg>.trcard[data-po="6"]{order:6!important}#trbody.trpg>.trcard[data-po="7"]{order:7!important}#trbody.trpg>.trcard[data-po="8"]{order:8!important}#trbody.trpg>.trcard[data-po="9"]{order:9!important}#trbody.trpg>.trcard[data-po="10"]{order:10!important}#trbody.trpg>.trcard[data-po="11"]{order:11!important}
+#trindex{box-sizing:border-box;padding-left:16px!important;padding-right:16px!important}body.trix #trzoomf,body.trix #trfloat,body.trix #trreset{display:none!important}
 </style>

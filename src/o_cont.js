@@ -1585,13 +1585,13 @@ function rlForm(key){if(!(window.__MEX&&window.__MEX.can()))return;const H=windo
 {const TR=()=>window.__ME&&window.__ME.tr;const can=()=>window.__MEX&&window.__MEX.can();let busy=false;
  const keyOf=c=>c.id.replace(/^tree-/,'');const SN=v=>Math.round(v/4)*4;
  let S=1;try{S=Math.min(1.6,Math.max(0.4,+localStorage.getItem('hgs_trz')||1))}catch(_){}
- const applyZ=()=>{const tb=$('trbody');if(!tb)return;const on=S!==1;const z=on?S:1;tb.style.transformOrigin='0 0';tb.style.transform=z===1?'':`scale(${z})`;tb.style.width=z===1?'':(100/z)+'%';tb.style.marginBottom=z===1?'':((z-1)*tb.offsetHeight)+'px';const lb=document.querySelector('#trzoomf [data-trz0]');if(lb)lb.textContent=Math.round(S*100)+'%'};
- const ZS=()=>S;
+ const applyZ=()=>{const tb=$('trbody');if(!tb)return;if(tb.classList.contains('trpg')){tb.style.transform='';tb.style.width='';tb.style.marginBottom='';const lb=document.querySelector('#trzoomf [data-trz0]');if(lb)lb.textContent=Math.round(S*100)+'%';try{window.__TRFIT&&window.__TRFIT()}catch(_){}return}const on=S!==1;const z=on?S:1;tb.style.transformOrigin='0 0';tb.style.transform=z===1?'':`scale(${z})`;tb.style.width=z===1?'':(100/z)+'%';tb.style.marginBottom=z===1?'':((z-1)*tb.offsetHeight)+'px';const lb=document.querySelector('#trzoomf [data-trz0]');if(lb)lb.textContent=Math.round(S*100)+'%'};
+ const ZS=()=>{const tb=$('trbody');return tb&&tb.classList.contains('trpg')&&window.__TRZC?window.__TRZC():S};window.__TRS=()=>S;
  const setZ=v=>{S=Math.min(1.6,Math.max(0.4,Math.round(v*100)/100));try{localStorage.setItem('hgs_trz',S)}catch(_){}applyZ()};
  const unwrap=()=>{const tb=$('trbody');if(!tb)return;tb.querySelectorAll(':scope>.trcol').forEach(w=>{[...w.children].forEach(ch=>tb.insertBefore(ch,w));w.remove()})};
  const stackApply=()=>{const tb=$('trbody');const M=TR();const S=M&&M.get('@stack');if(!tb||!S||typeof S!=='object')return;Object.entries(S).forEach(([root,kids])=>{const r=document.getElementById('tree-'+root);if(!r||r.parentElement!==tb||!Array.isArray(kids))return;const ks=kids.map(k=>document.getElementById('tree-'+k)).filter(x=>x&&x!==r&&x.parentElement===tb);if(!ks.length)return;const rw=r.getBoundingClientRect().width;const w=document.createElement('div');w.className='trcol';w.style.order=r.style.order;w.style.width=Math.round((M.get(root)||{}).w||rw)+'px';tb.insertBefore(w,r);w.appendChild(r);ks.forEach(k=>w.appendChild(k))})};
  const cards=()=>{const tb=$('trbody');return tb?[...tb.querySelectorAll(':scope>.trcard,:scope>.trcol>.trcard')]:[]};
- const boardOn=()=>{const tb=$('trbody');const P=TR()&&TR().get('@pos');return !!(tb&&P&&typeof P==='object'&&Object.keys(P).length&&tb.clientWidth>=700)};
+ const boardOn=()=>{const tb=$('trbody');const P=TR()&&TR().get('@pos');return !!(tb&&!tb.classList.contains('trpg')&&P&&typeof P==='object'&&Object.keys(P).length&&tb.clientWidth>=700)};
  /* 안쪽 칸 */
  const nodesOf=c=>[...c.querySelectorAll('.htree .hn,.hchain .hn,.tfin>.hn')];
  function edgesOf(c,ns){const E0=edgesOf0(c,ns);const k=keyOf(c),M=TR();const X=new Set((M&&M.get('@x:'+k))||[]);const E=E0.filter(([a,b])=>!X.has(a+'-'+b));((M&&M.get('@e:'+k))||[]).forEach(([a,b])=>{if(ns[a]&&ns[b])E.push([a,b,0])});return E}
