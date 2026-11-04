@@ -2215,6 +2215,7 @@ body:not(.ontr) #trzoomf{display:none}
 #trbody .hn>.hngrip{flex:none}
 #trbody #tree-bungdang2.ut .htree .hn{max-width:150px!important;width:auto!important;min-width:96px!important}#trbody #tree-bungdang2.ut .htree .hkid{padding-left:3px!important;padding-right:3px!important}
 #tybody .tysh{font-size:17px;font-weight:800;margin:6px 0 10px;padding:0 0 8px 12px;border-left:4px solid var(--ink);border-bottom:1px solid var(--rule);display:flex;align-items:baseline;gap:8px}#tybody .tysh small{font-size:12.5px;font-weight:600;color:var(--muted)}#tybody .tyref{margin-top:34px}#tybody .tyref .tysh{border-left-color:#b03a2e}#tybody .tyref .lawl em{font-style:normal;font-size:12.5px;color:var(--muted);margin-left:6px}
+.htree .hextra{display:flex;flex-wrap:wrap;gap:12px;margin-top:22px;padding-top:14px;border-top:1px dashed var(--rule)}.htree .hextra .hn{border-style:dashed!important;flex:0 1 220px}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/flubber@0.4.2/build/flubber.min.js"></script>
 <script>
@@ -4811,6 +4812,8 @@ const TREES={
       N_('소론','실리·적극적 북방 개척 주장. 경종을 지지','윤증, 최석정',[
        N_('소론 강경파 (준소)','영조 즉위에 반발 → 이인좌의 난(1728)을 일으켰다가 몰락','이인좌',[],'1728'),
        N_('소론 온건파 (완소)','영조의 탕평책에 참여해 노론과 함께 등용','',[],'영조')],'1683 분열')],'1680~1694')],'1659·1674')],'1575 동서 분당')],'16세기 후반'),
+  free:[N_('실학','성리학의 공리공담을 비판하고 현실 문제 해결을 추구한 학문. 정권에서 밀려난 남인(중농학파)과 노론 일부(북학파)가 주로 발전시킴','유형원, 이익, 정약용, 박지원, 박제가',[],'17~19세기'),
+   N_('서학','청을 통해 들어온 서양 학문과 천주교. 남인 일부가 신앙으로 받아들였다가 신해박해(1791)·신유박해(1801)로 탄압받음','이승훈, 정약종',[],'17세기~')],
   flow:['1575 이조 전랑 자리 다툼 → 동서 분당','1589 정여립 모반 사건(기축옥사) · 1591 건저의 사건 → 남북 분당','1623 인조반정 → 서인 집권, 남인과 공존','1659·1674 예송(기해·갑인)','1680 경신환국 → 서인 집권, 노론·소론으로 분열','1689 기사환국 → 남인 집권 · 1694 갑술환국 → 서인 집권','영조·정조 탕평책','1800~ 세도 정치(안동 김씨·풍양 조씨)']},
  yesong:{title:'예송',sub:'현종, 왕실 상복 기간을 두고 서인과 남인이 다투다',root:
   N_('효종의 정통성 문제','효종은 인조의 둘째 아들(형 소현 세자가 일찍 죽음). 계모 자의 대비가 상복을 얼마나 입을지가 쟁점','',[
@@ -4966,7 +4969,7 @@ function treeNode(n){const kids=n.c&&n.c.length;
   const lab=`<div class="hn">${n.t?`<i class="ht">${esc(n.t)}</i>`:''}<b>${esc(n.n)}</b>${n.p?`<em>${esc(n.p)}</em>`:''}${n.d?`<small>${glx(n.d)}</small>`:''}${n.a?(()=>{const [h,...r]=n.a[1].split(/\s*→\s*/);const sub=r.join(' → ').split(/\s*\/\s*/).filter(Boolean);return `<span class="ha" style="--ac:${n.a[2]}"><i>${esc(n.a[0])}</i><span class="hab"><span>${esc(h)}${sub.length?' →':''}</span>${sub.length?`<span class="hasw">${sub.map(x=>`<span class="has">${esc(x)}</span>`).join('')}</span>`:''}</span></span>`})():''}</div>`;
   return `<div class="hrow">${lab}${kids?`<span class="hlink"></span><div class="hkids${n.c.length===1?' one':''}${n.c.every(c=>c.c&&c.c.length)?' grp':''}">${n.c.map(c=>`<div class="hkid">${treeNode(c)}</div>`).join('')}</div>`:''}</div>`}
 function treeHTML(k){const T=TREES[k];return `<div class="tree"><div class="trh"><h3>${esc(T.title)}</h3><span>${esc(T.sub)}</span></div>
-  ${T.root?`<div class="htree">${treeNode(T.root)}</div>`:''}${T.chain?`<div class="hchain">${T.chain.map(n=>`<div class="hn">${n.t?`<i class="ht">${esc(n.t)}</i>`:''}<b>${esc(n.n)}</b>${n.p?`<em>${esc(n.p)}</em>`:''}${n.d?`<small>${glx(n.d)}</small>`:''}</div>`).join('<span class="harr">→</span>')}</div>`:''}
+  ${T.root?`<div class="htree">${treeNode(T.root)}${T.free?`<div class="hextra">${T.free.map(n=>`<div class="hn hfx">${n.t?`<i class="ht">${esc(n.t)}</i>`:''}<b>${esc(n.n)}</b>${n.p?`<em>${esc(n.p)}</em>`:''}${n.d?`<small>${glx(n.d)}</small>`:''}</div>`).join('')}</div>`:''}</div>`:''}${T.chain?`<div class="hchain">${T.chain.map(n=>`<div class="hn">${n.t?`<i class="ht">${esc(n.t)}</i>`:''}<b>${esc(n.n)}</b>${n.p?`<em>${esc(n.p)}</em>`:''}${n.d?`<small>${glx(n.d)}</small>`:''}</div>`).join('<span class="harr">→</span>')}</div>`:''}
   ${T.flow?`<div class="trflow"><h4>흐름</h4><ol>${T.flow.map(f=>`<li>${glx(f)}</li>`).join('')}</ol></div>`:''}</div>`}
 function openTree(k){const p=$('trpop');p.innerHTML=`<button class="ib trx" type="button" aria-label="닫기"><svg class="ic" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>${treeHTML(k)}`;p.hidden=false;$('trdim').hidden=false;p.scrollTop=0;$('glpop').hidden=true;
   p.querySelector('.trx').onclick=closeTree}
