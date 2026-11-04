@@ -1196,7 +1196,7 @@ html,html *{font-synthesis-weight:none!important;font-synthesis:none!important}
     </div>
   </section>
 
-  <section class="view" id="v-ty" hidden><div class="read" id="tyread"><div class="rhead"><div class="rin"><div class="rlhd"><h2>조약</h2><span class="tycnt" id="tycount"></span></div></div></div><div class="rin" id="tybody"></div></div></section>
+  <section class="view" id="v-ty" hidden><div class="read" id="tyread"><div class="rhead"><div class="rin"><div class="rlhd"><h2>조약·개혁</h2><span class="tycnt" id="tycount"></span></div></div></div><div class="rin" id="tybody"></div></div></section>
 <section class="view" id="v-rl" hidden>
     <div class="read" id="rlread">
       <div class="rhead"><div class="rin"><div class="rlhd"><h2>문화유산</h2><div class="rlchips" id="rlchips"></div></div><div class="jump" id="rljump"></div></div></div>
@@ -2086,7 +2086,7 @@ body.medit #trbody .hn:hover>.hngrip,body.medit #trbody .hn.hndrag>.hngrip{opaci
 #trreset{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:8px 0 6px;font-size:12.5px;color:var(--muted)}
 #trreset button{font:inherit;font-size:12.5px;font-weight:600;border:1px solid var(--rule);background:var(--panel);color:var(--ink);border-radius:999px;padding:4px 12px;cursor:pointer}
 </style>
-<style>#v-ty .rhead{display:none!important}#tybody .lawl em{display:none!important}#tybody{padding-top:14px}</style>
+<style>#v-ty .rhead{display:none!important}#tybody .tytr .lawl em{display:none!important}#tybody{padding-top:14px}</style>
 <style>
 #tybody .tyli{cursor:pointer;border-radius:10px}
 #tybody .tyli:hover{background:color-mix(in srgb,var(--ink) 4%,transparent)}
@@ -2214,6 +2214,7 @@ body:not(.ontr) #trzoomf{display:none}
 #trbody .hn>small.hsb{flex:0 1 auto;margin-left:0}
 #trbody .hn>.hngrip{flex:none}
 #trbody #tree-bungdang2.ut .htree .hn{max-width:150px!important;width:auto!important;min-width:96px!important}#trbody #tree-bungdang2.ut .htree .hkid{padding-left:3px!important;padding-right:3px!important}
+#tybody .tysh{font-size:17px;font-weight:800;margin:6px 0 10px;padding:0 0 8px 12px;border-left:4px solid var(--ink);border-bottom:1px solid var(--rule);display:flex;align-items:baseline;gap:8px}#tybody .tysh small{font-size:12.5px;font-weight:600;color:var(--muted)}#tybody .tyref{margin-top:34px}#tybody .tyref .tysh{border-left-color:#b03a2e}#tybody .tyref .lawl em{font-style:normal;font-size:12.5px;color:var(--muted);margin-left:6px}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/flubber@0.4.2/build/flubber.min.js"></script>
 <script>
@@ -4962,10 +4963,10 @@ const TREES={
 /* 구조도는 시대 순서로 */
 {const ORD=['goryeo','musin','bungdang2','bukbeol','silhak','wijeong','donghak','gaehwa','uibyeong','gyemong','abroad','org1910','armed1920','uiyeol','dongnip','minjok1920','society1920','china1930','haebang'];const cp={...TREES};Object.keys(TREES).forEach(k=>delete TREES[k]);[...ORD.filter(k=>cp[k]),...Object.keys(cp).filter(k=>!ORD.includes(k))].forEach(k=>TREES[k]=cp[k])}
 function treeNode(n){const kids=n.c&&n.c.length;
-  const lab=`<div class="hn">${n.t?`<i class="ht">${esc(n.t)}</i>`:''}<b>${glx(n.n)}</b>${n.p?`<em>${esc(n.p)}</em>`:''}${n.d?`<small>${glx(n.d)}</small>`:''}${n.a?(()=>{const [h,...r]=n.a[1].split(/\s*→\s*/);const sub=r.join(' → ').split(/\s*\/\s*/).filter(Boolean);return `<span class="ha" style="--ac:${n.a[2]}"><i>${esc(n.a[0])}</i><span class="hab"><span>${esc(h)}${sub.length?' →':''}</span>${sub.length?`<span class="hasw">${sub.map(x=>`<span class="has">${esc(x)}</span>`).join('')}</span>`:''}</span></span>`})():''}</div>`;
+  const lab=`<div class="hn">${n.t?`<i class="ht">${esc(n.t)}</i>`:''}<b>${esc(n.n)}</b>${n.p?`<em>${esc(n.p)}</em>`:''}${n.d?`<small>${glx(n.d)}</small>`:''}${n.a?(()=>{const [h,...r]=n.a[1].split(/\s*→\s*/);const sub=r.join(' → ').split(/\s*\/\s*/).filter(Boolean);return `<span class="ha" style="--ac:${n.a[2]}"><i>${esc(n.a[0])}</i><span class="hab"><span>${esc(h)}${sub.length?' →':''}</span>${sub.length?`<span class="hasw">${sub.map(x=>`<span class="has">${esc(x)}</span>`).join('')}</span>`:''}</span></span>`})():''}</div>`;
   return `<div class="hrow">${lab}${kids?`<span class="hlink"></span><div class="hkids${n.c.length===1?' one':''}${n.c.every(c=>c.c&&c.c.length)?' grp':''}">${n.c.map(c=>`<div class="hkid">${treeNode(c)}</div>`).join('')}</div>`:''}</div>`}
 function treeHTML(k){const T=TREES[k];return `<div class="tree"><div class="trh"><h3>${esc(T.title)}</h3><span>${esc(T.sub)}</span></div>
-  ${T.root?`<div class="htree">${treeNode(T.root)}</div>`:''}${T.chain?`<div class="hchain">${T.chain.map(n=>`<div class="hn">${n.t?`<i class="ht">${esc(n.t)}</i>`:''}<b>${glx(n.n)}</b>${n.p?`<em>${esc(n.p)}</em>`:''}${n.d?`<small>${glx(n.d)}</small>`:''}</div>`).join('<span class="harr">→</span>')}</div>`:''}
+  ${T.root?`<div class="htree">${treeNode(T.root)}</div>`:''}${T.chain?`<div class="hchain">${T.chain.map(n=>`<div class="hn">${n.t?`<i class="ht">${esc(n.t)}</i>`:''}<b>${esc(n.n)}</b>${n.p?`<em>${esc(n.p)}</em>`:''}${n.d?`<small>${glx(n.d)}</small>`:''}</div>`).join('<span class="harr">→</span>')}</div>`:''}
   ${T.flow?`<div class="trflow"><h4>흐름</h4><ol>${T.flow.map(f=>`<li>${glx(f)}</li>`).join('')}</ol></div>`:''}</div>`}
 function openTree(k){const p=$('trpop');p.innerHTML=`<button class="ib trx" type="button" aria-label="닫기"><svg class="ic" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>${treeHTML(k)}`;p.hidden=false;$('trdim').hidden=false;p.scrollTop=0;$('glpop').hidden=true;
   p.querySelector('.trx').onclick=closeTree}
@@ -5013,8 +5014,8 @@ function glossBookHTML(PP){const PN=PP?Object.keys(PP).filter(k=>!GLOSS[k]):[];c
   <div class="gidx">${heads.map(h=>`<button type="button" data-gi="${h}">${h}</button>`).join('')}</div>
   ${heads.map(h=>`<h4 class="gh" id="gh-${h}">${h}</h4><dl class="gl2">${g[h].map(k=>isP.has(k)?`<div class="gp"><dt><button type="button" class="gpn" data-person="${esc(k)}">${esc(k)}</button><i class="gptag">인물</i><button type="button" class="gtr gpd" data-pdeep="${esc(k)}">자세히 →</button></dt><dd>${glx(PP[k])}</dd></div>`:`<div><dt>${esc(k)}${TREE_OF[k]?`<button type="button" class="gtr" data-tj="${TREE_OF[k]}">구조도 →</button>`:''}</dt><dd>${glx(GLOSS[k],[k])}</dd></div>`).join('')}</dl>`).join('')}</section>`}
 function trShow(){const b=$('trbody');if(b.dataset.built)return;try{TREES}catch(e){return}b.dataset.built=1;
-  $('trjump').innerHTML=Object.entries(TREES).map(([k,T],i)=>`<button type="button" data-tj="${k}" style="--trc:${TRCOL[i%TRCOL.length]}">${esc(T.title)}</button>`).join('')+`<button type="button" data-tj="laws">개혁안·정강</button><button type="button" data-tj="orgs" style="--trc:#0f766e">단체·조직</button>`;
-  b.innerHTML=Object.keys(TREES).map((k,i)=>`<div id="tree-${k}" class="trcard" style="--trc:${TRCOL[i%TRCOL.length]}">${treeHTML(k)}</div>`).join('')+`<div id="tree-laws" class="trcard" style="--trc:#b03a2e">${lawsHTML()}</div>`+`<div id="tree-orgs" class="trcard" style="--trc:#0f766e">${orgsHTML()}</div>`;b.querySelectorAll('[data-tl]').forEach(li=>li.onclick=ev=>{if(ev.target.closest('[data-gl]'))return;gotoTimeline(EVENTS.find(x=>x.id===+li.dataset.tl))});
+  $('trjump').innerHTML=Object.entries(TREES).map(([k,T],i)=>`<button type="button" data-tj="${k}" style="--trc:${TRCOL[i%TRCOL.length]}">${esc(T.title)}</button>`).join('')+`<button type="button" data-tj="orgs" style="--trc:#0f766e">단체·조직</button>`;
+  b.innerHTML=Object.keys(TREES).map((k,i)=>`<div id="tree-${k}" class="trcard" style="--trc:${TRCOL[i%TRCOL.length]}">${treeHTML(k)}</div>`).join('')+`<div id="tree-orgs" class="trcard" style="--trc:#0f766e">${orgsHTML()}</div>`;b.querySelectorAll('[data-tl]').forEach(li=>li.onclick=ev=>{if(ev.target.closest('[data-gl]'))return;gotoTimeline(EVENTS.find(x=>x.id===+li.dataset.tl))});
   b.addEventListener('click',ev=>{const gi=ev.target.closest('[data-gi]');const t=ev.target.closest('.gtr');const rd=$('trread');const go=el=>el&&rd.scrollTo({top:el.getBoundingClientRect().top-rd.getBoundingClientRect().top+rd.scrollTop-rd.querySelector('.rhead').offsetHeight-18,behavior:'smooth'});if(gi)go(document.getElementById('gh-'+gi.dataset.gi));if(t)go(document.getElementById('tree-'+t.dataset.tj))});
   $('trjump').querySelectorAll('[data-tj]').forEach(x=>x.onclick=()=>{const s=document.getElementById('tree-'+x.dataset.tj);const rd=$('trread');rd.scrollTo({top:s.getBoundingClientRect().top-rd.getBoundingClientRect().top+rd.scrollTop-rd.querySelector('.rhead').offsetHeight-8,behavior:'smooth'})})}
 if(store.get('view','map')==='tr')trShow();
@@ -7091,8 +7092,8 @@ function rlForm(key){if(!(window.__MEX&&window.__MEX.can()))return;const H=windo
 
 /* 사전 ▾ (용어 사전 · 인물 · 조약) + 조약 화면 */
 try{VIEWS.push('ty')}catch(_){}
-function tyShow(){const b=$('tybody');if(!b)return;const tmp=document.createElement('div');tmp.innerHTML=lawsHTML();const s=tmp.querySelector('section.laws');b.innerHTML='';if(s){const h=s.querySelector('h2');if(h)h.remove();b.appendChild(s)}const n=EVENTS.filter(e=>e.treaty).length;const c=$('tycount');if(c)c.textContent=n+'개';b.querySelectorAll('[data-tl]').forEach(li=>{li.classList.add('tyli');{const t=li.querySelector(':scope>div>b');if(t&&!li.querySelector('.tymore'))t.insertAdjacentHTML('afterend',`<button type="button" class="tymore" data-evpage="${li.dataset.tl}">자세히 보기 →</button>`)}li.onclick=ev=>{if(ev.target.closest('[data-gl],.tclb,.tcl,[data-person]'))return;openEvPage(li.dataset.tl)}});try{glossify&&glossify(b)}catch(_){}}
-{const dc=$('tab-dc'),pp=$('tab-pp');if(dc){if(pp)pp.style.display='none';const NM={dc:'사전',pp:'인물'};dc.textContent='사전 ▾';const tyb=document.createElement('button');tyb.id='tab-ty';tyb.setAttribute('role','tab');tyb.setAttribute('aria-selected','false');tyb.dataset.v='ty';tyb.textContent='조약';dc.after(tyb);tyb.onclick=e=>{e.preventDefault();e.stopPropagation();try{$('kpage').hidden=true}catch(_){}showView('ty')};
+function tyShow(){const b=$('tybody');if(!b)return;const tmp=document.createElement('div');tmp.innerHTML=lawsHTML();const ss=[...tmp.querySelectorAll('section.laws')];b.innerHTML='';ss.forEach((s,i)=>{s.classList.add(i?'tyref':'tytr');const h=s.querySelector('h2');if(h){h.className='tysh';h.innerHTML=(i?'개혁안 · 정강':'조약')+` <small>${s.querySelectorAll('.lawl>li').length}개</small>`}b.appendChild(s)});const n=EVENTS.filter(e=>e.treaty).length+(typeof REFORMS!=='undefined'?REFORMS.length:0);const c=$('tycount');if(c)c.textContent=n+'개';b.querySelectorAll('[data-tl]').forEach(li=>{li.classList.add('tyli');{const t=li.querySelector(':scope>div>b');if(t&&!li.querySelector('.tymore'))t.insertAdjacentHTML('afterend',`<button type="button" class="tymore" data-evpage="${li.dataset.tl}">자세히 보기 →</button>`)}li.onclick=ev=>{if(ev.target.closest('[data-gl],.tclb,.tcl,[data-person]'))return;openEvPage(li.dataset.tl)}});try{glossify&&glossify(b)}catch(_){}}
+{const dc=$('tab-dc'),pp=$('tab-pp');if(dc){if(pp)pp.style.display='none';const NM={dc:'사전',pp:'인물'};dc.textContent='사전 ▾';const tyb=document.createElement('button');tyb.id='tab-ty';tyb.setAttribute('role','tab');tyb.setAttribute('aria-selected','false');tyb.dataset.v='ty';tyb.textContent='조약·개혁';dc.after(tyb);tyb.onclick=e=>{e.preventDefault();e.stopPropagation();try{$('kpage').hidden=true}catch(_){}showView('ty')};
  const m=document.createElement('div');m.id='dcmenu';m.className='tabmenu';m.hidden=true;m.innerHTML='<button type="button" data-dv="dc">용어 사전</button><button type="button" data-dv="pp">인물</button>';document.body.appendChild(m);
  dc.onclick=e=>{e.stopPropagation();e.preventDefault();if(!m.hidden){m.hidden=true;return}const r=dc.getBoundingClientRect();m.style.left=r.left+'px';m.style.top=(r.bottom+6)+'px';const v=store.get('view','map');m.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.dv===v));m.hidden=false};
  m.addEventListener('click',e=>{const b=e.target.closest('[data-dv]');if(!b)return;m.hidden=true;try{$('kpage').hidden=true}catch(_){}showView(b.dataset.dv)});
