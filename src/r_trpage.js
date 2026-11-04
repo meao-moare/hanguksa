@@ -10,8 +10,7 @@ const TRG=[
  {t:'1910년대 독립운동',s:'국내 · 국외',c:'#1d4ed8',k:['org1910','abroad']},
  {t:'1920년대 독립운동',s:'무장 · 의열 · 국내 운동',c:'#0369a1',k:['armed1920','uiyeol','society1920','minjok1920']},
  {t:'1930 ~ 40년대와 노선',s:'중국 관내 · 독립운동 노선',c:'#4338ca',k:['china1930','dongnip']},
- {t:'광복 직후',s:'1945 ~ 1948',c:'#334155',k:['haebang']},
- {t:'단체 · 조직 모아 보기',s:'개항기 ~ 광복',c:'#0f766e',k:['orgs']}
+ {t:'광복 직후',s:'1945 ~ 1948',c:'#334155',k:['haebang']}
 ];
 const $=id=>document.getElementById(id);
 const title=k=>{if(k==='orgs')return '단체 · 조직';try{return TREES[k]?TREES[k].title:k}catch(_){return k}};
@@ -39,7 +38,8 @@ function apply(){const tb=$('trbody'),rd=$('trread');if(!tb||!ensureUI())return;
   bar();fit();nav()}
 function nav(){const l=$('trnavl'),r=$('trnavr');if(!l)return;const n=G<0?0:TRG[G].k.length;l.hidden=G<0||PAGE<=0;r.hidden=G<0||PAGE>=n-1}
 function cur(){const tb=$('trbody');if(!tb||G<0)return null;return tb.querySelector('#tree-'+TRG[G].k[PAGE])}
-function goPage(i,instant){if(G<0)return;const n=TRG[G].k.length;PAGE=Math.max(0,Math.min(n-1,i));const tb=$('trbody');const c=cur();if(tb&&c)tb.scrollTo({left:relX(tb,c),behavior:instant?'auto':'smooth'});$('trpbar')&&$('trpbar').querySelectorAll('[data-tpk]').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.tpk===PAGE));nav()}
+const vis=all=>{const tb=$('trbody');if(!tb||G<0)return;TRG[G].k.forEach((k,i)=>{const c=tb.querySelector('#tree-'+k);if(c)c.style.visibility=all||i===PAGE?'':'hidden'})};
+let PROG=0;function goPage(i,instant){if(G<0)return;PROG=Date.now()+(instant?0:500);const n=TRG[G].k.length;PAGE=Math.max(0,Math.min(n-1,i));const tb=$('trbody');const c=cur();if(tb&&c)(vis(true),tb.scrollTo({left:relX(tb,c),behavior:instant?'auto':'smooth'}),instant&&vis(false));$('trpbar')&&$('trpbar').querySelectorAll('[data-tpk]').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.tpk===PAGE));nav()}
 function openG(i,k){if(store&&store.get('view','map')!=='tr'){try{showView('tr')}catch(_){}}G=i;PAGE=k?Math.max(0,TRG[i].k.indexOf(k)):0;apply();requestAnimationFrame(()=>{goPage(PAGE,true);const rd=$('trread');if(rd)rd.scrollTop=0})}
 function toIndex(){G=-1;PAGE=0;apply();const rd=$('trread');if(rd)rd.scrollTop=0}
 window.__TROPEN=(k)=>{const i=groupOf(k);if(i>=0)openG(i,k)};
@@ -47,22 +47,28 @@ window.__TROPEN=(k)=>{const i=groupOf(k);if(i>=0)openG(i,k)};
 /* 한 화면에 맞추기: 카드마다 zoom */
 let FITTING=false;
 function fit(){const tb=$('trbody'),rd=$('trread');if(!tb||G<0||!tb.offsetParent)return;FITTING=true;
-  const top=tb.getBoundingClientRect().top-rd.getBoundingClientRect().top;const W=tb.clientWidth,H=Math.max(260,rd.clientHeight-top-14);tb.style.height=H+'px';
-  const mul=(window.__TRS&&window.__TRS())||1;
-  tb.querySelectorAll(':scope>.trcard.trpon').forEach(c=>{c.style.zoom=1;c.style.minWidth='';c.style.height='';c.style.maxHeight='';
-    const PW=W-28,PH=H-6;
-    const m=w=>{c.style.width=w;const iw=Math.max(c.scrollWidth,...[...c.querySelectorAll('.htree,.hchain,.tfin')].map(x=>x.scrollWidth+x.offsetLeft+28));return [iw,c.scrollHeight]};
-    let [aw,ah]=m('max-content');let zA=Math.min(1,PW/aw,PH/ah),wA=aw;
-    let w=PW,zB=1;for(let it=0;it<4;it++){const [iw,ih]=m(w+'px');const nz=Math.min(1,PW/Math.max(iw,1),PH/Math.max(ih,1));if(Math.abs(nz-zB)<0.01&&it){zB=nz;break}zB=nz;w=Math.max(PW,Math.round(PW/zB))}
-    let z=Math.max(zA,zB);
-    const base=Math.max(0.3,z);c.dataset.fz=base;const zz=Math.max(0.3,base*mul);c.style.width=Math.round(PW/zz)+'px';c.style.zoom=zz;c.style.height=Math.round(PH/zz)+'px'});
+  const top=tb.getBoundingClientRect().top-rd.getBoundingClientRect().top;const W=tb.clientWidth,H=Math.max(260,rd.clientHeight-top-12);tb.style.height=H+'px';
+  const mul=Math.max(1,(window.__TRS&&window.__TRS())||1);const MINZ=0.72,MAXZ=1.25;
+  tb.querySelectorAll(':scope>.trcard.trpon').forEach(c=>{c.style.zoom=1;c.style.height='';c.style.margin='';c.classList.remove('trscr');
+    const PW=W,PH=H-4;
+    const m=w=>{c.style.width=w;const iw=c.scrollWidth+Math.max(0,...[...c.querySelectorAll('.htree,.hchain')].map(x=>x.scrollWidth-x.clientWidth));return [iw,c.scrollHeight]};
+    const best=()=>{let [aw,ah]=m('max-content');let zA=Math.min(MAXZ,PW/aw,PH/ah);
+      let w=PW,zB=1;for(let it=0;it<4;it++){const [iw,ih]=m(w+'px');const nz=Math.min(MAXZ,PW/Math.max(iw,1),PH/Math.max(ih,1));if(Math.abs(nz-zB)<0.01&&it){zB=nz;break}zB=nz;w=Math.max(PW,Math.round(PW/Math.min(1,zB)))}
+      return Math.max(zA,zB)};
+    const LC=['vtr','vfit','vauto','uv','uh','ut'];
+    if(c.querySelector('.htree')&&!c.querySelector('.tfin')){const cand=[['vtr'],['ut'],[]];let bz=-1,bc=null;cand.forEach(cl=>{c.classList.remove(...LC);cl.forEach(x=>c.classList.add(x));const z=best();if(z>bz+0.02){bz=z;bc=cl}});c.classList.remove(...LC);bc.forEach(x=>c.classList.add(x));c.dataset.pgl=bc.join('')}
+    let z=best();
+    const base=Math.max(MINZ,z);c.dataset.fz=base;let zz=Math.max(MINZ,base*mul);
+    const set=zz=>{c.style.width=Math.round(PW/zz)+'px';c.style.zoom=zz;c.style.height=Math.round(PH/zz)+'px';c.style.margin='0'};set(zz);
+    for(let k=0;k<6&&zz>MINZ;k++){const ih=c.scrollHeight,iw=c.scrollWidth+Math.max(0,...[...c.querySelectorAll('.htree,.hchain')].map(x=>x.scrollWidth-x.clientWidth));if(ih<=c.clientHeight+2&&iw<=c.clientWidth+2)break;zz=Math.max(MINZ,zz*0.94);set(zz)}
+    c.classList.toggle('trscr',c.scrollHeight>c.clientHeight+2||c.scrollWidth>c.clientWidth+2)});
   FITTING=false;requestAnimationFrame(()=>goPage(PAGE,true))}
 window.__TRFIT=()=>fit();
 let LASTC=null;window.addEventListener('pointerdown',e=>{LASTC=e.target.closest&&e.target.closest('#trbody .trcard')},true);
 window.__TRZC=()=>{const c=LASTC;return c&&c.style.zoom?(+c.style.zoom||1):1};
 
 /* 스크롤로 넘기면 쪽 번호 따라가기 */
-{let st=0;document.addEventListener('scroll',e=>{const tb=$('trbody');if(e.target!==tb||G<0)return;clearTimeout(st);st=setTimeout(()=>{const x=tb.scrollLeft;let best=0,bd=1e9;TRG[G].k.forEach((k,i)=>{const c=tb.querySelector('#tree-'+k);if(!c)return;const d=Math.abs(relX(tb,c)-x);if(d<bd){bd=d;best=i}});if(best!==PAGE){PAGE=best;$('trpbar').querySelectorAll('[data-tpk]').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.tpk===PAGE));nav()}},120)},true)}
+{let st=0;document.addEventListener('scroll',e=>{const tb=$('trbody');if(e.target!==tb||G<0)return;vis(true);clearTimeout(st);st=setTimeout(()=>{if(Date.now()-PROG<350){vis(false);return}const x=tb.scrollLeft;let best=0,bd=1e9;TRG[G].k.forEach((k,i)=>{const c=tb.querySelector('#tree-'+k);if(!c)return;const d=Math.abs(relX(tb,c)-x);if(d<bd){bd=d;best=i}});if(best!==PAGE){PAGE=best;$('trpbar').querySelectorAll('[data-tpk]').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.tpk===PAGE));nav()};vis(false)},120)},true)}
 window.addEventListener('keydown',e=>{if(G<0||$('v-tr').hidden)return;if(e.target.closest&&e.target.closest('input,textarea,[contenteditable]'))return;if(e.key==='ArrowRight'||e.key==='ArrowLeft'){const t=PAGE+(e.key==='ArrowRight'?1:-1);e.preventDefault();goPage(t,true)}else if(e.key==='Escape')toIndex();else return;e.stopImmediatePropagation()},true);
 
 /* 기존 함수에 연결 */
@@ -70,17 +76,9 @@ window.addEventListener('keydown',e=>{if(G<0||$('v-tr').hidden)return;if(e.targe
 {const sv=showView;showView=function(v){const r=sv.apply(this,arguments);if(v==='tr'||v==='tp'){requestAnimationFrame(()=>{try{apply()}catch(_){}})}else{document.body.classList.remove('trpgon','trix')}return r}}
 let rt=0;addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(()=>{if(G>=0)fit()},250)});
 
-/* 구조도 탭: 누르면 목차, 올리면 목록 */
-{const tab=$('tab-tr');if(tab){
-  tab.addEventListener('click',()=>{G=-1;PAGE=0;setTimeout(()=>{try{apply()}catch(_){}},0)},true);
-  const m=document.createElement('div');m.id='trmenu';m.className='tabmenu trmenu';m.hidden=true;
-  m.innerHTML=TRG.map((g,i)=>`<div class="trmg" style="--gc:${g.c}"><button type="button" class="trmh" data-trg="${i}">${esc2(g.t)}</button>${g.k.map(k=>`<button type="button" class="trmk" data-trg="${i}" data-trk="${k}">${esc2(title(k))}</button>`).join('')}</div>`).join('');
-  document.body.appendChild(m);let ht=0;
-  const show=()=>{clearTimeout(ht);const r=tab.getBoundingClientRect();m.hidden=false;const mw=m.offsetWidth;m.style.left=Math.max(8,Math.min(innerWidth-mw-8,r.left+r.width/2-mw/2))+'px';m.style.top=(r.bottom+6)+'px'};
-  const hide=()=>{clearTimeout(ht);ht=setTimeout(()=>{m.hidden=true},180)};
-  tab.addEventListener('mouseenter',e=>{if(matchMedia('(hover:hover)').matches)show()});tab.addEventListener('mouseleave',hide);m.addEventListener('mouseenter',()=>clearTimeout(ht));m.addEventListener('mouseleave',hide);
-  m.addEventListener('click',e=>{const b=e.target.closest('[data-trg]');if(!b)return;m.hidden=true;openG(+b.dataset.trg,b.dataset.trk||null)})}}
-
+/* 표·구조 메뉴에서 쓰는 것 */
+window.__TRINDEX=()=>toIndex();window.__TROPENG=(i,k)=>openG(i,k);
+{const m=document.createElement('div');m.id='trmenu';m.hidden=true;m.innerHTML=TRG.map((g,i)=>`<div class="trmg" style="--gc:${g.c}"><button type="button" class="trmh" data-trg="${i}">${esc2(g.t)}</button>${g.k.map(k=>`<button type="button" class="trmk" data-trg="${i}" data-trk="${k}">${esc2(title(k))}</button>`).join('')}</div>`).join('');document.body.appendChild(m)}
 /* 낱말 → 구조도 열기도 묶음으로 */
 document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('[data-tj]');if(!b||!document.body.classList.contains('trpgon'))return;const k=b.dataset.tj;if(groupOf(k)>=0){e.preventDefault();e.stopImmediatePropagation();window.__TROPEN(k)}},true);
 if(store.get('view','map')==='tr')setTimeout(()=>{try{apply()}catch(_){}},50);

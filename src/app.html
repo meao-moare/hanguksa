@@ -2277,6 +2277,50 @@ body:not(.trpgon) .trnav,body.trix .trnav{display:none}
 #trbody.trpg .htree>.hextra .hn{flex:none}
 #trbody.trpg>.trcard[data-po="0"]{order:0!important}#trbody.trpg>.trcard[data-po="1"]{order:1!important}#trbody.trpg>.trcard[data-po="2"]{order:2!important}#trbody.trpg>.trcard[data-po="3"]{order:3!important}#trbody.trpg>.trcard[data-po="4"]{order:4!important}#trbody.trpg>.trcard[data-po="5"]{order:5!important}#trbody.trpg>.trcard[data-po="6"]{order:6!important}#trbody.trpg>.trcard[data-po="7"]{order:7!important}#trbody.trpg>.trcard[data-po="8"]{order:8!important}#trbody.trpg>.trcard[data-po="9"]{order:9!important}#trbody.trpg>.trcard[data-po="10"]{order:10!important}#trbody.trpg>.trcard[data-po="11"]{order:11!important}
 #trindex{box-sizing:border-box;padding-left:16px!important;padding-right:16px!important}body.trix #trzoomf,body.trix #trfloat,body.trix #trreset{display:none!important}
+#trbody.trpg{gap:0!important;padding:0!important;scroll-snap-type:x mandatory}
+#trbody.trpg>.trcard.trpon{scroll-snap-align:center;display:flex!important;flex-direction:column;justify-content:safe center}
+#trbody.trpg>.trcard.trpon.trscr{overflow:auto;justify-content:flex-start}
+#trbody.trpg>.trcard.trpon>.tree{margin:0 auto;width:100%}
+body.trpgon #trzoomf [data-trzm]{display:none}
+#trbody.trpg #tree-bungdang2 .tree>.trflow:not(.flfree){display:none}#trbody.trpg>.trcard.trpon>.tree:has(>.tfin){grid-template-columns:minmax(0,auto)}
+#trbody.trpg .htree:has(>.hextra)>.hrow{flex:none}
+#trbody.trpg>.trcard.trpon{border-radius:0!important;border-left:0!important;border-right:0!important;padding-left:28px!important;padding-right:28px!important;box-sizing:border-box!important}
+#trbody.trpg>.trcard.trpon>.tree{width:fit-content!important;max-width:100%;min-width:min(100%,560px);margin:0 auto!important}
+#trbody.trpg>.trcard.trpon,#trbody.trpg>#tree-abroad.trpon{flex:0 0 auto!important;max-width:none!important}
+/* 새 메뉴 */
+.tdrop{position:fixed;z-index:9000;background:var(--panel);border:1px solid var(--rule);border-radius:12px;box-shadow:0 10px 26px rgba(0,0,0,.14);padding:6px;display:flex;flex-direction:column;min-width:140px;max-height:78vh;overflow:auto}
+.tdrop[hidden]{display:none}
+.tdrop button{font:inherit;font-size:14px;text-align:left;border:0;background:none;padding:8px 12px;border-radius:8px;cursor:pointer;color:var(--ink)}
+.tdrop button:hover{background:color-mix(in srgb,var(--ink) 6%,transparent)}
+.tdrop button[aria-pressed=true]{font-weight:800;background:color-mix(in srgb,var(--ink) 7%,transparent)}
+#tsmenu{min-width:min(720px,calc(100vw - 16px))}
+#tsmenu .tdtop{display:flex;gap:6px;padding:2px 2px 8px;border-bottom:1px solid var(--rule)}
+#tsmenu .tdbig{flex:1;font-size:15px;font-weight:800;padding:10px 14px;border:1px solid var(--rule);text-align:center}
+#tsmenu .tdbig i{font-style:normal;font-weight:500;font-size:12px;color:var(--muted);margin-left:4px}
+#tsmenu .tdsub{font-size:12px;color:var(--muted);padding:9px 10px 2px}
+#tsmenu .tdgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:2px 14px;padding:4px 6px}
+#tsmenu .tdgrid button{padding:3px 8px}
+#tsmenu .trmh{font-weight:800;font-size:13.5px;color:color-mix(in srgb,var(--gc) 75%,var(--ink));border-left:3px solid var(--gc);border-radius:0;margin-top:6px}
+#tsmenu .trmk{font-size:13px;padding-left:11px}
+@media (max-width:700px){#tsmenu .tdgrid{grid-template-columns:1fr 1fr}}
+#trmenu{display:none!important}
+body[data-tysec="tr"] #tybody .tyref,body[data-tysec="ref"] #tybody .tytr{display:none}
+body[data-tysec="ref"] #tybody .tyref{margin-top:0}
+#ogbody{padding:16px 0 50px}
+.ogjump{display:flex;gap:6px;padding:8px 0}.ogjump button{font:inherit;font-size:13px;border:1px solid var(--rule);background:var(--panel);border-radius:999px;padding:4px 12px;cursor:pointer;color:var(--ink)}
+.ogsec+.ogsec{margin-top:34px}
+.ogh{display:flex;align-items:baseline;gap:8px;font-size:18px;font-weight:800;margin:4px 0 12px;padding:0 0 8px 12px;border-left:4px solid var(--ink);border-bottom:1px solid var(--rule)}
+#og-or .ogh{border-left-color:#0f766e}
+.ogh small{font-size:12.5px;font-weight:600;color:var(--muted)}
+.ogml{list-style:none;margin:0;padding:0}
+.ogml li{display:grid;grid-template-columns:96px 1fr;gap:12px;padding:12px 4px;border-bottom:1px solid var(--rule);background:var(--panel)}
+.ogml li.oglink{cursor:pointer}.ogml li.oglink:hover{background:color-mix(in srgb,var(--ink) 3%,var(--panel))}
+.ogy{font-weight:800;color:#b03a2e;font-variant-numeric:tabular-nums}
+.ogml b{font-size:16px;font-weight:700}.ogml .ogto{font-style:normal;font-size:12.5px;color:var(--muted);margin-left:8px;padding:1px 8px;border-radius:999px;background:color-mix(in srgb,var(--ink) 6%,transparent)}
+.ogml em{display:block;font-style:normal;font-size:13px;color:var(--muted);margin-top:2px}
+.ogml p{margin:4px 0 0;font-size:13.5px;color:color-mix(in srgb,var(--ink) 75%,var(--muted))}
+.ogorgs .laws>h2,.ogorgs section>h2:first-child{display:none}
+#v-og .rhead{position:static!important}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/flubber@0.4.2/build/flubber.min.js"></script>
 <script>
@@ -4873,6 +4917,7 @@ const TREES={
       N_('소론','실리·적극적 북방 개척 주장. 경종을 지지','윤증, 최석정',[
        N_('소론 강경파 (준소)','영조 즉위에 반발 → 이인좌의 난(1728)을 일으켰다가 몰락','이인좌',[],'1728'),
        N_('소론 온건파 (완소)','영조의 탕평책에 참여해 노론과 함께 등용','',[],'영조')],'1683 분열')],'1680~1694')],'1659·1674')],'1575 동서 분당')],'16세기 후반'),
+  pos:{0:[0,330,180],1:[205,110,180],6:[205,520,180],2:[410,0,180],3:[410,195,180],7:[410,500,180],4:[615,185,180],5:[615,300,180],8:[615,500,180],9:[820,420,180],14:[820,600,180],10:[1025,300,180],15:[1025,560,180],16:[1025,670,180],11:[1230,190,180],12:[1230,300,180],13:[1230,410,180],17:[820,0,180],18:[1025,0,180]},
   free:[N_('실학','성리학의 공리공담을 비판하고 현실 문제 해결을 추구한 학문. 정권에서 밀려난 남인(중농학파)과 노론 일부(북학파)가 주로 발전시킴','유형원, 이익, 정약용, 박지원, 박제가',[],'17~19세기'),
    N_('서학','청을 통해 들어온 서양 학문과 천주교. 남인 일부가 신앙으로 받아들였다가 신해박해(1791)·신유박해(1801)로 탄압받음','이승훈, 정약종',[],'17세기~')],
   flow:['1575 이조 전랑 자리 다툼 → 동서 분당','1589 정여립 모반 사건(기축옥사) · 1591 건저의 사건 → 남북 분당','1623 인조반정 → 서인 집권, 남인과 공존','1659·1674 예송(기해·갑인)','1680 경신환국 → 서인 집권, 노론·소론으로 분열','1689 기사환국 → 남인 집권 · 1694 갑술환국 → 서인 집권','영조·정조 탕평책','1800~ 세도 정치(안동 김씨·풍양 조씨)']},
@@ -7078,7 +7123,7 @@ function rlForm(key){if(!(window.__MEX&&window.__MEX.can()))return;const H=windo
      else if(sd2==='b'){const sx=P.x+P.w/2,sy=P.y+P.h,ex=Q.x+Q.w/2,ey=Q.y;const my=sy+off;d=`M${sx} ${sy}V${my}H${ex}V${ey}`}
      else{const sx=P.x+P.w/2,sy=P.y,ex=Q.x+Q.w/2,ey=Q.y+Q.h;const my=sy-off;d=`M${sx} ${sy}V${my}H${ex}V${ey}`}
      h+=`<path d="${d}"${arrow?` marker-end="url(#tfa${keyOf(c)})"`:''}/>`});sv.innerHTML=h}
- let NEEDRB=false;function nodeFree(c,k){const P=TR().get('@n:'+k);if(!P||typeof P!=='object'){if(c.querySelector('.tfin'))NEEDRB=true;return}let fin=c.querySelector('.tfin');const host=c.querySelector('.htree,.hchain');
+ const PRESET=k=>{try{const T=TREES[k];return T&&T.pos?JSON.parse(JSON.stringify(T.pos)):null}catch(_){return null}};let NEEDRB=false;function nodeFree(c,k){const P=TR().get('@n:'+k)||PRESET(k);if(!P||typeof P!=='object'){if(c.querySelector('.tfin'))NEEDRB=true;return}let fin=c.querySelector('.tfin');const host=c.querySelector('.htree,.hchain');
    if(!fin){if(!host)return;const ns=markTree(c);fin=document.createElement('div');fin.className='tfin';host.after(fin);ns.forEach(n=>fin.appendChild(n));host.style.display='none';c.classList.add('trnf')}addNodes(c,k,fin);
    const ns=[...fin.querySelectorAll(':scope>.hn')];ns.forEach(n=>{let p=P[n.dataset.ni];if(!p){const pp=P[n.dataset.par];const pn=ns.find(x=>x.dataset.ni===n.dataset.par);let my=0;Object.values(P).forEach(q=>{my=Math.max(my,q[1])});p=pp?[pp[0]+40,pp[1]+(pn?pn.offsetHeight:60)+16+ns.filter(x=>x.dataset.par===n.dataset.par&&+x.dataset.ni<+n.dataset.ni&&!P[x.dataset.ni]).length*90,pp[2]]:[0,my+100,0];P[n.dataset.ni]=p}n.style.left=p[0]+'px';n.style.top=p[1]+'px';n.style.width=p[2]?p[2]+'px':'';n.style.minHeight=p[3]?p[3]+'px':'';n.style.maxWidth='none'});
    const ed=can();ns.forEach(n=>{let g=n.querySelector(':scope>.hngrip');if(ed&&!g){n.insertAdjacentHTML('beforeend','<span class="hngrip hgw" data-hngrip="w" title="가로 크기"></span><span class="hngrip hgh" data-hngrip="h" title="세로 크기"></span><span class="hngrip hgb" data-hngrip="b" title="가로·세로 크기"></span>')}else if(!ed&&g)n.querySelectorAll(':scope>.hngrip').forEach(x=>x.remove())});nodeBtns(c);drawLines(c)}
@@ -7165,7 +7210,7 @@ function rlForm(key){if(!(window.__MEX&&window.__MEX.can()))return;const H=windo
    dragLoop(e,h,(x,y)=>{clr();tgt=null;const el=document.elementFromPoint(x,y);const o=el&&el.closest&&el.closest('.trcard');if(!o||o===c||!tb.contains(o))return;const r=o.getBoundingClientRect();after=y>r.top+r.height/2;tgt=o;o.classList.add(after?'trdropa':'trdrop')},()=>{c.classList.remove('trdrag');clr();if(!tgt)return;let L=cards().filter(x=>x!==c);L.sort((a,b)=>{const ra=a.getBoundingClientRect(),rb=b.getBoundingClientRect();return (Math.round(ra.top)-Math.round(rb.top))||(ra.left-rb.left)});const i=L.indexOf(tgt);L.splice(after?i+1:i,0,c);const ord=L.map(keyOf);M.set('@order',ord);window.__MEX.save('T:@order',ord);trPack()})},true);
  /* 안쪽 칸 옮기기 · 너비 */
  const guides=(n,gx,gy)=>{n.classList.toggle('hnsx',!!gx);n.classList.toggle('hnsy',!!gy)};
- const ensureFree=c=>{const k=keyOf(c);const M=TR();if(!M.get('@n:'+k)){const P=snapNodes(c);if(!P)return null;M.set('@n:'+k,P);nodeFree(c,k)}return k};
+ const ensureFree=c=>{const k=keyOf(c);const M=TR();if(!M.get('@n:'+k)){const P=PRESET(k)||snapNodes(c);if(!P)return null;M.set('@n:'+k,P);nodeFree(c,k)}return k};
  document.addEventListener('pointerdown',e=>{if(!can())return;if(e.target.closest&&e.target.closest('.hnbar,.trnew,[contenteditable]'))return;const g=e.target.closest&&e.target.closest('[data-hngrip]');const n=e.target.closest&&e.target.closest('#trbody .hn');if(!n)return;const c=n.closest('.trcard');if(!c)return;
    if(g){e.preventDefault();e.stopPropagation();const k=ensureFree(c);if(!k)return;const M=TR();const P=JSON.parse(JSON.stringify(M.get('@n:'+k)));const i=n.dataset.ni;const w0=n.offsetWidth,x0=e.clientX,h0=n.offsetHeight,y0=e.clientY;n.style.minHeight='';const hNat=n.offsetHeight;if(P[i][3])n.style.minHeight=P[i][3]+'px';
      const gm=g.dataset.hngrip||'b';const hKeep=P[i][3]||0;dragLoop(e,g,(x,y)=>{const hh=gm==='w'?(hKeep||0):Math.max(hNat,SN(h0+y-y0));n.style.minHeight=hh>hNat+2?hh+'px':'';let w=gm==='h'?w0:Math.max(90,Math.round(w0+x-x0));const L=n.offsetLeft;let best=7,bw=null;[...n.parentElement.querySelectorAll(':scope>.hn')].forEach(o=>{if(o===n)return;[o.offsetLeft+o.offsetWidth-L,o.offsetWidth].forEach(t=>{const dd=Math.abs(t-w);if(dd<best&&t>=90){best=dd;bw=t}})});if(gm!=='h'){w=bw!=null?Math.round(bw):SN(w)}else bw=null;guides(n,bw!=null,false);n.style.width=w+'px';P[i]=[P[i][0],P[i][1],w,hh>hNat+2?hh:0];drawLines(c)},()=>{guides(n,false,false);M.set('@n:'+k,P);window.__MEX.save('T:@n:'+k,P);drawLines(c)});return}
@@ -7256,8 +7301,7 @@ const TRG=[
  {t:'1910년대 독립운동',s:'국내 · 국외',c:'#1d4ed8',k:['org1910','abroad']},
  {t:'1920년대 독립운동',s:'무장 · 의열 · 국내 운동',c:'#0369a1',k:['armed1920','uiyeol','society1920','minjok1920']},
  {t:'1930 ~ 40년대와 노선',s:'중국 관내 · 독립운동 노선',c:'#4338ca',k:['china1930','dongnip']},
- {t:'광복 직후',s:'1945 ~ 1948',c:'#334155',k:['haebang']},
- {t:'단체 · 조직 모아 보기',s:'개항기 ~ 광복',c:'#0f766e',k:['orgs']}
+ {t:'광복 직후',s:'1945 ~ 1948',c:'#334155',k:['haebang']}
 ];
 const $=id=>document.getElementById(id);
 const title=k=>{if(k==='orgs')return '단체 · 조직';try{return TREES[k]?TREES[k].title:k}catch(_){return k}};
@@ -7285,7 +7329,8 @@ function apply(){const tb=$('trbody'),rd=$('trread');if(!tb||!ensureUI())return;
   bar();fit();nav()}
 function nav(){const l=$('trnavl'),r=$('trnavr');if(!l)return;const n=G<0?0:TRG[G].k.length;l.hidden=G<0||PAGE<=0;r.hidden=G<0||PAGE>=n-1}
 function cur(){const tb=$('trbody');if(!tb||G<0)return null;return tb.querySelector('#tree-'+TRG[G].k[PAGE])}
-function goPage(i,instant){if(G<0)return;const n=TRG[G].k.length;PAGE=Math.max(0,Math.min(n-1,i));const tb=$('trbody');const c=cur();if(tb&&c)tb.scrollTo({left:relX(tb,c),behavior:instant?'auto':'smooth'});$('trpbar')&&$('trpbar').querySelectorAll('[data-tpk]').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.tpk===PAGE));nav()}
+const vis=all=>{const tb=$('trbody');if(!tb||G<0)return;TRG[G].k.forEach((k,i)=>{const c=tb.querySelector('#tree-'+k);if(c)c.style.visibility=all||i===PAGE?'':'hidden'})};
+let PROG=0;function goPage(i,instant){if(G<0)return;PROG=Date.now()+(instant?0:500);const n=TRG[G].k.length;PAGE=Math.max(0,Math.min(n-1,i));const tb=$('trbody');const c=cur();if(tb&&c)(vis(true),tb.scrollTo({left:relX(tb,c),behavior:instant?'auto':'smooth'}),instant&&vis(false));$('trpbar')&&$('trpbar').querySelectorAll('[data-tpk]').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.tpk===PAGE));nav()}
 function openG(i,k){if(store&&store.get('view','map')!=='tr'){try{showView('tr')}catch(_){}}G=i;PAGE=k?Math.max(0,TRG[i].k.indexOf(k)):0;apply();requestAnimationFrame(()=>{goPage(PAGE,true);const rd=$('trread');if(rd)rd.scrollTop=0})}
 function toIndex(){G=-1;PAGE=0;apply();const rd=$('trread');if(rd)rd.scrollTop=0}
 window.__TROPEN=(k)=>{const i=groupOf(k);if(i>=0)openG(i,k)};
@@ -7293,22 +7338,28 @@ window.__TROPEN=(k)=>{const i=groupOf(k);if(i>=0)openG(i,k)};
 /* 한 화면에 맞추기: 카드마다 zoom */
 let FITTING=false;
 function fit(){const tb=$('trbody'),rd=$('trread');if(!tb||G<0||!tb.offsetParent)return;FITTING=true;
-  const top=tb.getBoundingClientRect().top-rd.getBoundingClientRect().top;const W=tb.clientWidth,H=Math.max(260,rd.clientHeight-top-14);tb.style.height=H+'px';
-  const mul=(window.__TRS&&window.__TRS())||1;
-  tb.querySelectorAll(':scope>.trcard.trpon').forEach(c=>{c.style.zoom=1;c.style.minWidth='';c.style.height='';c.style.maxHeight='';
-    const PW=W-28,PH=H-6;
-    const m=w=>{c.style.width=w;const iw=Math.max(c.scrollWidth,...[...c.querySelectorAll('.htree,.hchain,.tfin')].map(x=>x.scrollWidth+x.offsetLeft+28));return [iw,c.scrollHeight]};
-    let [aw,ah]=m('max-content');let zA=Math.min(1,PW/aw,PH/ah),wA=aw;
-    let w=PW,zB=1;for(let it=0;it<4;it++){const [iw,ih]=m(w+'px');const nz=Math.min(1,PW/Math.max(iw,1),PH/Math.max(ih,1));if(Math.abs(nz-zB)<0.01&&it){zB=nz;break}zB=nz;w=Math.max(PW,Math.round(PW/zB))}
-    let z=Math.max(zA,zB);
-    const base=Math.max(0.3,z);c.dataset.fz=base;const zz=Math.max(0.3,base*mul);c.style.width=Math.round(PW/zz)+'px';c.style.zoom=zz;c.style.height=Math.round(PH/zz)+'px'});
+  const top=tb.getBoundingClientRect().top-rd.getBoundingClientRect().top;const W=tb.clientWidth,H=Math.max(260,rd.clientHeight-top-12);tb.style.height=H+'px';
+  const mul=Math.max(1,(window.__TRS&&window.__TRS())||1);const MINZ=0.72,MAXZ=1.25;
+  tb.querySelectorAll(':scope>.trcard.trpon').forEach(c=>{c.style.zoom=1;c.style.height='';c.style.margin='';c.classList.remove('trscr');
+    const PW=W,PH=H-4;
+    const m=w=>{c.style.width=w;const iw=c.scrollWidth+Math.max(0,...[...c.querySelectorAll('.htree,.hchain')].map(x=>x.scrollWidth-x.clientWidth));return [iw,c.scrollHeight]};
+    const best=()=>{let [aw,ah]=m('max-content');let zA=Math.min(MAXZ,PW/aw,PH/ah);
+      let w=PW,zB=1;for(let it=0;it<4;it++){const [iw,ih]=m(w+'px');const nz=Math.min(MAXZ,PW/Math.max(iw,1),PH/Math.max(ih,1));if(Math.abs(nz-zB)<0.01&&it){zB=nz;break}zB=nz;w=Math.max(PW,Math.round(PW/Math.min(1,zB)))}
+      return Math.max(zA,zB)};
+    const LC=['vtr','vfit','vauto','uv','uh','ut'];
+    if(c.querySelector('.htree')&&!c.querySelector('.tfin')){const cand=[['vtr'],['ut'],[]];let bz=-1,bc=null;cand.forEach(cl=>{c.classList.remove(...LC);cl.forEach(x=>c.classList.add(x));const z=best();if(z>bz+0.02){bz=z;bc=cl}});c.classList.remove(...LC);bc.forEach(x=>c.classList.add(x));c.dataset.pgl=bc.join('')}
+    let z=best();
+    const base=Math.max(MINZ,z);c.dataset.fz=base;let zz=Math.max(MINZ,base*mul);
+    const set=zz=>{c.style.width=Math.round(PW/zz)+'px';c.style.zoom=zz;c.style.height=Math.round(PH/zz)+'px';c.style.margin='0'};set(zz);
+    for(let k=0;k<6&&zz>MINZ;k++){const ih=c.scrollHeight,iw=c.scrollWidth+Math.max(0,...[...c.querySelectorAll('.htree,.hchain')].map(x=>x.scrollWidth-x.clientWidth));if(ih<=c.clientHeight+2&&iw<=c.clientWidth+2)break;zz=Math.max(MINZ,zz*0.94);set(zz)}
+    c.classList.toggle('trscr',c.scrollHeight>c.clientHeight+2||c.scrollWidth>c.clientWidth+2)});
   FITTING=false;requestAnimationFrame(()=>goPage(PAGE,true))}
 window.__TRFIT=()=>fit();
 let LASTC=null;window.addEventListener('pointerdown',e=>{LASTC=e.target.closest&&e.target.closest('#trbody .trcard')},true);
 window.__TRZC=()=>{const c=LASTC;return c&&c.style.zoom?(+c.style.zoom||1):1};
 
 /* 스크롤로 넘기면 쪽 번호 따라가기 */
-{let st=0;document.addEventListener('scroll',e=>{const tb=$('trbody');if(e.target!==tb||G<0)return;clearTimeout(st);st=setTimeout(()=>{const x=tb.scrollLeft;let best=0,bd=1e9;TRG[G].k.forEach((k,i)=>{const c=tb.querySelector('#tree-'+k);if(!c)return;const d=Math.abs(relX(tb,c)-x);if(d<bd){bd=d;best=i}});if(best!==PAGE){PAGE=best;$('trpbar').querySelectorAll('[data-tpk]').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.tpk===PAGE));nav()}},120)},true)}
+{let st=0;document.addEventListener('scroll',e=>{const tb=$('trbody');if(e.target!==tb||G<0)return;vis(true);clearTimeout(st);st=setTimeout(()=>{if(Date.now()-PROG<350){vis(false);return}const x=tb.scrollLeft;let best=0,bd=1e9;TRG[G].k.forEach((k,i)=>{const c=tb.querySelector('#tree-'+k);if(!c)return;const d=Math.abs(relX(tb,c)-x);if(d<bd){bd=d;best=i}});if(best!==PAGE){PAGE=best;$('trpbar').querySelectorAll('[data-tpk]').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.tpk===PAGE));nav()};vis(false)},120)},true)}
 window.addEventListener('keydown',e=>{if(G<0||$('v-tr').hidden)return;if(e.target.closest&&e.target.closest('input,textarea,[contenteditable]'))return;if(e.key==='ArrowRight'||e.key==='ArrowLeft'){const t=PAGE+(e.key==='ArrowRight'?1:-1);e.preventDefault();goPage(t,true)}else if(e.key==='Escape')toIndex();else return;e.stopImmediatePropagation()},true);
 
 /* 기존 함수에 연결 */
@@ -7316,19 +7367,75 @@ window.addEventListener('keydown',e=>{if(G<0||$('v-tr').hidden)return;if(e.targe
 {const sv=showView;showView=function(v){const r=sv.apply(this,arguments);if(v==='tr'||v==='tp'){requestAnimationFrame(()=>{try{apply()}catch(_){}})}else{document.body.classList.remove('trpgon','trix')}return r}}
 let rt=0;addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(()=>{if(G>=0)fit()},250)});
 
-/* 구조도 탭: 누르면 목차, 올리면 목록 */
-{const tab=$('tab-tr');if(tab){
-  tab.addEventListener('click',()=>{G=-1;PAGE=0;setTimeout(()=>{try{apply()}catch(_){}},0)},true);
-  const m=document.createElement('div');m.id='trmenu';m.className='tabmenu trmenu';m.hidden=true;
-  m.innerHTML=TRG.map((g,i)=>`<div class="trmg" style="--gc:${g.c}"><button type="button" class="trmh" data-trg="${i}">${esc2(g.t)}</button>${g.k.map(k=>`<button type="button" class="trmk" data-trg="${i}" data-trk="${k}">${esc2(title(k))}</button>`).join('')}</div>`).join('');
-  document.body.appendChild(m);let ht=0;
-  const show=()=>{clearTimeout(ht);const r=tab.getBoundingClientRect();m.hidden=false;const mw=m.offsetWidth;m.style.left=Math.max(8,Math.min(innerWidth-mw-8,r.left+r.width/2-mw/2))+'px';m.style.top=(r.bottom+6)+'px'};
-  const hide=()=>{clearTimeout(ht);ht=setTimeout(()=>{m.hidden=true},180)};
-  tab.addEventListener('mouseenter',e=>{if(matchMedia('(hover:hover)').matches)show()});tab.addEventListener('mouseleave',hide);m.addEventListener('mouseenter',()=>clearTimeout(ht));m.addEventListener('mouseleave',hide);
-  m.addEventListener('click',e=>{const b=e.target.closest('[data-trg]');if(!b)return;m.hidden=true;openG(+b.dataset.trg,b.dataset.trk||null)})}}
-
+/* 표·구조 메뉴에서 쓰는 것 */
+window.__TRINDEX=()=>toIndex();window.__TROPENG=(i,k)=>openG(i,k);
+{const m=document.createElement('div');m.id='trmenu';m.hidden=true;m.innerHTML=TRG.map((g,i)=>`<div class="trmg" style="--gc:${g.c}"><button type="button" class="trmh" data-trg="${i}">${esc2(g.t)}</button>${g.k.map(k=>`<button type="button" class="trmk" data-trg="${i}" data-trk="${k}">${esc2(title(k))}</button>`).join('')}</div>`).join('');document.body.appendChild(m)}
 /* 낱말 → 구조도 열기도 묶음으로 */
 document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('[data-tj]');if(!b||!document.body.classList.contains('trpgon'))return;const k=b.dataset.tj;if(groupOf(k)>=0){e.preventDefault();e.stopImmediatePropagation();window.__TROPEN(k)}},true);
 if(store.get('view','map')==='tr')setTimeout(()=>{try{apply()}catch(_){}},50);
+}
+
+/* ───────── 메뉴 정리: 조약·개혁안 ▾ / 사절단·조직·단체 / 표·구조 ▾ ───────── */
+{
+const $=id=>document.getElementById(id);
+const esc3=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const MISSIONS=[
+ {y:'1607~1811',n:'조선 통신사',to:'일본 (에도 막부)',by:'',d:'임진왜란 뒤 국교를 다시 열고 12차례 일본에 보낸 외교 사절. 조선의 학문과 예술을 일본에 전하였다.'},
+ {y:'17~19세기',n:'연행사',to:'청 (베이징)',by:'박지원, 홍대용',d:'해마다 청에 보낸 사절. 서양 문물과 청의 발전을 보고 돌아와 북학 사상이 싹텄다.'},
+ {y:'1876',n:'제1차 수신사',to:'일본',by:'김기수',d:'강화도 조약 뒤 일본에 파견. 『일동기유』를 남겼다.',ev:'제1차 수신사'},
+ {y:'1880',n:'제2차 수신사',to:'일본',by:'김홍집',d:'황준헌의 『조선책략』을 들여와 미국과 수교 논의가 일어났다.',ev:'제2차 수신사'},
+ {y:'1881',n:'조사 시찰단',to:'일본',by:'박정양, 어윤중, 홍영식',d:'신사 유람단이라고도 한다. 일본의 근대 시설과 제도를 비밀리에 시찰하였다.',ev:'조사 시찰단'},
+ {y:'1881',n:'영선사',to:'청 (톈진)',by:'김윤식',d:'근대 무기 제조 기술을 배우러 감. 돌아와 기기창(1883)을 세웠다.',ev:'영선사'},
+ {y:'1883',n:'보빙사',to:'미국',by:'민영익, 홍영식, 유길준',d:'조미 수호 통상 조약 뒤 미국에 간 최초의 서양 사절단. 유길준은 『서유견문』을 썼다.',ev:'보빙사'},
+ {y:'1907',n:'헤이그 특사',to:'네덜란드 (만국 평화 회의)',by:'이상설, 이준, 이위종',d:'을사늑약이 무효임을 알리려 하였으나 회의 참석을 거부당함. 일제는 이를 구실로 고종을 강제 퇴위시켰다.',ev:'헤이그 특사'}
+];
+const evId=t=>{try{const e=EVENTS.find(x=>x.t&&x.t.includes(t));return e?e.id:null}catch(_){return null}};
+
+/* 1. 사절단·조직·단체 화면 */
+{const sec=document.createElement('section');sec.className='view';sec.id='v-og';sec.hidden=true;
+ sec.innerHTML='<div class="read" id="ogread"><div class="rhead"><div class="rin"><div class="ogjump" id="ogjump"><button type="button" data-ogj="ms">사절단</button><button type="button" data-ogj="or">조직 · 단체</button></div></div></div><div class="rin" id="ogbody"></div></div>';
+ const ref=$('v-ty')||$('v-rl');ref.after(sec);try{VIEWS.push('og')}catch(_){}
+ const tab=document.createElement('button');tab.id='tab-og';tab.type='button';tab.setAttribute('role','tab');tab.setAttribute('aria-selected','false');tab.dataset.v='og';tab.textContent='사절단·조직·단체';
+ const ty=$('tab-ty');(ty||$('tab-tr')).after(tab);tab.onclick=e=>{e.preventDefault();try{$('kpage').hidden=true}catch(_){}showView('og')}}
+function ogShow(){const b=$('ogbody');if(!b||b.dataset.built)return;b.dataset.built=1;
+  let orgs='';try{orgs=orgsHTML()}catch(_){}
+  b.innerHTML=`<section class="ogsec" id="og-ms"><h2 class="ogh"><span>사절단</span><small>${MISSIONS.length}개</small></h2><ol class="ogml">${MISSIONS.map(m=>{const id=m.ev?evId(m.ev):null;return `<li${id?` data-evpage="${id}" class="oglink"`:''}><span class="ogy">${esc3(m.y)}</span><div><b>${esc3(m.n)}</b><i class="ogto">${esc3(m.to)}</i>${m.by?`<em>${esc3(m.by)}</em>`:''}<p>${typeof glx==='function'?glx(m.d):esc3(m.d)}</p></div></li>`}).join('')}</ol></section><section class="ogsec" id="og-or"><h2 class="ogh"><span>조직 · 단체</span></h2><div class="ogorgs">${orgs}</div></section>`;
+  b.querySelectorAll('li[data-evpage]').forEach(li=>li.onclick=ev=>{if(ev.target.closest('[data-gl],[data-person],button'))return;try{openEvPage(li.dataset.evpage)}catch(_){}});
+  try{linkPeople&&linkPeople(b)}catch(_){}try{glossify&&glossify(b)}catch(_){}}
+$('ogjump')&&$('ogjump').addEventListener('click',e=>{const x=e.target.closest('[data-ogj]');if(!x)return;const s=$('og-'+x.dataset.ogj),rd=$('ogread');if(s&&rd)rd.scrollTo({top:s.offsetTop-rd.querySelector('.rhead').offsetHeight-6,behavior:'smooth'})});
+
+/* 드롭다운 공용 */
+function dropdown(tab,items,id){const m=document.createElement('div');m.id=id;m.className='tabmenu tdrop';m.hidden=true;document.body.appendChild(m);let ht=0;
+  const place=()=>{const r=tab.getBoundingClientRect();m.hidden=false;const mw=m.offsetWidth;m.style.left=Math.max(8,Math.min(innerWidth-mw-8,r.left+r.width/2-mw/2))+'px';m.style.top=(r.bottom+6)+'px'};
+  const show=()=>{clearTimeout(ht);m.innerHTML=items();place()};const hide=()=>{clearTimeout(ht);ht=setTimeout(()=>{m.hidden=true},180)};
+  const hov=()=>matchMedia('(hover:hover)').matches;
+  tab.addEventListener('mouseenter',()=>{if(hov())show()});tab.addEventListener('mouseleave',()=>{if(hov())hide()});m.addEventListener('mouseenter',()=>clearTimeout(ht));m.addEventListener('mouseleave',()=>{if(hov())hide()});
+  document.addEventListener('click',e=>{if(!m.hidden&&!e.target.closest('#'+id)&&e.target!==tab&&!tab.contains(e.target))m.hidden=true});
+  return {m,show,hide:()=>{m.hidden=true}}}
+
+/* 2. 조약·개혁안 ▾ */
+{const ty=$('tab-ty');if(ty){ty.textContent='조약·개혁안 ▾';
+  const setSec=s=>{document.body.dataset.tysec=s||'';try{const h=document.querySelector('#v-ty .rlhd h2');if(h)h.textContent=s==='ref'?'개혁안':s==='tr'?'조약':'조약·개혁안'}catch(_){}};
+  const dd=dropdown(ty,()=>{const v=store.get('view','map')==='ty',s=document.body.dataset.tysec||'';return `<button type="button" data-tys="tr" aria-pressed="${v&&s==='tr'}">조약</button><button type="button" data-tys="ref" aria-pressed="${v&&s==='ref'}">개혁안</button>`},'tymenu');
+  ty.onclick=e=>{e.preventDefault();e.stopPropagation();if(!dd.m.hidden&&!matchMedia('(hover:hover)').matches){dd.hide();return}if(matchMedia('(hover:hover)').matches){setSec(document.body.dataset.tysec||'tr');try{$('kpage').hidden=true}catch(_){}showView('ty');dd.hide();return}dd.show()};
+  dd.m.addEventListener('click',e=>{const b=e.target.closest('[data-tys]');if(!b)return;dd.hide();setSec(b.dataset.tys);try{$('kpage').hidden=true}catch(_){}showView('ty');const rd=$('tyread');if(rd)rd.scrollTop=0});
+  if(!document.body.dataset.tysec)setSec('tr')}}
+
+/* 3. 표·구조 ▾ (왕계표 + 구조도) */
+{const tr=$('tab-tr'),kg=$('tab-kg');if(tr){if(kg)kg.style.display='none';tr.textContent='표·구조 ▾';
+  const old=$('trmenu');
+  const items=()=>{const v=store.get('view','map');const grp=old?old.innerHTML:'';return `<div class="tdtop"><button type="button" class="tdbig" data-tdv="kg" aria-pressed="${v==='kg'}">왕계표</button><button type="button" class="tdbig" data-tdv="tr" aria-pressed="${v==='tr'}">구조도 <i>목차</i></button></div>${grp?`<div class="tdsub">구조도 바로 가기</div><div class="trmenu tdgrid">${grp}</div>`:''}`};
+  if(old){old.remove();old.id='trmenu-src'}
+  const dd=dropdown(tr,items,'tsmenu');
+  /* 기존 구조도 탭 동작(목차 열기)보다 먼저 */
+  tr.addEventListener('click',e=>{e.preventDefault();e.stopImmediatePropagation();if(matchMedia('(hover:hover)').matches){const v=store.get('view','map');if(v!=='kg'&&v!=='tr'){dd.hide();showView(store.get('tsview','kg')==='tr'?'tr':'kg')}else dd.show();return}if(!dd.m.hidden){dd.hide();return}dd.show()},true);
+  dd.m.addEventListener('click',e=>{const b=e.target.closest('[data-tdv],[data-trg]');if(!b)return;dd.hide();try{$('kpage').hidden=true}catch(_){}
+    if(b.dataset.tdv==='kg'){store.set('tsview','kg');showView('kg');return}
+    store.set('tsview','tr');if(b.dataset.tdv==='tr'){showView('tr');setTimeout(()=>{try{window.__TRINDEX&&window.__TRINDEX()}catch(_){}},0);return}
+    showView('tr');setTimeout(()=>{try{window.__TROPENG&&window.__TROPENG(+b.dataset.trg,b.dataset.trk||null)}catch(_){}},0)});
+  /* 선택 표시: 왕계표·구조도 중 하나면 이 탭이 켜짐 */
+  const mark=()=>{const v=store.get('view','map');tr.setAttribute('aria-selected',v==='kg'||v==='tr')};
+  const sv=showView;showView=function(v){const r=sv.apply(this,arguments);mark();if(v==='og')try{ogShow()}catch(_){}{const t=$('tab-og');if(t)t.setAttribute('aria-selected',v==='og')}{const t=$('tab-ty');if(t)t.setAttribute('aria-selected',v==='ty')}return r};mark()}}
+if(store.get('view','map')==='og')setTimeout(()=>{showView('og')},0);
 }
 </script>
