@@ -2378,4 +2378,39 @@ body.trpgon:not(.trix) #trbody{margin:0!important}
 body.medit #trbody.trpg>.trcard.trpon{overflow:auto!important}body.medit #trbody .tfin{overflow:visible}
 #trbody.trpg>.trcard.trpon>.tree:has(>.tfin){margin-left:0!important;margin-right:auto!important;justify-content:start!important;width:100%!important;max-width:none!important}#trbody.trpg>.trcard.trpon:has(.tfin){padding-left:14px!important}
 .trh.trhmv{cursor:move;outline:1px dashed color-mix(in srgb,var(--trc,#888) 40%,transparent);outline-offset:4px;border-radius:6px;z-index:2}.trh.hndrag{opacity:.85}
+/* 구조도 쪽: 제목은 왼쪽, 내용은 가운데 */
+#trbody.trpg>.trcard.trpon>.tree{width:100%!important;max-width:none!important;min-width:0!important;margin:0!important;grid-template-columns:minmax(0,1fr) minmax(240px,340px)!important;justify-content:stretch!important}
+#trbody.trpg>.trcard.trpon>.tree:not(:has(>.trflow:not(.flfree))){grid-template-columns:minmax(0,1fr)!important}
+#trbody.trpg>.trcard.trpon>.tree>.trh{justify-self:start}
+#trbody.trpg>.trcard.trpon>.tree>.htree,#trbody.trpg>.trcard.trpon>.tree>.hchain{justify-self:center;width:fit-content;max-width:100%}
+#trbody.trpg>.trcard.trpon>.tree>.tfin{justify-self:start}
+/* 한 화면에 여러 개면: 배경은 내용 크기만큼 */
+#trbody.trpg>.trcard.trpon.trmulti{background:transparent!important;border-color:transparent!important;box-shadow:none!important}
+#trbody.trpg>.trcard.trpon.trmulti>.tree{width:fit-content!important;max-width:100%!important;background:color-mix(in srgb,var(--trc) 7%,var(--panel));border:1px solid color-mix(in srgb,var(--trc) 25%,var(--rule));border-radius:14px;padding:14px 18px;box-sizing:border-box;margin:0 auto!important}
+#trbody.trpg>.trcard.trpon.trmulti>.tree>.htree,#trbody.trpg>.trcard.trpon.trmulti>.tree>.hchain{justify-self:start}
+/* 왼쪽 목록: 같이 보기 */
+#trside .tsr{display:flex;align-items:center;gap:2px}
+#trside .tsr .tsk{flex:1;min-width:0}
+#trside .tsr.tsjoin{margin-left:10px;border-left:2px solid var(--gc);padding-left:2px}
+#trside .tsh{cursor:grab;color:var(--muted);font-size:12px;padding:2px 3px;user-select:none;touch-action:none;letter-spacing:-2px}
+#trside .tsj{font-size:12px!important;padding:1px 6px!important;color:var(--muted)!important;border:1px dashed var(--rule)!important;border-radius:6px!important;flex:none}
+#trside .tsj.on{color:var(--gc)!important;border-style:solid!important;border-color:var(--gc)!important;font-weight:800}
+#trside .tsnote{font-size:11.5px;color:var(--muted);padding:2px 6px 6px;line-height:1.5}
+#trside .tsdrag{opacity:.35}
+.tsghost{position:fixed;z-index:9999;pointer-events:none;background:var(--panel);border:1px solid var(--rule);border-radius:8px;box-shadow:0 8px 20px rgba(0,0,0,.18);display:flex;align-items:center;padding:2px 4px}
+.tsghost button{font:inherit;border:0;background:none;font-size:12.5px}
+.tsmark{height:3px;border-radius:2px;background:#2563eb;margin:2px 6px}
+.hjw{cursor:help;text-decoration:underline dotted color-mix(in srgb,var(--ink) 35%,transparent);text-underline-offset:3px}
+#hjpop{position:fixed;z-index:9600;background:var(--panel);border:1px solid var(--rule);border-radius:12px;box-shadow:0 10px 26px rgba(0,0,0,.16);padding:10px 12px;display:flex;flex-direction:column;gap:4px}
+#hjpop[hidden]{display:none}
+#hjpop .hjh{font-size:15px;font-weight:800;padding-bottom:6px;margin-bottom:2px;border-bottom:1px solid var(--rule)}#hjpop .hjh i{font-style:normal;font-weight:600;color:var(--muted);margin-left:6px}
+#hjpop .hjr{display:flex;align-items:baseline;gap:10px}#hjpop .hjr b{font-size:22px;font-weight:600;min-width:26px}#hjpop .hjr span{font-size:14px;color:color-mix(in srgb,var(--ink) 80%,var(--muted))}
+#trbody.trpg>.trcard.trpon{scroll-snap-align:start!important}#trbody.trpg>.trcard.trpon.trpair2{scroll-snap-align:none!important}
+[contenteditable].xing{white-space:pre-wrap!important}
+.msbody div.kpd{margin:0 0 6px}.msbody div.kpd:last-child{margin-bottom:0}.msbody.xing{font-size:15px;line-height:1.65}.msbody div.kpd.mblank{min-height:1em;margin:0}
+.mlinks .mlh{font-style:normal;font-size:11.5px;font-weight:800;color:var(--muted);margin-right:2px}
+.mlinks.mlweb .mlink{color:#1d4ed8;text-decoration:underline;text-underline-offset:3px}
+.mtool .mlinks+.mlinks{margin-left:10px;padding-left:10px;border-left:1px solid var(--rule)}
+.mlink .mwi{display:none!important}
+.lw{color:#1d4ed8;text-decoration:underline;text-underline-offset:3px;cursor:pointer}span.mul.lw:hover{text-decoration-thickness:2px}.lkpick .mgok{font:inherit;font-size:13px;border:1px solid var(--rule);background:var(--panel);border-radius:8px;padding:5px 10px;cursor:pointer;margin-top:6px}
 </style>

@@ -70,7 +70,7 @@ function dropdown(tab,items,id){const m=document.createElement('div');m.id=id;m.
 /* 3. 표·구조 ▾ (왕계표 + 구조도) */
 {const tr=$('tab-tr'),kg=$('tab-kg');if(tr){if(kg)kg.style.display='none';tr.textContent='표·구조 ▾';
   const old=$('trmenu');
-  const items=()=>{const v=store.get('view','map');const grp=old?old.innerHTML:'';return `<div class="tdtop"><button type="button" class="tdbig" data-tdv="kg" aria-pressed="${v==='kg'}">왕계표</button><button type="button" class="tdbig" data-tdv="tr" aria-pressed="${v==='tr'}">구조도 <i>목차</i></button></div>${grp?`<div class="tdsub">구조도 바로 가기</div><div class="trmenu tdgrid">${grp}</div>`:''}`};
+  const items=()=>{const v=store.get('view','map');const grp=window.__TRMENUHTML?window.__TRMENUHTML():(old?old.innerHTML:'');return `<div class="tdtop"><button type="button" class="tdbig" data-tdv="kg" aria-pressed="${v==='kg'}">왕계표</button><button type="button" class="tdbig" data-tdv="tr" aria-pressed="${v==='tr'}">구조도 <i>목차</i></button></div>${grp?`<div class="tdsub">구조도 바로 가기</div><div class="trmenu tdgrid">${grp}</div>`:''}`};
   if(old){old.remove();old.id='trmenu-src'}
   const dd=dropdown(tr,items,'tsmenu');
   /* 기존 구조도 탭 동작(목차 열기)보다 먼저 */
@@ -86,3 +86,6 @@ function dropdown(tab,items,id){const m=document.createElement('div');m.id=id;m.
 {const ids=['dcmenu','tlmenu','tymenu','tsmenu','ogmenu'];const TAB={dcmenu:'tab-dc',tlmenu:'tab-tl',tymenu:'tab-ty',tsmenu:'tab-tr',ogmenu:'tab-og'};const mo=new MutationObserver(ms=>{ms.forEach(m=>{const t=m.target;const tb=$(TAB[t.id]);if(tb)tb.classList.toggle('tabopen',!t.hidden);if(t.hidden)return;ids.forEach(id=>{const o=$(id);if(o&&o!==t&&!o.hidden)o.hidden=true})})});setTimeout(()=>ids.forEach(id=>{const o=$(id);if(o)mo.observe(o,{attributes:true,attributeFilter:['hidden']})}),300)}
 if(store.get('view','map')==='og')setTimeout(()=>{showView('og')},0);
 }
+/* 검색 결과: 상자 어디를 눌러도 그 결과로 */
+document.addEventListener('click',e=>{const sri=e.target.closest&&e.target.closest('#srres .sri');if(!sri)return;const inner=e.target.closest('[data-person],[data-gl],.pl,.gw,.pw,button');if(!inner||inner===sri||!sri.contains(inner))return;e.preventDefault();e.stopImmediatePropagation();sri.click()},true);
+document.addEventListener('click',e=>{const sri=e.target.closest&&e.target.closest('#srres .sri[data-person]');if(!sri)return;e.preventDefault();e.stopImmediatePropagation();const n=sri.dataset.person;try{closeSearch()}catch(_){}try{document.querySelectorAll('#pppop,.glpop').forEach(x=>x.hidden=true)}catch(_){}try{openPerson(n)}catch(_){}},true);
