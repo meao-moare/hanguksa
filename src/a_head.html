@@ -2172,3 +2172,11 @@ body:not(.ontr) #trzoomf{display:none}
 #trzoomf button:hover{background:color-mix(in srgb,var(--ink) 7%,transparent)}
 #trzoomf svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round}
 </style>
+<style>
+#trbody .trflow{position:relative}
+#trbody .trflow.flfree{position:absolute!important;margin:0!important;z-index:2;box-sizing:border-box}
+#trbody .trflow .flgrab{position:absolute;top:6px;right:6px;width:26px;height:26px;border:1px solid var(--rule);border-radius:8px;background:var(--panel);cursor:grab;touch-action:none;display:grid;place-items:center;padding:0;color:var(--muted)}
+#trbody .trflow .flgrab svg{width:14px;height:14px;fill:currentColor}
+#trbody .trflow .flgrip{position:absolute;right:-4px;top:50%;transform:translateY(-50%);width:9px;height:30px;border-radius:5px;background:color-mix(in srgb,var(--trc) 50%,var(--panel));cursor:ew-resize;touch-action:none}
+</style>
+<style>#trbody .trflow.flfree{min-width:0!important}</style>
