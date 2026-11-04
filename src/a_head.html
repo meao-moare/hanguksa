@@ -2201,3 +2201,15 @@ body:not(.ontr) #trzoomf{display:none}
 /* 화살표 · 따옴표 · 낫표를 또렷하게 */
 @font-face{font-family:"HSym";src:local("AppleSDGothicNeo-Bold"),local("Apple SD Gothic Neo Bold"),local("NotoSansKR-Bold"),local("Noto Sans KR Bold"),local("Malgun Gothic Bold"),local("MalgunGothicBold"),local("Arial Bold"),local("Arial-BoldMT"),local("DejaVu Sans Bold");unicode-range:U+2190-21FF,U+2018-201F,U+300A-300F,U+27F5-27F6;size-adjust:112%}
 </style>
+<style>
+/* 제목 옆에 자리가 있으면 한 줄 설명을 옆에 */
+#trbody .trcard .trh{flex-direction:row!important;flex-wrap:wrap;align-items:baseline;column-gap:12px;row-gap:2px}
+#trbody .trcard .trh span{width:auto!important;min-width:0!important;padding-left:0!important;flex:1 1 220px}
+#trbody .trcard .trh h3{flex:none}
+/* 칸: 이름 옆에 자리가 있으면 회색 설명을 옆에 */
+#trbody .hn{flex-direction:row!important;flex-wrap:wrap;align-items:baseline;align-content:flex-start;column-gap:8px}
+#trbody .hn>*{flex:0 0 100%;min-width:0}
+#trbody .hn>b{flex:0 1 auto}
+#trbody .hn>small.hsb{flex:0 1 auto;margin-left:0}
+#trbody .hn>.hngrip{flex:none}
+</style>
