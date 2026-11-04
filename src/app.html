@@ -4728,14 +4728,16 @@ const TREES={
   N_('사림','선조 때 훈구를 누르고 정권을 잡은 성리학자 세력','',[
    N_('동인','이황·조식·서경덕 학파. 척신 정치 청산에 적극적','김효원',[
     N_('남인','이황 학파, 온건파. 예송에서 서인과 대립, 기사환국으로 재집권했다가 갑술환국 뒤 몰락. 정조 때 일부 등용','유성룡, 허목, 윤휴, 채제공',[],'1591 분열'),
-    N_('북인','조식·서경덕 학파, 강경파. 임진왜란 때 의병장 다수 배출','정인홍, 이산해',[
+    N_('북인','조식·서경덕 학파, 강경파. 임진왜란 때 의병장 다수 배출. 인조반정(1623) 뒤 정치 세력으로서 사실상 사라짐','정인홍, 이산해',[
      N_('대북','광해군을 지지하며 집권(중립 외교). 인조반정(1623)으로 몰락','정인홍, 이이첨',[]),
-     N_('소북','영창 대군을 지지','유영경',[])],'1591 분열')],'1575 동서 분당'),
+     N_('소북','영창 대군을 지지. 광해군 때 대북에 밀려났고 인조반정 뒤 북인과 함께 쇠퇴','유영경',[])],'1591 분열')],'1575 동서 분당'),
    N_('서인','이이·성혼 학파. 인조반정으로 집권하고 남인과 공존','심의겸, 정철',[
     N_('노론','대의명분·민생 안정 강조. 영조 즉위를 도와 우세','송시열, 김수항',[
      N_('벽파','사도 세자의 죽음이 옳았다는 쪽. 정조의 정책에 반대','김종수, 심환지',[],'1762 이후'),
      N_('시파','사도 세자를 동정하며 정조를 지지(남인 일부 포함)','',[],'1762 이후')],'1683 분열'),
-    N_('소론','실리·적극적 북방 개척 주장. 경종을 지지','윤증, 최석정',[],'1683 분열')],'1575 동서 분당')],'16세기 후반'),
+    N_('소론','실리·적극적 북방 개척 주장. 경종을 지지','윤증, 최석정',[
+     N_('소론 강경파 (준소)','영조 즉위에 반발 → 이인좌의 난(1728)을 일으켰다가 몰락','이인좌',[],'1728'),
+     N_('소론 온건파 (완소)','영조의 탕평책에 참여해 노론과 함께 등용','',[],'영조')],'1683 분열')],'1575 동서 분당')],'16세기 후반'),
   flow:['1575 이조 전랑 자리 다툼 → 동서 분당','1589 정여립 모반 사건(기축옥사) · 1591 건저의 사건 → 남북 분당','1623 인조반정 → 서인 집권, 남인과 공존','1659·1674 예송(기해·갑인)','1680 경신환국 → 서인 집권, 노론·소론으로 분열','1689 기사환국 → 남인 집권 · 1694 갑술환국 → 서인 집권','영조·정조 탕평책','1800~ 세도 정치(안동 김씨·풍양 조씨)']},
  gaehwa:{title:'개화파의 분화',sub:'1880년대, 개화를 어떻게 할 것인가',root:
   N_('북학파','청의 문물을 배우자는 실학자들','박지원, 홍대용, 박제가, 이덕무',[
@@ -6920,7 +6922,7 @@ function rlForm(key){if(!(window.__MEX&&window.__MEX.can()))return;const H=windo
      h+=`<path d="${d}"${arrow?` marker-end="url(#tfa${keyOf(c)})"`:''}/>`});sv.innerHTML=h}
  let NEEDRB=false;function nodeFree(c,k){const P=TR().get('@n:'+k);if(!P||typeof P!=='object'){if(c.querySelector('.tfin'))NEEDRB=true;return}let fin=c.querySelector('.tfin');const host=c.querySelector('.htree,.hchain');
    if(!fin){if(!host)return;const ns=markTree(c);fin=document.createElement('div');fin.className='tfin';host.after(fin);ns.forEach(n=>fin.appendChild(n));host.style.display='none';c.classList.add('trnf')}
-   const ns=[...fin.querySelectorAll(':scope>.hn')];ns.forEach(n=>{const p=P[n.dataset.ni];if(!p)return;n.style.left=p[0]+'px';n.style.top=p[1]+'px';n.style.width=p[2]?p[2]+'px':'';n.style.maxWidth='none'});
+   const ns=[...fin.querySelectorAll(':scope>.hn')];ns.forEach(n=>{let p=P[n.dataset.ni];if(!p){const pp=P[n.dataset.par];const pn=ns.find(x=>x.dataset.ni===n.dataset.par);let my=0;Object.values(P).forEach(q=>{my=Math.max(my,q[1])});p=pp?[pp[0]+40,pp[1]+(pn?pn.offsetHeight:60)+16+ns.filter(x=>x.dataset.par===n.dataset.par&&+x.dataset.ni<+n.dataset.ni&&!P[x.dataset.ni]).length*90,pp[2]]:[0,my+100,0];P[n.dataset.ni]=p}n.style.left=p[0]+'px';n.style.top=p[1]+'px';n.style.width=p[2]?p[2]+'px':'';n.style.maxWidth='none'});
    const ed=can();ns.forEach(n=>{let g=n.querySelector(':scope>.hngrip');if(ed&&!g){n.insertAdjacentHTML('beforeend','<span class="hngrip" data-hngrip title="끌어서 너비 바꾸기"></span>')}else if(!ed&&g)g.remove()});drawLines(c)}
  function nodeGrips(c){if(c.querySelector('.tfin'))return;const ed=can();c.querySelectorAll('.htree .hn,.hchain .hn').forEach(n=>{let g=n.querySelector(':scope>.hngrip');if(ed&&!g)n.insertAdjacentHTML('beforeend','<span class="hngrip" data-hngrip title="끌어서 너비 바꾸기"></span>');else if(!ed&&g)g.remove()})}
  function trUser(){const tb=$('trbody');const M=TR();if(!tb||!M)return;busy=true;unwrap();try{const cs=[...tb.children].filter(c=>c.classList.contains('trcard'));const ord=M.get('@order');const oi=Array.isArray(ord)?ord:null;const ed=can();const board=boardOn();const BP=M.get('@pos')||{};
