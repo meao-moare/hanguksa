@@ -1549,10 +1549,11 @@ function rlForm(key){if(!(window.__MEX&&window.__MEX.can()))return;const H=windo
    const box=n=>({x:n.offsetLeft,y:n.offsetTop,w:n.offsetWidth,h:n.offsetHeight});const cen=b=>[b.x+b.w/2,b.y+b.h/2];
    const clip=(b,tx,ty)=>{const [cx,cy]=cen(b);const dx=tx-cx,dy=ty-cy;if(!dx&&!dy)return [cx,cy];const sx=dx?(b.w/2)/Math.abs(dx):1e9,sy=dy?(b.h/2)/Math.abs(dy):1e9;const s=Math.min(sx,sy);return [cx+dx*s,cy+dy*s]};
    let h='<defs><marker id="tfa'+keyOf(c)+'" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="currentColor"/></marker></defs>';
-   const EG=edgesOf(c,ns);const side=(P,Q)=>Q.x>=P.x+P.w-2?'r':Q.x+Q.w<=P.x+2?'l':Q.y>=P.y+P.h?'b':'t';const TK={};EG.forEach(([a,b])=>{const A=ns[a],B=ns[b];if(!A||!B)return;const P=box(A),Q=box(B);const sd=side(P,Q);const g=TK[a+sd]||(TK[a+sd]=1e9);const gap=sd==='r'?Q.x-(P.x+P.w):sd==='l'?P.x-(Q.x+Q.w):sd==='b'?Q.y-(P.y+P.h):P.y-(Q.y+Q.h);TK[a+sd]=Math.min(g,Math.max(6,Math.min(20,gap/2)))});
+   const EG=edgesOf(c,ns);const side=(P,Q)=>Q.x>=P.x+P.w-2?'r':Q.x+Q.w<=P.x+2?'l':Q.y>=P.y+P.h?(Q.x>P.x+10?'i':'b'):'t';const TK={};EG.forEach(([a,b])=>{const A=ns[a],B=ns[b];if(!A||!B)return;const P=box(A),Q=box(B);const sd=side(P,Q);const g=TK[a+sd]||(TK[a+sd]=1e9);const gap=sd==='r'?Q.x-(P.x+P.w):sd==='l'?P.x-(Q.x+Q.w):sd==='b'?Q.y-(P.y+P.h):sd==='i'?Q.x-P.x:P.y-(Q.y+Q.h);TK[a+sd]=Math.min(g,sd==='i'?Math.max(8,Math.min(24,gap/2)):Math.max(6,Math.min(20,gap/2)))});
    EG.forEach(([a,b,arrow])=>{const A=ns[a],B=ns[b];if(!A||!B)return;const P=box(A),Q=box(B);let d;const off=TK[a+side(P,Q)]||20;
      if(Q.x>=P.x+P.w-2){const sx=P.x+P.w,sy=P.y+P.h/2,ex=Q.x,ey=Q.y+Q.h/2;const mx=sx+off;d=`M${sx} ${sy}H${mx}V${ey}H${ex}`}
      else if(Q.x+Q.w<=P.x+2){const sx=P.x,sy=P.y+P.h/2,ex=Q.x+Q.w,ey=Q.y+Q.h/2;const mx=sx-off;d=`M${sx} ${sy}H${mx}V${ey}H${ex}`}
+     else if(Q.y>=P.y+P.h&&Q.x>P.x+10){const tx=P.x+off,sy=P.y+P.h,ey=Q.y+Q.h/2;d=`M${tx} ${sy}V${ey}H${Q.x}`}
      else if(Q.y>=P.y+P.h){const sx=P.x+P.w/2,sy=P.y+P.h,ex=Q.x+Q.w/2,ey=Q.y;const my=sy+off;d=`M${sx} ${sy}V${my}H${ex}V${ey}`}
      else{const sx=P.x+P.w/2,sy=P.y,ex=Q.x+Q.w/2,ey=Q.y+Q.h;const my=sy-off;d=`M${sx} ${sy}V${my}H${ex}V${ey}`}
      h+=`<path d="${d}"${arrow?` marker-end="url(#tfa${keyOf(c)})"`:''}/>`});sv.innerHTML=h}
@@ -1585,6 +1586,7 @@ function rlForm(key){if(!(window.__MEX&&window.__MEX.can()))return;const H=windo
        if(spanY>=spanX){const L=Math.min(...xs),R=Math.max(...bs.map(b=>b.x+b.w));bs.forEach(b=>{P[b.i]=[L,b.y,R-L]})}else{const T=Math.min(...ys);bs.forEach(b=>{P[b.i]=[b.x,T,P[b.i][2]]})}});
      M.set('@n:'+kk,P);window.__MEX.save('T:@n:'+kk,P);nodeFree(c,kk);window.__MEX.toast('끝을 맞췄어요');return}
    if(t.hasAttribute('data-trdir')){const M=TR();const v=Object.assign({},M.get(k)||{});const tree=!!(c.querySelector('.htree')||(c.querySelector('.tfin')&&c.dataset.chain!=='1'));const cur=t.dataset.cur||'h';v.d=cur==='h'?(tree?'t':'v'):cur==='t'?'v':'h';put(k,v);if(M.get('@n:'+k)){put('@n:'+k,null);rebuild()}else trPack()}},true);
+ let ZT=10;document.addEventListener('pointerdown',e=>{const c=e.target.closest&&e.target.closest('#trbody.trboard>.trcard');if(c)c.style.zIndex=++ZT},true);
  /* 끌기 공통 */
  const scOf=el=>{while(el&&el!==document.body){const o=getComputedStyle(el).overflowY;if((o==='auto'||o==='scroll')&&el.scrollHeight>el.clientHeight)return el;el=el.parentElement}return document.scrollingElement};
  function dragLoop(e,el,onMove,onUp){const sc=scOf(el);let ay=0,raf=0,lx=e.clientX,ly=e.clientY,s0=sc.scrollTop;const auto=()=>{if(!ay){raf=0;return}sc.scrollTop+=ay;onMove(lx,ly,sc.scrollTop-s0);raf=requestAnimationFrame(auto)};try{el.setPointerCapture(e.pointerId)}catch(_){}
