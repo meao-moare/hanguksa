@@ -166,11 +166,12 @@ function personColor(P){const cnt=new Map();P.evs.forEach(e=>{const R=kingRef(e)
 function personNation(P){const R=P.evs.map(kingRef).find(Boolean);return R?(R.D.n==='남한'?'대한민국':R.D.n):(P.evs.some(e=>e.tp.includes('wld'))?'외국':'')}
 function ppShow(){const b=$('ppbody');if(b.dataset.built)return;b.dataset.built=1;
   const list=[...PEOPLE.values()].filter(P=>!kingOfName(P.n,P.evs[0].T)).map(P=>({P,t:Math.min(...P.evs.map(e=>e.T)),era:P.evs[0].era}));
+  const desc=P=>{if(typeof PINFO!=='undefined'&&PINFO[P.n])return PINFO[P.n];if(GLOSS[P.n])return GLOSS[P.n];return P.evs.slice().sort((a,c)=>a.T-c.T).slice(0,2).map(e=>`${shortYear(e)} ${e.t}`).join(' · ')};
   $('ppjump').innerHTML=ERAS.filter(E=>list.some(x=>x.era===E.k)).map(E=>`<button type="button" data-pj="${E.k}">${E.n}</button>`).join('');
-  b.innerHTML=ERAS.map(E=>{const ps=list.filter(x=>x.era===E.k&&!(typeof NOT_PERSON!=='undefined'&&NOT_PERSON.has(x.P.n)));if(!ps.length)return '';
+  b.innerHTML=`<section class="gbook ppbook" style="--trc:#047857">`+ERAS.map(E=>{const ps=list.filter(x=>x.era===E.k&&!(typeof NOT_PERSON!=='undefined'&&NOT_PERSON.has(x.P.n)));if(!ps.length)return '';
     const ord=n=>{const k=NAT_ORDER.indexOf(n);return k<0?80:k};const g=new Map();ps.sort((a,c)=>a.t-c.t).forEach(x=>{const n=personNation(x.P)||'기타';if(!g.has(n))g.set(n,[]);g.get(n).push(x)});
-    const rows=[...g.entries()].sort((a,c)=>ord(a[0])-ord(c[0]));const FOR=new Set(['중국','북방 민족','일본','미국','러시아·소련','영국','프랑스','독일','캐나다','인도','외국']);let sep=false;
-    return `<section class="ppera" id="pp-${E.k}"><h2>${E.n}<span>${esc(E.rg)}</span></h2><div class="ppgrid">${rows.map(([n,xs])=>{const s=FOR.has(n)&&!sep&&rows.some(r=>!FOR.has(r[0]));if(FOR.has(n))sep=true;const col=NAT_COL[n]||'#64748b';return `${s?'<div class="ppsep">외국</div>':''}<div class="pprow"><b style="--nc:${col}">${esc(n)}</b><div class="ppnames">${xs.map(({P,t})=>`<button type="button" data-person="${esc(P.n)}" data-pt="${t}" style="color:${col}">${esc(P.n)}</button>`).join('')}</div></div>`}).join('')}</div></section>`}).join('');
+    const rows=[...g.entries()].sort((a,c)=>ord(a[0])-ord(c[0]));
+    return `<h4 class="gh ppera" id="pp-${E.k}">${E.n}<span class="ppr">${esc(E.rg)}</span></h4>${rows.map(([n,xs])=>{const col=NAT_COL[n]||'#64748b';return `<div class="ppnat" style="--nc:${col}">${esc(n)}</div><dl class="gl2">${xs.map(({P,t})=>`<div class="gp" data-k="${esc(P.n)}" style="border-left-color:${col}"><dt><button type="button" class="gpn" data-person="${esc(P.n)}" data-pt="${t}">${esc(P.n)}</button><i class="gptag" style="color:${col};background:color-mix(in srgb,${col} 12%,var(--panel))">${esc(n)}</i><button type="button" class="gtr gpd" data-pdeep="${esc(P.n)}">자세히 →</button></dt><dd>${glx(desc(P))}</dd></div>`).join('')}</dl>`}).join('')}`}).join('')+`</section>`;
   $('ppjump').querySelectorAll('[data-pj]').forEach(x=>x.onclick=()=>{const s=document.getElementById('pp-'+x.dataset.pj);const rd=$('ppread');rd.scrollTo({top:s.offsetTop-rd.querySelector('.rhead').offsetHeight-4,behavior:'smooth'})})}
 if(store.get('view','map')==='pp')setTimeout(ppShow,0);
 
