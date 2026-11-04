@@ -29,16 +29,20 @@ function ensureUI(){const rd=$('trread');if(!rd)return false;
     d.addEventListener('click',e=>{const b=e.target.closest('[data-trg]');if(!b)return;openG(+b.dataset.trg,b.dataset.trk||null)})}
   if(!$('trpbar')){const r=rd.querySelector('.rhead .rin');const d=document.createElement('div');d.id='trpbar';d.innerHTML='';r.appendChild(d);
     d.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.tpx!=null)return toIndex();if(b.dataset.tpg!=null)return openG(+b.dataset.tpg);if(b.dataset.tpk!=null)return goPage(+b.dataset.tpk)})}
-  if(!$('trnavl')){['l','r'].forEach(s=>{const b=document.createElement('button');b.type='button';b.id='trnav'+s;b.className='trnav';b.setAttribute('aria-label',s==='l'?'이전 구조도':'다음 구조도');b.innerHTML=s==='l'?'<svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg>':'<svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>';b.onclick=()=>goPage(PAGE+(s==='l'?-1:1));rd.appendChild(b)})}
+  if(!$('trside')){const sd=document.createElement('aside');sd.id='trside';sd.innerHTML=TRG.map((g,i)=>`<div class="tsg" style="--gc:${g.c}"><button type="button" class="tsgh" data-trg="${i}">${esc2(g.t)}</button>${g.k.map(k=>`<button type="button" class="tsk" data-trg="${i}" data-trk="${k}">${esc2(title(k))}</button>`).join('')}</div>`).join('');$('trbody').before(sd);
+    sd.addEventListener('click',e=>{const b=e.target.closest('[data-trg]');if(!b)return;openG(+b.dataset.trg,b.dataset.trk||null)})}
+  if(!$('trnavl')){['l','r'].forEach(s=>{const b=document.createElement('button');b.type='button';b.id='trnav'+s;b.className='trnav';b.setAttribute('aria-label',s==='l'?'이전 구조도':'다음 구조도');b.innerHTML=s==='l'?'<svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg>':'<svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>';b.onclick=()=>step(s==='l'?-1:1);rd.appendChild(b)})}
   return true}
 function bar(){const d=$('trpbar');if(!d)return;if(G<0){d.innerHTML='';return}const g=TRG[G];
   d.innerHTML=`<button type="button" class="tpx" data-tpx><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>목차</button><span class="tpg" style="--gc:${g.c}">${esc2(g.t)}</span><span class="tpks">${g.k.map((k,i)=>`<button type="button" data-tpk="${i}" aria-pressed="${i===PAGE}">${esc2(title(k))}</button>`).join('')}</span><span class="tpgo">${G>0?`<button type="button" data-tpg="${G-1}" title="${esc2(TRG[G-1].t)}">← 이전 묶음</button>`:''}${G<TRG.length-1?`<button type="button" data-tpg="${G+1}" title="${esc2(TRG[G+1].t)}">다음 묶음 →</button>`:''}</span>`}
 function apply(){const tb=$('trbody'),rd=$('trread');if(!tb||!ensureUI())return;tb.classList.add('trpg');document.body.classList.toggle('trix',G<0);document.body.classList.add('trpgon');
   const ks=G<0?[]:TRG[G].k;[...tb.children].forEach(c=>{if(!c.classList||!c.classList.contains('trcard'))return;const k=c.id.replace(/^tree-/,'');const on=ks.includes(k);c.classList.toggle('trpon',on);if(on)c.dataset.po=ks.indexOf(k);else delete c.dataset.po});
   bar();fit();nav()}
-function nav(){const l=$('trnavl'),r=$('trnavr');if(!l)return;const n=G<0?0:TRG[G].k.length;l.hidden=G<0||PAGE<=0;r.hidden=G<0||PAGE>=n-1}
+function nav(){try{side()}catch(_){}const l=$('trnavl'),r=$('trnavr');if(!l)return;const n=G<0?0:TRG[G].k.length;l.hidden=G<0||(G===0&&PAGE<=0);r.hidden=G<0||(G===TRG.length-1&&PAGE>=n-1)}
 function cur(){const tb=$('trbody');if(!tb||G<0)return null;return tb.querySelector('#tree-'+TRG[G].k[PAGE])}
 const vis=all=>{const tb=$('trbody');if(!tb||G<0)return;TRG[G].k.forEach((k,i)=>{const c=tb.querySelector('#tree-'+k);if(c)c.style.visibility=all||i===PAGE?'':'hidden'})};
+function step(dlt){if(G<0)return;const n=TRG[G].k.length,t=PAGE+dlt;if(t>=0&&t<n)return goPage(t);const g2=G+(dlt>0?1:-1);if(g2<0||g2>=TRG.length)return;openG(g2,dlt>0?TRG[g2].k[0]:TRG[g2].k[TRG[g2].k.length-1])}
+function side(){const sd=$('trside');if(!sd||G<0)return;const k=TRG[G].k[PAGE];sd.querySelectorAll('.tsk').forEach(b=>b.setAttribute('aria-current',b.dataset.trk===k?'true':'false'));sd.querySelectorAll('.tsgh').forEach(b=>b.setAttribute('aria-current',+b.dataset.trg===G?'true':'false'));const c=sd.querySelector('.tsk[aria-current=true]');if(c){const r=c.getBoundingClientRect(),s=sd.getBoundingClientRect();if(r.top<s.top||r.bottom>s.bottom)c.scrollIntoView({block:'center'})}}
 let PROG=0;function goPage(i,instant){if(G<0)return;PROG=Date.now()+(instant?0:500);const n=TRG[G].k.length;PAGE=Math.max(0,Math.min(n-1,i));const tb=$('trbody');const c=cur();if(tb&&c)(vis(true),tb.scrollTo({left:relX(tb,c),behavior:instant?'auto':'smooth'}),instant&&vis(false));$('trpbar')&&$('trpbar').querySelectorAll('[data-tpk]').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.tpk===PAGE));nav()}
 function openG(i,k){if(store&&store.get('view','map')!=='tr'){try{showView('tr')}catch(_){}}G=i;PAGE=k?Math.max(0,TRG[i].k.indexOf(k)):0;apply();requestAnimationFrame(()=>{goPage(PAGE,true);const rd=$('trread');if(rd)rd.scrollTop=0})}
 function toIndex(){G=-1;PAGE=0;apply();const rd=$('trread');if(rd)rd.scrollTop=0}
@@ -51,7 +55,7 @@ function fit(){const tb=$('trbody'),rd=$('trread');if(!tb||G<0||!tb.offsetParent
   const mul=Math.max(1,(window.__TRS&&window.__TRS())||1);const MINZ=0.72,MAXZ=1.25;
   tb.querySelectorAll(':scope>.trcard.trpon').forEach(c=>{c.style.zoom=1;c.style.height='';c.style.margin='';c.classList.remove('trscr');
     const PW=W,PH=H-4;
-    const m=w=>{c.style.width=w;const iw=c.scrollWidth+Math.max(0,...[...c.querySelectorAll('.htree,.hchain')].map(x=>x.scrollWidth-x.clientWidth));return [iw,c.scrollHeight]};
+    const m=w=>{c.style.width=w;const fn=c.querySelector('.tfin');const iw=Math.max(c.scrollWidth+Math.max(0,...[...c.querySelectorAll('.htree,.hchain')].map(x=>x.scrollWidth-x.clientWidth)),fn?fn.offsetWidth+64:0);return [iw,c.scrollHeight]};
     const best=()=>{let [aw,ah]=m('max-content');let zA=Math.min(MAXZ,PW/aw,PH/ah);
       let w=PW,zB=1;for(let it=0;it<4;it++){const [iw,ih]=m(w+'px');const nz=Math.min(MAXZ,PW/Math.max(iw,1),PH/Math.max(ih,1));if(Math.abs(nz-zB)<0.01&&it){zB=nz;break}zB=nz;w=Math.max(PW,Math.round(PW/Math.min(1,zB)))}
       return Math.max(zA,zB)};
@@ -60,7 +64,7 @@ function fit(){const tb=$('trbody'),rd=$('trread');if(!tb||G<0||!tb.offsetParent
     let z=best();
     const base=Math.max(MINZ,z);c.dataset.fz=base;let zz=Math.max(MINZ,base*mul);
     const set=zz=>{c.style.width=Math.round(PW/zz)+'px';c.style.zoom=zz;c.style.height=Math.round(PH/zz)+'px';c.style.margin='0'};set(zz);
-    for(let k=0;k<6&&zz>MINZ;k++){const ih=c.scrollHeight,iw=c.scrollWidth+Math.max(0,...[...c.querySelectorAll('.htree,.hchain')].map(x=>x.scrollWidth-x.clientWidth));if(ih<=c.clientHeight+2&&iw<=c.clientWidth+2)break;zz=Math.max(MINZ,zz*0.94);set(zz)}
+    for(let k=0;k<6&&zz>MINZ;k++){const fn2=c.querySelector('.tfin');const ih=c.scrollHeight,iw=Math.max(c.scrollWidth+Math.max(0,...[...c.querySelectorAll('.htree,.hchain')].map(x=>x.scrollWidth-x.clientWidth)),fn2?fn2.offsetWidth+64:0);if(ih<=c.clientHeight+2&&iw<=c.clientWidth+2)break;zz=Math.max(MINZ,zz*0.94);set(zz)}
     c.classList.toggle('trscr',c.scrollHeight>c.clientHeight+2||c.scrollWidth>c.clientWidth+2)});
   FITTING=false;requestAnimationFrame(()=>goPage(PAGE,true))}
 window.__TRFIT=()=>fit();
@@ -69,7 +73,7 @@ window.__TRZC=()=>{const c=LASTC;return c&&c.style.zoom?(+c.style.zoom||1):1};
 
 /* 스크롤로 넘기면 쪽 번호 따라가기 */
 {let st=0;document.addEventListener('scroll',e=>{const tb=$('trbody');if(e.target!==tb||G<0)return;vis(true);clearTimeout(st);st=setTimeout(()=>{if(Date.now()-PROG<350){vis(false);return}const x=tb.scrollLeft;let best=0,bd=1e9;TRG[G].k.forEach((k,i)=>{const c=tb.querySelector('#tree-'+k);if(!c)return;const d=Math.abs(relX(tb,c)-x);if(d<bd){bd=d;best=i}});if(best!==PAGE){PAGE=best;$('trpbar').querySelectorAll('[data-tpk]').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.tpk===PAGE));nav()};vis(false)},120)},true)}
-window.addEventListener('keydown',e=>{if(G<0||$('v-tr').hidden)return;if(e.target.closest&&e.target.closest('input,textarea,[contenteditable]'))return;if(e.key==='ArrowRight'||e.key==='ArrowLeft'){const t=PAGE+(e.key==='ArrowRight'?1:-1);e.preventDefault();goPage(t,true)}else if(e.key==='Escape')toIndex();else return;e.stopImmediatePropagation()},true);
+window.addEventListener('keydown',e=>{if(G<0||$('v-tr').hidden)return;if(e.target.closest&&e.target.closest('input,textarea,[contenteditable]'))return;if(e.key==='ArrowRight'||e.key==='ArrowLeft'){e.preventDefault();const dl=e.key==='ArrowRight'?1:-1,n=TRG[G].k.length,t=PAGE+dl;if(t>=0&&t<n)goPage(t,true);else step(dl)}else if(e.key==='Escape')toIndex();else return;e.stopImmediatePropagation()},true);
 
 /* 기존 함수에 연결 */
 {const t0=trPack;trPack=function(){const r=t0.apply(this,arguments);try{if(store.get('view','map')==='tr'){apply()}}catch(_){}return r}}

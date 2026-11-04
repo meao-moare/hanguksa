@@ -2330,4 +2330,31 @@ body[data-tysec="ref"] #tybody .tyref{margin-top:0}
 #ogbody .ogorgs .orgl li .ly{font-weight:800;color:#0f766e;font-size:13px;width:auto!important}
 #ogbody .ogorgs .orgl li p{margin:3px 0 0;font-size:13px}
 #ogbody .ogorgs .orgh{font-size:15px;font-weight:800;margin:22px 0 10px;padding-left:10px;border-left:3px solid #0f766e}
+body[data-ogsec="ms"] #og-or,body[data-ogsec="or"] #og-ms{display:none}
+body[data-ogsec="or"] #og-or{margin-top:0}
+#ogjump{display:none!important}
+.top .tabs button.tabopen:not([aria-selected=true]){background:color-mix(in srgb,#fff 55%,transparent)!important;color:var(--ink)}
+#tsmenu .tdgrid{gap:8px!important;padding:6px 2px!important}
+#tsmenu .trmg{border:1px solid var(--rule);border-radius:10px;padding:6px 6px 8px;border-top:3px solid var(--gc);background:color-mix(in srgb,var(--gc) 4%,var(--panel))}
+#tsmenu .trmh{border-left:0!important;margin-top:0!important;padding-left:6px!important}
+/* 구조도 왼쪽 세로 목차 */
+#trside{display:none}
+body.trpgon:not(.trix) #trread{display:grid;grid-template-columns:200px minmax(0,1fr);grid-template-rows:auto 1fr;align-items:start}
+body.trpgon:not(.trix) #trread>.rhead{grid-column:1/-1}
+body.trpgon:not(.trix) #trside{display:flex;flex-direction:column;gap:6px;grid-column:1;grid-row:2;overflow:auto;padding:12px 8px 20px 12px;border-right:1px solid var(--rule);box-sizing:border-box;align-self:stretch;max-height:calc(100dvh - var(--toph,56px) - 60px)}
+body.trpgon:not(.trix) #trbody{grid-column:2;grid-row:2}
+#trside .tsg{display:flex;flex-direction:column;border-left:3px solid var(--gc);padding:2px 0 4px 0}
+#trside button{font:inherit;border:0;background:none;text-align:left;cursor:pointer;color:var(--ink);border-radius:6px}
+#trside .tsgh{font-size:12.5px;font-weight:800;color:color-mix(in srgb,var(--gc) 75%,var(--ink));padding:3px 8px}
+#trside .tsk{font-size:12.5px;padding:3px 8px 3px 14px;color:color-mix(in srgb,var(--ink) 80%,var(--muted));line-height:1.35}
+#trside .tsk:hover{background:color-mix(in srgb,var(--gc) 10%,transparent)}
+#trside .tsk[aria-current=true]{background:color-mix(in srgb,var(--gc) 16%,var(--panel));color:var(--ink);font-weight:800}
+body.trpgon #trpbar .tpks{display:none}
+@media (max-width:760px){body.trpgon:not(.trix) #trread{display:block}body.trpgon:not(.trix) #trside{display:none}body.trpgon #trpbar .tpks{display:flex}}
+#trnavl{left:212px}
+@media (max-width:760px){#trnavl{left:10px}}
+body.trpgon:not(.trix) #trbody{min-width:0!important;width:auto!important;max-width:100%!important;justify-self:stretch}body.trpgon:not(.trix) #trread{overflow-x:hidden}
+.trnav{top:auto!important;bottom:22px;width:38px;height:38px}#trnavl{left:auto!important;right:60px}#trnavr{right:16px}@media (max-width:760px){#trnavl{left:auto!important}}
+body.trpgon:not(.trix) #trzoomf{left:auto!important;right:110px!important;bottom:18px!important}
+body.medit .trnav{bottom:84px!important}body.medit.trpgon:not(.trix) #trzoomf{bottom:84px!important}
 </style>

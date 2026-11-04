@@ -20,7 +20,7 @@ const evId=t=>{try{const e=EVENTS.find(x=>x.t&&x.t.includes(t));return e?e.id:nu
  sec.innerHTML='<div class="read" id="ogread"><div class="rhead"><div class="rin"><div class="ogjump" id="ogjump"><button type="button" data-ogj="ms">사절단</button><button type="button" data-ogj="or">조직 · 단체</button></div></div></div><div class="rin" id="ogbody"></div></div>';
  const ref=$('v-ty')||$('v-rl');ref.after(sec);try{VIEWS.push('og')}catch(_){}
  const tab=document.createElement('button');tab.id='tab-og';tab.type='button';tab.setAttribute('role','tab');tab.setAttribute('aria-selected','false');tab.dataset.v='og';tab.textContent='사절단·조직·단체';
- const ty=$('tab-ty');(ty||$('tab-tr')).after(tab);tab.onclick=e=>{e.preventDefault();try{$('kpage').hidden=true}catch(_){}showView('og')}}
+ const ty=$('tab-ty');(ty||$('tab-tr')).after(tab);tab.textContent='사절단·조직·단체 ▾'}
 function ogShow(){const b=$('ogbody');if(!b||b.dataset.built)return;b.dataset.built=1;
   let orgs='';try{orgs=orgsHTML()}catch(_){}
   b.innerHTML=`<section class="ogsec" id="og-ms"><h2 class="ogh"><span>사절단</span><small>${MISSIONS.length}개</small></h2><ol class="ogml">${MISSIONS.map(m=>{const id=m.ev?evId(m.ev):null;return `<li${id?` data-evpage="${id}" class="oglink"`:''}><span class="ogy">${esc3(m.y)}</span><div><b>${esc3(m.n)}</b><i class="ogto">${esc3(m.to)}</i>${m.by?`<em>${esc3(m.by)}</em>`:''}<p>${typeof glx==='function'?glx(m.d):esc3(m.d)}</p></div></li>`}).join('')}</ol></section><section class="ogsec" id="og-or"><h2 class="ogh"><span>조직 · 단체</span></h2><div class="ogorgs">${orgs}</div></section>`;
@@ -45,6 +45,14 @@ function dropdown(tab,items,id){const m=document.createElement('div');m.id=id;m.
   dd.m.addEventListener('click',e=>{const b=e.target.closest('[data-tys]');if(!b)return;dd.hide();setSec(b.dataset.tys);try{$('kpage').hidden=true}catch(_){}showView('ty');const rd=$('tyread');if(rd)rd.scrollTop=0});
   if(!document.body.dataset.tysec)setSec('tr')}}
 
+
+/* 2-1. 사절단·조직·단체 ▾ */
+{const tab=$('tab-og');if(tab){
+  const setSec=x=>{document.body.dataset.ogsec=x||'ms'};
+  const dd=dropdown(tab,()=>{const v=store.get('view','map')==='og',x=document.body.dataset.ogsec||'ms';return `<button type="button" data-ogs="ms" aria-pressed="${v&&x==='ms'}">사절단</button><button type="button" data-ogs="or" aria-pressed="${v&&x==='or'}">조직 · 단체</button>`},'ogmenu');
+  tab.onclick=e=>{e.preventDefault();e.stopPropagation();const hov=matchMedia('(hover:hover)').matches;if(hov){setSec(document.body.dataset.ogsec);try{$('kpage').hidden=true}catch(_){}showView('og');dd.hide();return}if(!dd.m.hidden){dd.hide();return}dd.show()};
+  dd.m.addEventListener('click',e=>{const b=e.target.closest('[data-ogs]');if(!b)return;dd.hide();setSec(b.dataset.ogs);try{$('kpage').hidden=true}catch(_){}showView('og');const rd=$('ogread');if(rd)rd.scrollTop=0});
+  setSec(document.body.dataset.ogsec)}}
 /* 3. 표·구조 ▾ (왕계표 + 구조도) */
 {const tr=$('tab-tr'),kg=$('tab-kg');if(tr){if(kg)kg.style.display='none';tr.textContent='표·구조 ▾';
   const old=$('trmenu');
@@ -61,6 +69,6 @@ function dropdown(tab,items,id){const m=document.createElement('div');m.id=id;m.
   const mark=()=>{const v=store.get('view','map');tr.setAttribute('aria-selected',v==='kg'||v==='tr')};
   const sv=showView;showView=function(v){const r=sv.apply(this,arguments);mark();if(v==='og')try{ogShow()}catch(_){}{const t=$('tab-og');if(t)t.setAttribute('aria-selected',v==='og')}{const t=$('tab-ty');if(t)t.setAttribute('aria-selected',v==='ty')}return r};mark()}}
 /* ▾ 메뉴는 한 번에 하나만 */
-{const ids=['dcmenu','tlmenu','tymenu','tsmenu'];const mo=new MutationObserver(ms=>{ms.forEach(m=>{const t=m.target;if(t.hidden)return;ids.forEach(id=>{const o=$(id);if(o&&o!==t&&!o.hidden)o.hidden=true})})});setTimeout(()=>ids.forEach(id=>{const o=$(id);if(o)mo.observe(o,{attributes:true,attributeFilter:['hidden']})}),300)}
+{const ids=['dcmenu','tlmenu','tymenu','tsmenu','ogmenu'];const TAB={dcmenu:'tab-dc',tlmenu:'tab-tl',tymenu:'tab-ty',tsmenu:'tab-tr',ogmenu:'tab-og'};const mo=new MutationObserver(ms=>{ms.forEach(m=>{const t=m.target;const tb=$(TAB[t.id]);if(tb)tb.classList.toggle('tabopen',!t.hidden);if(t.hidden)return;ids.forEach(id=>{const o=$(id);if(o&&o!==t&&!o.hidden)o.hidden=true})})});setTimeout(()=>ids.forEach(id=>{const o=$(id);if(o)mo.observe(o,{attributes:true,attributeFilter:['hidden']})}),300)}
 if(store.get('view','map')==='og')setTimeout(()=>{showView('og')},0);
 }
