@@ -2438,6 +2438,11 @@ body.medit #trbody.trpg>.trcard.trpon,#trbody.trpg>.trcard.trpon:has(.tfin){just
 #trpbar .tpx,#trpbar .tpgo{display:none!important}#trpbar .tpg{margin-left:0}
 .kpprev{border:1.5px dashed color-mix(in srgb,#ca8a04 55%,var(--rule));border-radius:12px;padding:10px 14px;background:color-mix(in srgb,#fde68a 18%,var(--panel));margin:6px 0 14px}.kpprev h3{font-size:13px;margin:0 0 4px;color:#a16207}.kpprev h3 small{font-weight:500;color:var(--muted);margin-left:6px}
 .kpprev .kpprevh{display:block;font-size:13px;margin:0 0 4px;color:#a16207;font-weight:800}.kpprev .kpprevh small{font-weight:500;color:var(--muted);margin-left:6px}
+.kph .kpalias{display:inline-flex;flex-wrap:wrap;align-items:baseline;gap:2px 0;margin:0 0 0 10px;font-size:14px;vertical-align:middle}
+.kph .kpalias em{display:none}
+.kph .kpal{background:none;padding:0;color:#0e7490;font-weight:600}
+.kph .kpal+.kpal::before{content:'·';color:var(--muted);margin:0 6px;font-weight:400}
+.kph .kpaladd{margin-left:8px;font-size:12px}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/flubber@0.4.2/build/flubber.min.js"></script>
 <script>
@@ -7765,14 +7770,14 @@ window.__ALIAS=()=>{build();return {AL,OF}};
 
 /* 사전 페이지: 다른 이름 줄 */
 const canEd=()=>document.body.classList.contains('medit')&&window.__MEX&&window.__MEX.own&&window.__MEX.own();
-function line(main){const L=AL[main]||[];const ed=canEd();if(!L.length&&!ed)return '';return `<div class="kpalias" data-almain="${esc4(main)}"><em>다른 이름</em>${L.map(a=>`<span class="kpal">${esc4(a)}${ed?`<i data-alrm="${esc4(a)}" title="빼기">×</i>`:''}</span>`).join('')}${ed?'<button type="button" class="kpaladd" data-aladd>+ 다른 이름</button>':''}</div>`}
-function decorTerm(){const p=$('kpage');if(!p||p.hidden)return;const h=p.querySelector('.kpin .kph h1');if(!h)return;const bar=p.querySelector('.kpbar span');if(bar&&!/용어|낱말|사전/.test(bar.textContent))return;const main=(h.dataset.xo||h.textContent).trim();const old=p.querySelector('.kpalias');const html=line(main);if(old){if(old.outerHTML!==html)old.outerHTML=html||''}else if(html)p.querySelector('.kph').insertAdjacentHTML('afterend',html)}
+function line(main){const L=AL[main]||[];const ed=canEd();if(!L.length&&!ed)return '';return `<div class="kpalias" data-almain="${esc4(main)}"><em>같은 단어</em>${L.map(a=>`<span class="kpal">${esc4(a)}${ed?`<i data-alrm="${esc4(a)}" title="빼기">×</i>`:''}</span>`).join('')}${ed?'<button type="button" class="kpaladd" data-aladd>+ 같은 단어</button>':''}</div>`}
+function decorTerm(){const p=$('kpage');if(!p||p.hidden)return;const h=p.querySelector('.kpin .kph h1');if(!h)return;const bar=p.querySelector('.kpbar span');if(bar&&!/용어|낱말|사전/.test(bar.textContent))return;const main=(h.dataset.xo||h.textContent).trim();const old=p.querySelector('.kpalias');const html=line(main);if(old){if(old.outerHTML!==html)old.outerHTML=html||''}else if(html)h.insertAdjacentHTML('afterend',html)}
 {const ot=openTerm;openTerm=function(k){build();if(OF[k]&&!(AL[k]))k=OF[k];const r=ot.call(this,k);setTimeout(decorTerm,0);return r}}
 new MutationObserver(()=>{clearTimeout(window.__alT);window.__alT=setTimeout(decorTerm,120)}).observe(document.body,{attributes:true,attributeFilter:['class']});
 function saveAl(main,fn){const M=TRM();if(!M)return;const k='@al:'+main;const v=Object.assign({add:[],rm:[]},JSON.parse(JSON.stringify(M.get(k)||{})));fn(v);M.set(k,v);try{window.__MEX.save('T:'+k,v)}catch(_){}SIG='';build();decorTerm()}
 document.addEventListener('click',e=>{const t=e.target;if(!t.closest)return;const rm=t.closest('[data-alrm]');const ad=t.closest('[data-aladd]');if(!rm&&!ad)return;e.preventDefault();e.stopImmediatePropagation();const box=t.closest('.kpalias');const main=box.dataset.almain;
   if(rm){const a=rm.dataset.alrm;saveAl(main,v=>{v.add=v.add.filter(x=>base(x)!==base(a));if(!v.rm.includes(base(a)))v.rm.push(base(a))});return}
-  const i=document.createElement('input');i.className='kpalin';i.placeholder='예: 노서아(露西亞)';ad.replaceWith(i);i.focus();
+  const i=document.createElement('input');i.className='kpalin';i.placeholder='같은 단어 (예: 노서아(露西亞))';ad.replaceWith(i);i.focus();
   const done=ok=>{const vs=i.value.split(/[,·]/).map(x=>x.trim()).filter(Boolean);i.onblur=null;if(ok&&vs.length)saveAl(main,v=>{vs.forEach(a=>{v.rm=v.rm.filter(x=>x!==base(a));if(!v.add.some(x=>base(x)===base(a)))v.add.push(a)})});else decorTerm()};
   i.onkeydown=k=>{k.stopPropagation();if(k.key==='Enter'&&!k.isComposing){k.preventDefault();done(true)}else if(k.key==='Escape')done(false)};i.onblur=()=>done(true)},true);
 
@@ -7780,7 +7785,7 @@ document.addEventListener('click',e=>{const t=e.target;if(!t.closest)return;cons
 {const sr=srRun;srRun=function(q){sr(q);build();const qq=String(q||'').trim().toLowerCase();if(!qq)return;const box=$('srres');if(!box)return;
   const hits=Object.entries(AL).filter(([m,L])=>[m,...L.map(base),...L].some(x=>x.toLowerCase().includes(qq))).slice(0,6);if(!hits.length)return;
   hits.forEach(([m,L])=>{box.querySelectorAll('.sri[data-term]').forEach(b=>{if(b.dataset.term===m||OF[b.dataset.term]===m)b.remove()})});
-  const html=`<div class="srgrp sralias" style="--sc:#0e7490"><h4>같은 말</h4>${hits.map(([m,L])=>`<button class="sri gl" data-term="${esc4(m)}"><b>${esc4(m)}<span class="sralc">${L.map(x=>`<i>${esc4(x)}</i>`).join('')}</span></b>${GLOSS[m]&&!ADDED.has(m)?`<span>${esc4(GLOSS[m])}</span>`:''}</button>`).join('')}</div>`;
+  const html=`<div class="srgrp sralias" style="--sc:#0e7490"><h4>같은 단어</h4>${hits.map(([m,L])=>`<button class="sri gl" data-term="${esc4(m)}"><b>${esc4(m)}<span class="sralc">${L.map(x=>`<i>${esc4(x)}</i>`).join('')}</span></b>${GLOSS[m]&&!ADDED.has(m)?`<span>${esc4(GLOSS[m])}</span>`:''}</button>`).join('')}</div>`;
   if(box.querySelector('.srh'))box.innerHTML='';const st=box.querySelector('.srstart,.srrecent');if(st&&st.nextElementSibling)st.after(document.createRange().createContextualFragment(html));else box.insertAdjacentHTML('afterbegin',html)}}
 document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('#srres .sralias [data-term]');if(!b)return;e.preventDefault();e.stopImmediatePropagation();try{closeSearch()}catch(_){}openTerm(b.dataset.term)},true);
 /* 데이터가 바뀌면 다시 */
