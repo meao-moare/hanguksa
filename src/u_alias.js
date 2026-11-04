@@ -27,7 +27,7 @@ let AL={},OF={},SIG='',ADDED=new Set();
 function build(){const M=TRM();const sig=M?JSON.stringify([...M.keys()].filter(k=>k.startsWith('@al:')).map(k=>[k,M.get(k)])):'';if(sig===SIG&&Object.keys(AL).length)return;SIG=sig;
   AL=JSON.parse(JSON.stringify(ALIAS0));if(M)M.forEach((v,k)=>{if(!k.startsWith('@al:')||!v||typeof v!=='object')return;const main=k.slice(4);const cur=AL[main]||[];(v.add||[]).forEach(a=>{if(!cur.some(x=>base(x)===base(a)))cur.push(a)});const rm=new Set((v.rm||[]).map(base));AL[main]=cur.filter(x=>!rm.has(base(x)))});
   OF={};Object.entries(AL).forEach(([m,L])=>L.forEach(a=>{OF[base(a)]=m}));
-  try{ADDED.forEach(k=>{delete GLOSS[k]});ADDED=new Set();Object.entries(OF).forEach(([b,m])=>{if(b.length<2||GLOSS[b])return;const full=(AL[m]||[]).find(x=>base(x)===b)||b;const hj=(full.match(/\((.*)\)/)||[])[1];GLOSS[b]=`「${m}」의 다른 이름${hj?` (${hj})`:''}. 같은 뜻: ${[m,...AL[m].map(base).filter(x=>x!==b)].join(' · ')}`;ADDED.add(b)});GLRE_SET()}catch(_){}}
+  try{ADDED.forEach(k=>{delete GLOSS[k]});ADDED=new Set();Object.entries(OF).forEach(([b,m])=>{if(b.length<2||GLOSS[b])return;const full=(AL[m]||[]).find(x=>base(x)===b)||b;const hj=(full.match(/\((.*)\)/)||[])[1];GLOSS[b]=`= ${m}${hj?`  ${hj}`:''}`;ADDED.add(b)});GLRE_SET()}catch(_){}}
 build();
 window.__ALIAS=()=>{build();return {AL,OF}};
 
@@ -48,7 +48,7 @@ document.addEventListener('click',e=>{const t=e.target;if(!t.closest)return;cons
 {const sr=srRun;srRun=function(q){sr(q);build();const qq=String(q||'').trim().toLowerCase();if(!qq)return;const box=$('srres');if(!box)return;
   const hits=Object.entries(AL).filter(([m,L])=>[m,...L.map(base),...L].some(x=>x.toLowerCase().includes(qq))).slice(0,6);if(!hits.length)return;
   hits.forEach(([m,L])=>{box.querySelectorAll('.sri[data-term]').forEach(b=>{if(b.dataset.term===m||OF[b.dataset.term]===m)b.remove()})});
-  const html=`<div class="srgrp sralias" style="--sc:#0e7490"><h4>같은 뜻 다른 이름</h4>${hits.map(([m,L])=>`<button class="sri gl" data-term="${esc4(m)}"><b>${esc4(m)}</b><span>다른 이름: ${L.map(esc4).join(' · ')}</span></button>`).join('')}</div>`;
+  const html=`<div class="srgrp sralias" style="--sc:#0e7490"><h4>같은 말</h4>${hits.map(([m,L])=>`<button class="sri gl" data-term="${esc4(m)}"><b>${esc4(m)}<span class="sralc">${L.map(x=>`<i>${esc4(x)}</i>`).join('')}</span></b>${GLOSS[m]&&!ADDED.has(m)?`<span>${esc4(GLOSS[m])}</span>`:''}</button>`).join('')}</div>`;
   if(box.querySelector('.srh'))box.innerHTML='';const st=box.querySelector('.srstart,.srrecent');if(st&&st.nextElementSibling)st.after(document.createRange().createContextualFragment(html));else box.insertAdjacentHTML('afterbegin',html)}}
 document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('#srres .sralias [data-term]');if(!b)return;e.preventDefault();e.stopImmediatePropagation();try{closeSearch()}catch(_){}openTerm(b.dataset.term)},true);
 /* 데이터가 바뀌면 다시 */
