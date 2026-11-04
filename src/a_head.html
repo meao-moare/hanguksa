@@ -2112,3 +2112,28 @@ body.medit #trbody .hn:hover>.hngrip,body.medit #trbody .hn.hndrag>.hngrip{opaci
 .trut [data-tralign]{font-size:11.5px!important}
 </style>
 <style>#trbody>.trcard{isolation:isolate}#trbody.trboard>.trcard{background-clip:padding-box}</style>
+<style>#trreset .trur{display:inline-flex;align-items:center;gap:4px}#trreset .trur svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}</style>
+<style>
+#pegbtn{position:absolute;right:12px;top:222px;z-index:6;width:38px;height:44px;padding:0;border:1px solid var(--rule);border-radius:12px;background:var(--panel);box-shadow:0 2px 8px rgb(0 0 0/.1);cursor:grab;touch-action:none;display:grid;place-items:center;overflow:hidden}
+#pegbtn img{width:34px;height:auto;pointer-events:none;user-select:none;-webkit-user-drag:none}
+#pegbtn.out img{opacity:.25}
+#pegbtn:hover{border-color:color-mix(in srgb,var(--seal) 40%,var(--rule))}
+#pegfly{position:fixed;z-index:9500;width:60px;height:auto;pointer-events:none;filter:drop-shadow(0 4px 6px rgb(0 0 0/.25))}
+#pegshadow{position:fixed;z-index:9400;width:28px;height:10px;border-radius:50%;background:rgb(0 0 0/.25);pointer-events:none}
+#pegshadow[hidden]{display:none}
+.pegdot{fill:color-mix(in srgb,var(--kc) 35%,transparent);stroke:var(--kc)}
+.pegstand{pointer-events:none}
+#pegpop{position:fixed;z-index:9000;background:var(--panel);border:1px solid var(--rule);border-radius:14px;box-shadow:0 12px 30px rgb(0 0 0/.18);padding:8px;max-height:60vh;overflow:auto}
+#pegpop[hidden]{display:none}
+#pegpop .pph{display:flex;align-items:center;justify-content:space-between;padding:2px 4px 6px}
+#pegpop .pph b{font-size:13px;color:var(--muted)}
+#pegpop .ppx{border:0;background:none;font-size:18px;cursor:pointer;color:var(--muted)}
+#pegpop .ppl{display:flex;flex-direction:column;gap:4px}
+#pegpop .ppi{display:grid;grid-template-columns:1fr auto;gap:0 8px;text-align:left;font:inherit;border:1px solid var(--rule);border-left:4px solid var(--kc);background:var(--panel);border-radius:10px;padding:6px 10px;cursor:pointer;color:var(--ink)}
+#pegpop .ppi:hover{background:color-mix(in srgb,var(--kc) 7%,var(--panel))}
+#pegpop .ppi b{font-size:14px}
+#pegpop .ppi span{grid-column:1;font-size:12px;color:var(--kc)}
+#pegpop .ppi em{grid-column:2;grid-row:1/3;align-self:center;font-style:normal;font-size:12px;color:var(--muted)}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]) #pegbtn{background:#f3f4f6}}
+:root[data-theme=dark] #pegbtn{background:#f3f4f6}
+</style>
