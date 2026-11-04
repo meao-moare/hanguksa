@@ -2065,3 +2065,33 @@ body.pen-gl span.mul.gw:hover{text-decoration:line-through!important}
 .trut .trmv{touch-action:none}
 #trbody>.trcard.usz,#trbody>.trcol>.trcard{position:relative}
 </style>
+<style>
+/* 자유 배치 */
+#trbody.trboard{position:relative;display:block!important}
+#trbody.trboard>.trcard{position:absolute!important;margin:0!important;max-width:none!important}
+#trbody.trboard>.trcard:not(.usz){width:auto}
+.trcard.trdrag2{opacity:.85;box-shadow:0 12px 30px rgb(0 0 0/.18)!important;z-index:5}
+/* 안쪽 칸 자유 배치 */
+.tfin{position:relative;margin:6px 0 4px;min-height:40px}
+.tfin>svg.tfl{position:absolute;left:0;top:0;pointer-events:none;color:color-mix(in srgb,var(--trc) 55%,transparent);overflow:visible}
+.tfin>svg.tfl line{stroke:currentColor;stroke-width:2}
+.tfin>.hn{position:absolute!important;margin:0!important;box-sizing:border-box;flex:none!important}
+.hn{position:relative}
+body.medit #trbody .hn{cursor:grab;touch-action:none;user-select:none}
+.hn.hndrag{cursor:grabbing;box-shadow:0 8px 20px rgb(0 0 0/.15);z-index:4}
+.hngrip{position:absolute;right:-4px;top:50%;transform:translateY(-50%);width:9px;height:26px;border-radius:5px;background:color-mix(in srgb,var(--trc) 50%,var(--panel));border:1px solid var(--panel);cursor:ew-resize;touch-action:none;opacity:.0;transition:opacity .12s;z-index:2}
+body.medit #trbody .hn:hover>.hngrip,body.medit #trbody .hn.hndrag>.hngrip{opacity:1}
+@media (hover:none){body.medit #trbody .hngrip{opacity:.8}}
+#trreset{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:8px 0 6px;font-size:12.5px;color:var(--muted)}
+#trreset button{font:inherit;font-size:12.5px;font-weight:600;border:1px solid var(--rule);background:var(--panel);color:var(--ink);border-radius:999px;padding:4px 12px;cursor:pointer}
+</style>
+<style>#v-ty .rhead{display:none!important}#tybody .lawl em{display:none!important}#tybody{padding-top:14px}</style>
+<style>
+#tybody .tyli{cursor:pointer;border-radius:10px}
+#tybody .tyli:hover{background:color-mix(in srgb,var(--ink) 4%,transparent)}
+#tybody .tyli b{text-decoration:none}
+.tyol{margin:4px 0 0;padding-left:22px;display:flex;flex-direction:column;gap:6px}
+.tyol li{line-height:1.6}
+.tywho{color:var(--muted);font-size:13.5px}
+</style>
+<style>#tybody .tyli>div>b .gw{color:inherit!important;font-weight:inherit;background:none!important}#tybody .tyli>div>b{cursor:pointer}</style>
