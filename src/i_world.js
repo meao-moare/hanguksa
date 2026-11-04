@@ -39,7 +39,8 @@ var chG=$('chn'),chKey='',chItems=[];
 function updateChina(t){const act=CHN.filter(c=>c[0]<=t&&t<c[1]&&!(c[3]==='SOUTH'&&t>=1271)).filter((c,i,a)=>!(c[2]==='남송'&&a.some(x=>x[2]==='원')));
   const key=pos.i+':'+act.map(c=>c[2]).join();if(key===chKey)return;chKey=key;
   chG.innerHTML='';chItems.forEach(o=>{o.g.remove();dropOV(o)});chItems=[];
-  const nbNames=FRAMES[pos.i].nb.map(n=>n[0]).join(' ');
+  {const cur=act.find(c=>!c[4]);try{nbItems.forEach(o=>{if(!o.t)return;if(o.orig==null)o.orig=o.t.textContent;if(o.orig==='중국')o.t.textContent=cur?cur[2]:'중국'})}catch(_){}}
+  const nbNames=FRAMES[pos.i].nb.map(n=>n[0]==='중국'?((act.find(c=>!c[4])||[0,0,'중국'])[2]):n[0]).join(' ');
   act.forEach(c=>{const p=el('path',{class:'chf'+(c[4]?' n':''),d:P(CH_SH[c[3]])},chG);
     const short=c[2].replace(/\(.*\)/,'');if(nbNames.includes(short))return;
     const g=el('g',{class:'nb chl'},$('ovl'));const tx=el('text',{},g);tx.textContent=c[2];const L=CH_LAB[c[3]];const o=ovItem(g,X(L[0]),Y(L[1]));o.kind='nb';o.t=tx;chItems.push(o)});

@@ -4,15 +4,15 @@
 const $=id=>document.getElementById(id);
 const esc3=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const MISSIONS=[
- {y:'1607~1811',n:'조선 통신사',to:'일본 (에도 막부)',by:'',d:'임진왜란 뒤 국교를 다시 열고 12차례 일본에 보낸 외교 사절. 조선의 학문과 예술을 일본에 전하였다.'},
- {y:'17~19세기',n:'연행사',to:'청 (베이징)',by:'박지원, 홍대용',d:'해마다 청에 보낸 사절. 서양 문물과 청의 발전을 보고 돌아와 북학 사상이 싹텄다.'},
- {y:'1876',n:'제1차 수신사',to:'일본',by:'김기수',d:'강화도 조약 뒤 일본에 파견. 『일동기유』를 남겼다.',ev:'제1차 수신사'},
- {y:'1880',n:'제2차 수신사',to:'일본',by:'김홍집',d:'황준헌의 『조선책략』을 들여와 미국과 수교 논의가 일어났다.',ev:'제2차 수신사'},
- {y:'1881',n:'조사 시찰단',to:'일본',by:'박정양, 어윤중, 홍영식',d:'신사 유람단이라고도 한다. 일본의 근대 시설과 제도를 비밀리에 시찰하였다.',ev:'조사 시찰단'},
- {y:'1881',n:'영선사',to:'청 (톈진)',by:'김윤식',d:'근대 무기 제조 기술을 배우러 감. 돌아와 기기창(1883)을 세웠다.',ev:'영선사'},
- {y:'1883',n:'보빙사',to:'미국',by:'민영익, 홍영식, 유길준',d:'조미 수호 통상 조약 뒤 미국에 간 최초의 서양 사절단. 유길준은 『서유견문』을 썼다.',ev:'보빙사'},
- {y:'1907',n:'헤이그 특사',to:'네덜란드 (만국 평화 회의)',by:'이상설, 이준, 이위종',d:'을사늑약이 무효임을 알리려 하였으나 회의 참석을 거부당함. 일제는 이를 구실로 고종을 강제 퇴위시켰다.',ev:'헤이그 특사'}
+ {w:'통신사',y:'1607~1811',to:'일본 (에도 막부)',d:'임진왜란 뒤 국교를 다시 열고 12차례 일본에 보낸 외교 사절.'},
+ {w:'연행사',y:'17~19세기',to:'청 (베이징)',by:'박지원, 홍대용',d:'해마다 청에 보낸 사절. 서양 문물과 청의 발전을 보고 돌아와 북학 사상이 싹텄다.'},
+ {w:'수신사',y:'1876 · 1880',to:'일본',by:'김기수, 김홍집'},
+ {w:'조사 시찰단',y:'1881',to:'일본',by:'박정양, 어윤중, 홍영식'},
+ {w:'영선사',y:'1881',to:'청 (톈진)',by:'김윤식'},
+ {w:'보빙사',y:'1883',to:'미국',by:'민영익, 홍영식, 유길준'},
+ {w:'헤이그 특사',y:'1907',to:'네덜란드 (만국 평화 회의)',by:'이상설, 이준, 이위종'}
 ];
+try{if(typeof GLOSS!=='undefined'&&!GLOSS['연행사']){GLOSS['연행사']='조선이 청의 수도 베이징(연경)에 해마다 보낸 사절. 사신을 따라간 박지원·홍대용 등이 청의 문물을 보고 북학 사상을 펼쳤다.';try{GLRE_SET()}catch(_){}}}catch(_){}
 const evId=t=>{try{const e=EVENTS.find(x=>x.t&&x.t.includes(t));return e?e.id:null}catch(_){return null}};
 
 /* 1. 사절단·조직·단체 화면 */
@@ -23,8 +23,8 @@ const evId=t=>{try{const e=EVENTS.find(x=>x.t&&x.t.includes(t));return e?e.id:nu
  const ty=$('tab-ty');(ty||$('tab-tr')).after(tab);tab.textContent='사절단·조직·단체 ▾'}
 function ogShow(){const b=$('ogbody');if(!b||b.dataset.built)return;b.dataset.built=1;
   let orgs='';try{orgs=orgsHTML()}catch(_){}
-  b.innerHTML=`<section class="ogsec" id="og-ms"><h2 class="ogh"><span>사절단</span><small>${MISSIONS.length}개</small></h2><ol class="ogml">${MISSIONS.map(m=>{const id=m.ev?evId(m.ev):null;return `<li${id?` data-evpage="${id}" class="oglink"`:''}><span class="ogy">${esc3(m.y)}</span><div><b>${esc3(m.n)}</b><i class="ogto">${esc3(m.to)}</i>${m.by?`<em>${esc3(m.by)}</em>`:''}<p>${typeof glx==='function'?glx(m.d):esc3(m.d)}</p></div></li>`}).join('')}</ol></section><section class="ogsec" id="og-or"><h2 class="ogh"><span>조직 · 단체</span></h2><div class="ogorgs">${orgs}</div></section>`;
-  b.querySelectorAll('li[data-evpage]').forEach(li=>li.onclick=ev=>{if(ev.target.closest('[data-gl],[data-person],button'))return;try{openEvPage(li.dataset.evpage)}catch(_){}});
+  b.innerHTML=`<section class="ogsec" id="og-ms"><h2 class="ogh"><span>사절단</span><small>${MISSIONS.length}개</small></h2><ol class="ogml">${MISSIONS.map(m=>{const def=(typeof GLOSS!=='undefined'&&GLOSS[m.w])||m.d||'';let evs=[];try{evs=EVENTS.filter(e=>e.t&&e.t.includes(m.w.replace(/^조선 /,''))).sort((a,b)=>a.T-b.T).slice(0,4)}catch(_){}return `<li data-ogw="${esc3(m.w)}" class="oglink"><span class="ogy">${esc3(m.y)}</span><div><b>${esc3(m.w)}</b><i class="ogto">${esc3(m.to)}</i>${m.by?`<em>${esc3(m.by)}</em>`:''}<p>${typeof glx==='function'?glx(def,[m.w]):esc3(def)}</p>${evs.length?`<span class="ogev">${evs.map(e=>`<button type="button" data-evpage="${e.id}">${esc3(e.t)}</button>`).join('')}</span>`:''}</div></li>`}).join('')}</ol></section><section class="ogsec" id="og-or"><h2 class="ogh"><span>조직 · 단체</span></h2><div class="ogorgs">${orgs}</div></section>`;
+  b.querySelectorAll('li[data-ogw]').forEach(li=>li.onclick=ev=>{if(ev.target.closest('[data-gl],[data-person],button'))return;try{openTerm(li.dataset.ogw)}catch(_){}});
   try{linkPeople&&linkPeople(b)}catch(_){}try{glossify&&glossify(b)}catch(_){}}
 $('ogjump')&&$('ogjump').addEventListener('click',e=>{const x=e.target.closest('[data-ogj]');if(!x)return;const s=$('og-'+x.dataset.ogj),rd=$('ogread');if(s&&rd)rd.scrollTo({top:s.offsetTop-rd.querySelector('.rhead').offsetHeight-6,behavior:'smooth'})});
 
