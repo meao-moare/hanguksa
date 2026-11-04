@@ -2436,6 +2436,8 @@ body.trpgon:not(.trix) #trread{overflow:hidden!important}
 body.medit #trbody.trpg>.trcard.trpon,#trbody.trpg>.trcard.trpon:has(.tfin){justify-content:flex-start!important}
 #tsmenu .tdkgl{gap:4px!important}#tsmenu .tdkgl .trmg{display:flex!important;flex-wrap:wrap;align-items:center;gap:0 2px}#tsmenu .tdkgl .trmh{width:100%}#tsmenu .tdkgl .trmk{padding:3px 8px!important}
 #trpbar .tpx,#trpbar .tpgo{display:none!important}#trpbar .tpg{margin-left:0}
+.kpprev{border:1.5px dashed color-mix(in srgb,#ca8a04 55%,var(--rule));border-radius:12px;padding:10px 14px;background:color-mix(in srgb,#fde68a 18%,var(--panel));margin:6px 0 14px}.kpprev h3{font-size:13px;margin:0 0 4px;color:#a16207}.kpprev h3 small{font-weight:500;color:var(--muted);margin-left:6px}
+.kpprev .kpprevh{display:block;font-size:13px;margin:0 0 4px;color:#a16207;font-weight:800}.kpprev .kpprevh small{font-weight:500;color:var(--muted);margin-left:6px}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/flubber@0.4.2/build/flubber.min.js"></script>
 <script>
@@ -6531,7 +6533,7 @@ document.addEventListener('click',e=>{const c=e.target.closest&&e.target.closest
  const save=(k,v,extra,noH)=>{if(!DB)return;{const e0=v==null||v===''||(Array.isArray(v)&&!v.length)||v===0;if(!noH){UND.push({k,prev:CUR.has(k)?JSON.parse(JSON.stringify(CUR.get(k))):null,next:e0?null:Object.assign({k,v},extra||{})});if(UND.length>200)UND.shift();RED.length=0}if(e0)CUR.delete(k);else CUR.set(k,Object.assign({k,v},extra||{}))}const r=DB.collection('mine').doc(hid(k));const empty=v==null||v===''||(Array.isArray(v)&&!v.length)||v===0;(empty?r.set({k,del:true,at:Date.now()}):r.set(Object.assign({k,v,at:Date.now()},extra||{}))).then(()=>{}).catch(()=>toast('저장 못 함'))};
  const toast=t=>{if(document.querySelector('.xing'))return;let b=$('mtoast');if(!b){b=document.createElement('div');b.id='mtoast';document.body.appendChild(b)}b.textContent=t;b.classList.add('on');clearTimeout(b.t);b.t=setTimeout(()=>b.classList.remove('on'),900)};
  /* 글씨 바꾸기 적용 */
- const SIMP=el=>!el.closest('#kpage')&&!!el.closest('#dcbody,.evd,#v-tl,#v-pp,#glpop,#pppop,#v-map,#v-rl,.snote');
+ const SIMP=el=>(!!el.closest('.kpprev')||!el.closest('#kpage'))&&!!el.closest('#dcbody,.evd,#v-tl,#v-pp,#glpop,#pppop,#v-map,#v-rl,.snote,.kpprev');
  const applyText=root=>{applyStyle(root);try{inlTags(root)}catch(_){}if(!ME.x.size&&!(root.nodeType===1?root:document.body).querySelector('.xed'))return;{const w=document.createTreeWalker(root.nodeType===1?root:document.body,NodeFilter.SHOW_TEXT,{acceptNode:n=>{const p=n.parentNode;if(!p)return 2;if(p.closest&&p.closest('svg'))return p.tagName==='text'||p.tagName==='tspan'?1:2;return (p.closest&&p.closest(SKIP+',.mseg'))||p.isContentEditable?2:1}});const SM=ME.xs.get('S');const sv=(n,t)=>SM&&SM.has(t)&&n.parentNode&&n.parentNode.closest&&SIMP(n.parentNode)?SM.get(t):null;const L=[];let n;while((n=w.nextNode())){const t=n.nodeValue.trim();if(t&&(ME.xg.has(t)||sv(n,t)!=null))L.push([n,t])}
    L.forEach(([n,t])=>{const v=sv(n,t)??ME.xg.get(t);n.nodeValue=n.nodeValue.replace(t,v);const p=n.parentNode;if(p&&v.includes('#'))setTimeout(()=>{try{inlTags(p)}catch(_){}},0);if(p&&p.style&&(v.includes('\n')||/^ /m.test(v))){p.style.whiteSpace='pre-wrap';setTimeout(()=>{try{if(p.closest&&p.matches(SEL))lineify(p)}catch(_){}},0)}if(p&&p.dataset&&!p.dataset.xo&&p.textContent.trim()===v){p.dataset.xo=t;p.classList.add('xed')}})}const list=root.matches&&root.matches(SEL)?[root,...root.querySelectorAll(SEL)]:[...root.querySelectorAll(SEL)];list.forEach(el=>{if(el.isContentEditable||el.closest(SKIP))return;if(el.querySelector('div,p,h1,h2,h3,h4,ul,ol,li,section,dl,table,svg'))return;if(el.querySelector('button')&&!(el.closest('#trbody .hn')&&!el.querySelector('button:not(.pl)')))return;const o=el.dataset.xo||el.textContent.trim();if(!o)return;let v=ME.xg.get(o);{const SM2=ME.xs.get('S');if(SM2&&SM2.has(o)&&SIMP(el))v=SM2.get(o)}if(ME.xs.size&&el.closest('.evd,#kpage,#v-tl,#trbody .hn')){const it=itemOf(el);const m=it&&ME.xs.get(it);if(m&&m.has(o))v=m.get(o);else if(LBLT.has(o))v=null}if(v==null){if(el.classList.contains('xed')&&el.dataset.xo){el.textContent=el.dataset.xo;el.classList.remove('xed');el.style.whiteSpace=''}return}if(el.dataset.xo===o&&TXL(el)===v)return;el.dataset.xo=o;el.textContent=v;el.classList.add('xed');if(v.includes('\n')||/^ /m.test(v))el.style.whiteSpace='pre-wrap';if(v.includes('\n'))try{lineify(el)}catch(_){};try{hrify(el);lineify(el)}catch(_){}if(v.includes('#'))try{inlTags(el)}catch(_){}})};
  function lineify(el){if(!el||!el.querySelector||el.isContentEditable||el.querySelector('.mseg,.mln,div,p,li,section')||el.closest('.msec'))return;const t=el.textContent;if(!t.includes('\n'))return;el.innerHTML=t.split('\n').map(l=>`<span class="mln">${l.trim()?(typeof glx==='function'?glx(l):E(l)).replace(/^ +/,m=>'\u00a0'.repeat(m.length)):'<br>'}</span>`).join('');el.style.whiteSpace='';lnAlign(el)}
@@ -7682,6 +7684,19 @@ if(store.get('view','map')==='og')setTimeout(()=>{showView('og')},0);
 /* 검색 결과: 상자 어디를 눌러도 그 결과로 */
 document.addEventListener('click',e=>{const sri=e.target.closest&&e.target.closest('#srres .sri');if(!sri)return;const inner=e.target.closest('[data-person],[data-gl],.pl,.gw,.pw,button');if(!inner||inner===sri||!sri.contains(inner))return;e.preventDefault();e.stopImmediatePropagation();sri.click()},true);
 document.addEventListener('click',e=>{const sri=e.target.closest&&e.target.closest('#srres .sri[data-person]');if(!sri)return;e.preventDefault();e.stopImmediatePropagation();const n=sri.dataset.person;try{closeSearch()}catch(_){}try{document.querySelectorAll('#pppop,.glpop').forEach(x=>x.hidden=true)}catch(_){}try{openPerson(n)}catch(_){}},true);
+/* 자세한 페이지: 고치기 모드에서 '미리보기'(간단 설명) 칸 — 고치면 카드·팝업의 간단 설명이 바뀜 */
+{const $$=id=>document.getElementById(id);
+ const shortOf=(kind,k)=>{if(kind==='t')return (typeof GLOSS!=='undefined'&&GLOSS[k])||'';try{if(typeof PINFO!=='undefined'&&PINFO[k])return PINFO[k];if(typeof GLOSS!=='undefined'&&GLOSS[k])return GLOSS[k];const P=PEOPLE.get(k);if(P)return P.evs.slice().sort((a,c)=>a.T-c.T).slice(0,2).map(e=>`${shortYear(e)} ${e.t}`).join(' · ')}catch(_){}return ''};
+ const esc5=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+ function prev(){const p=$$('kpage');if(!p||p.hidden)return;const old=p.querySelector('.kpprev');const ed=document.body.classList.contains('medit')&&window.__MEX&&window.__MEX.own&&window.__MEX.own();
+   const lab=(p.querySelector('.kpbar span')||{}).textContent||'';const kind=/용어/.test(lab)?'t':/인물/.test(lab)?'p':'';const h=p.querySelector('.kpin .kph h1');
+   if(!ed||!kind||!h){if(old)old.remove();return}const k=(h.dataset.xo||h.textContent).trim();const o=shortOf(kind,k);if(!o){if(old)old.remove();return}
+   if(old&&old.dataset.k===k)return;if(old)old.remove();
+   const html=`<div class="kpprev" data-k="${esc5(k)}"><b class="kpprevh">미리보기 <small>카드와 팝업에 뜨는 간단 설명이에요. 눌러서 고치세요</small></b><p class="kpd kpprevt">${esc5(o)}</p></div>`;
+   const at=p.querySelector('.kpin .kpalias')||p.querySelector('.kpin .kpsub')||p.querySelector('.kpin .kph');at.insertAdjacentHTML('afterend',html);try{applyText&&applyText(p.querySelector('.kpprev'))}catch(_){}}
+ let t=0;new MutationObserver(()=>{clearTimeout(t);t=setTimeout(prev,150)}).observe(document.body,{attributes:true,attributeFilter:['class']});
+ new MutationObserver(()=>{clearTimeout(t);t=setTimeout(prev,150)}).observe($$('kpage'),{childList:true});
+}
 
 /* ───────── 한자 누르면 뜻·음 ───────── */
 {

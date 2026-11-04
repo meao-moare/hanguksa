@@ -92,3 +92,16 @@ if(store.get('view','map')==='og')setTimeout(()=>{showView('og')},0);
 /* 검색 결과: 상자 어디를 눌러도 그 결과로 */
 document.addEventListener('click',e=>{const sri=e.target.closest&&e.target.closest('#srres .sri');if(!sri)return;const inner=e.target.closest('[data-person],[data-gl],.pl,.gw,.pw,button');if(!inner||inner===sri||!sri.contains(inner))return;e.preventDefault();e.stopImmediatePropagation();sri.click()},true);
 document.addEventListener('click',e=>{const sri=e.target.closest&&e.target.closest('#srres .sri[data-person]');if(!sri)return;e.preventDefault();e.stopImmediatePropagation();const n=sri.dataset.person;try{closeSearch()}catch(_){}try{document.querySelectorAll('#pppop,.glpop').forEach(x=>x.hidden=true)}catch(_){}try{openPerson(n)}catch(_){}},true);
+/* 자세한 페이지: 고치기 모드에서 '미리보기'(간단 설명) 칸 — 고치면 카드·팝업의 간단 설명이 바뀜 */
+{const $$=id=>document.getElementById(id);
+ const shortOf=(kind,k)=>{if(kind==='t')return (typeof GLOSS!=='undefined'&&GLOSS[k])||'';try{if(typeof PINFO!=='undefined'&&PINFO[k])return PINFO[k];if(typeof GLOSS!=='undefined'&&GLOSS[k])return GLOSS[k];const P=PEOPLE.get(k);if(P)return P.evs.slice().sort((a,c)=>a.T-c.T).slice(0,2).map(e=>`${shortYear(e)} ${e.t}`).join(' · ')}catch(_){}return ''};
+ const esc5=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+ function prev(){const p=$$('kpage');if(!p||p.hidden)return;const old=p.querySelector('.kpprev');const ed=document.body.classList.contains('medit')&&window.__MEX&&window.__MEX.own&&window.__MEX.own();
+   const lab=(p.querySelector('.kpbar span')||{}).textContent||'';const kind=/용어/.test(lab)?'t':/인물/.test(lab)?'p':'';const h=p.querySelector('.kpin .kph h1');
+   if(!ed||!kind||!h){if(old)old.remove();return}const k=(h.dataset.xo||h.textContent).trim();const o=shortOf(kind,k);if(!o){if(old)old.remove();return}
+   if(old&&old.dataset.k===k)return;if(old)old.remove();
+   const html=`<div class="kpprev" data-k="${esc5(k)}"><b class="kpprevh">미리보기 <small>카드와 팝업에 뜨는 간단 설명이에요. 눌러서 고치세요</small></b><p class="kpd kpprevt">${esc5(o)}</p></div>`;
+   const at=p.querySelector('.kpin .kpalias')||p.querySelector('.kpin .kpsub')||p.querySelector('.kpin .kph');at.insertAdjacentHTML('afterend',html);try{applyText&&applyText(p.querySelector('.kpprev'))}catch(_){}}
+ let t=0;new MutationObserver(()=>{clearTimeout(t);t=setTimeout(prev,150)}).observe(document.body,{attributes:true,attributeFilter:['class']});
+ new MutationObserver(()=>{clearTimeout(t);t=setTimeout(prev,150)}).observe($$('kpage'),{childList:true});
+}
