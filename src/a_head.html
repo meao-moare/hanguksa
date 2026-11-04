@@ -2143,3 +2143,11 @@ body.medit #trbody .hn:hover>.hngrip,body.medit #trbody .hn.hndrag>.hngrip{opaci
 #pegshadow{left:0;top:0;width:22px!important;height:8px!important;will-change:transform;transition:opacity .1s}
 #pegbtn img{width:28px!important}
 </style>
+<style>
+#trfloat{position:fixed;right:18px;bottom:20px;z-index:60;display:flex;gap:6px;background:var(--panel);border:1px solid var(--rule);border-radius:14px;padding:5px;box-shadow:0 6px 18px rgb(0 0 0/.14)}
+body:not(.ontr) #trfloat{display:none}
+#trfloat button{width:40px;height:40px;border:0;border-radius:10px;background:none;cursor:pointer;color:var(--ink);display:grid;place-items:center}
+#trfloat button:hover{background:color-mix(in srgb,var(--ink) 7%,transparent)}
+#trfloat svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+</style>
+<style>#pegstand{position:fixed;left:0;top:0;width:34px;height:auto;z-index:20;pointer-events:none;will-change:transform}#pegstand[hidden]{display:none}</style>

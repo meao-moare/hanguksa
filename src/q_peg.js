@@ -6,13 +6,17 @@ const PEG_IMG={"stand": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABsC
  const esc_=t=>String(t==null?'':t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
  const toLL=(cx,cy)=>{const pt=svg.createSVGPoint();pt.x=cx;pt.y=cy;const u=pt.matrixTransform(svg.getScreenCTM().inverse());return {x:u.x,y:u.y,lon:u.x/KX+123,lat:44-u.y/100}};
  const NS='http://www.w3.org/2000/svg';let layer=null;const pop=document.createElement('div');pop.id='pegpop';pop.hidden=true;document.body.appendChild(pop);
- const clear=()=>{if(layer){layer.remove();layer=null}pop.hidden=true};
+ const st=document.createElement('img');st.id='pegstand';st.alt='';st.src=PEG_IMG.up;st.hidden=true;document.body.appendChild(st);let SP=null,loop=0;
+ let LK='';const track=()=>{loop=0;if(!SP)return;{const v=svg.viewBox.baseVal;const k=v.x+','+v.y+','+v.width+','+svg.clientWidth+','+SP.x;if(k===LK){loop=requestAnimationFrame(track);return}LK=k}const pt=svg.createSVGPoint();pt.x=SP.x;pt.y=SP.y;const q=pt.matrixTransform(svg.getScreenCTM());const r=svg.getBoundingClientRect();const vis=q.x>=r.left&&q.x<=r.right&&q.y>=r.top&&q.y<=r.bottom+40;st.hidden=!vis;st.style.transform=`translate3d(${q.x-17}px,${q.y-37}px,0)`;
+   if(layer){const upx=svg.viewBox.baseVal.width/svg.clientWidth;layer.querySelectorAll('.pegdot').forEach(c=>{c.setAttribute('r',8*upx);c.style.strokeWidth=2.5*upx})}loop=requestAnimationFrame(track)};
+ const startTrack=P=>{SP=P;LK='';if(!loop)loop=requestAnimationFrame(track)};
+ const clear=()=>{if(layer){layer.remove();layer=null}pop.hidden=true;SP=null;st.hidden=true;if(loop){cancelAnimationFrame(loop);loop=0}};
  function show(cx,cy){const P=toLL(cx,cy);const vb=svg.viewBox.baseVal;const upx=vb.width/svg.clientWidth;const visDeg=svg.clientWidth*upx/KX;
    const L=(typeof RLITEMS==='function'?RLITEMS():[]).filter(e=>e.ll&&e.ll.length===2);const dist=e=>{const dx=(e.ll[0]-P.lon)*Math.cos(P.lat*Math.PI/180)*111,dy=(e.ll[1]-P.lat)*111;return Math.hypot(dx,dy)};
    const R=Math.max(25,visDeg*111*0.12);let near=L.map(e=>[e,dist(e)]).sort((a,b)=>a[1]-b[1]);let hits=near.filter(x=>x[1]<=R).slice(0,12);const far=!hits.length;if(far)hits=near.slice(0,3);
    clear();layer=document.createElementNS(NS,'g');layer.setAttribute('class','peglayer');svg.appendChild(layer);
    const r0=8*upx;hits.forEach(([e])=>{const c=document.createElementNS(NS,'circle');c.setAttribute('cx',(e.ll[0]-123)*KX);c.setAttribute('cy',(44-e.ll[1])*100);c.setAttribute('r',r0);c.setAttribute('class','pegdot');c.style.setProperty('--kc',(typeof RL_COL!=='undefined'&&RL_COL[HCLS(e)[0]])||'#2563eb');c.style.strokeWidth=2.5*upx;layer.appendChild(c)});
-   const w=34*upx,h=w*1.08;const g=document.createElementNS(NS,'image');g.setAttribute('href',PEG_IMG.up);g.setAttribute('x',P.x-w/2);g.setAttribute('y',P.y-h);g.setAttribute('width',w);g.setAttribute('height',h);g.setAttribute('class','pegstand');layer.appendChild(g);
+   startTrack({x:P.x,y:P.y});
    pop.innerHTML=`<div class="pph"><b>${far?'가까운 곳엔 없어요 · 제일 가까운 곳':'이 근처 유물·유적'}</b><button type="button" class="ppx" aria-label="닫기">×</button></div><div class="ppl">${hits.map(([e,dk])=>{const [a,b]=HCLS(e);return `<button type="button" class="ppi" data-pegrl="${esc_(String(e.id))}" style="--kc:${(typeof RL_COL!=='undefined'&&RL_COL[a])||'#2563eb'}"><b>${esc_(rlName(e))}</b><span>${esc_(RLNAT(e))} · ${esc_(a+(b?' · '+b:''))}</span><em>${dk<1?'바로 여기':Math.round(dk)+'km'}</em></button>`}).join('')||'<p>지도에 위치가 있는 유물·유적이 아직 없어요</p>'}</div>`;
    pop.hidden=false;const W=innerWidth,pw=Math.min(300,W-24);pop.style.width=pw+'px';const mr=svg.getBoundingClientRect();let x=cx-pw-50,y=cy-60;if(x<mr.left+8)x=cx+50;if(x+pw>W-12)x=Math.max(12,W-pw-12);pop.style.left=x+'px';const ph=pop.offsetHeight;pop.style.top=Math.max(70,Math.min(innerHeight-ph-12,y))+'px'}
  pop.addEventListener('click',e=>{if(e.target.closest('.ppx')){clear();return}const b=e.target.closest('[data-pegrl]');if(b){const it=RLITEMS().find(x=>String(x.id)===b.dataset.pegrl);if(it)rlOpen(it)}});
@@ -26,8 +30,8 @@ const PEG_IMG={"stand": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABsC
      sh.animate([{transform:'scale(.4)',opacity:.3},{transform:'scale(1.15)',opacity:1,offset:.55},{transform:'scale(.9)',offset:.75},{transform:'scale(1)',opacity:1}],{duration:560});
      fall.onfinish=()=>{const U=toLL(X,Y);fl.remove();sh.remove();
        /* 착지한 자리에 세워 두고 그쪽으로 확대 */
-       clear();layer=document.createElementNS(NS,'g');layer.setAttribute('class','peglayer');svg.appendChild(layer);const upx0=svg.viewBox.baseVal.width/svg.clientWidth;const w0=34*upx0,h0=w0*1.08;const g0=document.createElementNS(NS,'image');g0.setAttribute('href',PEG_IMG.up);g0.setAttribute('x',U.x-w0/2);g0.setAttribute('y',U.y-h0);g0.setAttribute('width',w0);g0.setAttribute('height',h0);g0.setAttribute('class','pegstand');layer.appendChild(g0);
-       const fin=()=>{const pt=svg.createSVGPoint();pt.x=U.x;pt.y=U.y;const q=pt.matrixTransform(svg.getScreenCTM());show(q.x,q.y);const st=svg.querySelector('.pegstand');if(st)st.animate([{transform:'translateY(0)'},{transform:'translateY(-4px)'},{transform:'translateY(0)'}],{duration:450,iterations:2})};
+       clear();startTrack({x:U.x,y:U.y});
+       const fin=()=>{const pt=svg.createSVGPoint();pt.x=U.x;pt.y=U.y;const q=pt.matrixTransform(svg.getScreenCTM());show(q.x,q.y);st.animate([{marginTop:'0px'},{marginTop:'-5px'},{marginTop:'0px'}],{duration:450,iterations:2})};
        try{const r=svg.getBoundingClientRect();const w=typeof clampW==='function'?clampW(Math.min(vb.w,Math.max(vb.w*0.25,KX*1.2))):vb.w*0.4;const h=w*r.height/r.width;if(w<vb.w*0.95){animVB({x:U.x-w/2,y:U.y-h/2,w,h},650);setTimeout(fin,700)}else fin()}catch(_){fin()}}};
    btn.addEventListener('pointermove',mv);btn.addEventListener('pointerup',up);btn.addEventListener('pointercancel',up)});
  /* 지도 시대가 바뀌거나 다른 화면으로 가면 지우기 */
