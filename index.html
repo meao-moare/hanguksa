@@ -2480,6 +2480,10 @@ body:not(.medit) #trimp,body.trix #trimp{display:none!important}
 svg.tfl marker path.tfah{fill:none!important;stroke:currentColor!important;stroke-width:1.6!important;stroke-linecap:round!important;stroke-linejoin:round!important}
 body.medit #trbody.trpg{overflow-x:hidden!important;scroll-snap-type:none!important;touch-action:pan-y}
 body.medit #trbody.trpg>.trcard.trpon{touch-action:pan-y}
+#trbody .trsplit{position:absolute;left:0;top:0;bottom:0;width:14px;margin-left:-1px;cursor:col-resize;z-index:6;display:flex;align-items:center;justify-content:flex-start;touch-action:none}
+#trbody .trsplit i{display:block;width:5px;height:44px;border-radius:3px;background:color-mix(in srgb,var(--ink) 18%,transparent);margin-left:2px;transition:background .15s,height .15s}
+#trbody .trsplit:hover i,body.trsplitting #trbody .trsplit i{background:color-mix(in srgb,var(--ink) 45%,transparent);height:64px}
+body.trsplitting{cursor:col-resize;user-select:none}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/flubber@0.4.2/build/flubber.min.js"></script>
 <script>
@@ -7581,9 +7585,10 @@ window.__TRINDEX=()=>toIndex();window.__TROPENG=(i,k)=>openG(i,k);
 /* 한 화면에 맞추기 (카드마다 zoom) — 지금 쪽 근처부터, 나머지는 천천히 */
 const MINZ=1,MAXZ=1;let GEO={W:0,H:0},FITQ=[],FITT=0,FITGEN=0;
 function geo(){const tb=$('trbody'),rd=$('trread');const top=tb.getBoundingClientRect().top-rd.getBoundingClientRect().top;GEO={W:tb.clientWidth,H:Math.max(260,rd.clientHeight-top)};tb.style.height=GEO.H+'px'}
-function pageW(k){const x=ALLP.find(x=>x.p.includes(k));return Math.floor(GEO.W/(x?x.p.length:1))}
+function spR(x){if(!x||x.p.length!==2)return null;const M=TRM();const v=M&&M.get('@tsp:'+x.p[0]);const r=v&&typeof v==='object'?+v.r:+v;return r>0.15&&r<0.85?r:0.5}
+function pageW(k){const x=ALLP.find(x=>x.p.includes(k));if(!x)return GEO.W;const r=spR(x);if(r!=null){const w1=Math.round(GEO.W*r);return x.p[0]===k?w1:GEO.W-w1}return Math.floor(GEO.W/x.p.length)}
 function fitCard(c){const k0=c.id.replace(/^tree-/,'');const x=ALLP.find(x=>x.p.includes(k0))||{p:[k0]};const PW=pageW(k0),PH=GEO.H;const mul=Math.max(1,(window.__TRS&&window.__TRS())||1);
-  c.style.zoom=1;c.style.height='';c.style.margin='0';c.classList.remove('trscr');c.classList.toggle('trpair2',x.p.indexOf(k0)>0);c.classList.toggle('trmulti',x.p.length>1);
+  c.style.zoom=1;c.style.height='';c.style.margin='0';c.classList.remove('trscr');c.classList.toggle('trpair2',x.p.indexOf(k0)>0);c.classList.toggle('trmulti',x.p.length>1);{let g=c.querySelector(':scope>.trsplit');const need=x.p.length===2&&x.p.indexOf(k0)===1;if(need&&!g){g=document.createElement('div');g.className='trsplit';g.title='끌어서 비율 조절';g.innerHTML='<i></i>';c.prepend(g)}else if(!need&&g)g.remove()}
   const iwOf=()=>{const fn=c.querySelector('.tfin');const cr=c.getBoundingClientRect();const z=parseFloat(c.style.zoom)||1;let mx=0;c.querySelectorAll('.hn,.trflow,.trh,.hextra').forEach(e=>{const q=e.getBoundingClientRect();if(q.width)mx=Math.max(mx,q.right-cr.left)});return Math.max(c.scrollWidth+Math.max(0,...[...c.querySelectorAll('.htree,.hchain')].map(e=>e.scrollWidth-e.clientWidth)),fn?fn.offsetWidth+64:0,mx/z+30)};
   const m=w=>{c.style.width=w;return [iwOf(),c.scrollHeight]};
   const best=()=>{let [aw,ah]=m('max-content');let zA=Math.min(MAXZ,PW/aw,PH/ah);let w=PW,zB=1;for(let it=0;it<4;it++){const [iw,ih]=m(w+'px');const nz=Math.min(MAXZ,PW/Math.max(iw,1),PH/Math.max(ih,1));if(Math.abs(nz-zB)<0.01&&it){zB=nz;break}zB=nz;w=Math.max(PW,Math.round(PW/Math.min(1,zB)))}return Math.max(zA,zB)};
@@ -7635,6 +7640,12 @@ let rt=0;addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(()=>{if(!
 {const m=document.createElement('div');m.id='trmenu';m.hidden=true;m.innerHTML=menuHTML();document.body.appendChild(m)}
 document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('[data-tj]');if(!b||!document.body.classList.contains('trpgon'))return;const k=b.dataset.tj;if(ALLP.some(x=>x.p.includes(k))){e.preventDefault();e.stopImmediatePropagation();window.__TROPEN(k)}},true);
 if(store.get('view','map')==='tr')setTimeout(()=>{try{apply()}catch(_){}},50);
+
+/* 같이 보는 두 구조도 사이 비율 조절 */
+document.addEventListener('pointerdown',e=>{const g=e.target.closest&&e.target.closest('#trbody .trsplit');if(!g)return;e.preventDefault();e.stopPropagation();const c2=g.parentElement;const k2=c2.id.replace(/^tree-/,'');const x=ALLP.find(x=>x.p.includes(k2));if(!x)return;const c1=document.getElementById('tree-'+x.p[0]);if(!c1||c1===c2)return;const tb=$('trbody');const tr=tb.getBoundingClientRect();const L=c1.getBoundingClientRect().left;let r=spR(x);document.body.classList.add('trsplitting');
+  const mv=ev=>{ev.preventDefault();r=Math.max(0.2,Math.min(0.8,(ev.clientX-L)/GEO.W));const w1=Math.round(GEO.W*r);c1.style.width=w1+'px';c2.style.width=(GEO.W-w1)+'px'};
+  const up=()=>{removeEventListener('pointermove',mv);removeEventListener('pointerup',up);removeEventListener('pointercancel',up);document.body.classList.remove('trsplitting');r=Math.round(r*100)/100;const M=TRM();if(M){M.set('@tsp:'+x.p[0],{r});try{if(window.__MEX&&window.__MEX.own&&window.__MEX.own())window.__MEX.save('T:@tsp:'+x.p[0],{r})}catch(_){}}[c1,c2].forEach(c=>{delete c.dataset.fit;try{fitCard(c)}catch(_){}})};
+  addEventListener('pointermove',mv,{passive:false});addEventListener('pointerup',up);addEventListener('pointercancel',up)},true);
 }
 
 /* ───────── 메뉴 정리: 조약·개혁안 ▾ / 사절단·조직·단체 / 표·구조 ▾ ───────── */
