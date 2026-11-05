@@ -78,9 +78,9 @@ window.__TRINDEX=()=>toIndex();window.__TROPENG=(i,k)=>openG(i,k);
 
 /* 한 화면에 맞추기 (카드마다 zoom) — 지금 쪽 근처부터, 나머지는 천천히 */
 const MINZ=1,MAXZ=1;let GEO={W:0,H:0},FITQ=[],FITT=0,FITGEN=0;
-function geo(){const tb=$('trbody'),rd=$('trread');const top=tb.getBoundingClientRect().top-rd.getBoundingClientRect().top;GEO={W:tb.clientWidth,H:Math.max(260,rd.clientHeight-top-12)};tb.style.height=GEO.H+'px'}
+function geo(){const tb=$('trbody'),rd=$('trread');const top=tb.getBoundingClientRect().top-rd.getBoundingClientRect().top;GEO={W:tb.clientWidth,H:Math.max(260,rd.clientHeight-top)};tb.style.height=GEO.H+'px'}
 function pageW(k){const x=ALLP.find(x=>x.p.includes(k));return Math.floor(GEO.W/(x?x.p.length:1))}
-function fitCard(c){const k0=c.id.replace(/^tree-/,'');const x=ALLP.find(x=>x.p.includes(k0))||{p:[k0]};const PW=pageW(k0),PH=GEO.H-4;const mul=Math.max(1,(window.__TRS&&window.__TRS())||1);
+function fitCard(c){const k0=c.id.replace(/^tree-/,'');const x=ALLP.find(x=>x.p.includes(k0))||{p:[k0]};const PW=pageW(k0),PH=GEO.H;const mul=Math.max(1,(window.__TRS&&window.__TRS())||1);
   c.style.zoom=1;c.style.height='';c.style.margin='0';c.classList.remove('trscr');c.classList.toggle('trpair2',x.p.indexOf(k0)>0);c.classList.toggle('trmulti',x.p.length>1);
   const iwOf=()=>{const fn=c.querySelector('.tfin');const cr=c.getBoundingClientRect();const z=parseFloat(c.style.zoom)||1;let mx=0;c.querySelectorAll('.hn,.trflow,.trh,.hextra').forEach(e=>{const q=e.getBoundingClientRect();if(q.width)mx=Math.max(mx,q.right-cr.left)});return Math.max(c.scrollWidth+Math.max(0,...[...c.querySelectorAll('.htree,.hchain')].map(e=>e.scrollWidth-e.clientWidth)),fn?fn.offsetWidth+64:0,mx/z+30)};
   const m=w=>{c.style.width=w;return [iwOf(),c.scrollHeight]};
@@ -93,7 +93,7 @@ function fitCard(c){const k0=c.id.replace(/^tree-/,'');const x=ALLP.find(x=>x.p.
   for(let i=0;i<6&&zz>MINZ;i++){if(c.scrollHeight<=c.clientHeight+2&&iwOf()<=c.clientWidth+2)break;zz=Math.max(MINZ,zz*0.94);set(zz)}
   c.querySelectorAll('.hchain>.harr').forEach(a=>{a.style.visibility='';const nx=a.nextElementSibling;if(nx&&!c.classList.contains('uv')&&nx.offsetTop>a.offsetTop+a.offsetHeight)a.style.visibility='hidden'});
   c.classList.toggle('trscr',c.scrollHeight>c.clientHeight+2||c.scrollWidth>c.clientWidth+2);c.dataset.fit='1'}
-function placeholder(c){if(c.dataset.fit)return;const k0=c.id.replace(/^tree-/,'');c.style.zoom=1;c.style.width=pageW(k0)+'px';c.style.height=(GEO.H-4)+'px'}
+function placeholder(c){if(c.dataset.fit)return;const k0=c.id.replace(/^tree-/,'');c.style.zoom=1;c.style.width=pageW(k0)+'px';c.style.height=(GEO.H)+'px'}
 function fit(){const tb=$('trbody');if(!tb||IX||!tb.offsetParent)return;geo();FITGEN++;const cs=[...tb.querySelectorAll(':scope>.trcard.trpon')];cs.forEach(c=>{delete c.dataset.fit;placeholder(c)});fitNear();
   clearTimeout(FITT);const gen=FITGEN;FITQ=ALLP.map((x,i)=>[Math.abs(i-PAGE),x]).sort((a,b)=>a[0]-b[0]).flatMap(y=>y[1].p);
   const tick=()=>{if(gen!==FITGEN||IX)return;const t0=performance.now();while(FITQ.length&&performance.now()-t0<40){const c=cardOf(FITQ.shift());if(c&&!c.dataset.fit)fitCard(c)}if(FITQ.length)FITT=setTimeout(tick,30);else requestAnimationFrame(()=>goPage(PAGE,true))};FITT=setTimeout(tick,30);requestAnimationFrame(()=>goPage(PAGE,true))}
