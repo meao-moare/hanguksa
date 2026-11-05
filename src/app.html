@@ -2476,6 +2476,7 @@ body:not(.medit) #trimp,body.trix #trimp{display:none!important}
 #trbody.trpg>.trcard.trpon.trmulti{background:color-mix(in srgb,var(--trc) 7%,var(--panel))!important;box-shadow:none!important}
 #trbody.trpg>.trcard.trpon.trpair2{border-left:3px solid #fff!important}
 #trbody.trpg>.trcard.trpon.trmulti>.tree{width:100%!important;max-width:none!important;margin:0!important;background:none!important;border:0!important;padding:0!important}
+svg.tfl marker path.tfah{fill:none!important;stroke:currentColor!important;stroke-width:1.6!important;stroke-linecap:round!important;stroke-linejoin:round!important}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/flubber@0.4.2/build/flubber.min.js"></script>
 <script>
@@ -7315,7 +7316,7 @@ function rlForm(key){if(!(window.__MEX&&window.__MEX.can()))return;const H=windo
    const NS='http://www.w3.org/2000/svg';if(!sv){sv=document.createElementNS(NS,'svg');sv.setAttribute('class','tfl');fin.prepend(sv)}sv.setAttribute('width',W+8);sv.setAttribute('height',H+8);
    const box=n=>({x:n.offsetLeft,y:n.offsetTop,w:n.offsetWidth,h:n.offsetHeight});const cen=b=>[b.x+b.w/2,b.y+b.h/2];
    const clip=(b,tx,ty)=>{const [cx,cy]=cen(b);const dx=tx-cx,dy=ty-cy;if(!dx&&!dy)return [cx,cy];const sx=dx?(b.w/2)/Math.abs(dx):1e9,sy=dy?(b.h/2)/Math.abs(dy):1e9;const s=Math.min(sx,sy);return [cx+dx*s,cy+dy*s]};
-   let h='<defs><marker id="tfa'+keyOf(c)+'" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="currentColor"/></marker></defs>';
+   let h='<defs><marker id="tfa'+keyOf(c)+'" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path class="tfah" d="M3 1.5L9 5L3 8.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>';
    const EG=edgesOf(c,ns);const FAM={},FI={},FR={},FL={};{const acc={};EG.forEach(([a,b])=>{const A=ns[a],B=ns[b];if(!A||!B)return;const q=box(B),p=box(A);(acc[a]=acc[a]||[]).push(q.y+q.h/2);const ind=q.x>p.x+10&&q.x<p.x+p.w/2;FI[a]=(FI[a]===undefined?true:FI[a])&&ind;const rt=q.x>=p.x+p.w-4,lt=q.x+q.w<=p.x+4;FR[a]=(FR[a]===undefined?true:FR[a])&&rt;FL[a]=(FL[a]===undefined?true:FL[a])&&lt});Object.entries(acc).forEach(([a,L])=>{const P=box(ns[a]);const m=L.reduce((x,y)=>x+y,0)/L.length;FAM[a]=(FR[a]||FL[a])?'h':m>P.y+P.h?'v':m<P.y?'u':'h'})}
    const side=(P,Q,a)=>{const f=FAM[a]||'h';if(f==='v'&&Q.y>=P.y+P.h-2)return FI[a]?'i':'b';if(f==='u'&&Q.y+Q.h<=P.y+2)return 't';return Q.x+Q.w/2>=P.x+P.w/2?'r':'l'};const TK={};EG.forEach(([a,b])=>{const A=ns[a],B=ns[b];if(!A||!B)return;const P=box(A),Q=box(B);const sd=side(P,Q,a);const g=TK[a+sd]||(TK[a+sd]=1e9);const gap=sd==='r'?Q.x-(P.x+P.w):sd==='l'?P.x-(Q.x+Q.w):sd==='b'?Q.y-(P.y+P.h):sd==='i'?Q.x-P.x:P.y-(Q.y+Q.h);TK[a+sd]=Math.min(g,sd==='i'?Math.max(8,Math.min(24,gap/2)):Math.max(6,Math.min(20,gap/2)))});
    EG.forEach(([a,b,arrow])=>{const A=ns[a],B=ns[b];if(!A||!B)return;const P=box(A),Q=box(B);let d;const sd2=side(P,Q,a);const off=TK[a+sd2]||20;
