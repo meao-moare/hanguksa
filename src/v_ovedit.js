@@ -35,3 +35,17 @@ window.addEventListener('click',e=>{if(!can())return;const b=e.target.closest&&e
 
 /* 고치는 중 Tab = 띄어쓰기 4칸 */
 document.addEventListener('keydown',e=>{if(e.key!=='Tab'||e.shiftKey||e.altKey||e.ctrlKey||e.metaKey)return;const a=document.activeElement;if(!a||!a.isContentEditable||a.closest('.hadd'))return;e.preventDefault();e.stopPropagation();try{document.execCommand('insertText',false,'    ')}catch(_){}},true);
+
+/* 구조도 고치는 중: 옆으로 넘어가지 않게 + 상자 놓을 때 화면이 튀지 않게 */
+{
+const ed=()=>document.body.classList.contains('medit');
+let LK=null;
+const snap=()=>{const tb=document.getElementById('trbody');const rd=document.getElementById('trread');const c=LK&&LK.c;return {tb,rd,c,tl:tb&&tb.scrollLeft,tt:tb&&tb.scrollTop,rl:rd&&rd.scrollTop,cl:c&&c.scrollLeft,ct:c&&c.scrollTop}};
+const restore=s=>{if(!s)return;if(s.tb){if(s.tb.scrollLeft!==s.tl)s.tb.scrollLeft=s.tl;if(s.tb.scrollTop!==s.tt)s.tb.scrollTop=s.tt}if(s.rd&&s.rd.scrollTop!==s.rl)s.rd.scrollTop=s.rl;if(s.c){if(s.c.scrollLeft!==s.cl)s.c.scrollLeft=s.cl;if(s.c.scrollTop!==s.ct)s.c.scrollTop=s.ct}};
+document.addEventListener('pointerdown',e=>{if(!ed())return;const t=e.target;if(!t.closest)return;const c=t.closest('#trbody .trcard');if(!c||!t.closest('.hn,.trflow,.trh,[data-trgrip],[data-trmv]'))return;if(t.closest('[contenteditable]'))return;LK={c};LK.s=snap();
+  const hold=()=>{if(LK&&LK.c===c){restore(LK.s);LK.raf=requestAnimationFrame(hold)}};LK.raf=requestAnimationFrame(hold)},true);
+const end=()=>{if(!LK)return;const s=LK.s;cancelAnimationFrame(LK.raf);LK=null;const t0=Date.now();const keep=()=>{restore(s);if(Date.now()-t0<900)requestAnimationFrame(keep)};keep()};
+addEventListener('pointerup',end,true);addEventListener('pointercancel',end,true);
+/* 끄는 중 다른 곳 스크롤로 밀리지 않게, 손으로 넘기기도 막기 */
+addEventListener('wheel',e=>{if(!ed())return;const tb=document.getElementById('trbody');if(!tb||!tb.contains(e.target))return;if(Math.abs(e.deltaX)>Math.abs(e.deltaY)){const c=e.target.closest('.trcard');if(c&&c.scrollWidth>c.clientWidth+2)return;e.preventDefault()}},{passive:false,capture:true});
+}
