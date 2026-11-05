@@ -2385,8 +2385,8 @@ body.medit #trbody.trpg>.trcard.trpon{overflow:auto!important}body.medit #trbody
 #trbody.trpg>.trcard.trpon>.tree>.htree,#trbody.trpg>.trcard.trpon>.tree>.hchain{justify-self:center;width:fit-content;max-width:100%}
 #trbody.trpg>.trcard.trpon>.tree>.tfin{justify-self:start}
 /* 한 화면에 여러 개면: 배경은 내용 크기만큼 */
-#trbody.trpg>.trcard.trpon.trmulti{background:transparent!important;border-color:transparent!important;box-shadow:none!important}
-#trbody.trpg>.trcard.trpon.trmulti>.tree{width:fit-content!important;max-width:100%!important;background:color-mix(in srgb,var(--trc) 7%,var(--panel));border:1px solid color-mix(in srgb,var(--trc) 25%,var(--rule));border-radius:14px;padding:14px 18px;box-sizing:border-box;margin:0 auto!important}
+
+
 #trbody.trpg>.trcard.trpon.trmulti>.tree>.htree,#trbody.trpg>.trcard.trpon.trmulti>.tree>.hchain{justify-self:start}
 /* 왼쪽 목록: 같이 보기 */
 #trside .tsr{display:flex;align-items:center;gap:2px}
@@ -2468,6 +2468,14 @@ body.ovedit #v-ov .hzld{pointer-events:auto;cursor:move;min-width:6px;margin-lef
 body.ovedit #v-ov .hzn,body.ovedit #v-ov .hznt,body.ovedit #v-ov .hzrg{cursor:move}
 #v-ov .ovdrag{outline:2px dashed #2563eb;outline-offset:2px;z-index:6}
 ovg.ovgrip{display:block}
+
+/* 구조도 가져오기: 위 줄 오른쪽 끝, 내용 안 가림 */
+#trimp{position:static!important;margin-left:auto;order:99;box-shadow:none!important}
+body:not(.medit) #trimp,body.trix #trimp{display:none!important}
+/* 한 화면에 구조도 여러 개: 각자 색으로 꽉 채우고 가운데 아주 얇은 흰 줄 */
+#trbody.trpg>.trcard.trpon.trmulti{background:color-mix(in srgb,var(--trc) 7%,var(--panel))!important;box-shadow:none!important}
+#trbody.trpg>.trcard.trpon.trpair2{border-left:3px solid #fff!important}
+#trbody.trpg>.trcard.trpon.trmulti>.tree{width:100%!important;max-width:none!important;margin:0!important;background:none!important;border:0!important;padding:0!important}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/flubber@0.4.2/build/flubber.min.js"></script>
 <script>
@@ -7538,15 +7546,15 @@ function ensureUI(){const rd=$('trread');if(!rd)return false;
   if(!$('trside')){const sd=document.createElement('aside');sd.id='trside';$('trbody').before(sd);
     sd.addEventListener('click',e=>{if(e.target.closest('[data-tsh]'))return;const j=e.target.closest('[data-tsj]');if(j){e.preventDefault();toggleJoin(j.dataset.tsj);return}const b=e.target.closest('[data-trg]');if(!b)return;openG(+b.dataset.trg,b.dataset.trk||null)})}
   if(!$('trnavl')){['l','r'].forEach(s=>{const b=document.createElement('button');b.type='button';b.id='trnav'+s;b.className='trnav';b.setAttribute('aria-label',s==='l'?'이전 구조도':'다음 구조도');b.innerHTML=s==='l'?'<svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg>':'<svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>';b.onclick=()=>goPage(PAGE+(s==='l'?-1:1));rd.appendChild(b)})}
-  if(!$('trimp')){const b=document.createElement('button');b.type='button';b.id='trimp';b.innerHTML='+ 구조도 가져오기';rd.appendChild(b);const m=document.createElement('div');m.id='trimpm';m.hidden=true;document.body.appendChild(m);
+  if(!$('trimp')){const b=document.createElement('button');b.type='button';b.id='trimp';b.innerHTML='+ 구조도 가져오기';($('trpbar')||rd).appendChild(b);const m=document.createElement('div');m.id='trimpm';m.hidden=true;document.body.appendChild(m);
     b.onclick=e=>{e.stopPropagation();if(!m.hidden){m.hidden=true;return}const cur=ALLP[PAGE]?ALLP[PAGE].p:[];m.innerHTML=`<div class="tih">이 화면에 같이 볼 구조도</div>`+TRG.map(g=>`<div class="trmg" style="--gc:${g.c}"><span class="trmh">${esc2(g.t)}</span>${g.k.filter(k=>!cur.includes(k)).map(k=>`<button type="button" class="trmk" data-imp="${k}">${esc2(title(k))}</button>`).join('')}</div>`).join('');const r=b.getBoundingClientRect();m.hidden=false;m.style.top=(r.bottom+6)+'px';m.style.left=Math.max(8,Math.min(innerWidth-m.offsetWidth-8,r.right-m.offsetWidth))+'px'};
     m.addEventListener('click',e=>{const x=e.target.closest('[data-imp]');if(!x)return;m.hidden=true;importTree(x.dataset.imp)});document.addEventListener('click',e=>{if(!m.hidden&&!e.target.closest('#trimpm,#trimp'))m.hidden=true})}
   if(!$('trpgord')){const st=document.createElement('style');st.id='trpgord';st.textContent=Array.from({length:80},(_,n)=>`#trbody.trpg>.trcard[data-po="${n}"]{order:${n}!important}`).join('');document.head.appendChild(st)}
   return true}
 let UISIG='';
 function renderLists(force){const sig=ORDSIG+'|'+canEd();if(!force&&sig===UISIG&&$('trindex').innerHTML)return;UISIG=sig;$('trindex').innerHTML=indexHTML();$('trside').innerHTML=sideHTML();side()}
-function bar(){const d=$('trpbar');if(!d)return;const gi=G();if(gi<0){d.innerHTML='';return}const g=TRG[gi];
-  d.innerHTML=`<button type="button" class="tpx" data-tpx><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>목차</button><span class="tpg" style="--gc:${g.c}">${esc2(g.t)}</span><span class="tpks">${ALLP.map((x,i)=>x.g===gi?`<button type="button" data-tpk="${i}" aria-pressed="${i===PAGE}">${esc2(x.p.map(title).join(' · '))}</button>`:'').join('')}</span><span class="tpgo">${gi>0?`<button type="button" data-tpg="${gi-1}" title="${esc2(TRG[gi-1].t)}">← 이전 묶음</button>`:''}${gi<TRG.length-1?`<button type="button" data-tpg="${gi+1}" title="${esc2(TRG[gi+1].t)}">다음 묶음 →</button>`:''}</span>`}
+function bar(){const d=$('trpbar');if(!d)return;const ib=$('trimp');const gi=G();if(gi<0){d.innerHTML='';if(ib)d.appendChild(ib);return}const g=TRG[gi];
+  d.innerHTML=`<button type="button" class="tpx" data-tpx><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>목차</button><span class="tpg" style="--gc:${g.c}">${esc2(g.t)}</span><span class="tpks">${ALLP.map((x,i)=>x.g===gi?`<button type="button" data-tpk="${i}" aria-pressed="${i===PAGE}">${esc2(x.p.map(title).join(' · '))}</button>`:'').join('')}</span><span class="tpgo">${gi>0?`<button type="button" data-tpg="${gi-1}" title="${esc2(TRG[gi-1].t)}">← 이전 묶음</button>`:''}${gi<TRG.length-1?`<button type="button" data-tpg="${gi+1}" title="${esc2(TRG[gi+1].t)}">다음 묶음 →</button>`:''}</span>`;if(ib)d.appendChild(ib)}
 function syncOrder(){if(dataSig()!==ORDSIG){const k=ALLP[PAGE]&&ALLP[PAGE].p[0];rebuildOrder();if(k)PAGE=pageOfKey(k);UISIG='';LASTG=-2;return true}return false}
 function apply(){const tb=$('trbody');if(!tb||!ensureUI())return;const ch=syncOrder();
   tb.classList.add('trpg');document.body.classList.toggle('trix',IX);document.body.classList.add('trpgon');renderLists();
