@@ -105,3 +105,10 @@ document.addEventListener('click',e=>{const sri=e.target.closest&&e.target.close
  let t=0;new MutationObserver(()=>{clearTimeout(t);t=setTimeout(prev,150)}).observe(document.body,{attributes:true,attributeFilter:['class']});
  new MutationObserver(()=>{clearTimeout(t);t=setTimeout(prev,150)}).observe($$('kpage'),{childList:true});
 }
+/* ▾ 메뉴: 마우스를 올려도 펼치기 (연표 ▾, 사전 ▾) */
+setTimeout(()=>{[['tab-tl','tlmenu'],['tab-dc','dcmenu']].forEach(([ti,mi])=>{const tab=document.getElementById(ti),m=document.getElementById(mi);if(!tab||!m)return;const hov=()=>matchMedia('(hover:hover)').matches;let ht=0;
+  const hide=()=>{clearTimeout(ht);ht=setTimeout(()=>{if(m.dataset.hov){m.hidden=true;delete m.dataset.hov}},200)};
+  tab.addEventListener('mouseenter',()=>{if(!hov())return;clearTimeout(ht);if(m.hidden){tab.click();m.dataset.hov=1}});
+  tab.addEventListener('mouseleave',()=>{if(hov())hide()});m.addEventListener('mouseenter',()=>clearTimeout(ht));m.addEventListener('mouseleave',()=>{if(hov())hide()});
+  tab.addEventListener('click',e=>{if(hov()&&m.dataset.hov&&!m.hidden){e.preventDefault();e.stopImmediatePropagation();delete m.dataset.hov}},true);
+  m.addEventListener('click',()=>{delete m.dataset.hov})})},400);

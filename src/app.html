@@ -2442,6 +2442,16 @@ body.medit #trbody.trpg>.trcard.trpon,#trbody.trpg>.trcard.trpon:has(.tfin){just
 .kph .kpal{background:none;padding:0;color:#0e7490;font-weight:600}
 .kph .kpal+.kpal::before{content:'·';color:var(--muted);margin:0 6px;font-weight:400}
 .kph .kpaladd{margin-left:8px;font-size:12px}
+#trindex .trilist{display:flex;flex-direction:column;gap:12px;max-width:560px}
+#trindex .tsg{display:flex;flex-direction:column;border-left:3px solid var(--gc);padding:2px 0 4px}
+#trindex button{font:inherit;border:0;background:none;text-align:left;cursor:pointer;color:var(--ink);border-radius:8px}
+#trindex .tsgh{font-size:15px;font-weight:800;color:color-mix(in srgb,var(--gc) 75%,var(--ink));padding:4px 12px}
+#trindex .tsgh i{font-style:normal;font-weight:500;font-size:12.5px;color:var(--muted);margin-left:8px}
+#trindex .tsk{font-size:15px;padding:6px 12px 6px 22px;color:color-mix(in srgb,var(--ink) 85%,var(--muted))}
+#trindex .tsk:hover,#trindex .tsgh:hover{background:color-mix(in srgb,var(--gc) 10%,transparent)}
+#tsmenu .tdtr .tdgrid{display:block!important;columns:2;column-gap:18px}#tsmenu .tdtr .trmg{break-inside:avoid;border:0!important;border-left:3px solid var(--gc)!important;border-radius:0!important;background:none!important;padding:0 0 4px!important;margin:0 0 10px!important;display:flex;flex-direction:column}#tsmenu .tdtr .trmh{padding:3px 10px!important}#tsmenu .tdtr .trmk{padding:3px 10px 3px 18px!important}@media (max-width:700px){#tsmenu .tdtr .tdgrid{columns:1}}
+#tsmenu .tdkgl .trmg{flex-direction:column!important;align-items:stretch!important;border-left:3px solid #9a3412!important;padding:0 0 2px!important}#tsmenu .tdkgl .trmh{padding:3px 10px!important;color:#9a3412!important}#tsmenu .tdkgl .trmk{text-align:left!important;padding:3px 10px 3px 18px!important}
+@media (hover:hover){.top .tabs button:hover:not([aria-selected=true]){background:color-mix(in srgb,#fff 55%,transparent)!important;color:var(--ink)}}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/flubber@0.4.2/build/flubber.min.js"></script>
 <script>
@@ -7501,7 +7511,7 @@ const relX=(tb,c)=>c.getBoundingClientRect().left-tb.getBoundingClientRect().lef
 const canEd=()=>document.body.classList.contains('medit')&&window.__MEX&&window.__MEX.own&&window.__MEX.own();
 
 /* 화면 만들기 */
-function indexHTML(){return `<div class="trih"><h2>구조도</h2><span>보고 싶은 구조도를 고르세요. 옆으로 넘기면 모든 구조도를 차례로 볼 수 있어요.</span></div><div class="trig">${TRG.map((g,i)=>`<section class="trgc" style="--gc:${g.c}"><button type="button" class="trgh" data-trg="${i}"><b>${esc2(g.t)}</b><i>${esc2(g.s)}</i><em>${g.k.length}개</em></button><ol>${g.k.map(k=>`<li><button type="button" data-trg="${i}" data-trk="${k}">${esc2(title(k))}</button></li>`).join('')}</ol></section>`).join('')}</div>`}
+function indexHTML(){return `<div class="trih"><h2>구조도</h2></div><div class="trilist">${TRG.map((g,i)=>`<div class="tsg" style="--gc:${g.c}"><button type="button" class="tsgh" data-trg="${i}">${esc2(g.t)}<i>${esc2(g.s)}</i></button>${g.k.map(k=>`<button type="button" class="tsk" data-trg="${i}" data-trk="${k}">${esc2(title(k))}</button>`).join('')}</div>`).join('')}</div>`}
 function sideHTML(){const ed=canEd();return (ed?'<div class="tsnote">⋮⋮ 끌어서 순서 바꾸기 · <b>⇡</b> 누르면 위 구조도와 한 화면에</div>':'')+TRG.map((g,i)=>`<div class="tsg" data-gi="${i}" style="--gc:${g.c}"><button type="button" class="tsgh" data-trg="${i}">${esc2(g.t)}</button>${g.k.map((k,j)=>{const jn=j>0&&JOIN.has(k);return `<div class="tsr${jn?' tsjoin':''}" data-k="${k}">${ed?'<span class="tsh" data-tsh title="끌어서 옮기기">⋮⋮</span>':''}<button type="button" class="tsk" data-trg="${i}" data-trk="${k}">${esc2(title(k))}</button>${ed&&j>0?`<button type="button" class="tsj${jn?' on':''}" data-tsj="${k}" title="${jn?'따로 보기':'위 구조도와 한 화면에'}">⇡</button>`:''}</div>`}).join('')}</div>`).join('')}
 function menuHTML(){return TRG.map((g,i)=>`<div class="trmg" style="--gc:${g.c}"><button type="button" class="trmh" data-trg="${i}">${esc2(g.t)}</button>${g.k.map(k=>`<button type="button" class="trmk" data-trg="${i}" data-trk="${k}">${esc2(title(k))}</button>`).join('')}</div>`).join('')}
 window.__TRMENUHTML=menuHTML;
@@ -7701,6 +7711,13 @@ document.addEventListener('click',e=>{const sri=e.target.closest&&e.target.close
  let t=0;new MutationObserver(()=>{clearTimeout(t);t=setTimeout(prev,150)}).observe(document.body,{attributes:true,attributeFilter:['class']});
  new MutationObserver(()=>{clearTimeout(t);t=setTimeout(prev,150)}).observe($$('kpage'),{childList:true});
 }
+/* ▾ 메뉴: 마우스를 올려도 펼치기 (연표 ▾, 사전 ▾) */
+setTimeout(()=>{[['tab-tl','tlmenu'],['tab-dc','dcmenu']].forEach(([ti,mi])=>{const tab=document.getElementById(ti),m=document.getElementById(mi);if(!tab||!m)return;const hov=()=>matchMedia('(hover:hover)').matches;let ht=0;
+  const hide=()=>{clearTimeout(ht);ht=setTimeout(()=>{if(m.dataset.hov){m.hidden=true;delete m.dataset.hov}},200)};
+  tab.addEventListener('mouseenter',()=>{if(!hov())return;clearTimeout(ht);if(m.hidden){tab.click();m.dataset.hov=1}});
+  tab.addEventListener('mouseleave',()=>{if(hov())hide()});m.addEventListener('mouseenter',()=>clearTimeout(ht));m.addEventListener('mouseleave',()=>{if(hov())hide()});
+  tab.addEventListener('click',e=>{if(hov()&&m.dataset.hov&&!m.hidden){e.preventDefault();e.stopImmediatePropagation();delete m.dataset.hov}},true);
+  m.addEventListener('click',()=>{delete m.dataset.hov})})},400);
 
 /* ───────── 한자 누르면 뜻·음 ───────── */
 {
