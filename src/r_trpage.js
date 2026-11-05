@@ -105,7 +105,7 @@ window.__TRZC=()=>{const c=LASTC;return c&&c.style.zoom?(+c.style.zoom||1):1};
 
 /* 손으로 넘기면 쪽 번호 따라가기 */
 {let st=0;document.addEventListener('scroll',e=>{const tb=$('trbody');if(e.target!==tb||IX)return;vis(true);clearTimeout(st);st=setTimeout(()=>{if(Date.now()-PROG<350){vis(false);return}const x=tb.scrollLeft;let best=0,bd=1e9;ALLP.forEach((p,i)=>{const c=cardOf(p.p[0]);if(!c)return;const d=Math.abs(relX(tb,c)-x);if(d<bd){bd=d;best=i}});if(best!==PAGE){PAGE=best;fitNear();afterMove()}vis(false)},120)},true)}
-window.addEventListener('keydown',e=>{if(IX||$('v-tr').hidden)return;if(e.target.closest&&e.target.closest('input,textarea,[contenteditable]'))return;if(e.key==='ArrowRight'||e.key==='ArrowLeft'){e.preventDefault();goPage(PAGE+(e.key==='ArrowRight'?1:-1),true)}else if(e.key==='Escape')toIndex();else return;e.stopImmediatePropagation()},true);
+window.addEventListener('keydown',e=>{if(IX||$('v-tr').hidden)return;if(e.target.closest&&e.target.closest('input,textarea,[contenteditable]'))return;if(e.key==='ArrowRight'||e.key==='ArrowLeft'){e.preventDefault();goPage(PAGE+(e.key==='ArrowRight'?1:-1),true)}else if(e.key==='Escape'){if(document.body.classList.contains('medit'))return;toIndex()}else return;e.stopImmediatePropagation()},true);
 
 /* 순서 · 같이 보기 저장 */
 function saveOrder(L,J){const M=TRM();if(!M)return;if(L){M.set('@tgo',L);try{window.__MEX.save('T:@tgo',L)}catch(_){}}if(J){M.set('@tjoin',J);try{window.__MEX.save('T:@tjoin',J)}catch(_){}}const keep=ALLP[PAGE]&&ALLP[PAGE].p[0];rebuildOrder();if(keep)PAGE=pageOfKey(keep);UISIG='';LASTG=-2;apply()}

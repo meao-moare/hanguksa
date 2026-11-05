@@ -38,11 +38,20 @@ onAuthStateChanged(auth,async u=>{uid=u?u.uid:null;render(u);if(!u)return;
    쓰기는 Firebase 규칙이 주인 계정만 허락함 (코드에는 계정 정보 없음) */
 {const hidf=k=>[...new TextEncoder().encode(k)].map(b=>b.toString(16).padStart(2,'0')).join('').slice(0,190);
  let J={mine:[],sanon:{}};const jp=fetch('mine.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).then(j=>{if(j)J={mine:j.mine||[],sanon:j.sanon||{}}}).catch(()=>{});
- const adapter={collection:name=>({onSnapshot:(cb,err)=>{let fs=new Map(),live=false;
+ /* Firestore는 배열 안 배열·undefined를 못 받음 → 값을 글자로 바꿔 저장 */
+ const nest=v=>Array.isArray(v)?v.some(x=>Array.isArray(x)||nest(x)):(v&&typeof v==='object'?Object.values(v).some(nest):false);
+ const enc=d=>{d=JSON.parse(JSON.stringify(d));if(d&&'v' in d&&d.v!==null&&typeof d.v==='object'&&nest(d.v)){d.vj=JSON.stringify(d.v);delete d.v}return d};
+ const dec=d=>{if(d&&typeof d.vj==='string'){try{d=Object.assign({},d,{v:JSON.parse(d.vj)});delete d.vj}catch(_){}}return d};
+ /* 모음마다 Firestore 듣기는 하나만, 처음 받을 때까지 기다렸다가 보여 줌 (예전 자료로 잠깐 바뀌지 않게) */
+ const LIS={};
+ const listen=name=>{if(LIS[name])return LIS[name];const L={fs:new Map(),live:false,subs:new Set()};LIS[name]=L;
+   onSnapshot(collection(db,name),snap=>{L.fs=new Map(snap.docs.map(x=>[x.id,dec(x.data())]));L.live=true;L.subs.forEach(f=>f())},e=>{console.warn(e);L.live=true;L.subs.forEach(f=>f())});
+   setTimeout(()=>{if(!L.live){L.live=true;L.subs.forEach(f=>f())}},4000);return L};
+ const adapter={collection:name=>({onSnapshot:(cb,err)=>{const L=listen(name);
      const base=()=>name==='mine'?J.mine.filter(d=>d&&d.k).map(d=>[hidf(d.k),d]):Object.entries(J.sanon).map(([k,v])=>[hidf(k),{k,v}]);
-     const emit=()=>{const m=new Map(base());fs.forEach((d,id)=>{const b=m.get(id);const at=+(d&&d.at)||0,bt=+(b&&b.at)||0;if(d&&d.del){if(!b||at>bt)m.delete(id)}else if(d&&d.k&&(!b||at>=bt))m.set(id,d)});cb({docs:[...m.values()].filter(d=>!d.del).map(d=>({data:()=>d}))})};
-     jp.then(emit);return onSnapshot(collection(db,name),snap=>{fs=new Map(snap.docs.map(x=>[x.id,x.data()]));live=true;emit()},e=>{console.warn(e);err&&err(e)})},
-   doc:id=>({set:v=>setDoc(doc(db,name,id),v),delete:()=>setDoc(doc(db,name,id),{del:true,at:Date.now()})})})};
+     const emit=()=>{if(!L.live)return;const m=new Map(base());L.fs.forEach((d,id)=>{const b=m.get(id);const at=+(d&&d.at)||0,bt=+(b&&b.at)||0;if(d&&d.del){if(!b||at>bt)m.delete(id)}else if(d&&d.k&&(!b||at>=bt))m.set(id,d)});cb({docs:[...m.values()].filter(d=>!d.del).map(d=>({data:()=>d}))})};
+     const f=()=>jp.then(emit);L.subs.add(f);f();return ()=>L.subs.delete(f)},
+   doc:id=>({set:v=>setDoc(doc(db,name,id),enc(v)),delete:()=>setDoc(doc(db,name,id),{del:true,at:Date.now()})})})};
  let owner=false;const attach=()=>{try{window.__mineAttach&&window.__mineAttach(adapter,owner);window.__sanonAttach&&window.__sanonAttach(adapter,owner)}catch(e){console.warn(e)}};
  attach();
  onAuthStateChanged(auth,async u=>{if(!u){if(owner){owner=false;attach()}return}
