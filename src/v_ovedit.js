@@ -49,3 +49,25 @@ addEventListener('pointerup',end,true);addEventListener('pointercancel',end,true
 /* 끄는 중 다른 곳 스크롤로 밀리지 않게, 손으로 넘기기도 막기 */
 addEventListener('wheel',e=>{if(!ed())return;const tb=document.getElementById('trbody');if(!tb||!tb.contains(e.target))return;if(Math.abs(e.deltaX)>Math.abs(e.deltaY)){const c=e.target.closest('.trcard');if(c&&c.scrollWidth>c.clientWidth+2)return;e.preventDefault()}},{passive:false,capture:true});
 }
+
+/* 구조도 상자 여러 개 고르기: Shift(또는 Ctrl/⌘)+누르기, 빈 곳 끌어서 네모로 고르기 → 하나 끌면 같이 움직임 */
+{
+const can=()=>window.__MEX&&window.__MEX.can&&window.__MEX.can();
+const clear=()=>document.querySelectorAll('.hn.hnsel').forEach(o=>o.classList.remove('hnsel'));
+const killClick=()=>{const k=ev=>{ev.preventDefault();ev.stopImmediatePropagation();removeEventListener('click',k,true)};addEventListener('click',k,true);setTimeout(()=>removeEventListener('click',k,true),400)};
+document.addEventListener('pointerdown',e=>{if(!can()||e.button!==0)return;const t=e.target;if(!t.closest)return;
+  const n=t.closest('#trbody .hn');
+  if(n&&(e.shiftKey||e.metaKey||e.ctrlKey)&&!t.closest('button,.hngrip,[contenteditable]')){e.preventDefault();e.stopImmediatePropagation();const c=n.closest('.trcard');document.querySelectorAll('.hn.hnsel').forEach(o=>{if(o.closest('.trcard')!==c)o.classList.remove('hnsel')});n.classList.toggle('hnsel');killClick();return}
+  if(n)return;
+  const c=t.closest('#trbody .trcard');if(!c||!c.querySelector('.tfin,.htree,.hchain'))return;if(t.closest('button,input,textarea,[contenteditable],.trut,.trflow,.trh,.trsplit,.trgrip,.hnbar,a,.hjw'))return;
+  const r0=c.getBoundingClientRect();if(e.clientX>r0.right-16||e.clientY>r0.bottom-16)return;
+  const x0=e.clientX,y0=e.clientY,add=e.shiftKey||e.metaKey||e.ctrlKey;let band=null;
+  const mv=ev=>{const dx=ev.clientX-x0,dy=ev.clientY-y0;if(!band){if(Math.abs(dx)+Math.abs(dy)<6)return;band=document.createElement('div');band.id='hnband';document.body.appendChild(band);try{getSelection().removeAllRanges()}catch(_){}}ev.preventDefault();
+    const L=Math.min(x0,ev.clientX),T=Math.min(y0,ev.clientY),W=Math.abs(dx),H=Math.abs(dy);Object.assign(band.style,{left:L+'px',top:T+'px',width:W+'px',height:H+'px'});
+    c.querySelectorAll('.hn').forEach(o=>{if(o.style.display==='none'||!o.offsetParent)return;const q=o.getBoundingClientRect();const hit=q.left<L+W&&q.right>L&&q.top<T+H&&q.bottom>T;if(hit)o.classList.add('hnsel');else if(!add&&!o.dataset.keep)o.classList.remove('hnsel')})};
+  if(add)c.querySelectorAll('.hn.hnsel').forEach(o=>o.dataset.keep='1');
+  const up=()=>{removeEventListener('pointermove',mv);removeEventListener('pointerup',up);removeEventListener('pointercancel',up);c.querySelectorAll('[data-keep]').forEach(o=>delete o.dataset.keep);if(band){band.remove();killClick();const k=c.querySelectorAll('.hn.hnsel').length;if(k&&window.__MEX.toast)window.__MEX.toast(k+'개 골랐어요 · 하나를 끌면 같이 움직여요')}else if(!add)clear()};
+  addEventListener('pointermove',mv,{passive:false});addEventListener('pointerup',up);addEventListener('pointercancel',up)},true);
+document.addEventListener('keydown',e=>{if(e.key==='Escape')clear()},true);
+new MutationObserver(()=>{if(!document.body.classList.contains('medit'))clear()}).observe(document.body,{attributes:true,attributeFilter:['class']});
+}
