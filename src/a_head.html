@@ -1,6 +1,6 @@
 <title>한국사 지도</title>
 <meta name="claude:viewport-fit-sides" content="cover">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif+KR:wght@500;700&display=swap">
 <style>
 /* 레이아웃: 위쪽 탭 막대 + [지도] 화면 전체 지도 위에 시대 카드(왼쪽 위)·재생 막대(아래), 넓은 화면에서는 오른쪽에 사건 패널 / [연표]·[주제별] 읽는 화면 */
 :root{
@@ -2400,7 +2400,7 @@ body.medit #trbody.trpg>.trcard.trpon{overflow:auto!important}body.medit #trbody
 .tsghost{position:fixed;z-index:9999;pointer-events:none;background:var(--panel);border:1px solid var(--rule);border-radius:8px;box-shadow:0 8px 20px rgba(0,0,0,.18);display:flex;align-items:center;padding:2px 4px}
 .tsghost button{font:inherit;border:0;background:none;font-size:12.5px}
 .tsmark{height:3px;border-radius:2px;background:#2563eb;margin:2px 6px}
-.hjw{cursor:help;text-decoration:underline dotted color-mix(in srgb,var(--ink) 35%,transparent);text-underline-offset:3px}
+.hjw{cursor:help;font-family:'Noto Serif KR','Noto Serif CJK KR','Source Han Serif K','Batang','AppleMyungjo',serif;font-weight:500;letter-spacing:0;text-decoration:none;border-bottom:1px dotted color-mix(in srgb,var(--ink) 30%,transparent)}
 #hjpop{position:fixed;z-index:9600;background:var(--panel);border:1px solid var(--rule);border-radius:12px;box-shadow:0 10px 26px rgba(0,0,0,.16);padding:10px 12px;display:flex;flex-direction:column;gap:4px}
 #hjpop[hidden]{display:none}
 #hjpop .hjh{font-size:15px;font-weight:800;padding-bottom:6px;margin-bottom:2px;border-bottom:1px solid var(--rule)}#hjpop .hjh i{font-style:normal;font-weight:600;color:var(--muted);margin-left:6px}
@@ -2503,4 +2503,25 @@ body.trsplitting:has(.trstack){cursor:row-resize}
 #trbody .trut .trout:hover{color:var(--seal)}
 body.medit #trbody .hn.hnsel{outline:2px dotted #e11d48!important;outline-offset:3px}
 #hnband{position:fixed;z-index:60;pointer-events:none;border:1.5px dashed #2563eb;background:rgba(37,99,235,.08);border-radius:4px}
+.mpick.mpfix{position:fixed!important;z-index:2000!important;width:min(340px,calc(100vw - 16px))!important;margin:0!important;box-shadow:0 10px 30px rgba(0,0,0,.18)}
+#kpage .tgall .tgn{color:var(--muted);font-size:13px;margin:4px 0 0}
+#kpage .tgall .tgg{margin:18px 0 0;padding-top:12px;border-top:1px solid var(--rule)}
+#kpage .tgall .tgg h3{font-size:15px;font-weight:800;margin:0 0 8px;color:var(--seal)}
+#kpage .tgall .tgl{display:flex;flex-wrap:wrap;gap:6px}
+#kpage .tgall .tgl button{font:inherit;font-size:13.5px;border:1px solid var(--rule);background:var(--panel);border-radius:999px;padding:4px 11px;cursor:pointer;color:var(--ink);display:inline-flex;gap:6px;align-items:center}
+#kpage .tgall .tgl button i{font-style:normal;font-size:11px;color:var(--muted)}
+#kpage .tgall .tgl button:hover{border-color:var(--seal);color:var(--seal)}
+i.gptag.gpnat{background:color-mix(in srgb,var(--nc) 13%,transparent)!important;color:var(--nc)!important;border:1px solid color-mix(in srgb,var(--nc) 35%,transparent)!important;font-style:normal;font-weight:700}
+.dcnop{display:inline-flex;align-items:center;gap:6px;font-size:13.5px;font-weight:600;margin:0 0 10px;cursor:pointer;user-select:none}
+.dcnop input{width:16px;height:16px;accent-color:var(--seal)}
+#dcbody.nop .gl2>.gp{display:none!important}
+h4.gh.ppnat{color:var(--nc)!important;border-left:4px solid var(--nc);padding-left:8px;display:flex;align-items:baseline;gap:8px}
+h4.gh.ppnat small{font-size:12px;color:var(--muted);font-weight:600}
+#ppjump button[style*="--nc"]{color:var(--nc)}
+#hjpop .hjr b{font-family:'Noto Serif KR','Noto Serif CJK KR','Batang','AppleMyungjo',serif}
+#hjpop .hjh{font-family:'Noto Serif KR','Noto Sans KR',serif}
+#hjpop .hjed,#hjpop .hjok{margin-left:auto;font:inherit;font-size:11.5px;border:1px solid var(--rule);background:var(--panel);border-radius:999px;padding:1px 8px;cursor:pointer;color:var(--muted)}
+#hjpop .hjin{flex:1;min-width:0;font:inherit;font-size:14px;border:1px solid var(--rule);border-radius:6px;padding:3px 6px}
+#mwform select{font:inherit;font-size:14px;border:1px solid #d1d5db;border-radius:8px;padding:7px 9px;background:#fff}
+.glpop img.ppimg,#pppop img.ppimg,#rlpop img.ppimg{display:block;width:100%;max-height:170px;object-fit:cover;border-radius:8px;margin:6px 0 4px;background:var(--rule)}
 </style>

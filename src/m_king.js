@@ -164,11 +164,26 @@ document.addEventListener('click',ev=>{const k=ev.target.closest('[data-person]'
 function personColor(P){const cnt=new Map();P.evs.forEach(e=>{const R=kingRef(e);const c=R?R.D.c:(e.tp.includes('wld')?'wld':(e.era==='colonial'?'ind':null));if(c)cnt.set(c,(cnt.get(c)||0)+1)});let best=null,bn=0;cnt.forEach((v,k)=>{if(v>bn){bn=v;best=k}});
   return best==='wld'?'var(--t-wld)':best==='ind'?'var(--t-ind)':best?`color-mix(in srgb,var(--c-${best}) 70%,var(--ink))`:'var(--ink)'}
 function personNation(P){const R=P.evs.map(kingRef).find(Boolean);return R?(R.D.n==='남한'?'대한민국':R.D.n):(P.evs.some(e=>e.tp.includes('wld'))?'외국':'')}
+/* 인물 모음: 일반 인물 + 왕(왕계표) — 나라·시기 함께 */
+const NATORD=['고조선','부여','옥저','동예','삼한','고구려','백제','신라','가야','발해','후고구려','후백제','고려','조선','대한제국','일제강점기','한국','대한민국','북한','중국','북방 민족','일본','미국','러시아·소련','외국','기타'];
+function natCol(n){try{return NAT_COL[n]||NAT_COL[String(n).replace(' ','')]||'#6b7280'}catch(_){return '#6b7280'}}
+function PEOPLE_ALL(){const o={};const add=(k,v)=>{if(!o[k])o[k]=v};
+  const ov=n=>{try{return window.__PNAT?window.__PNAT(n):''}catch(_){return ''}};
+  PEOPLE.forEach(P=>{if(GLOSS[P.n]&&!PINFO[P.n])return;if(typeof NOT_PERSON!=='undefined'&&NOT_PERSON.has(P.n))return;if(kingOfName(P.n,P.evs[0]&&P.evs[0].T))return;const ev=P.evs.slice().sort((a,c)=>a.T-c.T);add(P.n,{d:PINFO[P.n]||ev.slice(0,2).map(e=>`${shortYear(e)} ${e.t}`).join(' · '),nat:ov(P.n)||personNation(P)||PNAT[P.n]||'기타',T:ev.length?ev[0].T:9999})});
+  Object.keys(PINFO).forEach(k=>{if(o[k]||kingOfName(k))return;add(k,{d:PINFO[k],nat:ov(k)||PNAT[k]||'기타',T:9999})});
+  try{ME.n.forEach((v,k)=>{if(v==='p'&&!o[k]&&!kingOfName(k))add(k,{d:GLOSS[k]||PINFO[k]||'',nat:ov(k)||'기타',T:9999})})}catch(_){}
+  const cnt={};REIGNS.forEach(D=>D.r.forEach(r=>{const nm=r.name;cnt[nm]=(cnt[nm]||0)+1}));
+  REIGNS.forEach(D=>D.r.forEach((r,i)=>{const dn=D.n==='남한'?'대한민국':D.n;const nm=r.name;const key=cnt[nm]>1?`${nm} (${dn})`:nm;const inf=(typeof KINFO!=='undefined'&&KINFO[D.n+'|'+nm])||null;const yr=v=>{const y=Math.floor(v);return y<0?'기원전 '+(-y):String(y)};
+    const role=/대통령|위원장|주석|군정/.test(nm)||D.n==='남한'||D.n==='북한'?'':' 왕';add(key,{d:`${yr(r.s)}~${yr(r.e)}${inf&&inf.a&&inf.a.length?' · '+inf.a.slice(0,2).join(' · '):''}`,nat:dn,T:r.s,king:{dn:D.n,i,nm}})}));
+  return o}
+function pTag(m){return `<i class="gptag gpnat" style="--nc:${natCol(m.nat)}">${esc(m.nat)}${m.king&&!/대한민국|북한/.test(m.nat)?' 왕':''}</i>`}
+function pBtn(k,m){return m.king?`<button type="button" class="gpn" data-person="${esc(m.king.nm.replace(/\(.*\)/,'').trim())}" data-pt="${m.T}">${esc(k)}</button>`:`<button type="button" class="gpn" data-person="${esc(k)}">${esc(k)}</button>`}
 function ppShow(){const b=$('ppbody');if(b.dataset.built)return;b.dataset.built=1;
-  const PP=(()=>{const o=Object.assign({},PINFO);PEOPLE.forEach(P=>{if(o[P.n]||GLOSS[P.n]||(typeof NOT_PERSON!=='undefined'&&NOT_PERSON.has(P.n))||kingOfName(P.n,P.evs[0]&&P.evs[0].T))return;o[P.n]=P.evs.slice().sort((a,c)=>a.T-c.T).slice(0,2).map(e=>`${shortYear(e)} ${e.t}`).join(' · ')});return o})();
-  const ks=Object.keys(PP).filter(k=>!GLOSS[k]).sort((a,c)=>a.localeCompare(c,'ko'));const g={};ks.forEach(k=>{(g[choOf(k)]=g[choOf(k)]||[]).push(k)});const heads=Object.keys(g).sort((a,c)=>(a==='#')-(c==='#')||a.localeCompare(c,'ko'));const hl=h=>h==='#'?'#숫자':'#'+h;
-  b.innerHTML=`<div class="trcard dccard" style="--trc:#047857"><section class="gbook"><div class="trh"><h3>인물 사전</h3><span>주요 인물 ${ks.length}명</span></div>${heads.map(h=>`<h4 class="gh" id="pgh-${h}">${hl(h)}</h4><dl class="gl2">${g[h].map(k=>`<div class="gp" data-k="${esc(k)}"><dt><button type="button" class="gpn" data-person="${esc(k)}">${esc(k)}</button><i class="gptag">인물</i><button type="button" class="gtr gpd" data-pdeep="${esc(k)}">자세히 →</button></dt><dd>${glx(PP[k])}</dd></div>`).join('')}</dl>`).join('')}</section></div>`;
-  $('ppjump').innerHTML=heads.map(h=>`<button type="button" data-pj="${h}">${hl(h)}</button>`).join('');
+  const A=PEOPLE_ALL();const ks=Object.keys(A);const g=new Map();ks.forEach(k=>{const n=A[k].nat||'기타';if(!g.has(n))g.set(n,[]);g.get(n).push(k)});
+  const ord=n=>{const x=NATORD.indexOf(n);return x<0?80:x};const fy=L=>Math.min(...L.map(k=>A[k].T));
+  const heads=[...g.keys()].sort((a,c)=>ord(a)-ord(c)||fy(g.get(a))-fy(g.get(c)));heads.forEach(h=>g.get(h).sort((a,c)=>(A[a].T-A[c].T)||a.localeCompare(c,'ko')));const hid=h=>'pgh-'+heads.indexOf(h);
+  b.innerHTML=`<div class="trcard dccard" style="--trc:#047857"><section class="gbook"><div class="trh"><h3>인물 사전</h3><span>${ks.length}명 · 나라·시대 순</span></div>${heads.map(h=>`<h4 class="gh ppnat" id="${hid(h)}" style="--nc:${natCol(h)}">${esc(h)}<small>${g.get(h).length}</small></h4><dl class="gl2">${g.get(h).map(k=>`<div class="gp" data-k="${esc(k)}"><dt>${pBtn(k,A[k])}${pTag(A[k])}${A[k].king?'':`<button type="button" class="gtr gpd" data-pdeep="${esc(k)}">자세히 →</button>`}</dt><dd>${glx(A[k].d)}</dd></div>`).join('')}</dl>`).join('')}</section></div>`;
+  $('ppjump').innerHTML=heads.map(h=>`<button type="button" data-pj="${heads.indexOf(h)}" style="--nc:${natCol(h)}">${esc(h)}</button>`).join('');
   $('ppjump').querySelectorAll('[data-pj]').forEach(x=>x.onclick=()=>{const s=document.getElementById('pgh-'+x.dataset.pj);const rd=$('ppread');rd.scrollTo({top:s.getBoundingClientRect().top-rd.getBoundingClientRect().top+rd.scrollTop-rd.querySelector('.rhead').offsetHeight-6,behavior:'smooth'})})}
 if(store.get('view','map')==='pp')setTimeout(ppShow,0);
 
@@ -232,7 +247,7 @@ function natHTML(names,self,t0){const gs=natGroups(names,self,t0);if(!gs.length)
 
 /* 사전 탭 (인물 옆): 낱말 ㄱ~ㅎ */
 function dcShow(){const b=$('dcbody');if(b.dataset.built)return;try{GLOSS;TREE_OF}catch(e){return}b.dataset.built=1;
-  b.innerHTML=`<div class="trcard dccard" style="--trc:#6d28d9">${glossBookHTML((()=>{const o=Object.assign({},PINFO);PEOPLE.forEach(P=>{if(o[P.n]||GLOSS[P.n]||(typeof NOT_PERSON!=='undefined'&&NOT_PERSON.has(P.n))||kingOfName(P.n,P.evs[0]&&P.evs[0].T))return;o[P.n]=P.evs.slice().sort((a,c)=>a.T-c.T).slice(0,2).map(e=>`${shortYear(e)} ${e.t}`).join(' · ')});return o})())}</div>`;
+  b.innerHTML=`<div class="trcard dccard" style="--trc:#6d28d9"><label class="dcnop"><input type="checkbox" id="dcnopcb"> 인물 빼고 보기</label>${glossBookHTML(PEOPLE_ALL())}</div>`;
   const heads=[...b.querySelectorAll('.gh')].map(h=>h.id.slice(3));const hl=h=>h==='#'?'#숫자':'#'+h;$('dcjump').innerHTML=heads.map(h=>`<button type="button" data-gi="${h}">${hl(h)}</button>`).join('');b.querySelectorAll('.gh').forEach(x=>x.textContent=hl(x.id.slice(3)));
   const rd=$('dcread');const go=el=>el&&rd.scrollTo({top:el.getBoundingClientRect().top-rd.getBoundingClientRect().top+rd.scrollTop-rd.querySelector('.rhead').offsetHeight-10,behavior:'smooth'});
   const onClick=ev=>{const gi=ev.target.closest('[data-gi]');if(gi){go(document.getElementById('gh-'+gi.dataset.gi));return}const t=ev.target.closest('.gtr');if(t){showView('tr');setTimeout(()=>{const s=document.getElementById('tree-'+t.dataset.tj);const r2=$('trread');if(s)r2.scrollTo({top:s.getBoundingClientRect().top-r2.getBoundingClientRect().top+r2.scrollTop-r2.querySelector('.rhead').offsetHeight-8,behavior:'smooth'})},60)}};

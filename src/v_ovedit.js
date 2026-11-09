@@ -4,11 +4,12 @@
 const $=id=>document.getElementById(id);
 const TRM=()=>window.__ME&&window.__ME.tr;
 const can=()=>document.body.classList.contains('medit')&&window.__MEX&&window.__MEX.own&&window.__MEX.own()&&!$('v-ov').hidden;
-const keyOf=el=>{if(el.matches('.hzn'))return 'n'+el.dataset.ev;if(el.matches('.hznt')){const b=el.querySelector('[data-ev]');return b?'t'+b.dataset.ev:'t'+(el.textContent||'').trim().slice(0,20)}if(el.matches('.hzrg'))return 'r'+el.dataset.rg;if(el.matches('.hzld')){const n=el.nextElementSibling;return n&&n.dataset.ev?'l'+n.dataset.ev:null}return null};
+const keyOf=el=>el.dataset.ovk||keyOf0(el);
+const keyOf0=el=>{if(el.matches('.hzn'))return 'n'+el.dataset.ev;if(el.matches('.hznt')){const b=el.querySelector('[data-ev]');return b?'t'+b.dataset.ev:'t'+(el.textContent||'').trim().slice(0,20)}if(el.matches('.hzrg'))return 'r'+el.dataset.rg;if(el.matches('.hzld')){const n=el.nextElementSibling;return n&&n.dataset.ev?'l'+n.dataset.ev:null}return null};
 const get=k=>{const M=TRM();return (M&&M.get('@ov:'+k))||null};
 const put=(k,v)=>{const M=TRM();if(!M)return;M.set('@ov:'+k,v);try{window.__MEX.save('T:@ov:'+k,v)}catch(_){}};
 const SEL='#v-ov .hzn,#v-ov .hznt,#v-ov .hzrg,#v-ov .hzld';
-function applyAll(){const ed=can();document.querySelectorAll(SEL).forEach(el=>{const k=keyOf(el);if(!k)return;const v=get(k);
+function applyAll(){const ed=can();const seen={};document.querySelectorAll(SEL).forEach(el=>{const k0=keyOf0(el);if(!k0)return;const nn=seen[k0]=(seen[k0]||0)+1;const k=nn>1?k0+'#'+nn:k0;el.dataset.ovk=k;const v=get(k);
   if(el.dataset.ow==null)el.dataset.ow=el.style.width||'';if(el.dataset.oh==null)el.dataset.oh=el.style.height||'';
   el.style.translate=v&&(v.x||v.y)?`${v.x||0}px ${v.y||0}px`:'';
   if(el.matches('.hzrg'))el.style.width=v&&v.w?v.w+'px':el.dataset.ow;
@@ -82,4 +83,12 @@ const take=im=>{const f=im.closest&&im.closest('figure.mimg');if(!f)return;const
   if(old&&old!==im&&!old.isConnected&&old.complete&&old.naturalWidth&&old.getAttribute('src')===im.getAttribute('src')){old.alt=im.alt;im.replaceWith(old);return}
   IMC.set(id,im)};
 new MutationObserver(ms=>{for(const m of ms)for(const n of m.addedNodes){if(n.nodeType!==1)continue;if(n.tagName==='IMG')take(n);else if(n.querySelectorAll)n.querySelectorAll('figure.mimg img').forEach(take)}}).observe(document.body,{childList:true,subtree:true});
+}
+
+/* 용어 사전: 인물 빼고 보기 */
+{
+let on=false;try{on=localStorage.getItem('hgs_dcnop')==='1'}catch(_){}
+const sync=()=>{const b=document.getElementById('dcbody');if(!b)return;b.classList.toggle('nop',on);const c=document.getElementById('dcnopcb');if(c&&c.checked!==on)c.checked=on;b.querySelectorAll('h4.gh').forEach(h=>{const dl=h.nextElementSibling;const any=dl&&[...dl.children].some(x=>!(on&&x.classList.contains('gp')));h.style.display=any?'':'none';if(dl)dl.style.display=any?'':'none'})};
+document.addEventListener('change',e=>{if(e.target&&e.target.id==='dcnopcb'){on=e.target.checked;try{localStorage.setItem('hgs_dcnop',on?'1':'0')}catch(_){}sync()}},true);
+let tq=0;new MutationObserver(()=>{clearTimeout(tq);tq=setTimeout(()=>{if(document.getElementById('dcnopcb'))sync()},200)}).observe(document.body,{childList:true});setInterval(()=>{const b=document.getElementById('dcbody');if(b&&b.dataset.built&&!b.dataset.nops){b.dataset.nops=1;sync()}},800);
 }
