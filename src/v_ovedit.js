@@ -74,3 +74,12 @@ const onText=(x,y)=>{let node=null,off=0;if(document.caretRangeFromPoint){const 
 window.addEventListener('click',e=>{if(!can())return;const t=e.target;if(!t.closest)return;const n=t.closest('#trbody .hn');if(!n||t.closest('button,.hngrip,.hnbar,[contenteditable],input,textarea'))return;if(t!==n&&onText(e.clientX,e.clientY))return;e.preventDefault();e.stopImmediatePropagation();const c=n.closest('.trcard');document.querySelectorAll('.hn.hnsel').forEach(o=>{if(o.closest('.trcard')!==c)o.classList.remove('hnsel')});n.classList.toggle('hnsel')},true);
 new MutationObserver(()=>{if(!document.body.classList.contains('medit'))clear()}).observe(document.body,{attributes:true,attributeFilter:['class']});
 }
+
+/* 사진: 자료가 새로 들어와 글이 다시 그려져도, 이미 불러온 사진을 그대로 다시 써서 깜빡이지 않게 */
+{
+const IMC=new Map();
+const take=im=>{const f=im.closest&&im.closest('figure.mimg');if(!f)return;const id=f.dataset.img;if(!id)return;const old=IMC.get(id);
+  if(old&&old!==im&&!old.isConnected&&old.complete&&old.naturalWidth&&old.getAttribute('src')===im.getAttribute('src')){old.alt=im.alt;im.replaceWith(old);return}
+  IMC.set(id,im)};
+new MutationObserver(ms=>{for(const m of ms)for(const n of m.addedNodes){if(n.nodeType!==1)continue;if(n.tagName==='IMG')take(n);else if(n.querySelectorAll)n.querySelectorAll('figure.mimg img').forEach(take)}}).observe(document.body,{childList:true,subtree:true});
+}
