@@ -2637,7 +2637,9 @@ body.medit #dcbody .gl2>.gp.dchid{opacity:.45}
 #ovadd[hidden]{display:none}
 .ahd path.ahk2{vector-effect:non-scaling-stroke;fill:none!important;stroke-linecap:round!important;stroke-linejoin:round!important;paint-order:normal!important}
 .ahd.ride,.ahd.ride.draw{animation:none!important;opacity:1!important}
-.arw .af{stroke-width:2.2!important}.arw.inv .af{stroke-width:2.9!important}.arw.thin .af{stroke-width:1.4px!important}
+.arw .af{stroke-width:1.8!important}.arw.inv .af{stroke-width:2.4!important}.arw.thin .af{stroke-width:1.4px!important}
+.pagpin:not(.woodpin) .gl{transform:translateY(4.5px) scale(1.35)}
+.pagpin:not(.woodpin) .dmc{fill:#c3c8cc!important}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/flubber@0.4.2/build/flubber.min.js"></script>
 <script>
@@ -8349,13 +8351,13 @@ new MutationObserver(()=>{if(!q)q=setTimeout(run,120)}).observe(document.body,{c
  const PG='<path class="dmc" d="M-8,0.2H8V-2.2H-8Z"/><path class="dmc" d="M-6.4,-2.2H6.4V-4H-6.4Z"/>'+
   [[-4,3.2,2.6,6.9,1.2],[-7.8,2.6,1.9,5.9,1],[-10.7,2.0,1.5,4.9,0.9]].map(([y,bw,bh,rw,rh])=>{const yb=y-bh,yr=yb-rh;return `<path class="dms" d="M${-bw},${y}H${bw}V${yb}H${-bw}Z"/><path class="dmc" d="M${-rw},${yb}Q${-rw-0.6},${yb-0.5} ${-rw-0.4},${yb-0.9}L${-rw+1.3},${yr}H${rw-1.3}L${rw+0.4},${yb-0.9}Q${rw+0.6},${yb-0.5} ${rw},${yb}Z"/>`}).join('')+
   '<path class="dms" d="M-0.5,-13.1H0.5V-16.6H-0.5Z"/><path class="dmg" d="M-10,0.6H10"/>';
- function apply(){if(typeof pinOf==='undefined')return;EVENTS.forEach(e=>{if(e.icon!=='book'&&e.icon!=='pagoda')return;const o=pinOf.get(e.id);if(!o||o.g.classList.contains('artpin'))return;const gl=o.g.querySelector('.gl');if(!gl)return;
+ function apply(){if(typeof pinOf==='undefined')return;EVENTS.forEach(e=>{if(/석탑|목탑/.test(e.t)&&!(e.tp||[]).includes('war'))e.icon='pagoda';if(e.icon!=='book'&&e.icon!=='pagoda')return;const o=pinOf.get(e.id);if(!o||o.g.classList.contains('artpin'))return;const gl=o.g.querySelector('.gl');if(!gl)return;
    const ob=o.g.querySelector('.dot');const wood=e.icon==='pagoda'&&/목탑/.test(e.t);gl.innerHTML=e.icon==='book'?BK:wood?WP:PG;o.g.classList.add('stelepin','dolpin','artpin',e.icon==='book'?'bookpin':'pagpin');if(wood)o.g.classList.add('woodpin')})}
  apply();setTimeout(apply,1500)}
 
 /* 화살촉 모양만 > (꺾쇠) — 꺾쇠 선 두께 = 몸통 두께 (확대해도 같이) */
 {const W=new Map();const wOf=p=>{if(!W.has(p)){let w=2.6;try{const af=p.g.querySelector('.af');const c=getComputedStyle(af).strokeWidth;if(c&&!p.g.classList.contains('hide'))w=parseFloat(c)||w;else w=p.inv?3.4:2.6}catch(_){}W.set(p,w)}return W.get(p)};
- try{arrOf.forEach(ps=>ps.forEach(p=>{const f=p.hg.querySelector('.ahf');if(!f)return;f.setAttribute('d',p.inv?'M-9,-6.2Q-3.3,-1.9 1.5,0Q-3.3,1.9 -9,6.2':'M-7.6,-5.2Q-2.8,-1.6 1.2,0Q-2.8,1.6 -7.6,5.2');f.classList.add('ahk2');f.style.setProperty('stroke',f.style.fill,'important');f.style.fill='none'}))}catch(_){}
+ try{arrOf.forEach(ps=>ps.forEach(p=>{const f=p.hg.querySelector('.ahf');if(!f)return;f.setAttribute('d',p.inv?'M-7,-4.9Q-2.6,-1.5 1.2,0Q-2.6,1.5 -7,4.9':'M-5.9,-4.1Q-2.2,-1.25 1,0Q-2.2,1.25 -5.9,4.1');f.classList.add('ahk2');f.style.setProperty('stroke',f.style.fill,'important');f.style.fill='none'}))}catch(_){}
  const fit=()=>{try{const k=kNow();arrOf.forEach(ps=>ps.forEach(p=>{const f=p.hg.querySelector('.ahk2');if(!f)return;let w=p.inv?3.4:2.6;try{const af=p.g.querySelector('.af');const c=parseFloat(getComputedStyle(af).strokeWidth);if(c)w=c}catch(_){}f.style.setProperty('stroke-width',w+'px','important')}))}catch(_){}};
  const po=placeOV;placeOV=function(){const r=po.apply(this,arguments);fit();return r};fit()}
 
