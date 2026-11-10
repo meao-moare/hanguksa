@@ -2593,9 +2593,9 @@ body.medit #dcbody .gl2>.gp.dchid{opacity:.45}
 #kgpop button{font:inherit;display:flex;justify-content:space-between;gap:12px;border:0;background:none;padding:5px 8px;border-radius:6px;cursor:pointer;color:var(--ink);text-align:left}
 #kgpop button:hover{background:color-mix(in srgb,var(--ink) 6%,transparent)}
 #kgpop button i{font-style:normal;font-size:12px;color:var(--muted)}
-#pbody ul.elist>li[data-nb]{position:relative}
-#pbody ul.elist>li[data-nb]::before{content:'';position:absolute;left:0;top:0;bottom:0;width:56px;background-image:var(--nbg,none);background-position:var(--nbp,0 0);background-size:var(--nbs,0 0);background-repeat:no-repeat;opacity:.85;pointer-events:none}
-#pbody ul.elist>li[data-nb]>button{padding-left:max(58px,1em)}
+#v-map.listonly #pbody ul.elist>li[data-nb]{position:relative}
+#v-map.listonly #pbody ul.elist>li[data-nb]::before{content:'';position:absolute;left:0;top:0;bottom:0;width:56px;background-image:var(--nbg,none);background-position:var(--nbp,0 0);background-size:var(--nbs,0 0);background-repeat:no-repeat;opacity:.85;pointer-events:none}
+#v-map.listonly #pbody ul.elist>li[data-nb]>button{padding-left:max(58px,1em)}
 .arwait{opacity:0!important;pointer-events:none}
 .bookpin .bkc{fill:#e2d3ac;stroke:#5c4422;stroke-width:1;stroke-linejoin:round}
 .bookpin .bkb{fill:#b89c64;stroke:#5c4422;stroke-width:1;stroke-linejoin:round}
@@ -3311,7 +3311,7 @@ const EXTRA={
 '『직지심체요절』 인쇄':{st:'고려',pp:'백운 화상'},
 '진포 대첩':{vs:'고려 vs 왜구',ar:[['goryeo',[[126.2,36.4],[126.55,36.15],[126.7,36.06]]]],pp:'최무선, 나세'},
 '황산 대첩':{vs:'고려 vs 왜구',ar:[['goryeo',[[127.4,36.0],[127.5,35.7],[127.53,35.47]]]],pp:'이성계, 아지발도'},
-'위화도 회군':{st:'고려',ar:[['goryeo',[[126.4,38.25],[125.75,38.85],[125.15,39.5],[124.55,40.02]],1],['goryeo',[[124.8,40.12],[125.55,40.35],[126.25,39.95],[126.7,39.2],[126.82,38.35]]]],seqAr:1,pp:'이성계, 최영, 우왕'},
+'위화도 회군':{st:'고려',ar:[['goryeo',[[126.45,38.2],[125.85,38.7],[125.15,39.35],[124.62,39.98]]],['goryeo',[[124.85,40.1],[125.45,40.05],[126.0,39.6],[126.5,38.95],[126.72,38.3]]]],seqAr:1,pp:'이성계, 최영, 우왕'},
 '박위의 쓰시마 정벌':{vs:'고려 vs 왜구',ar:[['goryeo',[[128.7,34.95],[129.2,34.6]]]],pp:'박위'},
 '과전법 실시':{st:'고려',pp:'조준, 정도전'},
 '조선 건국':{st:'조선',pp:'이성계, 정도전, 정몽주, 이방원'},'한양 천도':{st:'조선',ar:[['joseon',[[126.55,37.97],[126.95,37.6]],1]],pp:'정도전'},
@@ -8287,7 +8287,7 @@ function natOf(e){if(!e)return '';const t=(e.st||'')+' '+e.t+' '+(e.vs||'');cons
   if(T<936.9){if(/발해/.test(t))return '발해';if(/후백제|견훤/.test(t))return '후백제';if(/후고구려|태봉|궁예/.test(t))return '후고구려';if(T>=918.5&&/고려|왕건/.test(t))return '고려';return '신라'}
   if(T<1392.55)return '고려';if(T<1897.8)return '조선';if(T<1910.66)return '대한제국';if(T<1945.62)return '일제강점기';return '대한민국'}
 const LIFE=[['고조선',-2333,-108,0,1],['신라',-57,935,1,1],['고구려',-37,668,2,1],['백제',-18,660,3,1],['가야',42,562,4,1],['발해',698,926,2,1],['후백제',900,936,3,1],['후고구려',901,918,4,1],['고려',918.5,1392.5,0,1],['조선',1392.55,1897.8,0,0],['대한제국',1897.8,1910.66,0,1],['일제강점기',1910.66,1945.62,0,0],['대한민국',1948.6,9999,0,0],['북한',1948.7,9999,1,0]];
-let q=0;function run(){q=0;document.querySelectorAll('#v-tl ol.tl,#pbody ul.elist').forEach(run1)}function run1(ol){const byId=window.__EVBYID||(window.__EVBYID=new Map(EVENTS.map(e=>[String(e.id),e])));
+let q=0;function run(){q=0;document.querySelectorAll('#v-tl ol.tl,#v-map.listonly #pbody ul.elist').forEach(run1);document.querySelectorAll('#v-map:not(.listonly) #pbody ul.elist[data-nbn]').forEach(u=>{delete u.dataset.nbn})}function run1(ol){const byId=window.__EVBYID||(window.__EVBYID=new Map(EVENTS.map(e=>[String(e.id),e])));
   const L=[...ol.querySelectorAll(':scope>li')];const sg=L.length+'|'+(L[0]&&L[0].dataset.id||'')+'|'+(L[L.length-1]&&L[L.length-1].dataset.id||'');if(ol.dataset.nbn===sg)return;ol.dataset.nbn=sg;
   const act=T=>T==null?null:LIFE.filter(x=>T>=x[1]&&T<x[2]+(x[2]%1?0.05:1));
   const sets=L.map(li=>{const e=li.dataset.id&&byId.get(li.dataset.id);return e?act(e.T):null});

@@ -196,7 +196,7 @@ function natOf(e){if(!e)return '';const t=(e.st||'')+' '+e.t+' '+(e.vs||'');cons
   if(T<936.9){if(/발해/.test(t))return '발해';if(/후백제|견훤/.test(t))return '후백제';if(/후고구려|태봉|궁예/.test(t))return '후고구려';if(T>=918.5&&/고려|왕건/.test(t))return '고려';return '신라'}
   if(T<1392.55)return '고려';if(T<1897.8)return '조선';if(T<1910.66)return '대한제국';if(T<1945.62)return '일제강점기';return '대한민국'}
 const LIFE=[['고조선',-2333,-108,0,1],['신라',-57,935,1,1],['고구려',-37,668,2,1],['백제',-18,660,3,1],['가야',42,562,4,1],['발해',698,926,2,1],['후백제',900,936,3,1],['후고구려',901,918,4,1],['고려',918.5,1392.5,0,1],['조선',1392.55,1897.8,0,0],['대한제국',1897.8,1910.66,0,1],['일제강점기',1910.66,1945.62,0,0],['대한민국',1948.6,9999,0,0],['북한',1948.7,9999,1,0]];
-let q=0;function run(){q=0;document.querySelectorAll('#v-tl ol.tl,#pbody ul.elist').forEach(run1)}function run1(ol){const byId=window.__EVBYID||(window.__EVBYID=new Map(EVENTS.map(e=>[String(e.id),e])));
+let q=0;function run(){q=0;document.querySelectorAll('#v-tl ol.tl,#v-map.listonly #pbody ul.elist').forEach(run1);document.querySelectorAll('#v-map:not(.listonly) #pbody ul.elist[data-nbn]').forEach(u=>{delete u.dataset.nbn})}function run1(ol){const byId=window.__EVBYID||(window.__EVBYID=new Map(EVENTS.map(e=>[String(e.id),e])));
   const L=[...ol.querySelectorAll(':scope>li')];const sg=L.length+'|'+(L[0]&&L[0].dataset.id||'')+'|'+(L[L.length-1]&&L[L.length-1].dataset.id||'');if(ol.dataset.nbn===sg)return;ol.dataset.nbn=sg;
   const act=T=>T==null?null:LIFE.filter(x=>T>=x[1]&&T<x[2]+(x[2]%1?0.05:1));
   const sets=L.map(li=>{const e=li.dataset.id&&byId.get(li.dataset.id);return e?act(e.T):null});
