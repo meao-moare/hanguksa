@@ -8237,7 +8237,7 @@ function applyAll(){const ed=can();const seen={};document.querySelectorAll(SEL).
 function link(ld){const n=ld.nextElementSibling;if(!n||!n.matches('.hzn'))return;if(ld.dataset.ol==null){ld.dataset.ol=parseFloat(ld.style.left)||0;ld.dataset.ot=parseFloat(ld.style.top)||0;ld.dataset.oh0=parseFloat(ld.style.height)||0}
   const up=ld.classList.contains('up');const Ax=+ld.dataset.ol,Ay=up?(+ld.dataset.ot)+(+ld.dataset.oh0):+ld.dataset.ot;const tr=(n.style.translate||'').split(/\s+/).map(parseFloat);const tx=tr[0]||0,ty=tr[1]||0;
   const L=n.offsetLeft+tx,T=n.offsetTop+ty,W=n.offsetWidth,H=n.offsetHeight;const Bx=Math.max(L+3,Math.min(L+W-3,Ax)),By=(T+H/2<Ay)?T+H:T;const dx=Bx-Ax,dy=By-Ay;const len=Math.hypot(dx,dy);const ang=Math.atan2(dy,dx)*180/Math.PI-90;
-  ld.classList.add('lnk');ld.style.left=Ax+'px';ld.style.top=Ay+'px';ld.style.height=len+'px';ld.style.rotate=ang+'deg'}
+  ld.classList.add('lnk');ld.style.left=Ax+'px';ld.style.top=Ay+'px';ld.style.height=len+'px';ld.style.rotate=ang+'deg';ld.style.display=Math.abs(dy)<50?'none':''}
 window.__ovLink=()=>document.querySelectorAll('#v-ov .hzld').forEach(link);
 /* 선 긋기: 고치기 모드에서 '선 긋기'를 켜고 끌어서 직선 (선을 누르면 지우기) */
 const cvOf=sec=>sec.querySelector('.hztop>div')||sec.querySelector('.hztop');
