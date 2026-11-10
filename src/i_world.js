@@ -21,7 +21,7 @@ function buildWorld(g){g=decodeEc(g);let d='';
   g.features.forEach(f=>{const G=f.geometry;if(!G)return;if(G.type==='Polygon')G.coordinates.forEach(ring);else if(G.type==='MultiPolygon')G.coordinates.forEach(p=>p.forEach(ring))});
   if(!d)return;$('wl').setAttribute('d',d);$('world').classList.add('on');const fk=$('fakeland');if(fk)fk.style.display='none'}
 window.echarts={registerMap(n,g){try{buildWorld(g)}catch(e){console.warn('world',e)}}};
-{const s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/echarts@4.9.0/map/js/world.js';s.async=true;document.head.appendChild(s)}
+{const SRC=['https://cdn.jsdelivr.net/npm/echarts@4.9.0/map/js/world.js','https://unpkg.com/echarts@4.9.0/map/js/world.js'];let i=0;const ok=()=>$('world').classList.contains('on');const load=()=>{if(ok()||i>=SRC.length)return;const s=document.createElement('script');s.src=SRC[i++];s.async=true;s.onerror=()=>setTimeout(load,300);s.onload=()=>setTimeout(()=>{if(!ok())load()},500);document.head.appendChild(s)};load();setTimeout(()=>{if(!ok())load()},8000)}
 
 /* ───────── 중국 쪽 나라 (연하게) ───────── */
 const CH_SH={
