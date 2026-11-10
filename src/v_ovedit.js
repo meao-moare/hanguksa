@@ -195,8 +195,14 @@ function natOf(e){if(!e)return '';const t=(e.st||'')+' '+e.t+' '+(e.vs||'');cons
   if(T<-2333)return '';if(T<=-108||(T<0&&/고조선|위만/.test(t)))return '고조선';if(T<676){for(const n of ['고구려','백제','신라','가야','부여'])if(t.includes(n))return n;return ''}
   if(T<936.9){if(/발해/.test(t))return '발해';if(/후백제|견훤/.test(t))return '후백제';if(/후고구려|태봉|궁예/.test(t))return '후고구려';if(T>=918.5&&/고려|왕건/.test(t))return '고려';return '신라'}
   if(T<1392.55)return '고려';if(T<1897.8)return '조선';if(T<1910.66)return '대한제국';if(T<1945.62)return '일제강점기';return '대한민국'}
-let q=0;function run(){q=0;document.querySelectorAll('#v-tl ol.tl').forEach(run1)}function run1(ol){const byId=window.__EVBYID||(window.__EVBYID=new Map(EVENTS.map(e=>[String(e.id),e])));
-  ol.querySelectorAll(':scope>li[data-id]:not([data-nb])').forEach(li=>{const e=byId.get(li.dataset.id);const n=natOf(e);const c=n?NC(n):'';li.dataset.nb=n||'-';if(c)li.style.setProperty('--nb',c)});
+const LIFE=[['고조선',-2333,-108,0],['신라',-57,935,1],['고구려',-37,668,2],['백제',-18,660,3],['가야',42,562,4],['발해',698,926,2],['후백제',900,936,3],['후고구려',901,918,4],['고려',918.5,1392.5,0],['조선',1392.55,1897.8,0],['대한제국',1897.8,1910.66,0],['일제강점기',1910.66,1945.62,0],['대한민국',1948.6,9999,0],['북한',1948.7,9999,1]];
+let q=0;function run(){q=0;document.querySelectorAll('#v-tl ol.tl,#pbody ul.elist').forEach(run1)}function run1(ol){const byId=window.__EVBYID||(window.__EVBYID=new Map(EVENTS.map(e=>[String(e.id),e])));
+  const L=[...ol.querySelectorAll(':scope>li')];const sg=L.length+'|'+(L[0]&&L[0].dataset.id||'')+'|'+(L[L.length-1]&&L[L.length-1].dataset.id||'');if(ol.dataset.nbn===sg)return;ol.dataset.nbn=sg;
+  const act=T=>T==null?null:LIFE.filter(x=>T>=x[1]&&T<=x[2]);
+  const sets=L.map(li=>{const e=li.dataset.id&&byId.get(li.dataset.id);return e?act(e.T):null});
+  L.forEach((li,i)=>{let A=sets[i];if(!A){let p=i-1,n=i+1;while(p>=0&&!sets[p])p--;while(n<L.length&&!sets[n])n++;const P=p>=0?sets[p]:[],N=n<L.length?sets[n]:[];A=P.filter(x=>N.includes(x))}
+    li.dataset.nb=A.length?A.map(x=>x[0]).join(','):'-';const im=[],ps=[],sz=[];A.forEach(x=>{const c=NC(x[0])||'#888';im.push(`linear-gradient(${c},${c})`);ps.push(`${x[3]*7}px 0`);sz.push('4px 100%')});
+    li.style.setProperty('--nbg',im.join(',')||'none');li.style.setProperty('--nbp',ps.join(',')||'0 0');li.style.setProperty('--nbs',sz.join(',')||'0 0')});
   if(!ol.dataset.nbx){const li=ol.querySelector(':scope>li[data-id]');const d=li&&li.querySelector(':scope>.d');const d2=li&&li.children[1];if(d&&d2&&li.offsetWidth){const lr=li.getBoundingClientRect(),dr=d.getBoundingClientRect(),r2=d2.getBoundingClientRect();const x=Math.round(r2.left-lr.left-16);if(x>30){ol.style.setProperty('--nbx',x+'px');ol.dataset.nbx=1}}}}
 new MutationObserver(()=>{if(!q)q=setTimeout(run,120)}).observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:['hidden']});setTimeout(run,1200);
 }

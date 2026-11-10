@@ -2586,11 +2586,14 @@ body.medit #dcbody .gl2>.gp.dchid{opacity:.45}
 #dcbody .dchbtn{margin-left:6px;font:inherit;font-size:11.5px;border:1px dashed var(--rule);background:var(--panel);border-radius:999px;padding:1px 8px;cursor:pointer;color:var(--muted)}
 #dcbody .dchbtn:hover{color:var(--seal);border-color:var(--seal)}
 #v-tl ol.tl>li[data-nb]{position:relative}
-#v-tl ol.tl>li[data-nb]::after{content:'';position:absolute;left:var(--nbx,96px);top:0;bottom:0;width:5px;background:var(--nb,transparent);opacity:.75;pointer-events:none}
+#v-tl ol.tl>li[data-nb]::after{content:'';position:absolute;left:calc(var(--nbx,96px) - 8px);top:0;bottom:0;width:38px;background-image:var(--nbg,none);background-position:var(--nbp,0 0);background-size:var(--nbs,0 0);background-repeat:no-repeat;opacity:.8;pointer-events:none}
 #v-ov .hzrg2{border-left:2.5px solid color-mix(in srgb,var(--gc) 85%,#000)!important}
 #v-ov .hzrg2:not(.og){background:color-mix(in srgb,var(--gc) 22%,transparent)!important}
 #kgpop{position:fixed;z-index:3000;background:var(--panel);border:1px solid var(--rule);border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.16);padding:6px;display:flex;flex-direction:column;gap:2px;min-width:180px}
 #kgpop button{font:inherit;display:flex;justify-content:space-between;gap:12px;border:0;background:none;padding:5px 8px;border-radius:6px;cursor:pointer;color:var(--ink);text-align:left}
 #kgpop button:hover{background:color-mix(in srgb,var(--ink) 6%,transparent)}
 #kgpop button i{font-style:normal;font-size:12px;color:var(--muted)}
+#pbody ul.elist>li[data-nb]{position:relative}
+#pbody ul.elist>li[data-nb]::before{content:'';position:absolute;left:0;top:0;bottom:0;width:38px;background-image:var(--nbg,none);background-position:var(--nbp,0 0);background-size:var(--nbs,0 0);background-repeat:no-repeat;opacity:.85;pointer-events:none}
+#pbody ul.elist>li[data-nb]>button{padding-left:max(40px,1em)}
 </style>

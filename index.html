@@ -2587,13 +2587,16 @@ body.medit #dcbody .gl2>.gp.dchid{opacity:.45}
 #dcbody .dchbtn{margin-left:6px;font:inherit;font-size:11.5px;border:1px dashed var(--rule);background:var(--panel);border-radius:999px;padding:1px 8px;cursor:pointer;color:var(--muted)}
 #dcbody .dchbtn:hover{color:var(--seal);border-color:var(--seal)}
 #v-tl ol.tl>li[data-nb]{position:relative}
-#v-tl ol.tl>li[data-nb]::after{content:'';position:absolute;left:var(--nbx,96px);top:0;bottom:0;width:5px;background:var(--nb,transparent);opacity:.75;pointer-events:none}
+#v-tl ol.tl>li[data-nb]::after{content:'';position:absolute;left:calc(var(--nbx,96px) - 8px);top:0;bottom:0;width:38px;background-image:var(--nbg,none);background-position:var(--nbp,0 0);background-size:var(--nbs,0 0);background-repeat:no-repeat;opacity:.8;pointer-events:none}
 #v-ov .hzrg2{border-left:2.5px solid color-mix(in srgb,var(--gc) 85%,#000)!important}
 #v-ov .hzrg2:not(.og){background:color-mix(in srgb,var(--gc) 22%,transparent)!important}
 #kgpop{position:fixed;z-index:3000;background:var(--panel);border:1px solid var(--rule);border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.16);padding:6px;display:flex;flex-direction:column;gap:2px;min-width:180px}
 #kgpop button{font:inherit;display:flex;justify-content:space-between;gap:12px;border:0;background:none;padding:5px 8px;border-radius:6px;cursor:pointer;color:var(--ink);text-align:left}
 #kgpop button:hover{background:color-mix(in srgb,var(--ink) 6%,transparent)}
 #kgpop button i{font-style:normal;font-size:12px;color:var(--muted)}
+#pbody ul.elist>li[data-nb]{position:relative}
+#pbody ul.elist>li[data-nb]::before{content:'';position:absolute;left:0;top:0;bottom:0;width:38px;background-image:var(--nbg,none);background-position:var(--nbp,0 0);background-size:var(--nbs,0 0);background-repeat:no-repeat;opacity:.85;pointer-events:none}
+#pbody ul.elist>li[data-nb]>button{padding-left:max(40px,1em)}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/flubber@0.4.2/build/flubber.min.js"></script>
 <script>
@@ -3286,11 +3289,12 @@ const EXTRA={
 '『직지심체요절』 인쇄':{st:'고려',pp:'백운 화상'},
 '진포 대첩':{vs:'고려 vs 왜구',ar:[['goryeo',[[126.2,36.4],[126.55,36.15],[126.7,36.06]]]],pp:'최무선, 나세'},
 '황산 대첩':{vs:'고려 vs 왜구',ar:[['goryeo',[[127.4,36.0],[127.5,35.7],[127.53,35.47]]]],pp:'이성계, 아지발도'},
-'위화도 회군':{st:'고려',ar:[['goryeo',[[126.45,38.05],[125.35,39.15],[124.5,40.05]],1],['goryeo',[[124.75,39.95],[126.05,39.0],[126.62,38.1]]]],seqAr:1,pp:'이성계, 최영, 우왕'},
+'위화도 회군':{st:'고려',ar:[['goryeo',[[126.4,38.25],[125.75,38.85],[125.15,39.5],[124.55,40.02]],1],['goryeo',[[124.8,40.12],[125.55,40.35],[126.25,39.95],[126.7,39.2],[126.82,38.35]]]],seqAr:1,pp:'이성계, 최영, 우왕'},
 '박위의 쓰시마 정벌':{vs:'고려 vs 왜구',ar:[['goryeo',[[128.7,34.95],[129.2,34.6]]]],pp:'박위'},
 '과전법 실시':{st:'고려',pp:'조준, 정도전'},
 '조선 건국':{st:'조선',pp:'이성계, 정도전, 정몽주, 이방원'},'한양 천도':{st:'조선',ar:[['joseon',[[126.55,37.97],[126.95,37.6]],1]],pp:'정도전'},
 '1차 왕자의 난':{st:'조선',pp:'이방원, 정도전, 이방석'},'호패법 실시 · 8도 체제':{st:'조선'},
+'박위의 쓰시마 정벌':{vs:'고려 vs 왜구',st:'고려',ar:[['goryeo',[[128.55,35.15],[128.95,34.85],[129.22,34.55]]]],pp:'박위'},
 '이종무의 쓰시마 정벌':{vs:'조선 vs 왜구',st:'조선',ar:[['joseon',[[128.7,34.95],[129.2,34.6]]]],pp:'이종무'},
 '집현전 확대':{st:'조선'},'『농사직설』 간행':{st:'조선',pp:'정초'},
 '4군 설치':{vs:'조선 vs 여진',st:'조선',ar:[['joseon',[[126.2,40.6],[126.6,41.1],[126.9,41.5]]]],pp:'최윤덕'},
@@ -4013,7 +4017,7 @@ const ICON_GL={def:['M0,-5.2L4.3,-3.5V0.1C4.3,2.7,2.4,4.6,0,5.4C-2.4,4.6,-4.3,2.
  op:['M0,-3.4A3.4,3.4 0 1 1 -0.01,-3.4M0,-6V-1.8M0,1.8V6M-6,0H-1.8M1.8,0H6',0,'#4b5b6b','작전'],
  inc:['M0,-4.6V1M0,3.9V4.1',0,null,'사건'],
  relic:['M-1.9,-5.6H1.9V-4.5H1.1C1.1,-3.7,1.6,-3.2,2.5,-2.8C4.7,-1.8,5.1,1.1,4.2,3.2C3.7,4.4,2.7,5.2,1.7,5.4H-1.7C-2.7,5.2,-3.7,4.4,-4.2,3.2C-5.1,1.1,-4.7,-1.8,-2.5,-2.8C-1.6,-3.2,-1.1,-3.7,-1.1,-4.5H-1.9ZM-4.2,-0.25H4.2V0.65H-4.2Z',1,'#b07a2a','유물·유적'],
- book:['M-4.2,-5.4H4.2V5.4H-4.2ZM-3.3,-4.2V-3.4H-2.5V-4.2ZM-3.3,-1.6V-0.8H-2.5V-1.6ZM-3.3,1.0V1.8H-2.5V1.0ZM-3.3,3.6V4.4H-2.5V3.6ZM0.6,-4.4V0.8H2.8V-4.4Z',1,'#047857','기록물·옛 책'],
+ book:['M-4.6,-4.2L3.4,-5.4L4.8,3.0L-3.2,4.2ZM-3.82,-3.40h0.6v0.6h-0.6ZM-3.50,-1.50h0.6v0.6h-0.6ZM-3.18,0.40h0.6v0.6h-0.6ZM-2.87,2.30h0.6v0.6h-0.6ZM-2.4,-3.1L-1.2,-3.3L-0.65,0.2L-1.85,0.4ZM-3.25,4.75L4.85,3.55V4.5L-3.25,5.7Z',1,'#8b5e34','기록물·옛 책'],
  pagoda:['M-0.35,-6H0.35V-4.6H-0.35ZM-2.4,-4.6H2.4L2.9,-4H-2.9ZM-1.4,-3.95H1.4V-2.95H-1.4ZM-3.2,-2.9H3.2L3.8,-2.2H-3.8ZM-1.8,-2.15H1.8V-0.95H-1.8ZM-4,-0.9H4L4.7,-0.1H-4.7ZM-2.3,-0.05H2.3V2.2H-2.3ZM-3.6,2.25H3.6V3.35H-3.6ZM-4.6,3.4H4.6V5.2H-4.6Z',1,'#8a5a1f','석탑·탑'],
  rev:['M0,-5.6C2.8,-3,4,-0.8,3.7,1.6C3.4,4,1.8,5.4,0,5.4C-1.8,5.4,-3.4,4,-3.7,1.6C-3.9,-0.4,-2.6,-1.9,-1.5,-3.1C-1.3,-1.6,-0.7,-0.7,0.1,-0.5C0.6,-2.3,0.5,-4,0,-5.6Z',1,'var(--t-soc)','백성의 봉기'],
  coup:['M1.4,-5.8L-3.6,0.8H-0.3L-1.4,5.8L3.6,-1H0.3Z',1,'#6b21a8','권력 다툼·정변']};
@@ -4166,7 +4170,7 @@ function placeName(e){const p=(e.p||'').trim();const CT=['미국','중국','일�
 /* 내가 추가한 사건: 이 브라우저에 기억해 둔 것을 지도 그리기 전에 넣음 (저장소에서 바뀌면 화면을 한 번 새로 고침) */
 {let yo='{}';try{yo=localStorage.getItem('hgs_yov')||'{}'}catch(_){}window.__YOV_SIG=yo;try{const O=JSON.parse(yo);Object.keys(O).forEach(id=>{const e=EVENTS[+id];const o=O[id];if(e&&o&&typeof o.y==='number'){e.y=o.y;if(o.m)e.m=o.m;else delete e.m;delete e.d;if(o.yl)e.yl=o.yl;else delete e.yl}})}catch(_){}}
 window.fmtYL=v=>{const yr=n=>n<0?'기원전 '+(-n):String(n);const part=(Y,M,D,showY)=>(showY?yr(Y):'')+(M?(showY?'.':'')+M:'')+(D?'.'+D:'');const has2=v.y2!=null||v.m2||v.d2;if(!has2&&!v.m&&!v.d)return '';const s1=part(v.y,v.m,v.d,true);const e2=has2?part(v.y2!=null?v.y2:v.y,v.m2,v.d2,v.y2!=null&&v.y2!==v.y):'';return s1+(e2?' ~ '+e2:'')};
-{let raw='[]';try{raw=localStorage.getItem('hgs_myev')||'[]'}catch(_){}window.__MYEV_SIG=raw;try{JSON.parse(raw).forEach(v0=>{if(!v0)return;const v=Object.assign({},v0);const S=x=>typeof x==='string'?x:(x&&typeof x==='object'&&typeof x.v==='string'?x.v:(typeof x==='number'?String(x):''));['t','x','p','pp','vs','yl','s'].forEach(f=>{if(v[f]!=null&&typeof v[f]!=='string'){const s=S(v[f]);if(s)v[f]=s;else delete v[f]}});if(typeof v.y==='string')v.y=parseFloat(v.y);if(v.m!=null)v.m=parseInt(v.m)||undefined;if(v.ll&&!(Array.isArray(v.ll)&&v.ll.length===2&&v.ll.every(n=>typeof n==='number')))delete v.ll;const tp=(Array.isArray(v.tp)?v.tp:[]).map(S).filter(Boolean);if(v.t&&typeof v.y==='number'&&!isNaN(v.y)){const yl=fmtYL(v);if(yl)v.yl=yl;else delete v.yl;EVENTS.push(Object.assign(v,{tp:tp.length?tp:['pol'],x:v.x||v.t}))}})}catch(_){}}
+{let raw='[]';try{raw=localStorage.getItem('hgs_myev')||'[]'}catch(_){}window.__MYEV_SIG=raw;try{JSON.parse(raw).forEach(v0=>{if(!v0)return;const v=Object.assign({},v0);const S=x=>typeof x==='string'?x:(x&&typeof x==='object'&&typeof x.v==='string'?x.v:(typeof x==='number'?String(x):''));['t','x','p','pp','vs','yl','s'].forEach(f=>{if(v[f]!=null&&typeof v[f]!=='string'){const s=S(v[f]);if(s)v[f]=s;else delete v[f]}});if(typeof v.y==='string')v.y=parseFloat(v.y);if(v.m!=null)v.m=parseInt(v.m)||undefined;if(v.ll&&!(Array.isArray(v.ll)&&v.ll.length===2&&v.ll.every(n=>typeof n==='number')))delete v.ll;const tp=(Array.isArray(v.tp)?v.tp:[]).map(S).filter(Boolean);if(v.t&&typeof v.y==='number'&&!isNaN(v.y)){const yl=fmtYL(v);if(yl)v.yl=yl;else delete v.yl;{const X0=(typeof EXTRA!=='undefined'&&EXTRA[v.t])||null;if(X0)for(const k in X0)if(v[k]==null)v[k]=X0[k]}EVENTS.push(Object.assign(v,{tp:tp.length?tp:['pol'],x:v.x||v.t}))}})}catch(_){}}
 /* ───────── 계산 도우미 ───────── */
 const KX=78.80107536067219;
 const X=lon=>(lon-123)*KX, Y=lat=>(44-lat)*100;
@@ -8238,8 +8242,14 @@ function natOf(e){if(!e)return '';const t=(e.st||'')+' '+e.t+' '+(e.vs||'');cons
   if(T<-2333)return '';if(T<=-108||(T<0&&/고조선|위만/.test(t)))return '고조선';if(T<676){for(const n of ['고구려','백제','신라','가야','부여'])if(t.includes(n))return n;return ''}
   if(T<936.9){if(/발해/.test(t))return '발해';if(/후백제|견훤/.test(t))return '후백제';if(/후고구려|태봉|궁예/.test(t))return '후고구려';if(T>=918.5&&/고려|왕건/.test(t))return '고려';return '신라'}
   if(T<1392.55)return '고려';if(T<1897.8)return '조선';if(T<1910.66)return '대한제국';if(T<1945.62)return '일제강점기';return '대한민국'}
-let q=0;function run(){q=0;document.querySelectorAll('#v-tl ol.tl').forEach(run1)}function run1(ol){const byId=window.__EVBYID||(window.__EVBYID=new Map(EVENTS.map(e=>[String(e.id),e])));
-  ol.querySelectorAll(':scope>li[data-id]:not([data-nb])').forEach(li=>{const e=byId.get(li.dataset.id);const n=natOf(e);const c=n?NC(n):'';li.dataset.nb=n||'-';if(c)li.style.setProperty('--nb',c)});
+const LIFE=[['고조선',-2333,-108,0],['신라',-57,935,1],['고구려',-37,668,2],['백제',-18,660,3],['가야',42,562,4],['발해',698,926,2],['후백제',900,936,3],['후고구려',901,918,4],['고려',918.5,1392.5,0],['조선',1392.55,1897.8,0],['대한제국',1897.8,1910.66,0],['일제강점기',1910.66,1945.62,0],['대한민국',1948.6,9999,0],['북한',1948.7,9999,1]];
+let q=0;function run(){q=0;document.querySelectorAll('#v-tl ol.tl,#pbody ul.elist').forEach(run1)}function run1(ol){const byId=window.__EVBYID||(window.__EVBYID=new Map(EVENTS.map(e=>[String(e.id),e])));
+  const L=[...ol.querySelectorAll(':scope>li')];const sg=L.length+'|'+(L[0]&&L[0].dataset.id||'')+'|'+(L[L.length-1]&&L[L.length-1].dataset.id||'');if(ol.dataset.nbn===sg)return;ol.dataset.nbn=sg;
+  const act=T=>T==null?null:LIFE.filter(x=>T>=x[1]&&T<=x[2]);
+  const sets=L.map(li=>{const e=li.dataset.id&&byId.get(li.dataset.id);return e?act(e.T):null});
+  L.forEach((li,i)=>{let A=sets[i];if(!A){let p=i-1,n=i+1;while(p>=0&&!sets[p])p--;while(n<L.length&&!sets[n])n++;const P=p>=0?sets[p]:[],N=n<L.length?sets[n]:[];A=P.filter(x=>N.includes(x))}
+    li.dataset.nb=A.length?A.map(x=>x[0]).join(','):'-';const im=[],ps=[],sz=[];A.forEach(x=>{const c=NC(x[0])||'#888';im.push(`linear-gradient(${c},${c})`);ps.push(`${x[3]*7}px 0`);sz.push('4px 100%')});
+    li.style.setProperty('--nbg',im.join(',')||'none');li.style.setProperty('--nbp',ps.join(',')||'0 0');li.style.setProperty('--nbs',sz.join(',')||'0 0')});
   if(!ol.dataset.nbx){const li=ol.querySelector(':scope>li[data-id]');const d=li&&li.querySelector(':scope>.d');const d2=li&&li.children[1];if(d&&d2&&li.offsetWidth){const lr=li.getBoundingClientRect(),dr=d.getBoundingClientRect(),r2=d2.getBoundingClientRect();const x=Math.round(r2.left-lr.left-16);if(x>30){ol.style.setProperty('--nbx',x+'px');ol.dataset.nbx=1}}}}
 new MutationObserver(()=>{if(!q)q=setTimeout(run,120)}).observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:['hidden']});setTimeout(run,1200);
 }
