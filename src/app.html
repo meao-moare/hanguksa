@@ -2639,6 +2639,8 @@ body.medit #dcbody .gl2>.gp.dchid{opacity:.45}
 .arw .af{stroke-width:1.8!important}.arw.inv .af{stroke-width:2.4!important}.arw.thin .af{stroke-width:1.4px!important}
 .pagpin:not(.woodpin) .gl{transform:translateY(4.5px) scale(1.35)}
 .pagpin:not(.woodpin) .dmc{fill:#c3c8cc!important}
+.ahd.rode{animation:none!important}
+.ahd.rode:not(.dim):not(.hide){opacity:1}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/flubber@0.4.2/build/flubber.min.js"></script>
 <script>
@@ -8366,9 +8368,9 @@ new MutationObserver(()=>{if(!q)q=setTimeout(run,120)}).observe(document.body,{c
 /* 화살표 그릴 때 머리가 몸통 끝을 따라 같이 나아감 (몸통·머리 한 덩어리) */
 {const H=new Map();try{arrOf.forEach(ps=>ps.forEach(p=>H.set(p.hg,p)))}catch(_){}
  const bz=(x1,y1,x2,y2)=>t=>{let a=0,b=1,u=t;for(let i=0;i<22;i++){u=(a+b)/2;const x=3*(1-u)*(1-u)*u*x1+3*(1-u)*u*u*x2+u*u*u;if(x<t)a=u;else b=u}return 3*(1-u)*(1-u)*u*y1+3*(1-u)*u*u*y2+u*u*u};const EZ=bz(.4,0,.2,1);
- const ride=p=>{const path=p.g.querySelector('.af');if(!path)return;let L=0;try{L=path.getTotalLength()}catch(_){}if(!L)return;cancelAnimationFrame(p.rid);p.hg.classList.add('ride');const o=p.o;const t0=performance.now();
+ const ride=p=>{const path=p.g.querySelector('.af');if(!path)return;let L=0;try{L=path.getTotalLength()}catch(_){}if(!L)return;cancelAnimationFrame(p.rid);p.hg.classList.remove('rode');p.hg.classList.add('ride');const o=p.o;const t0=performance.now();
    const step=now=>{const t=Math.min(1,(now-t0)/1000);let f=Math.min(1,2*EZ(t));try{const off=parseFloat(getComputedStyle(path).strokeDashoffset);if(!isNaN(off)&&p.g.classList.contains('draw')&&!p.g.classList.contains('dash'))f=Math.max(0,Math.min(1,2-off))}catch(_){}const d=Math.max(0.001,f)*L;const a=path.getPointAtLength(d),b=path.getPointAtLength(Math.max(0,d-Math.min(3,L*0.02)));const ang=Math.atan2(a.y-b.y,a.x-b.x)*180/Math.PI;const k=kNow();
      p.hg.setAttribute('transform',`translate(${a.x.toFixed(1)},${a.y.toFixed(1)}) rotate(${(d<1?o.rot:ang).toFixed(1)}) scale(${k.toFixed(4)})`);
-     if(t<1&&p.hg.classList.contains('draw')&&!p.hg.classList.contains('hide'))p.rid=requestAnimationFrame(step);else{p.hg.classList.remove('ride');try{p.hg.setAttribute('transform',`translate(${o.x.toFixed(1)},${o.y.toFixed(1)}) rotate(${o.rot.toFixed(1)}) scale(${kNow().toFixed(4)})`)}catch(_){}}};p.rid=requestAnimationFrame(step)};
+     if(t<1&&p.hg.classList.contains('draw')&&!p.hg.classList.contains('hide'))p.rid=requestAnimationFrame(step);else{p.hg.classList.add('rode');p.hg.classList.remove('ride');try{p.hg.setAttribute('transform',`translate(${o.x.toFixed(1)},${o.y.toFixed(1)}) rotate(${o.rot.toFixed(1)}) scale(${kNow().toFixed(4)})`)}catch(_){}}};p.rid=requestAnimationFrame(step)};
  new MutationObserver(ms=>{ms.forEach(m=>{const n=m.target;if(!n.classList||!n.classList.contains('ahd'))return;const was=(m.oldValue||'').split(/\s+/).includes('draw');if(n.classList.contains('draw')&&!was){const p=H.get(n);if(p)ride(p)}})}).observe(document.getElementById('map'),{attributes:true,attributeFilter:['class'],attributeOldValue:true,subtree:true})}
 </script>
