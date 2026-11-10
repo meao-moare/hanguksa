@@ -60,7 +60,7 @@ document.addEventListener('pointerdown',e=>{if(!can()||e.button!==0)return;const
   const n=t.closest('#trbody .hn');
   if(n&&(e.shiftKey||e.metaKey||e.ctrlKey)&&!t.closest('button,.hngrip,[contenteditable]')){e.preventDefault();e.stopImmediatePropagation();const c=n.closest('.trcard');document.querySelectorAll('.hn.hnsel').forEach(o=>{if(o.closest('.trcard')!==c)o.classList.remove('hnsel')});n.classList.toggle('hnsel');killClick();return}
   if(n)return;
-  const c=t.closest('#trbody .trcard');if(!c||!c.querySelector('.tfin,.htree,.hchain'))return;if(t.closest('button,input,textarea,[contenteditable],.trut,.trflow,.trh,.trsplit,.trgrip,.hnbar,a,.hjw'))return;
+  const c=t.closest('#trbody .trcard');if(!c||!c.querySelector('.tfin,.htree,.hchain'))return;if(t.closest('button,input,textarea,[contenteditable],.trut,.trflow,.trh,.trsplit,.trgrip,.hnbar,a,.hjw,.tflh'))return;
   const r0=c.getBoundingClientRect();if(e.clientX>r0.right-16||e.clientY>r0.bottom-16)return;
   const x0=e.clientX,y0=e.clientY,add=e.shiftKey||e.metaKey||e.ctrlKey;let band=null;
   const mv=ev=>{const dx=ev.clientX-x0,dy=ev.clientY-y0;if(!band){if(Math.abs(dx)+Math.abs(dy)<6)return;band=document.createElement('div');band.id='hnband';document.body.appendChild(band);try{getSelection().removeAllRanges()}catch(_){}}ev.preventDefault();
@@ -117,3 +117,8 @@ document.addEventListener('pointerdown',e=>{const t=e.target;if(!t.classList||!t
   addEventListener('pointermove',mv,{passive:false});addEventListener('pointerup',up);addEventListener('pointercancel',up)},true);
 new MutationObserver(()=>{document.querySelectorAll('#trbody .trcard .tfin').forEach(f=>{const has=!!f.querySelector('.tflh');if(has!==document.body.classList.contains('medit')){try{window.__DRAWLINES(f.closest('.trcard'))}catch(_){}}})}).observe(document.body,{attributes:true,attributeFilter:['class']});
 }
+
+/* 고치기 모드에서 구조도에 손을 대면 선을 잡을 수 있게 미리 준비 */
+{const prep=e=>{if(!document.body.classList.contains('medit'))return;const c=e.target.closest&&e.target.closest('#trbody .trcard');if(!c||c.dataset.lprep)return;c.dataset.lprep=1;try{window.__TRPREP&&window.__TRPREP(c)}catch(_){}};
+ document.addEventListener('pointerover',prep,true);document.addEventListener('touchstart',prep,{capture:true,passive:true});
+ new MutationObserver(()=>{if(!document.body.classList.contains('medit'))document.querySelectorAll('#trbody .trcard[data-lprep]').forEach(c=>delete c.dataset.lprep)}).observe(document.body,{attributes:true,attributeFilter:['class']})}
