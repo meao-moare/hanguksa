@@ -5728,6 +5728,9 @@ const HZ_NOTES={'구석기':['뗀석기 — 주먹도끼, 슴베찌르개','이�
  '청동기':['비파형 동검, 청동 거울 (지배자의 물건)','반달 돌칼 (벼 이삭 따기), 민무늬 토기','벼농사 → 잉여 생산물','사유 재산 → 계급 사회, 군장 등장','고인돌 (지배층 무덤)','고조선 건국 — 단군왕검 (제정일치)'],
  '철기 보급':['위만 때 본격 보급','철제 농기구 → 생산량 증가','세형동검, 거푸집 (독자적 청동기)','명도전·반량전 (중국과 교류)','붓 (창원 다호리) — 한자 사용']};
 const hzShort=t=>{t=String(t||'').split(/[.。]/)[0].replace(/\s*\([^)]*\)/g,'');return t.length>30?t.slice(0,29)+'…':t};
+/* 형광펜 줄: 전체 시대를 통틀어 한 번만 정해서, 같은 띠는 어느 칸에서나 같은 줄·같은 두께 */
+let HZGL=null;function hzGLanes(){if(HZGL)return HZGL;const ERAN=new Set((typeof ERAS!=='undefined'?ERAS:[]).map(e=>e.n));const L=[...HZ_T2.filter(r=>!ERAN.has(r.n)).map(r=>({k:'r|'+r.n,s:r.s,e:r.e,og:0})),...(typeof ONGOING!=='undefined'?ONGOING:[]).map(o=>({k:'o|'+o[2],s:o[0],e:o[1],og:1}))].sort((p,q)=>(p.og-q.og)||(p.s-q.s));
+  const ends=[];const m=new Map();L.forEach(r=>{if(m.has(r.k))return;let li=ends.findIndex(t=>r.s>=t-0.6);if(li<0){li=ends.length;ends.push(-1e9)}ends[li]=r.e;m.set(r.k,li)});HZGL={m,n:Math.max(1,ends.length)};return HZGL}
 function layHZ(k,SC){
   const ALL=k==='all';const E=ALL?{n:'전체 흐름',rg:'',s:{}}:ERA[k];const fs=ALL?FRAMES:FRAMES.filter(f=>f.era===k);
   const evs=EVENTS.filter(e=>(ALL||e.era===k)&&!isSiteO(e)&&(!HZ_ONLY[k]||HZ_ONLY[k].includes(e.t)));
@@ -5757,7 +5760,7 @@ function layHZ(k,SC){
   const free=(k,a,b)=>occ[k].every(([p,q])=>b+6<=p||a>=q+6);
   const upP=[...upN].sort((p,q)=>(isMajor(q.e)-isMajor(p.e))||(p.a-q.a));upP.forEach(o=>{o.row=-1;for(let k=0;k<RR;k++)if(free(k,o.a,o.b)){o.row=k;occ[k].push([o.a,o.b]);break}});
   const used=Math.max(OL,...upN.map(o=>o.row+1),0);
-  const rg2=HZ_T2.filter(r=>r.e>t0&&r.s<t1&&!rg.some(q=>q.n===r.n)).map(r=>({n:r.n,c:r.c,ts:r.s,te:r.e,cont:r.s<t0-.01,a:r.s<t0-.01?0:xT(r.s),b:r.e>t1+.01?W:xT(Math.min(r.e,t1))})).sort((p,q)=>p.a-q.a).reduce((L,r)=>{const p=L.find(q=>q.n===r.n&&r.a<=q.b+8);if(p){p.b=Math.max(p.b,r.b);p.te=Math.max(p.te,r.te)}else L.push(r);return L},[]).filter(r=>r.b-r.a>=14).concat(og.map(o=>({n:o.n,og:1,c:o.c,ts:o.ta,te:o.tb,a:o.a,b:o.b})));const BL=[];rg2.slice().sort((p,q)=>((p.og||0)-(q.og||0))||p.a-q.a).forEach(r=>{let L=BL.findIndex(b=>r.a>=b+3);if(L<0){L=BL.length;BL.push(0)}BL[L]=r.b;r.ln=L});const nBL=BL.length,BX=nBL>2?nBL*13-25:0;
+  const rg2=HZ_T2.filter(r=>r.e>t0&&r.s<t1&&!rg.some(q=>q.n===r.n)).map(r=>({n:r.n,c:r.c,ts:r.s,te:r.e,cont:r.s<t0-.01,a:r.s<t0-.01?0:xT(r.s),b:r.e>t1+.01?W:xT(Math.min(r.e,t1))})).sort((p,q)=>p.a-q.a).reduce((L,r)=>{const p=L.find(q=>q.n===r.n&&r.a<=q.b+8);if(p){p.b=Math.max(p.b,r.b);p.te=Math.max(p.te,r.te)}else L.push(r);return L},[]).filter(r=>r.b-r.a>=14).concat(og.map(o=>({n:o.n,og:1,c:o.c,ts:o.ta,te:o.tb,a:o.a,b:o.b})));const G=hzGLanes();rg2.forEach(r=>{const k=(r.og?'o|':'r|')+r.n;r.ln=G.m.has(k)?G.m.get(k):0});const nBL=G.n,BX=nBL>2?nBL*13-25:0;
   let y0=TOPH+38+BX+(rg2.length?22:0)+used*RH+(used?10:0);
   const rowY=k=>y0-10-(k+1)*RH+3;const gcAt=x=>{const r=rg.find(r=>x>=r.a&&x<r.b);return r?`var(--g${r.c})`:'transparent'};
   [].forEach(o=>{h+=`<div class="hzog" data-rg="${o.ta}|${o.tb}|${esc(o.n)}" style="left:${o.a}px;top:${rowY(o.li)}px;width:${Math.max(8,o.b-o.a)}px;--tc:var(--t-${o.c})"><span>${esc(o.n)}</span></div>`});
