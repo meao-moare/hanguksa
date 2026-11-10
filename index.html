@@ -2588,6 +2588,12 @@ body.medit #dcbody .gl2>.gp.dchid{opacity:.45}
 #dcbody .dchbtn:hover{color:var(--seal);border-color:var(--seal)}
 #v-tl ol.tl>li[data-nb]{position:relative}
 #v-tl ol.tl>li[data-nb]::after{content:'';position:absolute;left:var(--nbx,96px);top:0;bottom:0;width:5px;background:var(--nb,transparent);opacity:.75;pointer-events:none}
+#v-ov .hzrg2{border-left:2.5px solid color-mix(in srgb,var(--gc) 85%,#000)!important}
+#v-ov .hzrg2:not(.og){background:color-mix(in srgb,var(--gc) 22%,transparent)!important}
+#kgpop{position:fixed;z-index:3000;background:var(--panel);border:1px solid var(--rule);border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.16);padding:6px;display:flex;flex-direction:column;gap:2px;min-width:180px}
+#kgpop button{font:inherit;display:flex;justify-content:space-between;gap:12px;border:0;background:none;padding:5px 8px;border-radius:6px;cursor:pointer;color:var(--ink);text-align:left}
+#kgpop button:hover{background:color-mix(in srgb,var(--ink) 6%,transparent)}
+#kgpop button i{font-style:normal;font-size:12px;color:var(--muted)}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/flubber@0.4.2/build/flubber.min.js"></script>
 <script>
@@ -5733,6 +5739,7 @@ const hzShort=t=>{t=String(t||'').split(/[.。]/)[0].replace(/\s*\([^)]*\)/g,'')
 /* 형광펜 줄: 전체 시대를 통틀어 한 번만 정해서, 같은 띠는 어느 칸에서나 같은 줄·같은 두께 */
 let HZGL=null;function hzGLanes(){if(HZGL)return HZGL;const ERAN=new Set((typeof ERAS!=='undefined'?ERAS:[]).map(e=>e.n));const L=[...HZ_T2.filter(r=>!ERAN.has(r.n)).map(r=>({k:'r|'+r.n,s:r.s,e:r.e,og:0})),...(typeof ONGOING!=='undefined'?ONGOING:[]).map(o=>({k:'o|'+o[2],s:o[0],e:o[1],og:1}))].sort((p,q)=>(p.og-q.og)||(p.s-q.s));
   const ends=[];const m=new Map();L.forEach(r=>{if(m.has(r.k))return;let li=ends.findIndex(t=>r.s>=t-0.6);if(li<0){li=ends.length;ends.push(-1e9)}ends[li]=r.e;m.set(r.k,li)});HZGL={m,n:Math.max(1,ends.length)};return HZGL}
+function hzNatC(n){const M=[['백제','#2563eb'],['고구려','#dc2626'],['신라','#ca8a04'],['가야','#65a30d'],['발해','#7c3aed'],['고려','#0f8a7a'],['조선','#4f46e5'],['무신','#9a3412'],['원 간섭','#64748b'],['몽','#b45309'],['왜','#be185d'],['당','#c2410c'],['수 전쟁','#ea580c']];for(const [k,c] of M)if(String(n).includes(k))return c;return ''}
 function layHZ(k,SC){
   const ALL=k==='all';const E=ALL?{n:'전체 흐름',rg:'',s:{}}:ERA[k];const fs=ALL?FRAMES:FRAMES.filter(f=>f.era===k);
   const evs=EVENTS.filter(e=>(ALL||e.era===k)&&!isSiteO(e)&&(!HZ_ONLY[k]||HZ_ONLY[k].includes(e.t)));
@@ -5767,7 +5774,7 @@ function layHZ(k,SC){
   const rowY=k=>y0-10-(k+1)*RH+3;const gcAt=x=>{const r=rg.find(r=>x>=r.a&&x<r.b);return r?`var(--g${r.c})`:'transparent'};
   [].forEach(o=>{h+=`<div class="hzog" data-rg="${o.ta}|${o.tb}|${esc(o.n)}" style="left:${o.a}px;top:${rowY(o.li)}px;width:${Math.max(8,o.b-o.a)}px;--tc:var(--t-${o.c})"><span>${esc(o.n)}</span></div>`});
   let rgH='',stH='';{const two=nBL>1;
-   rg2.forEach(r=>{const top=two?33+r.ln*13:34;const nearS=SEPS.concat(rg.length?[rg[0].a]:[]).some(s=>Math.abs(r.a-s)<8)||r.a<8;const ax=r.a+(nearS?8:2);rgH+=`<div class="hzrg hzrg2${two?' thin':''}${r.og?' og':''}" data-rg="${r.ts}|${r.te}|${esc(r.n)}" style="left:${ax}px;top:${top}px;width:${Math.max(8,r.b-r.a-4)}px;--gc:${r.og?`var(--t-${r.c})`:`var(--g${r.c})`}"><span>${r.cont?'':esc((r.b-r.a-4)<r.n.length*12.5+14?r.n.replace(/ ?시대$/,'').replace(/^(.+?)\s*\(.*\)$/,'$1'):r.n)}</span></div>`})}rg.forEach((r,ri)=>{const rb=ri===rg.length-1?Math.max(r.b,W):r.b;stH+=`<div class="hzst" style="left:${ri?r.a:Math.min(r.a,0)}px;width:${Math.max(0,rb-(ri?r.a:Math.min(r.a,0)))}px;--gc:var(--g${r.c})"></div>`;rgH+=`<div class="hzrg" data-rg="${r.ts}|${r.te}|${esc(r.n)}" style="left:${r.a}px;top:4px;width:${Math.max(8,rb-r.a-6)}px;--gc:var(--g${r.c})"><span>${esc(r.n)}</span></div><i class="hzsep" style="left:${r.a}px"></i>`});
+   rg2.forEach(r=>{const top=two?33+r.ln*13:34;const nearS=SEPS.concat(rg.length?[rg[0].a]:[]).some(s=>Math.abs(r.a-s)<8)||r.a<8;const ax=r.a+(nearS?8:2);rgH+=`<div class="hzrg hzrg2${two?' thin':''}${r.og?' og':''}" data-rg="${r.ts}|${r.te}|${esc(r.n)}" style="left:${ax}px;top:${top}px;width:${Math.max(8,r.b-ax-2)}px;--gc:${hzNatC(r.n)||(r.og?`var(--t-${r.c})`:`var(--g${r.c})`)}"><span>${r.cont?'':esc((r.b-r.a-4)<r.n.length*12.5+14?r.n.replace(/ ?시대$/,'').replace(/^(.+?)\s*\(.*\)$/,'$1'):r.n)}</span></div>`})}rg.forEach((r,ri)=>{const rb=ri===rg.length-1?Math.max(r.b,W):r.b;stH+=`<div class="hzst" style="left:${ri?r.a:Math.min(r.a,0)}px;width:${Math.max(0,rb-(ri?r.a:Math.min(r.a,0)))}px;--gc:var(--g${r.c})"></div>`;rgH+=`<div class="hzrg" data-rg="${r.ts}|${r.te}|${esc(r.n)}" style="left:${r.a}px;top:4px;width:${Math.max(8,rb-r.a-6)}px;--gc:var(--g${r.c})"><span>${esc(r.n)}</span></div><i class="hzsep" style="left:${r.a}px"></i>`});
   const axY=y0+22;
   // 축 · 연도 · 표시
   h+=`<div class="hzax" style="top:${axY}px;width:${W}px"></div>`;
@@ -5785,8 +5792,8 @@ function layHZ(k,SC){
   /* 나라별 줄: 왕 재위 막대 + 그 밑에 왕 이름·업적 (교과서 정리표처럼) */
   let KY=6;kr.forEach(({D,rs},j)=>{const y0=KY;const cw=12.2;
     {const KB=rs.map(r=>({r,a:r.s<t0-.01?0:xT(r.s),bb:r.e>t1+.01?W:xT(Math.min(r.e,t1)),n:r.name.replace('대통령 ','')})).filter(o=>o.bb-o.a>=2);const G=[];KB.forEach(o=>{const nar=o.bb-o.a<30;const L=G[G.length-1];if(nar&&L&&L.nar&&o.a-L.bb<4){L.bb=o.bb;L.L.push(o)}else G.push({nar,a:o.a,bb:o.bb,L:[o]})});
-     G.forEach(g=>{if(g.L.length===1){const o=g.L[0],w=o.bb-o.a-2,n=o.n;b+=`<div class="hzk" data-king="${esc(D.n)}|${D.r.indexOf(o.r)}" style="left:${o.a}px;top:${y0+18}px;width:${w}px;--rc:var(--c-${D.c})" title="${esc(n)}"><span>${w>=n.length*11.5+8?esc(n):(w>=26?esc(n[0]):"")}</span></div>`;return}
-       const w=g.bb-g.a-2,nm=g.L.map(o=>o.n);const lab=w>=nm[0].length*11.5+40?`${nm[0]} 외 ${nm.length-1}명`:w>=34?`${nm.length}명`:'';b+=`<div class="hzk hzkg" data-king="${esc(D.n)}|${D.r.indexOf(g.L[0].r)}" style="left:${g.a}px;top:${y0+18}px;width:${w}px;--rc:var(--c-${D.c})" title="${esc(nm.join(' → '))}"><span>${esc(lab)}</span></div>`})}
+     G.forEach(g=>{if(g.L.length===1){const o=g.L[0],w=o.bb-o.a-2,n=o.n;b+=`<div class="hzk" data-king="${esc(D.n)}|${D.r.indexOf(o.r)}" style="left:${o.a}px;top:${y0+18}px;width:${w}px;--rc:var(--c-${D.c})" title="${esc(n)}"><span>${(()=>{const t=n.replace(/\s*(마립간|이사금|거서간|차차웅|왕)$/,"");return w>=n.length*11.5+8?esc(n):w>=t.length*11.5+4?esc(t):w>=14?esc(t[0]):""})()}</span></div>`;return}
+       const w=g.bb-g.a-2,nm=g.L.map(o=>o.n);const sh=x=>x.replace(/\s*(마립간|이사금|거서간|차차웅|왕)$/,'');const lab=w>=(sh(nm[0]).length+sh(nm[nm.length-1]).length)*11.5+26?`${sh(nm[0])}~${sh(nm[nm.length-1])}`:w>=40?`${nm.length}명 ▾`:w>=22?`${nm.length}`:'';b+=`<div class="hzk hzkg" data-kgl="${esc(D.n)}|${g.L.map(o=>D.r.indexOf(o.r)).join(',')}" style="left:${g.a}px;top:${y0+18}px;width:${w}px;--rc:var(--c-${D.c})" title="${esc(nm.join(' → '))}"><span>${esc(lab)}</span></div>`})}
     const blk=rs.map(r=>{const ach=(typeof kAch==='function'?kAch(D,r):[])||[];if(!ach.length)return null;const a=xT(Math.max(r.s,t0));const n=r.name.replace('대통령 ','');const L=Math.max(n.length*15,...ach.map(x=>x.length*cw));const w=Math.min(250,Math.max(120,L+22));const lines=Math.max(1,Math.ceil(ach[0].length*cw/(w-22)));return {r,n,ach,a,b:a+w,w,h:26+lines*17}}).filter(Boolean);
     const PL=[],Y0=y0+42;blk.forEach(o=>{const hit=y=>PL.some(p=>p.a<o.b+6&&o.a<p.b+6&&p.y<y+o.h+6&&y<p.y+p.h+6);const cs=[Y0,...PL.map(p=>p.y+p.h+6)].sort((p,q)=>p-q);o.y=cs.find(y=>!hit(y));PL.push({a:o.a,b:o.b,y:o.y,h:o.h})});
     let yy=PL.length?Math.max(...PL.map(p=>p.y+p.h+6)):Y0;
@@ -8236,6 +8243,13 @@ let q=0;function run(){q=0;document.querySelectorAll('#v-tl ol.tl').forEach(run1
   if(!ol.dataset.nbx){const li=ol.querySelector(':scope>li[data-id]');const d=li&&li.querySelector(':scope>.d');const d2=li&&li.children[1];if(d&&d2&&li.offsetWidth){const lr=li.getBoundingClientRect(),dr=d.getBoundingClientRect(),r2=d2.getBoundingClientRect();const x=Math.round(r2.left-lr.left-16);if(x>30){ol.style.setProperty('--nbx',x+'px');ol.dataset.nbx=1}}}}
 new MutationObserver(()=>{if(!q)q=setTimeout(run,120)}).observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:['hidden']});setTimeout(run,1200);
 }
+
+/* 연대표 왕 묶음(짧은 재위 여러 명) 누르면 이름 목록 */
+{const pop=document.createElement('div');pop.id='kgpop';pop.hidden=true;document.body.appendChild(pop);const E=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+ const yr=v=>{const y=Math.floor(v);return y<0?'기원전 '+(-y):String(y)};
+ document.addEventListener('click',e=>{const g=e.target.closest&&e.target.closest('#v-ov .hzkg[data-kgl]');if(!g){if(!pop.hidden&&!e.target.closest('#kgpop'))pop.hidden=true;return}e.preventDefault();e.stopImmediatePropagation();const [dn,ids]=g.dataset.kgl.split('|');const D=REIGNS.find(x=>x.n===dn);if(!D)return;
+   pop.innerHTML=ids.split(',').map(i=>{const r=D.r[+i];return `<button type="button" data-king="${E(dn)}|${i}"><b>${E(r.name)}</b><i>${yr(r.s)}~${yr(r.e)}</i></button>`}).join('');pop.hidden=false;const q=g.getBoundingClientRect();pop.style.left=Math.max(8,Math.min(innerWidth-240,q.left))+'px';pop.style.top=(q.bottom+6)+'px'},true);
+ pop.addEventListener('click',e=>{if(e.target.closest('[data-king]'))setTimeout(()=>{pop.hidden=true},0)});addEventListener('scroll',()=>{pop.hidden=true},true)}
 </script>
 <script type="module">
 /* 구글 로그인 + 하트·책갈피·설정 동기화 (GitHub 사이트 전용) */

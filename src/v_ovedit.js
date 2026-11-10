@@ -200,3 +200,10 @@ let q=0;function run(){q=0;document.querySelectorAll('#v-tl ol.tl').forEach(run1
   if(!ol.dataset.nbx){const li=ol.querySelector(':scope>li[data-id]');const d=li&&li.querySelector(':scope>.d');const d2=li&&li.children[1];if(d&&d2&&li.offsetWidth){const lr=li.getBoundingClientRect(),dr=d.getBoundingClientRect(),r2=d2.getBoundingClientRect();const x=Math.round(r2.left-lr.left-16);if(x>30){ol.style.setProperty('--nbx',x+'px');ol.dataset.nbx=1}}}}
 new MutationObserver(()=>{if(!q)q=setTimeout(run,120)}).observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:['hidden']});setTimeout(run,1200);
 }
+
+/* 연대표 왕 묶음(짧은 재위 여러 명) 누르면 이름 목록 */
+{const pop=document.createElement('div');pop.id='kgpop';pop.hidden=true;document.body.appendChild(pop);const E=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+ const yr=v=>{const y=Math.floor(v);return y<0?'기원전 '+(-y):String(y)};
+ document.addEventListener('click',e=>{const g=e.target.closest&&e.target.closest('#v-ov .hzkg[data-kgl]');if(!g){if(!pop.hidden&&!e.target.closest('#kgpop'))pop.hidden=true;return}e.preventDefault();e.stopImmediatePropagation();const [dn,ids]=g.dataset.kgl.split('|');const D=REIGNS.find(x=>x.n===dn);if(!D)return;
+   pop.innerHTML=ids.split(',').map(i=>{const r=D.r[+i];return `<button type="button" data-king="${E(dn)}|${i}"><b>${E(r.name)}</b><i>${yr(r.s)}~${yr(r.e)}</i></button>`}).join('');pop.hidden=false;const q=g.getBoundingClientRect();pop.style.left=Math.max(8,Math.min(innerWidth-240,q.left))+'px';pop.style.top=(q.bottom+6)+'px'},true);
+ pop.addEventListener('click',e=>{if(e.target.closest('[data-king]'))setTimeout(()=>{pop.hidden=true},0)});addEventListener('scroll',()=>{pop.hidden=true},true)}
