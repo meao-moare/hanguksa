@@ -8114,6 +8114,28 @@ new MutationObserver(()=>{document.querySelectorAll('#trbody .trcard .tfin').for
 {const prep=e=>{if(!document.body.classList.contains('medit'))return;const c=e.target.closest&&e.target.closest('#trbody .trcard');if(!c||c.dataset.lprep)return;c.dataset.lprep=1;try{window.__TRPREP&&window.__TRPREP(c)}catch(_){}};
  document.addEventListener('pointerover',prep,true);document.addEventListener('touchstart',prep,{capture:true,passive:true});
  new MutationObserver(()=>{if(!document.body.classList.contains('medit'))document.querySelectorAll('#trbody .trcard[data-lprep]').forEach(c=>delete c.dataset.lprep)}).observe(document.body,{attributes:true,attributeFilter:['class']})}
+
+/* 화면이 위로 튀지 않게: 자료가 새로 들어와 다시 그려져도, 같은 화면이면 보고 있던 스크롤 자리를 그대로 */
+{
+const REC=new Map();let lastIn=0,lastMut=0;const now=()=>performance.now();
+const ident=el=>{const h=el.querySelector('.kph h1,.trh h3,.trh h2,h1,h2');return el.id+'|'+(h?h.textContent.trim().slice(0,60):'')};
+['wheel','touchmove','touchstart'].forEach(t=>addEventListener(t,()=>{lastIn=now()},{capture:true,passive:true}));
+addEventListener('keydown',e=>{const a=document.activeElement;if(a&&(a.isContentEditable||/INPUT|TEXTAREA|SELECT/.test(a.tagName)))return;if(/Page|Arrow|Home|End|^ $/.test(e.key))lastIn=now()},true);
+addEventListener('pointerdown',e=>{const t=e.target;if(t&&t.id&&t.scrollHeight>t.clientHeight)lastIn=now();if(t&&t.closest&&t.closest('button,a,[data-rj],[data-pj],[data-tpg],[data-tpk],[data-trg],[data-trk],[data-kgn],[data-mv]'))lastIn=now()},true);
+document.addEventListener('scroll',e=>{const el=e.target;if(!el||el.nodeType!==1||!el.id)return;if(now()-lastMut<200&&now()-lastIn>250)return;REC.set(el.id,{top:el.scrollTop,left:el.scrollLeft,id:ident(el)})},true);
+const dirty=new Set();let raf=0;
+const fix=()=>{raf=0;dirty.forEach(id=>{const el=document.getElementById(id);const r=REC.get(id);if(!el||!r)return;if(now()-lastIn<300)return;if(ident(el)!==r.id)return;if(Math.abs(el.scrollTop-r.top)>4)el.scrollTop=r.top;if(Math.abs(el.scrollLeft-r.left)>4)el.scrollLeft=r.left});};
+const later=()=>{const ids=[...dirty];dirty.clear();ids.forEach(i=>dirty.add(i));fix();[60,250,700].forEach(ms=>setTimeout(()=>{ids.forEach(i=>dirty.add(i));fix();dirty.clear()},ms))};
+new MutationObserver(ms=>{let hit=false;for(const m of ms){if(!m.removedNodes.length)continue;let p=m.target;while(p&&p.nodeType===1){if(p.id&&REC.has(p.id)){dirty.add(p.id);hit=true}p=p.parentElement}}if(hit){lastMut=now();if(!raf)raf=requestAnimationFrame(later)}}).observe(document.body,{childList:true,subtree:true});
+}
+
+/* 고치는 중 글칸에 들어갈 때 화면이 끌려 올라가지 않게 */
+{const of=HTMLElement.prototype.focus;HTMLElement.prototype.focus=function(o){try{if(document.body.classList.contains('medit')&&(this.isContentEditable||(this.closest&&this.closest('#trbody,#v-ov,#kpage,.evd,#dcbody,#ppbody'))))return of.call(this,Object.assign({preventScroll:true},o||{}))}catch(_){}return of.call(this,o)};
+ /* 앱 화면은 창 자체가 스크롤되지 않음: 글자판이 안 떠 있는데 창이 밀리면 제자리로 */
+ const kb=()=>{const v=window.visualViewport;return v&&v.height<innerHeight-120};
+ addEventListener('scroll',()=>{const se=document.scrollingElement||document.documentElement;if(se.scrollTop>0&&!kb())se.scrollTop=0},{passive:true});
+ if(window.visualViewport)visualViewport.addEventListener('resize',()=>{if(!kb()){const se=document.scrollingElement||document.documentElement;if(se.scrollTop>0)se.scrollTop=0}});
+}
 </script>
 <script type="module">
 /* 구글 로그인 + 하트·책갈피·설정 동기화 (GitHub 사이트 전용) */
