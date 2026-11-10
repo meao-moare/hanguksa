@@ -8235,7 +8235,7 @@ function natOf(e){if(!e)return '';const t=(e.st||'')+' '+e.t+' '+(e.vs||'');cons
   if(/북한/.test(t)&&T>1945)return '북한';
   for(const n of ['고구려','백제','신라','가야','발해','후고구려','후백제','고려','조선','대한제국'])if((e.st||'').includes(n))return n==='대한제국'?'대한제국':n;
   try{const h=typeof hzSt==='function'?hzSt(e):'';if(h&&ST[h])return ST[h]}catch(_){}
-  if(T<-2333)return '';if(T<-108)return '고조선';if(T<676){for(const n of ['고구려','백제','신라','가야','부여'])if(t.includes(n))return n;return ''}
+  if(T<-2333)return '';if(T<=-108||(T<0&&/고조선|위만/.test(t)))return '고조선';if(T<676){for(const n of ['고구려','백제','신라','가야','부여'])if(t.includes(n))return n;return ''}
   if(T<936.9){if(/발해/.test(t))return '발해';if(/후백제|견훤/.test(t))return '후백제';if(/후고구려|태봉|궁예/.test(t))return '후고구려';if(T>=918.5&&/고려|왕건/.test(t))return '고려';return '신라'}
   if(T<1392.55)return '고려';if(T<1897.8)return '조선';if(T<1910.66)return '대한제국';if(T<1945.62)return '일제강점기';return '대한민국'}
 let q=0;function run(){q=0;document.querySelectorAll('#v-tl ol.tl').forEach(run1)}function run1(ol){const byId=window.__EVBYID||(window.__EVBYID=new Map(EVENTS.map(e=>[String(e.id),e])));
