@@ -2585,6 +2585,8 @@ body:not(.medit) #dcbody .gl2>.gp.dchid{display:none!important}
 body.medit #dcbody .gl2>.gp.dchid{opacity:.45}
 #dcbody .dchbtn{margin-left:6px;font:inherit;font-size:11.5px;border:1px dashed var(--rule);background:var(--panel);border-radius:999px;padding:1px 8px;cursor:pointer;color:var(--muted)}
 #dcbody .dchbtn:hover{color:var(--seal);border-color:var(--seal)}
+#v-tl ol.tl>li[data-nb]{position:relative}
+#v-tl ol.tl>li[data-nb]::after{content:'';position:absolute;left:var(--nbx,96px);top:0;bottom:0;width:5px;background:var(--nb,transparent);opacity:.75;pointer-events:none}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/flubber@0.4.2/build/flubber.min.js"></script>
 <script>
@@ -8216,4 +8218,21 @@ const wait=()=>{const b=document.getElementById('dcbody');if(!b)return setTimeou
 {let lastT=0,lastE='';const cyc=t=>{const c=t.closest('.trcard');const k=c.id.replace(/^tree-/,'');const key=t.dataset.e;const M=window.__ME.tr;const LO=Object.assign({},M.get('@lo:'+k)||{});const lv=LO[key];const cur=Array.isArray(lv)?(+lv[2]||0):0;const nx=(cur+1)%4;const par=key.split('-')[0];const sibs=[...c.querySelectorAll('svg.tfl path.tflh')].map(q=>q.dataset.e).filter(e=>e.split('-')[0]===par);sibs.forEach(e=>{LO[e]=[0,0,nx]});LO[key]=[0,0,nx];M.set('@lo:'+k,LO);try{window.__DRAWLINES(c)}catch(_){}try{window.__MEX.save('T:@lo:'+k,LO)}catch(_){}try{window.__MEX.toast(['기본 모양','ㄱ 모양 (옆으로 나가서 꺾임)','ㄴ 모양 (내려가서 꺾임)','모 모양 (아래로 내려와서 갈라짐 · 가로줄을 끌어 높이 조절)'][nx]+' · 같은 상자에서 나간 선 모두')}catch(_){}};
  document.addEventListener('dblclick',e=>{const t=e.target;if(!t.classList||!t.classList.contains('tflh'))return;e.preventDefault();e.stopPropagation();cyc(t)},true);
  document.addEventListener('pointerup',e=>{const t=e.target;if(e.pointerType!=='touch'||!t.classList||!t.classList.contains('tflh'))return;const n=performance.now();if(n-lastT<350&&lastE===t.dataset.e){cyc(t);lastT=0}else{lastT=n;lastE=t.dataset.e}},true)}
+
+/* 사건 모아보기: 연도 옆 세로 색줄 = 그 사건의 나라 (이름 없이 색만) */
+{
+const NC=n=>{try{return (window.NAT_COL&&NAT_COL[n])||(typeof NAT_COL!=='undefined'&&NAT_COL[n])||''}catch(_){return ''}};
+const ST={goguryeo:'고구려',baekje:'백제',silla:'신라',gaya:'가야',balhae:'발해'};
+function natOf(e){if(!e)return '';const t=(e.st||'')+' '+e.t+' '+(e.vs||'');const T=e.T;
+  if(/북한/.test(t)&&T>1945)return '북한';
+  for(const n of ['고구려','백제','신라','가야','발해','후고구려','후백제','고려','조선','대한제국'])if((e.st||'').includes(n))return n==='대한제국'?'대한제국':n;
+  try{const h=typeof hzSt==='function'?hzSt(e):'';if(h&&ST[h])return ST[h]}catch(_){}
+  if(T<-2333)return '';if(T<-108)return '고조선';if(T<676){for(const n of ['고구려','백제','신라','가야','부여'])if(t.includes(n))return n;return ''}
+  if(T<936.9){if(/발해/.test(t))return '발해';if(/후백제|견훤/.test(t))return '후백제';if(/후고구려|태봉|궁예/.test(t))return '후고구려';if(T>=918.5&&/고려|왕건/.test(t))return '고려';return '신라'}
+  if(T<1392.55)return '고려';if(T<1897.8)return '조선';if(T<1910.66)return '대한제국';if(T<1945.62)return '일제강점기';return '대한민국'}
+let q=0;function run(){q=0;document.querySelectorAll('#v-tl ol.tl').forEach(run1)}function run1(ol){const byId=window.__EVBYID||(window.__EVBYID=new Map(EVENTS.map(e=>[String(e.id),e])));
+  ol.querySelectorAll(':scope>li[data-id]:not([data-nb])').forEach(li=>{const e=byId.get(li.dataset.id);const n=natOf(e);const c=n?NC(n):'';li.dataset.nb=n||'-';if(c)li.style.setProperty('--nb',c)});
+  if(!ol.dataset.nbx){const li=ol.querySelector(':scope>li[data-id]');const d=li&&li.querySelector(':scope>.d');const d2=li&&li.children[1];if(d&&d2&&li.offsetWidth){const lr=li.getBoundingClientRect(),dr=d.getBoundingClientRect(),r2=d2.getBoundingClientRect();const x=Math.round(r2.left-lr.left-16);if(x>30){ol.style.setProperty('--nbx',x+'px');ol.dataset.nbx=1}}}}
+new MutationObserver(()=>{if(!q)q=setTimeout(run,120)}).observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:['hidden']});setTimeout(run,1200);
+}
 </script>
