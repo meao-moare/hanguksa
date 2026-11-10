@@ -2745,4 +2745,9 @@ body.ovedit #v-ov .hzach{cursor:move;touch-action:none}body.ovedit #v-ov .hzach.
 #mpen .mfpal .mfhint{display:block;width:100%;font-size:10px;color:var(--muted);margin-top:2px}
 body.ovedit #v-ov [data-mev],body.ovedit #v-ov .hzyr[data-yev]{cursor:pointer;pointer-events:auto}
 body.ovedit #v-ov .hztk[data-mev]{padding:0 6px;margin-left:-6px;background-clip:content-box}
+.ovdw{position:absolute;left:0;top:0;overflow:visible;pointer-events:none;z-index:50}
+.ovhl{position:absolute;z-index:49;background:var(--hb);border-radius:999px;display:flex;align-items:center;padding:0 8px;overflow:hidden;white-space:nowrap;color:var(--ink);font-weight:700;pointer-events:none}
+.ovhl span{outline:none;min-width:4px}body.drawing .ovhl{pointer-events:auto;cursor:text}
+body.drawing[data-dtool="er"] .ovdw *{pointer-events:stroke}
+body.drawing #trbody .trcard,body.drawing #kpage .kpin,body.drawing .view:not(#v-map){cursor:crosshair;touch-action:none}
 </style>
