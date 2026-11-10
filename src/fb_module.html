@@ -50,7 +50,7 @@ onAuthStateChanged(auth,async u=>{uid=u?u.uid:null;render(u);if(!u)return;
  const adapter={collection:name=>({onSnapshot:(cb,err)=>{const L=listen(name);
      const base=()=>name==='mine'?J.mine.filter(d=>d&&d.k).map(d=>[hidf(d.k),d]):Object.entries(J.sanon).map(([k,v])=>[hidf(k),{k,v}]);
      const emit=()=>{if(!L.live)return;const m=new Map(base());L.fs.forEach((d,id)=>{const b=m.get(id);const at=+(d&&d.at)||0,bt=+(b&&b.at)||0;if(d&&d.del){if(!b||at>bt)m.delete(id)}else if(d&&d.k&&(!b||at>=bt))m.set(id,d)});cb({docs:[...m.values()].filter(d=>!d.del).map(d=>({data:()=>d}))})};
-     const f=()=>jp.then(emit);L.subs.add(f);f();return ()=>L.subs.delete(f)},
+     let tq=0;const f=()=>{clearTimeout(tq);tq=setTimeout(()=>jp.then(emit),60)};L.subs.clear();L.subs.add(f);f();return ()=>L.subs.delete(f)},
    doc:id=>({set:v=>setDoc(doc(db,name,id),enc(v)),delete:()=>setDoc(doc(db,name,id),{del:true,at:Date.now()})})})};
  let owner=false;const attach=()=>{try{window.__mineAttach&&window.__mineAttach(adapter,owner);window.__sanonAttach&&window.__sanonAttach(adapter,owner)}catch(e){console.warn(e)}};
  attach();
