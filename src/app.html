@@ -2739,6 +2739,10 @@ body.ovedit #v-ov .hzach{cursor:move;touch-action:none}body.ovedit #v-ov .hzach.
 #v-ov .hzbot,#v-ov .hztop,#ovscroll .hzall,#ovscroll{background:#fff!important}
 #v-ov .hzach{background:transparent!important;box-shadow:none!important}
 #v-ov .hzax{left:-40px!important;width:calc(100% + 80px)!important}
+#ovpal .phint{font-size:11px;color:var(--muted)}
+#mpen .mfpal .mfcu{width:22px;height:22px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 1px var(--rule);padding:0;cursor:pointer}
+#mpen .mfpal .mfadd{width:22px;height:22px;border-radius:50%;border:1px dashed var(--muted);background:var(--panel);color:var(--ink);padding:0;line-height:1;cursor:pointer}
+#mpen .mfpal .mfhint{display:block;width:100%;font-size:10px;color:var(--muted);margin-top:2px}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/flubber@0.4.2/build/flubber.min.js"></script>
 <script>
@@ -8262,7 +8266,7 @@ document.addEventListener('click',e=>{const l=e.target.closest&&e.target.closest
  const COLS=['#dc2626','#ea580c','#ca8a04','#16a34a','#0d9488','#2563eb','#7c3aed','#db2777','#57534e','#111827'];
  document.addEventListener('click',e=>{if(e.target.closest('#ovpal'))return;const el=can()&&e.target.closest&&e.target.closest(SEL);if(!el||el.matches('.hzach')){pal.hidden=true;cur=null;return}if(e.target.closest('.ovgrip'))return;
    e.preventDefault();e.stopPropagation();cur=el;const v=get(keyOf(el))||{};const rg=el.matches('.hzrg');
-   pal.innerHTML=`<span>${rg?'형광펜 색':'글씨 색'}</span>${COLS.map(c=>`<button type="button" data-oc="${c}" style="--c:${c}" class="${v.c===c?'on':''}"></button>`).join('')}<button type="button" data-oc="" class="rs" title="원래 색">원래</button><button type="button" data-ox class="xb ${v.xm?'on':''}">✕ 표시</button>${rg&&el.matches('.hzrg2')?`<span class="thl">두께</span>${[[8,'얇게'],[0,'보통'],[26,'두껍게']].map(([t,n])=>`<button type="button" data-oth="${t}" class="rs ${(v.th||0)===t?'on':''}">${n}</button>`).join('')}`:''}`;
+   pal.innerHTML=!rg?`<button type="button" data-ox class="xb ${v.xm?'on':''}">✕ 표시</button>${v.c?'<button type="button" data-oc="" class="rs">글씨 색 원래대로</button>':''}<span class="phint">글씨 색·크기는 필통에서</span>`:`<span>형광펜 색</span>${COLS.map(c=>`<button type="button" data-oc="${c}" style="--c:${c}" class="${v.c===c?'on':''}"></button>`).join('')}<button type="button" data-oc="" class="rs" title="원래 색">원래</button><button type="button" data-ox class="xb ${v.xm?'on':''}">✕ 표시</button>${rg&&el.matches('.hzrg2')?`<span class="thl">두께</span>${[[8,'얇게'],[0,'보통'],[26,'두껍게']].map(([t,n])=>`<button type="button" data-oth="${t}" class="rs ${(v.th||0)===t?'on':''}">${n}</button>`).join('')}`:''}`;
    pal.hidden=false;const r=el.getBoundingClientRect();pal.style.left=Math.max(8,Math.min(innerWidth-pal.offsetWidth-8,r.left))+'px';const y=r.bottom+6;pal.style.top=(y+pal.offsetHeight>innerHeight-8?r.top-pal.offsetHeight-6:y)+'px'},true);
  pal.addEventListener('click',e=>{if(!cur)return;const k=keyOf(cur);const v=Object.assign({},get(k)||{});const b=e.target.closest('button');if(!b)return;
    if(b.hasAttribute('data-oth')){const t=+b.dataset.oth;if(t)v.th=t;else delete v.th;pal.querySelectorAll('[data-oth]').forEach(x=>x.classList.toggle('on',x===b))}else if(b.hasAttribute('data-ox'))v.xm=v.xm?0:1;else{const c=b.dataset.oc;if(c)v.c=c;else delete v.c}put(k,v);applyAll();pal.querySelectorAll('[data-oc]').forEach(x=>x.classList.toggle('on',!!v.c&&x.dataset.oc===v.c));if(b.dataset.oc)window.__ovLC=b.dataset.oc;pal.querySelector('[data-ox]').classList.toggle('on',!!v.xm)});
@@ -8579,4 +8583,16 @@ document.addEventListener('keydown',e=>{if(e.key!=='ArrowDown'&&e.key!=='ArrowUp
 /* 연대표 맨 위 시대 이름: 옆으로 넘겨도 화면 왼쪽에 붙어 보이게 */
 {let q=0;const fit=()=>{q=0;const sc=document.getElementById('ovscroll');if(!sc||document.getElementById('v-ov').hidden)return;const L=sc.getBoundingClientRect().left+8;document.querySelectorAll('#v-ov .hzrg:not(.hzrg2)>span').forEach(s=>{const b=s.parentElement.getBoundingClientRect();const w=s.offsetWidth;const off=Math.max(0,Math.min(L-b.left,b.width-w-8));s.style.transform=off>0?`translateX(${off}px)`:''})};
  document.addEventListener('scroll',e=>{if(e.target&&e.target.id==='ovscroll'&&!q)q=requestAnimationFrame(fit)},true);addEventListener('resize',()=>{if(!q)q=requestAnimationFrame(fit)});setInterval(fit,1500)}
+
+/* 필통 글씨 색 팔레트: ＋로 지금 고른 색 추가, 색을 길게 누르면 빼기 */
+{const LS=()=>{try{return Object.assign({add:[],hide:[]},JSON.parse(localStorage.getItem('hgs_fcol')||'{}'))}catch(_){return {add:[],hide:[]}}};const SV=v=>{try{localStorage.setItem('hgs_fcol',JSON.stringify(v))}catch(_){}};
+ const T=m=>{try{toast(m)}catch(_){}};
+ const ensure=()=>{const st=LS();document.querySelectorAll('#mpen .mfpal .mfc').forEach(c=>{c.querySelectorAll('[data-fc]:not(.mfcu)').forEach(b=>{b.style.display=b.dataset.fc&&st.hide.includes(b.dataset.fc)?'none':''});
+   const have=[...c.querySelectorAll('.mfcu')].map(b=>b.dataset.fc).join('|');if(have!==st.add.join('|')){c.querySelectorAll('.mfcu').forEach(b=>b.remove());const lab=c.querySelector('.mfcc');st.add.forEach(col=>{const b=document.createElement('button');b.type='button';b.className='mfcu';b.dataset.fc=col;b.style.background=col;b.setAttribute('aria-label',col);c.insertBefore(b,lab||null)})}
+   if(!c.querySelector('[data-fcadd]')){const a=document.createElement('button');a.type='button';a.dataset.fcadd='1';a.className='mfadd';a.title='고른 색을 팔레트에 추가';a.textContent='＋';c.appendChild(a)}
+   if(!c.querySelector('.mfhint')){const h=document.createElement('small');h.className='mfhint';h.textContent='색을 길게 누르면 빼기';c.appendChild(h)}})};
+ setInterval(ensure,800);
+ document.addEventListener('click',e=>{const a=e.target.closest&&e.target.closest('#mpen [data-fcadd]');if(!a)return;e.preventDefault();e.stopImmediatePropagation();const inp=a.parentElement.querySelector('[data-fcc]');const col=inp&&inp.value;if(!col)return;const st=LS();st.hide=st.hide.filter(x=>x!==col);if(!st.add.includes(col))st.add.push(col);SV(st);ensure();T('팔레트에 색을 넣었어요')},true);
+ let lp=0,lpEl=null;document.addEventListener('pointerdown',e=>{const b=e.target.closest&&e.target.closest('#mpen .mfpal [data-fc]');if(!b||!b.dataset.fc)return;lpEl=b;clearTimeout(lp);lp=setTimeout(()=>{const col=b.dataset.fc;const st=LS();if(b.classList.contains('mfcu'))st.add=st.add.filter(x=>x!==col);else if(!st.hide.includes(col))st.hide.push(col);SV(st);ensure();T('팔레트에서 뺐어요');const kill=ev=>{ev.preventDefault();ev.stopImmediatePropagation();removeEventListener('click',kill,true)};addEventListener('click',kill,true);setTimeout(()=>removeEventListener('click',kill,true),600)},650)},true);
+ ['pointerup','pointercancel','pointermove'].forEach(t=>document.addEventListener(t,e=>{if(t==='pointermove'&&lpEl&&e.pressure===0)return;if(t!=='pointermove')clearTimeout(lp)},true))}
 </script>
