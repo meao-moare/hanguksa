@@ -110,10 +110,15 @@ let t=0;new MutationObserver(()=>{clearTimeout(t);t=setTimeout(tf,60)}).observe(
 /* 구조도 선 옮기기: 고치기 모드에서 선을 끌면 꺾이는 자리가 옮겨짐 */
 {
 document.addEventListener('pointerdown',e=>{const t=e.target;if(!t.classList||!t.classList.contains('tflh'))return;if(!(window.__MEX&&window.__MEX.can&&window.__MEX.can()))return;e.preventDefault();e.stopPropagation();
-  const c=t.closest('.trcard');const k=c.id.replace(/^tree-/,'');const key=t.dataset.e,ax=t.dataset.ax,sg=+t.dataset.sg||1;const M=window.__ME.tr;const LO=Object.assign({},M.get('@lo:'+k)||{});const v0=+LO[key]||0;const p0=ax==='x'?e.clientX:e.clientY;
+  const c=t.closest('.trcard');const k=c.id.replace(/^tree-/,'');const key=t.dataset.e,ax=t.dataset.ax,sg=+t.dataset.sg||1;const M=window.__ME.tr;const LO=Object.assign({},M.get('@lo:'+k)||{});const lv=LO[key];const v0=Array.isArray(lv)?(+lv[0]||0):(+lv||0),w0=Array.isArray(lv)?(+lv[1]||0):0;const X0=e.clientX,Y0=e.clientY;
   const z=(()=>{const r=c.querySelector('.tfin').getBoundingClientRect();const w=c.querySelector('.tfin').offsetWidth;return w?r.width/w:1})();document.body.classList.add('tflmoving');
-  const mv=ev=>{ev.preventDefault();const d=((ax==='x'?ev.clientX:ev.clientY)-p0)/z*sg;LO[key]=Math.round(v0+d);M.set('@lo:'+k,Object.assign({},LO));try{window.__DRAWLINES(c)}catch(_){}};
-  const up=()=>{removeEventListener('pointermove',mv);removeEventListener('pointerup',up);removeEventListener('pointercancel',up);document.body.classList.remove('tflmoving');const v=Object.assign({},M.get('@lo:'+k)||{});try{window.__MEX.save('T:@lo:'+k,v)}catch(_){}};
+  const midOf=pth=>{const d=pth.getAttribute('d')||'';const m=ax==='x'?d.match(/H\s*(-?[\d.]+)/):d.match(/V\s*(-?[\d.]+)/);return m?+m[1]:null};
+  const targets=[...c.querySelectorAll('svg.tfl path.tflh')].filter(q=>q.dataset.e!==key&&q.dataset.ax===ax).map(midOf).filter(v=>v!=null);
+  const mv=ev=>{ev.preventDefault();const dx=(ev.clientX-X0)/z,dy=(ev.clientY-Y0)/z;const d1=(ax==='x'?dx:dy)*sg,d2=ax==='x'?dy:dx;let o1=Math.round(v0+d1),o2=Math.round(w0+d2);if(Math.abs(o2)<7)o2=0;LO[key]=[o1,o2];M.set('@lo:'+k,Object.assign({},LO));try{window.__DRAWLINES(c)}catch(_){}
+    /* 자석: 다른 선의 꺾인 자리(ㅗ·[ 모양)와 가까우면 딱 맞춤 */
+    const me=c.querySelector('svg.tfl path.tflh[data-e="'+key+'"]');const cur=me&&midOf(me);if(cur!=null&&targets.length){let best=null;targets.forEach(t=>{if(Math.abs(t-cur)<9&&(best==null||Math.abs(t-cur)<Math.abs(best-cur)))best=t});if(best!=null&&best!==cur){o1+=Math.round((best-cur)*sg);LO[key]=[o1,o2];M.set('@lo:'+k,Object.assign({},LO));try{window.__DRAWLINES(c)}catch(_){}}}
+    c.querySelectorAll('svg.tfl path.tflh.snap').forEach(q=>q.classList.remove('snap'));const me2=c.querySelector('svg.tfl path.tflh[data-e="'+key+'"]');if(me2){const v=midOf(me2);c.querySelectorAll('svg.tfl path.tflh').forEach(q=>{if(q!==me2&&q.dataset.ax===ax&&midOf(q)===v)q.classList.add('snap')})}};
+  const up=()=>{removeEventListener('pointermove',mv);removeEventListener('pointerup',up);removeEventListener('pointercancel',up);document.body.classList.remove('tflmoving');c.querySelectorAll('svg.tfl path.tflh.snap').forEach(q=>q.classList.remove('snap'));const v=Object.assign({},M.get('@lo:'+k)||{});try{window.__MEX.save('T:@lo:'+k,v)}catch(_){}};
   addEventListener('pointermove',mv,{passive:false});addEventListener('pointerup',up);addEventListener('pointercancel',up)},true);
 new MutationObserver(()=>{document.querySelectorAll('#trbody .trcard .tfin').forEach(f=>{const has=!!f.querySelector('.tflh');if(has!==document.body.classList.contains('medit')){try{window.__DRAWLINES(f.closest('.trcard'))}catch(_){}}})}).observe(document.body,{attributes:true,attributeFilter:['class']});
 }

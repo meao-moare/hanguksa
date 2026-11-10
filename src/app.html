@@ -2558,7 +2558,7 @@ h4.gh.ppnat small{font-size:12px;color:var(--muted);font-weight:600}
 .gl2>.gp.gpc{background:color-mix(in srgb,var(--gpc) 8%,var(--panel))!important;border:1px solid color-mix(in srgb,var(--gpc) 22%,transparent)!important;border-left:5px solid var(--gpc)!important;border-radius:10px!important;padding:10px 12px!important;margin:0 0 8px!important}
 .gl2>.gp.gpc .gpn{color:color-mix(in srgb,var(--gpc) 75%,var(--ink))!important}
 svg.tfl path.tflh{fill:none!important;stroke:transparent!important;stroke-width:18px!important;pointer-events:stroke!important;cursor:grab;touch-action:none}
-svg.tfl path.tflh[data-ax="x"]{cursor:col-resize}svg.tfl path.tflh[data-ax="y"]{cursor:row-resize}
+svg.tfl path.tflh{cursor:move!important}
 svg.tfl path.tflh:hover{stroke:color-mix(in srgb,var(--trc,#2563eb) 25%,transparent)!important}
 body.tflmoving,body.tflmoving *{user-select:none!important}
 #trpbar .tpctr{margin-left:auto}
@@ -2577,6 +2577,7 @@ i.gptag.gprole{font-style:normal;font-weight:800;border-radius:999px}
 i.gptag.gprole.indp{background:#047857!important;color:#fff!important;border:0!important}
 i.gptag.gprole.chin{background:#3f3f46!important;color:#fff!important;border:0!important}
 body.medit #trbody.trpg,body.medit #trbody.trpg>.trcard{overscroll-behavior-x:none;touch-action:pan-y pinch-zoom!important}
+svg.tfl path.tflh.snap{stroke:color-mix(in srgb,#e11d48 35%,transparent)!important}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/flubber@0.4.2/build/flubber.min.js"></script>
 <script>
@@ -7455,12 +7456,12 @@ function rlForm(key){if(!(window.__MEX&&window.__MEX.can()))return;const H=windo
    let h='<defs><marker id="tfa'+keyOf(c)+'" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path class="tfah" d="M3 1.5L9 5L3 8.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>';
    const EG=edgesOf(c,ns);const FAM={},FI={},FR={},FL={};{const acc={};EG.forEach(([a,b])=>{const A=ns[a],B=ns[b];if(!A||!B)return;const q=box(B),p=box(A);(acc[a]=acc[a]||[]).push(q.y+q.h/2);const ind=q.x>p.x+10&&q.x<p.x+p.w/2;FI[a]=(FI[a]===undefined?true:FI[a])&&ind;const rt=q.x>=p.x+p.w-4,lt=q.x+q.w<=p.x+4;FR[a]=(FR[a]===undefined?true:FR[a])&&rt;FL[a]=(FL[a]===undefined?true:FL[a])&&lt});Object.entries(acc).forEach(([a,L])=>{const P=box(ns[a]);const m=L.reduce((x,y)=>x+y,0)/L.length;FAM[a]=(FR[a]||FL[a])?'h':m>P.y+P.h?'v':m<P.y?'u':'h'})}
    const side=(P,Q,a)=>{const f=FAM[a]||'h';if(f==='v'&&Q.y>=P.y+P.h-2)return FI[a]?'i':'b';if(f==='u'&&Q.y+Q.h<=P.y+2)return 't';return Q.x+Q.w/2>=P.x+P.w/2?'r':'l'};const TK={};EG.forEach(([a,b])=>{const A=ns[a],B=ns[b];if(!A||!B)return;const P=box(A),Q=box(B);const sd=side(P,Q,a);const g=TK[a+sd]||(TK[a+sd]=1e9);const gap=sd==='r'?Q.x-(P.x+P.w):sd==='l'?P.x-(Q.x+Q.w):sd==='b'?Q.y-(P.y+P.h):sd==='i'?Q.x-P.x:P.y-(Q.y+Q.h);TK[a+sd]=Math.min(g,sd==='i'?Math.max(8,Math.min(24,gap/2)):Math.max(6,Math.min(20,gap/2)))});
-   const LO=(TR()&&TR().get('@lo:'+keyOf(c)))||{};const ED=document.body.classList.contains('medit');EG.forEach(([a,b,arrow])=>{const A=ns[a],B=ns[b];if(!A||!B)return;const P=box(A),Q=box(B);let d;const sd2=side(P,Q,a);const off=(TK[a+sd2]||20)+(+LO[a+'-'+b]||0);
-     if(sd2==='r'){const sx=P.x+P.w,sy=P.y+P.h/2,ex=Q.x,ey=Q.y+Q.h/2;const mx=sx+off;d=`M${sx} ${sy}H${mx}V${ey}H${ex}`}
-     else if(sd2==='l'){const sx=P.x,sy=P.y+P.h/2,ex=Q.x+Q.w,ey=Q.y+Q.h/2;const mx=sx-off;d=`M${sx} ${sy}H${mx}V${ey}H${ex}`}
-     else if(sd2==='i'){const tx=P.x+off,sy=P.y+P.h,ey=Q.y+Q.h/2;d=`M${tx} ${sy}V${ey}H${Q.x}`}
-     else if(sd2==='b'){const sx=P.x+P.w/2,sy=P.y+P.h,ex=Q.x+Q.w/2,ey=Q.y;const my=sy+off;d=`M${sx} ${sy}V${my}H${ex}V${ey}`}
-     else{const sx=P.x+P.w/2,sy=P.y,ex=Q.x+Q.w/2,ey=Q.y+Q.h;const my=sy-off;d=`M${sx} ${sy}V${my}H${ex}V${ey}`}
+   const LO=(TR()&&TR().get('@lo:'+keyOf(c)))||{};const ED=document.body.classList.contains('medit');EG.forEach(([a,b,arrow])=>{const A=ns[a],B=ns[b];if(!A||!B)return;const P=box(A),Q=box(B);let d;const sd2=side(P,Q,a);const lv=LO[a+'-'+b];const o1=Array.isArray(lv)?(+lv[0]||0):(+lv||0),o2=Array.isArray(lv)?(+lv[1]||0):0;const off=(TK[a+sd2]||20)+o1;const cl=(v,lo,hi)=>Math.max(lo,Math.min(hi,v));
+     if(sd2==='r'){const sx=P.x+P.w,sy=cl(P.y+P.h/2+o2,P.y+4,P.y+P.h-4),ex=Q.x,ey=cl(Q.y+Q.h/2+o2,Q.y+4,Q.y+Q.h-4);const mx=sx+off;d=`M${sx} ${sy}H${mx}V${ey}H${ex}`}
+     else if(sd2==='l'){const sx=P.x,sy=cl(P.y+P.h/2+o2,P.y+4,P.y+P.h-4),ex=Q.x+Q.w,ey=cl(Q.y+Q.h/2+o2,Q.y+4,Q.y+Q.h-4);const mx=sx-off;d=`M${sx} ${sy}H${mx}V${ey}H${ex}`}
+     else if(sd2==='i'){const tx=P.x+off,sy=P.y+P.h,ey=cl(Q.y+Q.h/2+o2,Q.y+4,Q.y+Q.h-4);d=`M${tx} ${sy}V${ey}H${Q.x}`}
+     else if(sd2==='b'){const sx=cl(P.x+P.w/2+o2,P.x+4,P.x+P.w-4),sy=P.y+P.h,ex=cl(Q.x+Q.w/2+o2,Q.x+4,Q.x+Q.w-4),ey=Q.y;const my=sy+off;d=`M${sx} ${sy}V${my}H${ex}V${ey}`}
+     else{const sx=cl(P.x+P.w/2+o2,P.x+4,P.x+P.w-4),sy=P.y,ex=cl(Q.x+Q.w/2+o2,Q.x+4,Q.x+Q.w-4),ey=Q.y+Q.h;const my=sy-off;d=`M${sx} ${sy}V${my}H${ex}V${ey}`}
      h+=`<path d="${d}"${arrow?` marker-end="url(#tfa${keyOf(c)})"`:''}/>`;if(ED)h+=`<path class="tflh" data-e="${a}-${b}" data-ax="${sd2==='b'||sd2==='t'?'y':'x'}" data-sg="${sd2==='l'||sd2==='t'?-1:1}" d="${d}"/>`});sv.innerHTML=h}
  window.__DRAWLINES=drawLines;
  window.__TRBOX=c=>{const kk=ensureFree(c);if(!kk)return null;const fin=c.querySelector('.tfin');const tree=fin.parentElement;const fl=tree.querySelector(':scope>.trflow:not(.flfree)');let a=1e9,b=-1e9,t=1e9,u=-1e9;fin.querySelectorAll(':scope>.hn').forEach(n=>{if(n.style.display==='none')return;a=Math.min(a,n.offsetLeft);b=Math.max(b,n.offsetLeft+n.offsetWidth);t=Math.min(t,n.offsetTop);u=Math.max(u,n.offsetTop+n.offsetHeight)});if(a>b)return null;return {k:kk,a,b,t,u,availW:tree.clientWidth-(fl?fl.offsetWidth+26:0),finTop:fin.offsetTop}};
@@ -8128,10 +8129,15 @@ let t=0;new MutationObserver(()=>{clearTimeout(t);t=setTimeout(tf,60)}).observe(
 /* 구조도 선 옮기기: 고치기 모드에서 선을 끌면 꺾이는 자리가 옮겨짐 */
 {
 document.addEventListener('pointerdown',e=>{const t=e.target;if(!t.classList||!t.classList.contains('tflh'))return;if(!(window.__MEX&&window.__MEX.can&&window.__MEX.can()))return;e.preventDefault();e.stopPropagation();
-  const c=t.closest('.trcard');const k=c.id.replace(/^tree-/,'');const key=t.dataset.e,ax=t.dataset.ax,sg=+t.dataset.sg||1;const M=window.__ME.tr;const LO=Object.assign({},M.get('@lo:'+k)||{});const v0=+LO[key]||0;const p0=ax==='x'?e.clientX:e.clientY;
+  const c=t.closest('.trcard');const k=c.id.replace(/^tree-/,'');const key=t.dataset.e,ax=t.dataset.ax,sg=+t.dataset.sg||1;const M=window.__ME.tr;const LO=Object.assign({},M.get('@lo:'+k)||{});const lv=LO[key];const v0=Array.isArray(lv)?(+lv[0]||0):(+lv||0),w0=Array.isArray(lv)?(+lv[1]||0):0;const X0=e.clientX,Y0=e.clientY;
   const z=(()=>{const r=c.querySelector('.tfin').getBoundingClientRect();const w=c.querySelector('.tfin').offsetWidth;return w?r.width/w:1})();document.body.classList.add('tflmoving');
-  const mv=ev=>{ev.preventDefault();const d=((ax==='x'?ev.clientX:ev.clientY)-p0)/z*sg;LO[key]=Math.round(v0+d);M.set('@lo:'+k,Object.assign({},LO));try{window.__DRAWLINES(c)}catch(_){}};
-  const up=()=>{removeEventListener('pointermove',mv);removeEventListener('pointerup',up);removeEventListener('pointercancel',up);document.body.classList.remove('tflmoving');const v=Object.assign({},M.get('@lo:'+k)||{});try{window.__MEX.save('T:@lo:'+k,v)}catch(_){}};
+  const midOf=pth=>{const d=pth.getAttribute('d')||'';const m=ax==='x'?d.match(/H\s*(-?[\d.]+)/):d.match(/V\s*(-?[\d.]+)/);return m?+m[1]:null};
+  const targets=[...c.querySelectorAll('svg.tfl path.tflh')].filter(q=>q.dataset.e!==key&&q.dataset.ax===ax).map(midOf).filter(v=>v!=null);
+  const mv=ev=>{ev.preventDefault();const dx=(ev.clientX-X0)/z,dy=(ev.clientY-Y0)/z;const d1=(ax==='x'?dx:dy)*sg,d2=ax==='x'?dy:dx;let o1=Math.round(v0+d1),o2=Math.round(w0+d2);if(Math.abs(o2)<7)o2=0;LO[key]=[o1,o2];M.set('@lo:'+k,Object.assign({},LO));try{window.__DRAWLINES(c)}catch(_){}
+    /* 자석: 다른 선의 꺾인 자리(ㅗ·[ 모양)와 가까우면 딱 맞춤 */
+    const me=c.querySelector('svg.tfl path.tflh[data-e="'+key+'"]');const cur=me&&midOf(me);if(cur!=null&&targets.length){let best=null;targets.forEach(t=>{if(Math.abs(t-cur)<9&&(best==null||Math.abs(t-cur)<Math.abs(best-cur)))best=t});if(best!=null&&best!==cur){o1+=Math.round((best-cur)*sg);LO[key]=[o1,o2];M.set('@lo:'+k,Object.assign({},LO));try{window.__DRAWLINES(c)}catch(_){}}}
+    c.querySelectorAll('svg.tfl path.tflh.snap').forEach(q=>q.classList.remove('snap'));const me2=c.querySelector('svg.tfl path.tflh[data-e="'+key+'"]');if(me2){const v=midOf(me2);c.querySelectorAll('svg.tfl path.tflh').forEach(q=>{if(q!==me2&&q.dataset.ax===ax&&midOf(q)===v)q.classList.add('snap')})}};
+  const up=()=>{removeEventListener('pointermove',mv);removeEventListener('pointerup',up);removeEventListener('pointercancel',up);document.body.classList.remove('tflmoving');c.querySelectorAll('svg.tfl path.tflh.snap').forEach(q=>q.classList.remove('snap'));const v=Object.assign({},M.get('@lo:'+k)||{});try{window.__MEX.save('T:@lo:'+k,v)}catch(_){}};
   addEventListener('pointermove',mv,{passive:false});addEventListener('pointerup',up);addEventListener('pointercancel',up)},true);
 new MutationObserver(()=>{document.querySelectorAll('#trbody .trcard .tfin').forEach(f=>{const has=!!f.querySelector('.tflh');if(has!==document.body.classList.contains('medit')){try{window.__DRAWLINES(f.closest('.trcard'))}catch(_){}}})}).observe(document.body,{attributes:true,attributeFilter:['class']});
 }
