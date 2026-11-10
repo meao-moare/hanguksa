@@ -348,11 +348,11 @@ new MutationObserver(()=>{if(!q)q=setTimeout(run,120)}).observe(document.body,{c
 
 /* 연대표 왕 업적 고칠 때 ↑↓ 키로 윗줄·아랫줄 칸으로 옮겨 가기 */
 document.addEventListener('keydown',e=>{if(e.key!=='ArrowDown'&&e.key!=='ArrowUp')return;if(e.shiftKey||e.altKey||e.metaKey||e.ctrlKey)return;const h=document.activeElement;if(!h||!h.isContentEditable||!h.closest('#v-ov'))return;
-  const box=h.closest('.hzach');if(!box)return;const cur=h.closest('.hzach>p,.hzach>button,.hzach>*');if(!cur)return;
+  const box=h.closest('.hzach,.hznt>div,.hzd,.hzg');if(!box)return;const cur=[...box.children].find(c=>c===h||c.contains(h));if(!cur)return;
   let sl=getSelection();if(!sl.rangeCount)return;const r=sl.getRangeAt(0);const q=document.createRange();q.selectNodeContents(h);
   if(e.key==='ArrowDown'){q.setStart(r.endContainer,r.endOffset);if(q.toString().includes('\n'))return}else{q.setEnd(r.startContainer,r.startOffset);if(q.toString().includes('\n'))return}
-  const items=[...box.children].filter(x=>x.matches('p,button,div,li'));let i=items.indexOf(cur);let nx=items[i+(e.key==='ArrowDown'?1:-1)];
-  if(!nx){const B=[...document.querySelectorAll('#v-ov .hzach')];const bx=box.getBoundingClientRect();const cand=B.filter(o=>o!==box).map(o=>({o,r:o.getBoundingClientRect()})).filter(({r})=>r.left<bx.right&&r.right>bx.left&&(e.key==='ArrowDown'?r.top>=bx.bottom-2:r.bottom<=bx.top+2)).sort((a,b)=>e.key==='ArrowDown'?a.r.top-b.r.top:b.r.bottom-a.r.bottom)[0];if(cand){const its=[...cand.o.children].filter(x=>x.matches('p,button,div,li'));nx=e.key==='ArrowDown'?its[0]:its[its.length-1]}}
+  const items=[...box.children].filter(x=>x.matches('p,button,div,li,span:not(.hzmore),i:not(.hzmore)'));let i=items.indexOf(cur);let nx=items[i+(e.key==='ArrowDown'?1:-1)];
+  if(!nx&&box.matches('.hzach')){const B=[...document.querySelectorAll('#v-ov .hzach')];const bx=box.getBoundingClientRect();const cand=B.filter(o=>o!==box).map(o=>({o,r:o.getBoundingClientRect()})).filter(({r})=>r.left<bx.right&&r.right>bx.left&&(e.key==='ArrowDown'?r.top>=bx.bottom-2:r.bottom<=bx.top+2)).sort((a,b)=>e.key==='ArrowDown'?a.r.top-b.r.top:b.r.bottom-a.r.bottom)[0];if(cand){const its=[...cand.o.children].filter(x=>x.matches('p,button,div,li'));nx=e.key==='ArrowDown'?its[0]:its[its.length-1]}}
   if(!nx)return;e.preventDefault();e.stopPropagation();h.blur();setTimeout(()=>{nx.scrollIntoView({block:'nearest',inline:'nearest'});nx.click();setTimeout(()=>{const a=document.activeElement;if(a&&a.isContentEditable){try{const rr=document.createRange();rr.selectNodeContents(a);rr.collapse(e.key!=='ArrowDown');const s2=getSelection();s2.removeAllRanges();s2.addRange(rr)}catch(_){}}},30)},20)},true);
 
 /* 연대표 맨 위 시대 이름: 옆으로 넘겨도 화면 왼쪽에 붙어 보이게 */
