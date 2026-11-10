@@ -239,3 +239,7 @@ new MutationObserver(()=>{if(!q)q=setTimeout(run,120)}).observe(document.body,{c
 
 /* 화살촉: 손으로 그린 것처럼 선으로 된 V자 */
 {try{arrOf.forEach(ps=>ps.forEach(p=>{const f=p.hg.querySelector('.ahf');if(!f)return;const col=f.style.fill;const d=p.inv?'M-11,-7.5L1,0L-11,7.5':'M-9,-6.2L0.6,0L-9,6.2';const n=document.createElementNS('http://www.w3.org/2000/svg','path');n.setAttribute('class','ahl');n.setAttribute('d',d);n.style.stroke=col;n.style.fill='none';f.replaceWith(n)}))}catch(_){}}
+
+/* 화살촉 선 두께 = 화살표 몸통 두께 (확대해도 같게) */
+{const fit=()=>{try{arrOf.forEach(ps=>ps.forEach(p=>{if(p.g.classList.contains('hide'))return;const af=p.g.querySelector('.af'),hl=p.hg.querySelector('.ahl');if(!af||!hl)return;const m1=af.getScreenCTM(),m2=hl.getScreenCTM();if(!m1||!m2)return;const s1=Math.hypot(m1.a,m1.b),s2=Math.hypot(m2.a,m2.b);if(!s2)return;const w=parseFloat(getComputedStyle(af).strokeWidth)||2.6;hl.style.setProperty('stroke-width',(w*s1/s2).toFixed(2)+'px','important')}))}catch(_){}};
+ let q=0;const sch=()=>{if(!q)q=requestAnimationFrame(()=>{q=0;fit()})};const po=placeOV;placeOV=function(){const r=po.apply(this,arguments);sch();return r};const sa=setArrows;setArrows=function(){const r=sa.apply(this,arguments);sch();return r};addEventListener('resize',sch);setTimeout(fit,1500)}
