@@ -213,3 +213,9 @@ new MutationObserver(()=>{if(!q)q=setTimeout(run,120)}).observe(document.body,{c
  document.addEventListener('click',e=>{const g=e.target.closest&&e.target.closest('#v-ov .hzkg[data-kgl]');if(!g){if(!pop.hidden&&!e.target.closest('#kgpop'))pop.hidden=true;return}e.preventDefault();e.stopImmediatePropagation();const [dn,ids]=g.dataset.kgl.split('|');const D=REIGNS.find(x=>x.n===dn);if(!D)return;
    pop.innerHTML=ids.split(',').map(i=>{const r=D.r[+i];return `<button type="button" data-king="${E(dn)}|${i}"><b>${E(r.name)}</b><i>${yr(r.s)}~${yr(r.e)}</i></button>`}).join('');pop.hidden=false;const q=g.getBoundingClientRect();pop.style.left=Math.max(8,Math.min(innerWidth-240,q.left))+'px';pop.style.top=(q.bottom+6)+'px'},true);
  pop.addEventListener('click',e=>{if(e.target.closest('[data-king]'))setTimeout(()=>{pop.hidden=true},0)});addEventListener('scroll',()=>{pop.hidden=true},true)}
+
+/* 화살표가 먼저 그려지고, 다 닿은 뒤에 사건 핀이 터짐 */
+{const pp=popPin;popPin=function(o){const e=o&&o.pin;const ps=e&&arrOf.get(e.id);
+  if(playing&&ps&&ps.length&&!reduceMotion){const D=e.seqAr?1100*ps.length-50:950;o.g.classList.add('arwait');clearTimeout(o.pa);
+    o.pa=setTimeout(()=>{o.g.classList.remove('arwait');if(pos.i===e.f)pp(o)},D);return}
+  if(o&&o.g)o.g.classList.remove('arwait');return pp(o)}}
