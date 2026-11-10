@@ -2561,4 +2561,8 @@ svg.tfl path.tflh{fill:none!important;stroke:transparent!important;stroke-width:
 svg.tfl path.tflh[data-ax="x"]{cursor:col-resize}svg.tfl path.tflh[data-ax="y"]{cursor:row-resize}
 svg.tfl path.tflh:hover{stroke:color-mix(in srgb,var(--trc,#2563eb) 25%,transparent)!important}
 body.tflmoving,body.tflmoving *{user-select:none!important}
+#trpbar .tpctr{margin-left:auto}
+#trpbar .tpctr+.tpsd{margin-left:8px}
+/* 비율 조절 바: 주인 고치기 모드에서만 */
+body:not(.medit) #trbody .trsplit{display:none!important}
 </style>

@@ -2561,6 +2561,10 @@ svg.tfl path.tflh{fill:none!important;stroke:transparent!important;stroke-width:
 svg.tfl path.tflh[data-ax="x"]{cursor:col-resize}svg.tfl path.tflh[data-ax="y"]{cursor:row-resize}
 svg.tfl path.tflh:hover{stroke:color-mix(in srgb,var(--trc,#2563eb) 25%,transparent)!important}
 body.tflmoving,body.tflmoving *{user-select:none!important}
+#trpbar .tpctr{margin-left:auto}
+#trpbar .tpctr+.tpsd{margin-left:8px}
+/* 비율 조절 바: 주인 고치기 모드에서만 */
+body:not(.medit) #trbody .trsplit{display:none!important}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/flubber@0.4.2/build/flubber.min.js"></script>
 <script>
@@ -7436,6 +7440,8 @@ function rlForm(key){if(!(window.__MEX&&window.__MEX.can()))return;const H=windo
      else{const sx=P.x+P.w/2,sy=P.y,ex=Q.x+Q.w/2,ey=Q.y+Q.h;const my=sy-off;d=`M${sx} ${sy}V${my}H${ex}V${ey}`}
      h+=`<path d="${d}"${arrow?` marker-end="url(#tfa${keyOf(c)})"`:''}/>`;if(ED)h+=`<path class="tflh" data-e="${a}-${b}" data-ax="${sd2==='b'||sd2==='t'?'y':'x'}" data-sg="${sd2==='l'||sd2==='t'?-1:1}" d="${d}"/>`});sv.innerHTML=h}
  window.__DRAWLINES=drawLines;
+ window.__TRBOX=c=>{const kk=ensureFree(c);if(!kk)return null;const fin=c.querySelector('.tfin');const tree=fin.parentElement;const fl=tree.querySelector(':scope>.trflow:not(.flfree)');let a=1e9,b=-1e9,t=1e9,u=-1e9;fin.querySelectorAll(':scope>.hn').forEach(n=>{if(n.style.display==='none')return;a=Math.min(a,n.offsetLeft);b=Math.max(b,n.offsetLeft+n.offsetWidth);t=Math.min(t,n.offsetTop);u=Math.max(u,n.offsetTop+n.offsetHeight)});if(a>b)return null;return {k:kk,a,b,t,u,availW:tree.clientWidth-(fl?fl.offsetWidth+26:0),finTop:fin.offsetTop}};
+ window.__TRSHIFT=(c,dx,dy)=>{const kk=ensureFree(c);if(!kk)return;const M=TR();const P=JSON.parse(JSON.stringify(M.get('@n:'+kk)));Object.values(P).forEach(q=>{if(q){q[0]+=Math.round(dx);q[1]+=Math.round(dy)}});M.set('@n:'+kk,P);window.__MEX.save('T:@n:'+kk,P);nodeFree(c,kk)};
  const PRESET=k=>{try{const T=TREES[k];return T&&T.pos?JSON.parse(JSON.stringify(T.pos)):null}catch(_){return null}};let NEEDRB=false;function nodeFree(c,k){let P=TR().get('@n:'+k)||PRESET(k);if(!P){const A=TR().get('@a:'+k);if(Array.isArray(A)&&A.length&&!c.querySelector('.tfin')){P=snapNodes(c);if(P)TR().set('@n:'+k,P)}}if(!P||typeof P!=='object'){if(c.querySelector('.tfin'))NEEDRB=true;return}let fin=c.querySelector('.tfin');const host=c.querySelector('.htree,.hchain');
    if(!fin){if(!host)return;const ns=markTree(c);fin=document.createElement('div');fin.className='tfin';host.after(fin);ns.forEach(n=>fin.appendChild(n));host.style.display='none';c.classList.add('trnf')}addNodes(c,k,fin);
    const ns=[...fin.querySelectorAll(':scope>.hn')];{const HD=new Set(TR().get('@hd:'+k)||[]);ns.forEach(n=>{n.style.display=HD.has(+n.dataset.ni)?'none':''})}ns.forEach(n=>{let p=P[n.dataset.ni];if(!p){const pp=P[n.dataset.par];const pn=ns.find(x=>x.dataset.ni===n.dataset.par);let my=0;Object.values(P).forEach(q=>{my=Math.max(my,q[1])});p=pp?[pp[0]+40,pp[1]+(pn?pn.offsetHeight:60)+16+ns.filter(x=>x.dataset.par===n.dataset.par&&+x.dataset.ni<+n.dataset.ni&&!P[x.dataset.ni]).length*90,pp[2]]:[0,my+100,0];P[n.dataset.ni]=p}n.style.left=p[0]+'px';n.style.top=p[1]+'px';n.style.width=p[2]?p[2]+'px':'';n.style.minHeight=p[3]?p[3]+'px':'';n.style.maxWidth='none'});
@@ -7631,7 +7637,7 @@ window.__TRMENUHTML=menuHTML;
 function ensureUI(){const rd=$('trread');if(!rd)return false;
   if(!$('trindex')){const d=document.createElement('div');d.id='trindex';d.className='rin';rd.querySelector('.rhead').after(d);d.addEventListener('click',e=>{const b=e.target.closest('[data-trg]');if(!b)return;openG(+b.dataset.trg,b.dataset.trk||null)})}
   if(!$('trpbar')){const r=rd.querySelector('.rhead .rin');const d=document.createElement('div');d.id='trpbar';r.appendChild(d);
-    d.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.tpx!=null)return toIndex();if(b.dataset.tpg!=null)return openG(+b.dataset.tpg);if(b.dataset.tpk!=null)return goPage(+b.dataset.tpk);if(b.dataset.tsd!=null)return setStk(b.dataset.tsd)})}
+    d.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.tpx!=null)return toIndex();if(b.dataset.tpg!=null)return openG(+b.dataset.tpg);if(b.dataset.tpk!=null)return goPage(+b.dataset.tpk);if(b.dataset.tsd!=null)return setStk(b.dataset.tsd);if(b.dataset.tpctr!=null)return ctrPair()})}
   if(!$('trside')){const sd=document.createElement('aside');sd.id='trside';$('trbody').before(sd);
     sd.addEventListener('click',e=>{if(e.target.closest('[data-tsh]'))return;const j=e.target.closest('[data-tsj]');if(j){e.preventDefault();toggleJoin(j.dataset.tsj);return}const b=e.target.closest('[data-trg]');if(!b)return;openG(+b.dataset.trg,b.dataset.trk||null)})}
   if(!$('trnavl')){['l','r'].forEach(s=>{const b=document.createElement('button');b.type='button';b.id='trnav'+s;b.className='trnav';b.setAttribute('aria-label',s==='l'?'이전 구조도':'다음 구조도');b.innerHTML=s==='l'?'<svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg>':'<svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>';b.onclick=()=>goPage(PAGE+(s==='l'?-1:1));rd.appendChild(b)})}
@@ -7643,7 +7649,7 @@ function ensureUI(){const rd=$('trread');if(!rd)return false;
 let UISIG='';
 function renderLists(force){const sig=ORDSIG+'|'+canEd();if(!force&&sig===UISIG&&$('trindex').innerHTML)return;UISIG=sig;$('trindex').innerHTML=indexHTML();$('trside').innerHTML=sideHTML();side()}
 function bar(){const d=$('trpbar');if(!d)return;const ib=$('trimp');const gi=G();if(gi<0){d.innerHTML='';if(ib)d.appendChild(ib);return}const g=TRG[gi];
-  d.innerHTML=`<button type="button" class="tpx" data-tpx><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>목차</button><span class="tpg" style="--gc:${g.c}">${esc2(g.t)}</span><span class="tpks">${ALLP.map((x,i)=>x.g===gi?`<button type="button" data-tpk="${i}" aria-pressed="${i===PAGE}">${esc2(x.p.map(title).join(' · '))}</button>`:'').join('')}</span><span class="tpgo">${gi>0?`<button type="button" data-tpg="${gi-1}" title="${esc2(TRG[gi-1].t)}">← 이전 묶음</button>`:''}${gi<TRG.length-1?`<button type="button" data-tpg="${gi+1}" title="${esc2(TRG[gi+1].t)}">다음 묶음 →</button>`:''}</span>`;{const x=ALLP[PAGE];if(x&&x.p.length===2&&canEd()){d.insertAdjacentHTML('beforeend',`<span class="tpsd"><button type="button" data-tsd="h" aria-pressed="${!stk(x)}">옆으로</button><button type="button" data-tsd="v" aria-pressed="${stk(x)}">위아래로</button></span>`)}}if(ib)d.appendChild(ib)}
+  d.innerHTML=`<button type="button" class="tpx" data-tpx><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>목차</button><span class="tpg" style="--gc:${g.c}">${esc2(g.t)}</span><span class="tpks">${ALLP.map((x,i)=>x.g===gi?`<button type="button" data-tpk="${i}" aria-pressed="${i===PAGE}">${esc2(x.p.map(title).join(' · '))}</button>`:'').join('')}</span><span class="tpgo">${gi>0?`<button type="button" data-tpg="${gi-1}" title="${esc2(TRG[gi-1].t)}">← 이전 묶음</button>`:''}${gi<TRG.length-1?`<button type="button" data-tpg="${gi+1}" title="${esc2(TRG[gi+1].t)}">다음 묶음 →</button>`:''}</span>`;{const x=ALLP[PAGE];if(x&&x.p.length===2&&canEd()){d.insertAdjacentHTML('beforeend',`<button type="button" class="tpctr" data-tpctr title="두 구조도의 가운데를 서로 맞추기">가운데 맞추기</button><span class="tpsd"><button type="button" data-tsd="h" aria-pressed="${!stk(x)}">옆으로</button><button type="button" data-tsd="v" aria-pressed="${stk(x)}">위아래로</button></span>`)}}if(ib)d.appendChild(ib)}
 function syncOrder(){if(dataSig()!==ORDSIG){const k=ALLP[PAGE]&&ALLP[PAGE].p[0];rebuildOrder();if(k)PAGE=pageOfKey(k);UISIG='';LASTG=-2;return true}return false}
 function apply(){const tb=$('trbody');if(!tb||!ensureUI())return;const ch=syncOrder();
   tb.classList.add('trpg');document.body.classList.toggle('trix',IX);document.body.classList.add('trpgon');renderLists();
@@ -7700,6 +7706,12 @@ window.addEventListener('keydown',e=>{if(IX||$('v-tr').hidden)return;if(e.target
 /* 순서 · 같이 보기 저장 */
 function saveOrder(L,J){const M=TRM();if(!M)return;if(L){M.set('@tgo',L);try{window.__MEX.save('T:@tgo',L)}catch(_){}}if(J){M.set('@tjoin',J);try{window.__MEX.save('T:@tjoin',J)}catch(_){}}const keep=ALLP[PAGE]&&ALLP[PAGE].p[0];rebuildOrder();if(keep)PAGE=pageOfKey(keep);UISIG='';LASTG=-2;apply()}
 let IMD='h';
+function ctrPair(){const x=ALLP[PAGE];if(!x||x.p.length!==2||!canEd())return;const cs=x.p.map(cardOf);if(cs.some(c=>!c))return;const B=cs.map(c=>window.__TRBOX&&window.__TRBOX(c));if(B.some(b=>!b))return;const ST=stk(x);
+  /* 각자 칸 안에서 가로 가운데 */
+  const dxs=B.map(b=>Math.round(Math.max(0,(b.availW-(b.b-b.a))/2)-b.a));
+  /* 옆으로 놓였으면 두 구조도의 세로 가운데를 같은 높이로 */
+  let dys=[0,0];if(!ST){const my=B.map(b=>b.finTop+(b.t+b.u)/2);const target=Math.max(...my);dys=my.map(m=>Math.round(target-m))}
+  cs.forEach((c,i)=>{if(dxs[i]||dys[i])window.__TRSHIFT(c,dxs[i],dys[i])});try{window.__MEX.toast('두 구조도의 가운데를 맞췄어요')}catch(_){}}
 function setStk(d){const x=ALLP[PAGE];if(!x||x.p.length!==2)return;const M=TRM();if(!M)return;const v={d};M.set('@tsd:'+x.p[0],v);try{window.__MEX.save('T:@tsd:'+x.p[0],v)}catch(_){}x.p.forEach(k=>{const c=cardOf(k);if(c){delete c.dataset.fit;fitCard(c)}});bar();goPage(PAGE,true)}
 function ejectTree(k){if(!canEd())return;const x=ALLP.find(x=>x.p.includes(k));if(!x||x.p.length<2)return;const i=x.p.indexOf(k);const J=new Set(JOIN);J.delete(k);if(i===0&&x.p[1])J.delete(x.p[1]);
   const L=TRG.map(g=>g.k.filter(y=>y!==k));let bg=BASE.findIndex(g=>g.k.includes(k));if(bg<0)bg=x.g;const bo=BASE[bg]?BASE[bg].k:[];const bi=bo.indexOf(k);let pos=L[bg].length;for(let j=0;j<L[bg].length;j++){const oj=bo.indexOf(L[bg][j]);if(oj>bi){pos=j;break}}
