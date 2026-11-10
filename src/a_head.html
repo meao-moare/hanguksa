@@ -2625,7 +2625,10 @@ body.medit #dcbody .gl2>.gp.dchid{opacity:.45}
 .bookpin .psh{rx:11!important;ry:1.6!important;cy:.6!important;opacity:.35!important}
 .pagpin .gl{transform:translateY(4.5px)}
 .pagpin .psh{cy:5.2!important;rx:8!important}
-.ahd path.ahl{stroke-width:3.2!important;stroke-linecap:round;stroke-linejoin:round;fill:none!important;paint-order:normal}
-.ahd.inv path.ahl{stroke-width:4.2!important}
 .ahd.thin .ahl{transform:scale(.62)}
+/* 몸통·화살촉 같은 화면 두께 */
+.arw .af,.arw .aflow,.ahd path.ahl{vector-effect:non-scaling-stroke}
+.arw .af{stroke-width:3px!important}.arw.inv .af{stroke-width:4px!important}.arw.thin .af{stroke-width:2px!important}
+.ahd path.ahl{stroke-width:3px!important;stroke-linecap:round;stroke-linejoin:round;fill:none!important;paint-order:normal}
+.ahd.inv path.ahl{stroke-width:4px!important}.ahd.thin path.ahl{stroke-width:2px!important}
 </style>

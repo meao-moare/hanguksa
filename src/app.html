@@ -2625,9 +2625,12 @@ body.medit #dcbody .gl2>.gp.dchid{opacity:.45}
 .bookpin .psh{rx:11!important;ry:1.6!important;cy:.6!important;opacity:.35!important}
 .pagpin .gl{transform:translateY(4.5px)}
 .pagpin .psh{cy:5.2!important;rx:8!important}
-.ahd path.ahl{stroke-width:3.2!important;stroke-linecap:round;stroke-linejoin:round;fill:none!important;paint-order:normal}
-.ahd.inv path.ahl{stroke-width:4.2!important}
 .ahd.thin .ahl{transform:scale(.62)}
+/* 몸통·화살촉 같은 화면 두께 */
+.arw .af,.arw .aflow,.ahd path.ahl{vector-effect:non-scaling-stroke}
+.arw .af{stroke-width:3px!important}.arw.inv .af{stroke-width:4px!important}.arw.thin .af{stroke-width:2px!important}
+.ahd path.ahl{stroke-width:3px!important;stroke-linecap:round;stroke-linejoin:round;fill:none!important;paint-order:normal}
+.ahd.inv path.ahl{stroke-width:4px!important}.ahd.thin path.ahl{stroke-width:2px!important}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/flubber@0.4.2/build/flubber.min.js"></script>
 <script>
@@ -8341,9 +8344,6 @@ new MutationObserver(()=>{if(!q)q=setTimeout(run,120)}).observe(document.body,{c
  apply();setTimeout(apply,1500)}
 
 /* 화살촉: 손으로 그린 것처럼 선으로 된 V자 */
-{try{arrOf.forEach(ps=>ps.forEach(p=>{const f=p.hg.querySelector('.ahf');if(!f)return;const col=f.style.fill;const d=p.inv?'M-11,-7.5L1,0L-11,7.5':'M-9,-6.2L0.6,0L-9,6.2';const n=document.createElementNS('http://www.w3.org/2000/svg','path');n.setAttribute('class','ahl');n.setAttribute('d',d);n.style.stroke=col;n.style.fill='none';f.replaceWith(n)}))}catch(_){}}
+{try{arrOf.forEach(ps=>ps.forEach(p=>{const f=p.hg.querySelector('.ahf');if(!f)return;const col=f.style.fill;const d=p.inv?'M-13.5,-9L1,0L-13.5,9':'M-11.5,-7.6L0.8,0L-11.5,7.6';const n=document.createElementNS('http://www.w3.org/2000/svg','path');n.setAttribute('class','ahl');n.setAttribute('d',d);n.style.stroke=col;n.style.fill='none';f.replaceWith(n)}))}catch(_){}}
 
-/* 화살촉 선 두께 = 화살표 몸통 두께 (확대해도 같게) */
-{const fit=()=>{try{arrOf.forEach(ps=>ps.forEach(p=>{if(p.g.classList.contains('hide'))return;const af=p.g.querySelector('.af'),hl=p.hg.querySelector('.ahl');if(!af||!hl)return;const m1=af.getScreenCTM(),m2=hl.getScreenCTM();if(!m1||!m2)return;const s1=Math.hypot(m1.a,m1.b),s2=Math.hypot(m2.a,m2.b);if(!s2)return;const w=parseFloat(getComputedStyle(af).strokeWidth)||2.6;hl.style.setProperty('stroke-width',(w*s1/s2).toFixed(2)+'px','important')}))}catch(_){}};
- let q=0;const sch=()=>{if(!q)q=requestAnimationFrame(()=>{q=0;fit()})};const po=placeOV;placeOV=function(){const r=po.apply(this,arguments);sch();return r};const sa=setArrows;setArrows=function(){const r=sa.apply(this,arguments);sch();return r};addEventListener('resize',sch);setTimeout(fit,1500)}
 </script>
