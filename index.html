@@ -2658,6 +2658,7 @@ body.medit #dcbody .gl2>.gp.dchid{opacity:.45}
 .ppsame i{font-style:normal;color:var(--muted)}.ppsame small{font-size:10.5px;color:var(--muted);border-left:1px solid var(--rule);padding-left:6px}
 .ppsame button{font:inherit;font-size:11px;padding:1px 7px;border-radius:999px;border:1px solid var(--rule);background:none;color:var(--accent,#2563eb);cursor:pointer}
 .hjc .hjz[data-hjz]{cursor:pointer}
+body.ovedit #v-ov .hzn,body.ovedit #v-ov .hznt,body.ovedit #v-ov .hzrg{touch-action:none;-webkit-user-select:none;user-select:none}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/flubber@0.4.2/build/flubber.min.js"></script>
 <script>
@@ -8168,13 +8169,13 @@ setTimeout(applyAll,500);
 {const b=document.createElement('button');b.id='ovadd';b.type='button';b.hidden=true;b.textContent='+ 사건 추가';document.body.appendChild(b);b.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();try{window.__vForm()}catch(_){}})}
 /* 끌기 */
 document.addEventListener('pointerdown',e=>{if(!can())return;const t=e.target;if(!t.closest||t.closest('[contenteditable]'))return;const grip=t.closest('.ovgrip');const el=t.closest(SEL);if(!el)return;if(e.button!==0&&e.pointerType==='mouse')return;const k=keyOf(el);if(!k)return;
-  const v0=Object.assign({},get(k)||{});const x0=e.clientX,y0=e.clientY;let st=false;const w0=el.offsetWidth,h0=el.offsetHeight;
+  const v0=Object.assign({},get(k)||{});const x0=e.clientX,y0=e.clientY;let st=false;const w0=el.offsetWidth,h0=el.offsetHeight;const SC=document.getElementById('ovscroll');const sl0=SC?SC.scrollLeft:0,stp0=SC?SC.scrollTop:0;const hold=()=>{if(SC&&(SC.scrollLeft!==sl0||SC.scrollTop!==stp0)){SC.scrollLeft=sl0;SC.scrollTop=stp0}};SC&&SC.addEventListener('scroll',hold);
   if(grip){e.preventDefault();e.stopPropagation()}
   const mv=ev=>{const dx=ev.clientX-x0,dy=ev.clientY-y0;if(!st){if(!grip&&Math.abs(dx)+Math.abs(dy)<6)return;st=true;el.classList.add('ovdrag');try{getSelection().removeAllRanges()}catch(_){}}ev.preventDefault();
     if(grip&&el.matches('.hzld')){const h=Math.max(4,Math.round(h0+dy));el.style.height=h+'px';v0.h=h}
     else if(grip){const w=Math.max(20,Math.round(w0+dx));el.style.width=w+'px';v0.w=w}
     else{const nx=Math.round((get(k)||{}).x||0)+Math.round(dx),ny=Math.round((get(k)||{}).y||0)+Math.round(dy);el.style.translate=`${nx}px ${ny}px`;v0.x=nx;v0.y=ny;const pl=el.previousElementSibling;if(pl&&pl.matches('.hzld'))link(pl)}};
-  const up=()=>{removeEventListener('pointermove',mv);removeEventListener('pointerup',up);removeEventListener('pointercancel',up);if(!st)return;el.classList.remove('ovdrag');put(k,v0);const kill=ev=>{ev.preventDefault();ev.stopImmediatePropagation();removeEventListener('click',kill,true)};addEventListener('click',kill,true);setTimeout(()=>removeEventListener('click',kill,true),60)};
+  const up=()=>{SC&&SC.removeEventListener('scroll',hold);removeEventListener('pointermove',mv);removeEventListener('pointerup',up);removeEventListener('pointercancel',up);if(!st)return;el.classList.remove('ovdrag');put(k,v0);const kill=ev=>{ev.preventDefault();ev.stopImmediatePropagation();removeEventListener('click',kill,true)};addEventListener('click',kill,true);setTimeout(()=>removeEventListener('click',kill,true),60)};
   addEventListener('pointermove',mv,{passive:false});addEventListener('pointerup',up);addEventListener('pointercancel',up)},true);
 /* 고치기 모드에서는 눌러도 다른 곳으로 가지 않음 (글씨 고치기만) */
 window.addEventListener('click',e=>{if(!can())return;const b=e.target.closest&&e.target.closest('#v-ov [data-ev],#v-ov [data-grp],#v-ov [data-tip],#v-ov .hzrg');if(!b)return;if(e.target.closest('[contenteditable],.hzn>span,.hznt button,.hznt span,.hzrg>span'))return;e.preventDefault();e.stopImmediatePropagation()},true);
