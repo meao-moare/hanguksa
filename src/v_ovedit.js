@@ -195,13 +195,18 @@ function natOf(e){if(!e)return '';const t=(e.st||'')+' '+e.t+' '+(e.vs||'');cons
   if(T<-2333)return '';if(T<=-108||(T<0&&/고조선|위만/.test(t)))return '고조선';if(T<676){for(const n of ['고구려','백제','신라','가야','부여'])if(t.includes(n))return n;return ''}
   if(T<936.9){if(/발해/.test(t))return '발해';if(/후백제|견훤/.test(t))return '후백제';if(/후고구려|태봉|궁예/.test(t))return '후고구려';if(T>=918.5&&/고려|왕건/.test(t))return '고려';return '신라'}
   if(T<1392.55)return '고려';if(T<1897.8)return '조선';if(T<1910.66)return '대한제국';if(T<1945.62)return '일제강점기';return '대한민국'}
-const LIFE=[['고조선',-2333,-108,0],['신라',-57,935,1],['고구려',-37,668,2],['백제',-18,660,3],['가야',42,562,4],['발해',698,926,2],['후백제',900,936,3],['후고구려',901,918,4],['고려',918.5,1392.5,0],['조선',1392.55,1897.8,0],['대한제국',1897.8,1910.66,0],['일제강점기',1910.66,1945.62,0],['대한민국',1948.6,9999,0],['북한',1948.7,9999,1]];
+const LIFE=[['고조선',-2333,-108,0,1],['신라',-57,935,1,1],['고구려',-37,668,2,1],['백제',-18,660,3,1],['가야',42,562,4,1],['발해',698,926,2,1],['후백제',900,936,3,1],['후고구려',901,918,4,1],['고려',918.5,1392.5,0,1],['조선',1392.55,1897.8,0,0],['대한제국',1897.8,1910.66,0,1],['일제강점기',1910.66,1945.62,0,0],['대한민국',1948.6,9999,0,0],['북한',1948.7,9999,1,0]];
 let q=0;function run(){q=0;document.querySelectorAll('#v-tl ol.tl,#pbody ul.elist').forEach(run1)}function run1(ol){const byId=window.__EVBYID||(window.__EVBYID=new Map(EVENTS.map(e=>[String(e.id),e])));
   const L=[...ol.querySelectorAll(':scope>li')];const sg=L.length+'|'+(L[0]&&L[0].dataset.id||'')+'|'+(L[L.length-1]&&L[L.length-1].dataset.id||'');if(ol.dataset.nbn===sg)return;ol.dataset.nbn=sg;
-  const act=T=>T==null?null:LIFE.filter(x=>T>=x[1]&&T<=x[2]);
+  const act=T=>T==null?null:LIFE.filter(x=>T>=x[1]&&T<x[2]+(x[2]%1?0.05:1));
   const sets=L.map(li=>{const e=li.dataset.id&&byId.get(li.dataset.id);return e?act(e.T):null});
   L.forEach((li,i)=>{let A=sets[i];if(!A){let p=i-1,n=i+1;while(p>=0&&!sets[p])p--;while(n<L.length&&!sets[n])n++;const P=p>=0?sets[p]:[],N=n<L.length?sets[n]:[];A=P.filter(x=>N.includes(x))}
-    li.dataset.nb=A.length?A.map(x=>x[0]).join(','):'-';const im=[],ps=[],sz=[];A.forEach(x=>{const c=NC(x[0])||'#888';im.push(`linear-gradient(${c},${c})`);ps.push(`${x[3]*7}px 0`);sz.push('4px 100%')});
+    li.dataset.nb=A.length?A.map(x=>x[0]).join(','):'-';const im=[],ps=[],sz=[];
+    let nx=null;for(let j=i+1;j<L.length;j++)if(sets[j]){nx=sets[j];break}
+    A.forEach(x=>{const c=NC(x[0])||'#888';const X0=x[3]*10+3;const end=x[4]&&nx&&!nx.includes(x)&&sets[i];
+      if(end){im.push(`url("data:image/svg+xml,${encodeURIComponent('<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'14\' height=\'14\'><path d=\'M2 2L12 12M12 2L2 12\' stroke=\'#dc2626\' stroke-width=\'3\' stroke-linecap=\'round\'/></svg>')}")`);ps.push(`${X0-4}px 22px`);sz.push('14px 14px');
+        im.push(`linear-gradient(${c},${c})`);ps.push(`${X0}px 0`);sz.push('6px 29px')}
+      else{im.push(`linear-gradient(${c},${c})`);ps.push(`${X0}px 0`);sz.push('6px 100%')}});
     li.style.setProperty('--nbg',im.join(',')||'none');li.style.setProperty('--nbp',ps.join(',')||'0 0');li.style.setProperty('--nbs',sz.join(',')||'0 0')});
   if(!ol.dataset.nbx){const li=ol.querySelector(':scope>li[data-id]');const d=li&&li.querySelector(':scope>.d');const d2=li&&li.children[1];if(d&&d2&&li.offsetWidth){const lr=li.getBoundingClientRect(),dr=d.getBoundingClientRect(),r2=d2.getBoundingClientRect();const x=Math.round(r2.left-lr.left-16);if(x>30){ol.style.setProperty('--nbx',x+'px');ol.dataset.nbx=1}}}}
 new MutationObserver(()=>{if(!q)q=setTimeout(run,120)}).observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:['hidden']});setTimeout(run,1200);
@@ -219,3 +224,14 @@ new MutationObserver(()=>{if(!q)q=setTimeout(run,120)}).observe(document.body,{c
   if(playing&&ps&&ps.length&&!reduceMotion){const D=e.seqAr?1100*ps.length-50:950;o.g.classList.add('arwait');clearTimeout(o.pa);
     o.pa=setTimeout(()=>{o.g.classList.remove('arwait');if(pos.i===e.f)pp(o)},D);return}
   if(o&&o.g)o.g.classList.remove('arwait');return pp(o)}}
+
+/* 기록물·석탑: 고인돌처럼 그림 모양 핀 */
+{const BK='<path class="bkb" d="M-11,-6L-3,-2.5L-3,0.5L-11,-3Z"/><path class="bkp" d="M-3,-2.5L11,-6.5L11,-3.5L-3,0.5Z"/><path class="stl" d="M-3,-1.5L11,-5.5M-3,-0.5L11,-4.5"/><path class="bkc" d="M-11,-6L3,-10L11,-6.5L-3,-2.5Z"/>'+
+  [0.15,0.38,0.62,0.85].map(t=>{const x=-11+8*t,y=-6+3.5*t;return `<path class="bks" d="M${x.toFixed(2)},${y.toFixed(2)}l1.4,-0.4"/>`}).join('')+
+  '<path class="bkt" d="M-7.4,-6.2L-3.8,-4.6L-2.4,-5L-6,-6.6Z"/><path class="dmg" d="M-12,1H12"/>';
+ const PG='<path class="dmc" d="M-8,0.2H8V-2.2H-8Z"/><path class="dmc" d="M-6.4,-2.2H6.4V-4H-6.4Z"/>'+
+  [[-4,3.2,2.6,6.9,1.2],[-7.8,2.6,1.9,5.9,1],[-10.7,2.0,1.5,4.9,0.9]].map(([y,bw,bh,rw,rh])=>{const yb=y-bh,yr=yb-rh;return `<path class="dms" d="M${-bw},${y}H${bw}V${yb}H${-bw}Z"/><path class="dmc" d="M${-rw},${yb}Q${-rw-0.6},${yb-0.5} ${-rw-0.4},${yb-0.9}L${-rw+1.3},${yr}H${rw-1.3}L${rw+0.4},${yb-0.9}Q${rw+0.6},${yb-0.5} ${rw},${yb}Z"/>`}).join('')+
+  '<path class="dms" d="M-0.5,-13.1H0.5V-16.6H-0.5Z"/><path class="dmg" d="M-10,0.6H10"/>';
+ function apply(){if(typeof pinOf==='undefined')return;EVENTS.forEach(e=>{if(e.icon!=='book'&&e.icon!=='pagoda')return;const o=pinOf.get(e.id);if(!o||o.g.classList.contains('artpin'))return;const gl=o.g.querySelector('.gl');if(!gl)return;
+   const ob=o.g.querySelector('.dot');gl.innerHTML=e.icon==='book'?BK:PG;o.g.classList.add('stelepin','dolpin','artpin',e.icon==='book'?'bookpin':'pagpin')})}
+ apply();setTimeout(apply,1500)}

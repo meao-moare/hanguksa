@@ -69,4 +69,13 @@ addEventListener('scroll',()=>{pop.hidden=true},true);
 pop.addEventListener('click',e=>{const b=e.target.closest('[data-hjed]');if(!b)return;e.preventDefault();e.stopPropagation();const c=b.dataset.hjed;const row=b.closest('.hjms')||b.closest('.hjr');const cur=HV(c)||'';row.innerHTML=`<b>${c}</b><input class="hjin" value="${cur.replace(/"/g,'&quot;')}" placeholder="뜻 음, 다른 뜻 음 (예: 즐길 락, 노래 악)"><button type="button" class="hjok">저장</button>`;const i=row.querySelector('input');i.focus();i.select();
   const done=()=>{const v=i.value.trim();try{const T=window.__ME.tr;if(v)T.set('@hj:'+c,v);else T.delete('@hj:'+c);window.__MEX.save('T:@hj:'+c,v)}catch(_){}try{render(pop.dataset.word||c,pop.dataset.ci===''?null:+(pop.dataset.ci||0))}catch(_){}try{window.__MEX.toast('한자 뜻을 저장했어요')}catch(_){}};
   i.addEventListener('keydown',k=>{k.stopPropagation();if(k.key==='Enter'&&!k.isComposing){k.preventDefault();done()}else if(k.key==='Escape'){pop.hidden=true}});row.querySelector('.hjok').onclick=ev=>{ev.stopPropagation();done()}},true);
+
+ /* 용어 사전: 뜻에 한자가 있으면 맨 밑에 한 글자씩 풀이 + 합쳐 읽기 */
+ {const E=x=>String(x).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  const sum=()=>{const kp=document.getElementById('kpage');if(!kp)return;const pin=kp.querySelector('.kpin');if(!pin)return;const d=pin.querySelector('.kpd');const old=pin.querySelector('.hjsum');
+   const txt=d?d.textContent:'';const runs=txt.match(/[一-鿿豈-﫿]+/g)||[];const sig=runs.join('|');if(old&&old.dataset.s===sig)return;if(old)old.remove();if(!runs.length)return;
+   const html=runs.map(w=>{const cs=[...w];const rd=cs.map(c=>{const m=MEAN(c)[0];return m?m.split(' ').pop():(RD(c)||'?')});
+     return `<div class="hjsw">${cs.map((c,i)=>{const m=MEAN(c);return `<div class="hjsr"><b>${E(c)}</b><span>${m.length?E(m.join(', ')):E(rd[i])+' <i>(뜻 미입력)</i>'}</span></div>`}).join('')}<div class="hjtot">합쳐서 <b>${E(w)}</b> = ${E(rd.join(''))}</div></div>`}).join('');
+   const sec=document.createElement('section');sec.className='kband hjsum';sec.dataset.s=sig;sec.style.setProperty('--bc','#8b5e34');sec.innerHTML='<h3>한자 풀이</h3>'+html;const sn=pin.querySelector('.snote');pin.insertBefore(sec,sn||null)};
+  let q=0;new MutationObserver(()=>{if(!q)q=requestAnimationFrame(()=>{q=0;try{sum()}catch(_){}})}).observe(document.body,{childList:true,subtree:true,characterData:true})}
 }
