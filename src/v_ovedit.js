@@ -92,3 +92,17 @@ const sync=()=>{const b=document.getElementById('dcbody');if(!b)return;b.classLi
 document.addEventListener('change',e=>{if(e.target&&e.target.id==='dcnopcb'){on=e.target.checked;try{localStorage.setItem('hgs_dcnop',on?'1':'0')}catch(_){}sync()}},true);
 let tq=0;new MutationObserver(()=>{clearTimeout(tq);tq=setTimeout(()=>{if(document.getElementById('dcnopcb'))sync()},200)}).observe(document.body,{childList:true});setInterval(()=>{const b=document.getElementById('dcbody');if(b&&b.dataset.built&&!b.dataset.nops){b.dataset.nops=1;sync()}},800);
 }
+
+/* 문화유산 시기별: 시대 제목 크게(옆에 연도 작게) + 아래 3개씩 네모 카드 */
+{
+const SUB={'구석기':'약 70만 년 전 ~ 기원전 8000년경','신석기':'기원전 8000년경 ~ 기원전 2000년경','청동기':'기원전 2000년경 ~','철기':'기원전 5세기경 ~'};
+const subOf=t=>{const m=String(t).match(/구석기|신석기|청동기|철기/);return m?m[0]:''};
+const E=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function tf(){document.querySelectorAll('#v-rl section.rltle').forEach(sec=>{const ol=sec.querySelector(':scope>ol.rltl');if(!ol||sec.dataset.g3)return;sec.dataset.g3=1;sec.classList.add('rlg3s');
+  const lis=[...ol.children];const wrap=document.createElement('div');wrap.className='rlg3w';let cur=null,key=null;
+  lis.forEach(li=>{const ry=li.querySelector('.ry');const row=li.querySelector('.rlrow');if(!row)return;const lab=ry?ry.textContent:'';const rk=row.querySelector('.rk');let k=subOf(lab);if(!k){const m=lab.match(/(?:BC|기원전)\s*([\d,]+)/);if(m&&key){const y=-parseInt(m[1].replace(/,/g,''));k=y<-8000?'구석기':y<-2000?'신석기':'청동기'}else if(key&&!/\d/.test(lab))k=key;else k=subOf((row.querySelector('.rd')||{}).textContent||'')&&key?subOf(row.querySelector('.rd').textContent):''}
+    if(k!==key||!cur){key=k;if(k){const h=document.createElement('h4');h.className='rlsub';h.innerHTML=`${E(k)} 시대<span>${E(SUB[k]||'')}</span>`;wrap.appendChild(h)}cur=document.createElement('div');cur.className='rlg3';wrap.appendChild(cur)}
+    const card=document.createElement('div');card.className='rlc3';card.style.cssText=li.getAttribute('style')||'';if(lab){const s=document.createElement('span');s.className='rlc3y';s.textContent=lab;card.appendChild(s)}card.appendChild(row);cur.appendChild(card)});
+  ol.replaceWith(wrap)})}
+let t=0;new MutationObserver(()=>{clearTimeout(t);t=setTimeout(tf,60)}).observe(document.body,{childList:true,subtree:true});setTimeout(tf,800);
+}

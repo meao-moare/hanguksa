@@ -165,6 +165,7 @@ function personColor(P){const cnt=new Map();P.evs.forEach(e=>{const R=kingRef(e)
   return best==='wld'?'var(--t-wld)':best==='ind'?'var(--t-ind)':best?`color-mix(in srgb,var(--c-${best}) 70%,var(--ink))`:'var(--ink)'}
 function personNation(P){const R=P.evs.map(kingRef).find(Boolean);return R?(R.D.n==='남한'?'대한민국':R.D.n):(P.evs.some(e=>e.tp.includes('wld'))?'외국':'')}
 /* 인물 모음: 일반 인물 + 왕(왕계표) — 나라·시기 함께 */
+try{Object.assign(NAT_COL,{'고조선':'#8a6d1f','가야':'#65803a','고구려':'#c0392b','백제':'#2563eb','신라':'#ca8a04','발해':'#7c3aed','후고구려':'#be123c','후백제':'#0ea5e9','고려':'#0f8a7a','조선':'#4f46e5','대한제국':'#b45309','일제강점기':'#78716c','한국':'#0284c7','대한민국':'#0284c7','북한':'#9f1239'})}catch(_){}
 const NATORD=['고조선','부여','옥저','동예','삼한','고구려','백제','신라','가야','발해','후고구려','후백제','고려','조선','대한제국','일제강점기','한국','대한민국','북한','중국','북방 민족','일본','미국','러시아·소련','외국','기타'];
 function natCol(n){try{return NAT_COL[n]||NAT_COL[String(n).replace(' ','')]||'#6b7280'}catch(_){return '#6b7280'}}
 function PEOPLE_ALL(){const o={};const add=(k,v)=>{if(!o[k])o[k]=v};

@@ -64,7 +64,7 @@ function yearLabel(e){
   if(e.m&&e.y>=1880)return e.y+'년 '+e.m+'월'+(e.d&&e.y>=1945?' '+e.d+'일':'');
   return e.y+'년';
 }
-function shortYear(e){if(e.yl&&e.y<-9000)return e.yl;if(e.yl)return e.yl.replace('기원전 ','BC ');if(e.y<0)return 'BC '+(-e.y);return String(e.y)}
+function shortYear(e){if(e.yl&&e.y<-9000)return e.yl;if(e.yl)return e.yl.replace('기원전 ','BC ');let y=e.y;if(y==null||isNaN(y))y=e.T!=null&&!isNaN(e.T)?Math.floor(e.T):null;if(y==null)return '';if(y<0)return 'BC '+(-y);return String(y)}
 function tg(k){return `<span class="tg" style="--tc:var(--t-${k})">${TOPIC[k].n}</span>`}
 /* 그 사건 때의 왕 */
 const DYN=Object.fromEntries(REIGNS.map(D=>[D.n,D]));
