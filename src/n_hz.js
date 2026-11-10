@@ -57,7 +57,7 @@ function layHZ(k,SC){
   const axY=y0+22;
   // 축 · 연도 · 표시
   h+=`<div class="hzax" style="top:${axY}px;width:${W}px"></div>`;
-  let lastY=null;const yc={};evs.forEach(e=>{const y=Math.floor(e.T+1e-6);yc[y]=(yc[y]||0)+1});const MG={};{const c={};evs.forEach((e,i)=>{if(isUp(e)||!e.m)return;const y=Math.floor(e.T+1e-6);(c[y]=c[y]||[]).push(i)});for(const y in c)if(c[y].length>=3)c[y].forEach((i,j)=>{MG[i]={y:+y,x:xs[c[y][0]],j,n:c[y].length}})}let lastM=null;evs.forEach((e,i)=>{const yy=Math.floor(e.T+1e-6);const maj=isMajor(e);if(yc[yy]>1&&e.m&&!MG[i]){const mk=yy+'-'+e.m;if(mk!==lastM){h+=`<span class="hzmo" style="left:${xs[i]}px;top:${axY+8}px">${e.m}월</span>`;lastM=mk}}
+  let lastY=null;const yc={};evs.forEach(e=>{const y=Math.floor(e.T+1e-6);yc[y]=(yc[y]||0)+1});const MG={};{const c={};evs.forEach((e,i)=>{if(isUp(e)||!e.m)return;const y=Math.floor(e.T+1e-6);(c[y]=c[y]||[]).push(i)});for(const y in c)if(c[y].length>=3)c[y].forEach((i,j)=>{MG[i]={y:+y,x:xs[c[y][0]],j,n:c[y].length}})}let lastM=null;evs.forEach((e,i)=>{const yy=Math.floor(e.T+1e-6);const maj=isMajor(e);if(yc[yy]>1&&e.m&&!MG[i]){const mk=yy+'-'+e.m;if(!(lastM instanceof Set))lastM=new Set();if(!lastM.has(mk)){lastM.add(mk);h+=`<span class="hzmo" style="left:${xs[i]}px;top:${axY+8}px">${e.m}월</span>`}}
     if(yy!==lastY){h+=`<span class="hzyr${maj?' mj':''}" style="left:${xs[i]}px;top:${axY-21}px">${yrTxt(yy)}</span>`;lastY=yy}
     h+=maj?`<span class="hzx${evs[i].top?' bin':''}" style="left:${xs[i]}px;top:${axY-6}px">×</span>`:`<span class="hztk" style="left:${xs[i]}px;top:${axY-6}px"></span>`});
   // 축 아래: 사건 이름만
