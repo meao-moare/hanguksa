@@ -2680,7 +2680,7 @@ body.ovline #v-ov section.ovsec{cursor:crosshair;touch-action:none}
 #ovline{position:fixed;right:150px;bottom:22px;z-index:60;font:inherit;font-weight:700;padding:10px 16px;border-radius:999px;border:1px solid var(--rule);background:var(--panel);color:var(--ink);box-shadow:0 4px 14px rgb(0 0 0/.12);cursor:pointer}
 #ovline[hidden]{display:none}#ovline.on{background:#dc2626;color:#fff;border-color:#dc2626}
 #ovpal .thl{color:var(--muted);margin-left:4px}
-#v-ov .hzn,#v-ov .hznt{--gc:#fff!important}#v-ov .hzn:not(.ovdrag){background:#fff!important}
+#v-ov .hzn,#v-ov .hznt{--gc:transparent!important}#v-ov .hzn{background:transparent!important;box-shadow:none!important}#v-ov .hzn>span{background:#fff;border-radius:3px;box-decoration-break:clone;-webkit-box-decoration-break:clone}
 body,button,input,select,textarea{-webkit-text-stroke:0!important}
 #v-ov .ovdw{position:absolute;left:0;top:0;overflow:visible;pointer-events:none;z-index:5}
 body.drawing[data-dtool="er"] #v-ov .ovdw *{pointer-events:stroke}body.drawing[data-dtool="er"] #v-ov .ovdw{pointer-events:none}
@@ -2699,4 +2699,10 @@ body.drawing[data-dtool="er"] #v-ov section.ovsec{cursor:cell}
 #drawbar .dbh{margin:0;font-size:11.5px;color:var(--muted)}
 #v-ov .hzmgb{display:none!important}
 body.ovedit #v-ov .hzach{cursor:move;touch-action:none}body.ovedit #v-ov .hzach.ovdrag{z-index:20;box-shadow:0 6px 18px rgb(0 0 0/.15)}
+#mpen .mpdraw{border-top:1px solid var(--rule);margin-top:4px;padding-top:6px}
+#mpen .mpdraw>b{display:block;font-size:11px;color:var(--muted);margin:0 0 4px 2px}
+#mpen .mpdraw>div{display:grid;grid-template-columns:repeat(3,1fr);gap:3px}
+#mpen .mpdraw button{font:inherit;font-size:11px;display:flex;flex-direction:column;align-items:center;gap:1px;padding:4px 2px;border:1px solid var(--rule);border-radius:8px;background:var(--panel);color:var(--ink);cursor:pointer;width:auto!important;height:auto!important}
+#mpen .mpdraw svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2}
+#mpen .mpdraw button.on{background:var(--ink);color:var(--panel);border-color:var(--ink)}
 </style>

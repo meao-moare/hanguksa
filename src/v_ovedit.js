@@ -319,7 +319,10 @@ new MutationObserver(()=>{if(!q)q=setTimeout(run,120)}).observe(document.body,{c
  bar.addEventListener('input',e=>{const t=e.target;if(t.matches('[data-dw]')){if(/hl/.test(S.tool))S.hw=+t.value;else S.w=+t.value;t.nextElementSibling.textContent=t.value}else if(t.matches('[data-do]')){S.o=+t.value;t.nextElementSibling.textContent=S.o+'%'}else if(t.matches('[data-dc]'))S.c=t.value;LSS('hgs_draw',S)});
  bar.addEventListener('change',e=>{if(e.target.matches('[data-dc]'))drawBar()});
  /* 필통에 '연필' 버튼 */
- const addBtn=()=>{const p=$('mpen');if(!p||p.querySelector('[data-pdraw]'))return;const b=document.createElement('button');b.type='button';b.dataset.pdraw='1';b.innerHTML='<span>✏️ 연필·지우개</span>';const ref=p.querySelector('[data-hrline]');p.insertBefore(b,ref||null);b.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();if(bar.hidden){if($('v-ov').hidden){try{toast('연필은 연대표에서 쓸 수 있어요')}catch(_){}}open()}else close()})};
+ const addBtn=()=>{const p=$('mpen');if(!p||p.querySelector('[data-pdraw]'))return;const w=document.createElement('div');w.className='mpdraw';w.dataset.pdraw='1';w.innerHTML='<b>그리기</b><div>'+T.map(([k,n,ic])=>`<button type="button" data-pdt="${k}" title="${n}"><svg viewBox="0 0 24 24">${ic}</svg><span>${n.replace('형광펜','형광')}</span></button>`).join('')+'</div>';const ref=p.querySelector('[data-hrline]');p.insertBefore(w,ref?ref.nextSibling:null);
+   w.addEventListener('click',e=>{const b=e.target.closest('[data-pdt]');if(!b)return;e.preventDefault();e.stopPropagation();if($('v-ov').hidden){try{toast('그리기는 연대표에서 쓸 수 있어요')}catch(_){}}const k=b.dataset.pdt;if(!bar.hidden&&S.tool===k){close()}else{bar.hidden=false;S.tool=k;document.body.classList.add('drawing');document.body.dataset.dtool=k;drawBar()}syncP()})};
+ const syncP=()=>{const p=$('mpen');if(!p)return;p.querySelectorAll('[data-pdt]').forEach(b=>b.classList.toggle('on',!bar.hidden&&S.tool===b.dataset.pdt))};
+ new MutationObserver(syncP).observe(bar,{childList:true,attributes:true});
  new MutationObserver(addBtn).observe(document.body,{childList:true});setInterval(()=>{addBtn();if(!bar.hidden&&!own())close()},1000);
  /* 그리기 */
  const ptIn=(cv,e)=>{const r=cv.getBoundingClientRect();return [Math.round((e.clientX-r.left)*10)/10,Math.round((e.clientY-r.top)*10)/10]};
