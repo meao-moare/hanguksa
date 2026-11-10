@@ -2619,6 +2619,13 @@ body.medit #dcbody .gl2>.gp.dchid{opacity:.45}
 #v-ov .hzrg2:not(.og){background:color-mix(in srgb,var(--gc) 26%,var(--panel))!important;color:var(--ink)}
 #v-ov .hzrg2.cont{border-top-left-radius:0!important;border-bottom-left-radius:0!important}
 #v-ov .hzrg2.cend{border-top-right-radius:0!important;border-bottom-right-radius:0!important}
+.woodpin .wpb{fill:#a7adb1;stroke:#4a5257;stroke-width:.7}
+.woodpin .wpw{fill:#b5532f;stroke:#5a2a17;stroke-width:.6}
+.woodpin .wpr{fill:#4b5563;stroke:#1f2937;stroke-width:.6;stroke-linejoin:round}
+.woodpin .wps{fill:#b8860b;stroke:#6b4e08;stroke-width:.4}
+.bookpin .psh{rx:11!important;ry:1.6!important;cy:.6!important;opacity:.35!important}
+.pagpin .gl{transform:translateY(4.5px)}
+.pagpin .psh{cy:5.2!important;rx:8!important}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/flubber@0.4.2/build/flubber.min.js"></script>
 <script>
@@ -8319,12 +8326,13 @@ new MutationObserver(()=>{if(!q)q=setTimeout(run,120)}).observe(document.body,{c
 /* 기록물·석탑: 고인돌처럼 그림 모양 핀 */
 {const BK='<path class="bkb" d="M-11,-6L-3,-2.5L-3,0.5L-11,-3Z"/><path class="bkp" d="M-3,-2.5L11,-6.5L11,-3.5L-3,0.5Z"/><path class="stl" d="M-3,-1.5L11,-5.5M-3,-0.5L11,-4.5"/><path class="bkc" d="M-11,-6L3,-10L11,-6.5L-3,-2.5Z"/>'+
   [0.15,0.38,0.62,0.85].map(t=>{const x=-11+8*t,y=-6+3.5*t;return `<path class="bks" d="M${x.toFixed(2)},${y.toFixed(2)}l1.4,-0.4"/>`}).join('')+
-  '<path class="bkt" d="M-7.4,-6.2L-3.8,-4.6L-2.4,-5L-6,-6.6Z"/><path class="dmg" d="M-12,1H12"/>';
+  '<path class="bkt" d="M-7.4,-6.2L-3.8,-4.6L-2.4,-5L-6,-6.6Z"/>';
+ const WP='<path class="wpb" d="M-6.5,0.3H6.5V-1.3H-6.5Z"/><path class="wpw" d="M-3.30,-1.30H3.30V-2.80H-3.30Z"/><path class="wpr" d="M-6.40,-2.80Q-7.10,-3.25 -6.90,-3.60L-5.00,-3.75H5.00L6.90,-3.60Q7.10,-3.25 6.40,-2.8Z"/><path class="wpw" d="M-3.03,-3.75H3.03V-5.25H-3.03Z"/><path class="wpr" d="M-5.90,-5.25Q-6.60,-5.70 -6.40,-6.05L-4.50,-6.20H4.50L6.40,-6.05Q6.60,-5.70 5.90,-5.25Z"/><path class="wpw" d="M-2.77,-6.20H2.77V-7.70H-2.77Z"/><path class="wpr" d="M-5.40,-7.70Q-6.10,-8.15 -5.90,-8.50L-4.00,-8.65H4.00L5.90,-8.50Q6.10,-8.15 5.40,-7.7Z"/><path class="wpw" d="M-2.50,-8.65H2.50V-10.15H-2.50Z"/><path class="wpr" d="M-4.90,-10.15Q-5.60,-10.60 -5.40,-10.95L-3.50,-11.10H3.50L5.40,-10.95Q5.60,-10.60 4.90,-10.15Z"/><path class="wpw" d="M-2.23,-11.10H2.23V-12.60H-2.23Z"/><path class="wpr" d="M-4.40,-12.60Q-5.10,-13.05 -4.90,-13.40L-3.00,-13.55H3.00L4.90,-13.40Q5.10,-13.05 4.40,-12.6Z"/><path class="wpw" d="M-1.97,-13.55H1.97V-15.05H-1.97Z"/><path class="wpr" d="M-3.90,-15.05Q-4.60,-15.50 -4.40,-15.85L-2.50,-16.00H2.50L4.40,-15.85Q4.60,-15.50 3.90,-15.049999999999999Z"/><path class="wpw" d="M-1.70,-16.00H1.70V-17.50H-1.70Z"/><path class="wpr" d="M-3.40,-17.50Q-4.10,-17.95 -3.90,-18.30L-2.00,-18.45H2.00L3.90,-18.30Q4.10,-17.95 3.40,-17.5Z"/><path class="wps" d="M-0.35,-18.45H0.35V-22.65H-0.35Z"/><path class="wps" d="M-0.9,-19.35H0.9V-19.70H-0.9Z"/><path class="wps" d="M-0.9,-20.25H0.9V-20.60H-0.9Z"/><path class="wps" d="M-0.9,-21.15H0.9V-21.50H-0.9Z"/><path class="wps" d="M-0.9,-22.05H0.9V-22.40H-0.9Z"/>';
  const PG='<path class="dmc" d="M-8,0.2H8V-2.2H-8Z"/><path class="dmc" d="M-6.4,-2.2H6.4V-4H-6.4Z"/>'+
   [[-4,3.2,2.6,6.9,1.2],[-7.8,2.6,1.9,5.9,1],[-10.7,2.0,1.5,4.9,0.9]].map(([y,bw,bh,rw,rh])=>{const yb=y-bh,yr=yb-rh;return `<path class="dms" d="M${-bw},${y}H${bw}V${yb}H${-bw}Z"/><path class="dmc" d="M${-rw},${yb}Q${-rw-0.6},${yb-0.5} ${-rw-0.4},${yb-0.9}L${-rw+1.3},${yr}H${rw-1.3}L${rw+0.4},${yb-0.9}Q${rw+0.6},${yb-0.5} ${rw},${yb}Z"/>`}).join('')+
   '<path class="dms" d="M-0.5,-13.1H0.5V-16.6H-0.5Z"/><path class="dmg" d="M-10,0.6H10"/>';
  function apply(){if(typeof pinOf==='undefined')return;EVENTS.forEach(e=>{if(e.icon!=='book'&&e.icon!=='pagoda')return;const o=pinOf.get(e.id);if(!o||o.g.classList.contains('artpin'))return;const gl=o.g.querySelector('.gl');if(!gl)return;
-   const ob=o.g.querySelector('.dot');gl.innerHTML=e.icon==='book'?BK:PG;o.g.classList.add('stelepin','dolpin','artpin',e.icon==='book'?'bookpin':'pagpin')})}
+   const ob=o.g.querySelector('.dot');const wood=e.icon==='pagoda'&&/목탑/.test(e.t);gl.innerHTML=e.icon==='book'?BK:wood?WP:PG;o.g.classList.add('stelepin','dolpin','artpin',e.icon==='book'?'bookpin':'pagpin');if(wood)o.g.classList.add('woodpin')})}
  apply();setTimeout(apply,1500)}
 </script>
 <script type="module">
