@@ -16,7 +16,7 @@ function applyAll(){const ed=can();const seen={};document.querySelectorAll(SEL).
   if(el.matches('.hzld'))el.style.height=v&&v.h?v.h+'px':el.dataset.oh;
   let g=el.querySelector(':scope>.ovgrip');if(ed&&!g&&(el.matches('.hzrg')||el.matches('.hzld'))){el.insertAdjacentHTML('beforeend',`<ovg class="ovgrip ${el.matches('.hzld')?'ovgv':'ovgh'}" title="${el.matches('.hzld')?'세로줄 길이':'길이'}"></ovg>`)}else if(!ed&&g)g.remove()});
   document.body.classList.toggle('ovedit',ed)}
-let t=0;const sched=()=>{clearTimeout(t);t=setTimeout(applyAll,80)};
+let t=0;const sched=()=>{const v=$('v-ov');if(!v||v.hidden)return;clearTimeout(t);t=setTimeout(applyAll,80)};
 new MutationObserver(m=>{if(m.some(x=>[...x.addedNodes].some(n=>n.nodeType===1&&!n.classList.contains('ovgrip'))))sched()}).observe(document.body,{childList:true,subtree:true});
 new MutationObserver(sched).observe(document.body,{attributes:true,attributeFilter:['class']});
 setTimeout(applyAll,500);
@@ -143,4 +143,18 @@ new MutationObserver(ms=>{let hit=false;for(const m of ms){if(!m.removedNodes.le
  const kb=()=>{const v=window.visualViewport;return v&&v.height<innerHeight-120};
  addEventListener('scroll',()=>{const se=document.scrollingElement||document.documentElement;if(se.scrollTop>0&&!kb())se.scrollTop=0},{passive:true});
  if(window.visualViewport)visualViewport.addEventListener('resize',()=>{if(!kb()){const se=document.scrollingElement||document.documentElement;if(se.scrollTop>0)se.scrollTop=0}});
+}
+
+/* 구조도 고치는 중: 내가 스크롤하지 않았는데 화면(구조도 칸·전체)이 움직이면 그 자리로 되돌림 */
+{
+let lastU=0;const now=()=>performance.now();const mark=()=>{lastU=now()};
+['wheel','touchmove','touchend'].forEach(t=>addEventListener(t,mark,{capture:true,passive:true}));
+addEventListener('keydown',e=>{const a=document.activeElement;if(a&&(a.isContentEditable||/INPUT|TEXTAREA|SELECT/.test(a.tagName)))return;if(/Page|Arrow|Home|End|^ $/.test(e.key))mark()},true);
+addEventListener('pointerdown',e=>{const t=e.target;if(!t||!t.closest)return;if((t.id&&t.scrollHeight>t.clientHeight)||t.closest('#trside,#trpbar,#trnavl,#trnavr,.trnav,#trindex,[data-tpg],[data-tpk],[data-tsj],nav,header,.tabs,#menupop'))mark()},true);
+const on=()=>document.body.classList.contains('medit')&&document.body.classList.contains('trpgon');
+const POS=new WeakMap();const keyEl=el=>el===document?document.scrollingElement||document.documentElement:el;
+const rec=el=>POS.set(el,[el.scrollTop,el.scrollLeft]);
+document.addEventListener('scroll',e=>{const el=keyEl(e.target);if(!el||el.nodeType!==1)return;if(!(el.id==='trbody'||el.id==='trread'||el===document.scrollingElement||el.classList.contains('trcard')))return;
+  if(!on()||now()-lastU<1300){rec(el);return}const p=POS.get(el);if(!p){rec(el);return}if(Math.abs(el.scrollTop-p[0])>2||Math.abs(el.scrollLeft-p[1])>2){el.scrollTop=p[0];el.scrollLeft=p[1]}},true);
+new MutationObserver(()=>{if(on()){['trbody','trread'].forEach(id=>{const el=document.getElementById(id);if(el)rec(el)});document.querySelectorAll('#trbody>.trcard').forEach(rec);rec(document.scrollingElement||document.documentElement)}}).observe(document.body,{attributes:true,attributeFilter:['class']});
 }
