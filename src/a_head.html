@@ -2682,4 +2682,19 @@ body.ovline #v-ov section.ovsec{cursor:crosshair;touch-action:none}
 #ovpal .thl{color:var(--muted);margin-left:4px}
 #v-ov .hzn,#v-ov .hznt{--gc:#fff!important}#v-ov .hzn:not(.ovdrag){background:#fff!important}
 body,button,input,select,textarea{-webkit-text-stroke:0!important}
+#v-ov .ovdw{position:absolute;left:0;top:0;overflow:visible;pointer-events:none;z-index:5}
+body.drawing[data-dtool="er"] #v-ov .ovdw *{pointer-events:stroke}body.drawing[data-dtool="er"] #v-ov .ovdw{pointer-events:none}
+#v-ov .ovhl{position:absolute;z-index:4;background:var(--hb);border-radius:2px;display:flex;align-items:center;padding:0 4px;overflow:hidden;white-space:nowrap;color:var(--ink);font-weight:700;pointer-events:none}
+#v-ov .ovhl span{outline:none;min-width:4px}body.drawing #v-ov .ovhl{pointer-events:auto;cursor:text}
+body.drawing #v-ov section.ovsec{cursor:crosshair;touch-action:none}
+body.drawing[data-dtool="er"] #v-ov section.ovsec{cursor:cell}
+#drawbar{position:fixed;left:50%;bottom:16px;transform:translateX(-50%);z-index:3100;background:var(--panel);border:1px solid var(--rule);border-radius:14px;box-shadow:0 10px 30px rgb(0 0 0/.18);padding:8px 10px;display:flex;flex-direction:column;gap:7px;font-size:13px;max-width:calc(100vw - 24px)}
+#drawbar[hidden]{display:none}
+#drawbar .dbt{display:flex;gap:4px;flex-wrap:wrap}#drawbar .dbt button{font:inherit;display:flex;align-items:center;gap:4px;padding:5px 9px;border-radius:9px;border:1px solid var(--rule);background:var(--panel);color:var(--ink);cursor:pointer}
+#drawbar .dbt svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2}#drawbar .dbt button.on{background:var(--ink);color:var(--panel);border-color:var(--ink)}
+#drawbar .dbr{display:flex;gap:14px;flex-wrap:wrap;align-items:center}#drawbar .dbr label{display:flex;align-items:center;gap:6px;color:var(--muted)}#drawbar .dbr input{width:120px}#drawbar .dbr b{min-width:30px;color:var(--ink);font-weight:600}
+#drawbar .dbc{display:flex;gap:5px;align-items:center;flex-wrap:wrap}#drawbar input[type=color]{width:30px;height:28px;border:1px solid var(--rule);border-radius:7px;padding:1px;background:none}
+#drawbar [data-dsc]{width:24px;height:24px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 1px var(--rule);background:var(--c);cursor:pointer;padding:0}#drawbar [data-dsc].on{box-shadow:0 0 0 2px var(--ink)}
+#drawbar [data-dsave],#drawbar .dx{font:inherit;border:1px solid var(--rule);background:var(--panel);color:var(--ink);border-radius:999px;padding:3px 10px;cursor:pointer}#drawbar .dx{margin-left:auto}
+#drawbar .dbh{margin:0;font-size:11.5px;color:var(--muted)}
 </style>
