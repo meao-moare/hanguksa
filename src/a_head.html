@@ -2705,4 +2705,10 @@ body.ovedit #v-ov .hzach{cursor:move;touch-action:none}body.ovedit #v-ov .hzach.
 #mpen .mpdraw button{font:inherit;font-size:11px;display:flex;flex-direction:column;align-items:center;gap:1px;padding:4px 2px;border:1px solid var(--rule);border-radius:8px;background:var(--panel);color:var(--ink);cursor:pointer;width:auto!important;height:auto!important}
 #mpen .mpdraw svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2}
 #mpen .mpdraw button.on{background:var(--ink);color:var(--panel);border-color:var(--ink)}
+/* 연대표: 위아래로 내리면 연대표·설명 통째로 같이 */
+#ovscroll{overflow-y:auto!important}
+#ovscroll>#ovchart:has(>.hzall),#ovscroll .hzall,#ovscroll .hzall>.ovsec.hsec,.hsec .hzwrap,#ovscroll .hzall .hzwrap{height:auto!important;min-height:0!important}
+#ovscroll .hzall .hzbot,#v-ov .hzbot{overflow:visible!important;flex:none!important}
+#ovscroll .hzall{align-items:stretch!important}
+#ovscroll .hzall>.ovsec.hsec>.hzwrap{min-height:100%!important}
 </style>
