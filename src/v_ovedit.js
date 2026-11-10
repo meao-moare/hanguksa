@@ -242,6 +242,9 @@ new MutationObserver(()=>{if(!q)q=setTimeout(run,120)}).observe(document.body,{c
    const ob=o.g.querySelector('.dot');const wood=e.icon==='pagoda'&&/목탑/.test(e.t);gl.innerHTML=e.icon==='book'?BK:wood?WP:PG;o.g.classList.add('stelepin','dolpin','artpin',e.icon==='book'?'bookpin':'pagpin');if(wood)o.g.classList.add('woodpin')})}
  apply();setTimeout(apply,1500)}
 
-/* 화살촉 모양만 > (꺾쇠) — 몸통은 원래대로 */
-{try{arrOf.forEach(ps=>ps.forEach(p=>{const f=p.hg.querySelector('.ahf');if(!f)return;f.setAttribute('d',p.inv?'M-15,-9.5L4.5,0L-15,9.5L-15,4.9L-4.6,0L-15,-4.9Z':'M-12.5,-8L3.5,0L-12.5,8L-12.5,4.2L-3.6,0L-12.5,-4.2Z');f.setAttribute('stroke-linejoin','round')}))}catch(_){}}
+/* 화살촉 모양만 > (꺾쇠) — 꺾쇠 선 두께 = 몸통 두께 (확대해도 같이) */
+{const W=new Map();const wOf=p=>{if(!W.has(p)){let w=2.6;try{const af=p.g.querySelector('.af');const c=getComputedStyle(af).strokeWidth;if(c&&!p.g.classList.contains('hide'))w=parseFloat(c)||w;else w=p.inv?3.4:2.6}catch(_){}W.set(p,w)}return W.get(p)};
+ try{arrOf.forEach(ps=>ps.forEach(p=>{const f=p.hg.querySelector('.ahf');if(!f)return;f.setAttribute('d',p.inv?'M-12,-8L1.5,0L-12,8':'M-10,-6.6L1.2,0L-10,6.6');f.classList.add('ahk2');f.style.setProperty('stroke',f.style.fill,'important');f.style.fill='none'}))}catch(_){}
+ const fit=()=>{try{const k=kNow();arrOf.forEach(ps=>ps.forEach(p=>{const f=p.hg.querySelector('.ahk2');if(!f)return;let w=p.inv?3.4:2.6;try{const af=p.g.querySelector('.af');const c=parseFloat(getComputedStyle(af).strokeWidth);if(c)w=c}catch(_){}f.style.setProperty('stroke-width',w+'px','important')}))}catch(_){}};
+ const po=placeOV;placeOV=function(){const r=po.apply(this,arguments);fit();return r};fit()}
 
