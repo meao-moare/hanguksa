@@ -236,3 +236,6 @@ new MutationObserver(()=>{if(!q)q=setTimeout(run,120)}).observe(document.body,{c
  function apply(){if(typeof pinOf==='undefined')return;EVENTS.forEach(e=>{if(e.icon!=='book'&&e.icon!=='pagoda')return;const o=pinOf.get(e.id);if(!o||o.g.classList.contains('artpin'))return;const gl=o.g.querySelector('.gl');if(!gl)return;
    const ob=o.g.querySelector('.dot');const wood=e.icon==='pagoda'&&/목탑/.test(e.t);gl.innerHTML=e.icon==='book'?BK:wood?WP:PG;o.g.classList.add('stelepin','dolpin','artpin',e.icon==='book'?'bookpin':'pagpin');if(wood)o.g.classList.add('woodpin')})}
  apply();setTimeout(apply,1500)}
+
+/* 화살촉: 손으로 그린 것처럼 선으로 된 V자 */
+{try{arrOf.forEach(ps=>ps.forEach(p=>{const f=p.hg.querySelector('.ahf');if(!f)return;const col=f.style.fill;const d=p.inv?'M-11,-7.5L1,0L-11,7.5':'M-9,-6.2L0.6,0L-9,6.2';const n=document.createElementNS('http://www.w3.org/2000/svg','path');n.setAttribute('class','ahl');n.setAttribute('d',d);n.style.stroke=col;n.style.fill='none';f.replaceWith(n)}))}catch(_){}}
