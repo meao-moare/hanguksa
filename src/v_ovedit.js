@@ -258,3 +258,11 @@ new MutationObserver(()=>{if(!q)q=setTimeout(run,120)}).observe(document.body,{c
      p.hg.setAttribute('transform',`translate(${a.x.toFixed(1)},${a.y.toFixed(1)}) rotate(${(d<1?o.rot:ang).toFixed(1)}) scale(${k.toFixed(4)})`);
      if(t<1&&p.hg.classList.contains('draw')&&!p.hg.classList.contains('hide'))p.rid=requestAnimationFrame(step);else{p.hg.classList.add('rode');p.hg.classList.remove('ride');try{p.hg.setAttribute('transform',`translate(${o.x.toFixed(1)},${o.y.toFixed(1)}) rotate(${o.rot.toFixed(1)}) scale(${kNow().toFixed(4)})`)}catch(_){}}};p.rid=requestAnimationFrame(step)};
  new MutationObserver(ms=>{ms.forEach(m=>{const n=m.target;if(!n.classList||!n.classList.contains('ahd'))return;const was=(m.oldValue||'').split(/\s+/).includes('draw');if(n.classList.contains('draw')&&!was){const p=H.get(n);if(p)ride(p)}})}).observe(document.getElementById('map'),{attributes:true,attributeFilter:['class'],attributeOldValue:true,subtree:true})}
+
+/* 인물 미리보기: 같은 이름인 다른 사람을 제목 옆에 작게 */
+{const pp=personPopHTML;const E=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+ personPopHTML=function(n,T){let h=pp.apply(this,arguments);try{const nm=pName(n);const A=PEOPLE_ALL();const same=Object.entries(A).filter(([k])=>k.replace(/⁠/g,'')===nm);if(same.length<2)return h;
+   let cur=null;try{const K=(T!=null&&!isNaN(T))?kingOfName(n,T):null;if(K)cur=same.find(([k,m])=>m.king&&(m.tags||[]).some(t=>t.t.includes(K.D.n)&&t.t.includes((K.i+1)+'대')))}catch(_){}
+   if(!cur){const ts=same.filter(([k,m])=>T!=null&&m.T!=null);cur=ts.sort((a,b)=>Math.abs(a[1].T-T)-Math.abs(b[1].T-T))[0]||same[0]}
+   const oth=same.filter(x=>x!==cur).map(([k,m])=>{const lab=((m.tags||[])[0]||{}).t||m.nat||'';return `<button type="button" data-go-person="${E(nm)}" data-pt="${m.T??''}">${E(lab)}</button>`}).join('');
+   const lab0=((cur[1].tags||[])[0]||{}).t||'';h=h.replace(/^<b>([^<]*)<\/b>/,`<b>$1</b><span class="ppsame">${lab0?`<i>${E(lab0)}</i>`:''}<small>같은 이름</small>${oth}</span>`)}catch(_){}return h}}

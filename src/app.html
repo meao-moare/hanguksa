@@ -2611,9 +2611,14 @@ body.medit #dcbody .gl2>.gp.dchid{opacity:.45}
 .hjsum .hjtot b{font-family:'Noto Serif KR',serif;-webkit-text-stroke:0}
 .hjsum .hjsr b .hjw,.hjsum .hjsr b{font-size:28px!important}
 .pagpin .dmc,.pagpin .dms{stroke-width:.7!important}.pagpin .dmc{fill:#b8bec2!important}
-.hjwl{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px}
-.hjwl button{font:inherit;text-align:left;display:flex;flex-direction:column;gap:2px;padding:10px 12px;border:1px solid var(--rule);border-left:4px solid #8b5e34;border-radius:10px;background:var(--panel);color:var(--ink);cursor:pointer}
-.hjwl button b{font-size:16px}.hjwl .hjz{font-family:'Noto Serif KR',serif;font-size:20px;-webkit-text-stroke:0}.hjwl i{font-style:normal;font-size:12px;color:var(--muted)}
+.hjwl{display:grid;grid-template-columns:repeat(auto-fill,minmax(132px,1fr));gap:6px}
+.hjwl button{font:inherit;text-align:left;display:flex;flex-direction:column;gap:1px;padding:7px 9px;border:1px solid var(--rule);border-left:3px solid #8b5e34;border-radius:8px;background:var(--panel);color:var(--ink);cursor:pointer;min-width:0}
+.hjwl button b{font-size:14px}.hjwl .hjz,.hjcl .hjz{font-family:'Noto Serif KR',serif;font-size:19px;line-height:1.15;-webkit-text-stroke:0}.hjwl i{font-style:normal;font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hjtab{display:flex;gap:4px;margin-top:8px}.hjtab button{font:inherit;font-size:14px;padding:5px 14px;border-radius:999px;border:1px solid var(--rule);background:var(--panel);color:var(--ink);cursor:pointer}.hjtab button.on{background:#8b5e34;border-color:#8b5e34;color:#fff;font-weight:700}
+.hjcl{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:6px}
+.hjc{display:flex;gap:9px;align-items:flex-start;padding:7px 9px;border:1px solid var(--rule);border-left:3px solid #8b5e34;border-radius:8px;background:var(--panel)}
+.hjc .hjz{font-size:28px!important}.hjc b{font-size:13.5px;display:block}.hjc p{margin:3px 0 0;display:flex;flex-wrap:wrap;gap:3px}
+.hjc p button{font:inherit;font-size:12px;padding:1px 7px;border-radius:999px;border:1px solid var(--rule);background:none;color:var(--accent,#2563eb);cursor:pointer}
 #v-ov .hzrg2{border:0!important}
 #v-ov .hzrg2:not(.og){background:color-mix(in srgb,var(--gc) 26%,var(--panel))!important;color:var(--ink)}
 #v-ov .hzrg2.cont{border-top-left-radius:0!important;border-bottom-left-radius:0!important}
@@ -2641,6 +2646,17 @@ body.medit #dcbody .gl2>.gp.dchid{opacity:.45}
 .pagpin:not(.woodpin) .dmc{fill:#c3c8cc!important}
 .ahd.rode{animation:none!important}
 .ahd.rode:not(.dim):not(.hide){opacity:1}
+.kpin.hjwall{max-width:min(1400px,100%)!important;padding-left:16px;padding-right:16px}
+.hjwall .tgg{background:none!important;border:0!important;box-shadow:none!important;padding:0!important;margin:0 0 10px!important;display:grid;grid-template-columns:28px 1fr;gap:6px;align-items:start}
+.hjwall .tgg>h3{margin:4px 0 0!important;font-size:13px;text-align:center;padding:3px 0;border-radius:6px;background:color-mix(in srgb,#8b5e34 14%,transparent);color:#6b4422}
+.hjwall .hjch{display:flex;align-items:center;justify-content:center;font-weight:800;font-size:18px;color:#6b4422;background:color-mix(in srgb,#8b5e34 14%,transparent);border-radius:8px;min-height:44px}
+.hjwall .hjwl,.hjwall .hjcl{margin-top:10px}
+.hjwl>button,.hjcl>.hjc{position:relative}
+.hjwl>[data-ch]::after,.hjcl>[data-ch]::after{content:attr(data-ch);position:absolute;top:5px;right:6px;font-size:11px;font-weight:800;color:#fff;background:#8b5e34;border-radius:5px;padding:1px 5px;line-height:1.3}
+.ppsame{display:inline-flex;flex-wrap:wrap;align-items:center;gap:4px;margin-left:8px;vertical-align:middle;font-size:11.5px}
+.ppsame i{font-style:normal;color:var(--muted)}.ppsame small{font-size:10.5px;color:var(--muted);border-left:1px solid var(--rule);padding-left:6px}
+.ppsame button{font:inherit;font-size:11px;padding:1px 7px;border-radius:999px;border:1px solid var(--rule);background:none;color:var(--accent,#2563eb);cursor:pointer}
+.hjc .hjz[data-hjz]{cursor:pointer}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/flubber@0.4.2/build/flubber.min.js"></script>
 <script>
@@ -8049,13 +8065,20 @@ pop.addEventListener('click',e=>{const b=e.target.closest('[data-hjed]');if(!b)r
   let q=0;new MutationObserver(()=>{if(!q)q=requestAnimationFrame(()=>{q=0;try{sum()}catch(_){}})}).observe(document.body,{childList:true,subtree:true,characterData:true})}
 
  /* 전체 메뉴 "한자어": 뜻에 한자가 적힌 낱말 모아보기 (가나다순) */
- window.__HJWALL=()=>{const E=x=>String(x).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));const p=document.getElementById('kpage');if(!p)return;
+ window.__HJWALL=(mode)=>{mode=mode||window.__hjwM||'w';window.__hjwM=mode;const E=x=>String(x).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));const p=document.getElementById('kpage');if(!p)return;
   const CHO='ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ';const cho=w=>{const c=w.charCodeAt(0);if(c>=0xAC00&&c<=0xD7A3){const x=CHO[Math.floor((c-0xAC00)/588)];return {'ㄲ':'ㄱ','ㄸ':'ㄷ','ㅃ':'ㅂ','ㅆ':'ㅅ','ㅉ':'ㅈ'}[x]||x}return '기타'};
   const L=[];for(const k in GLOSS){const d=String(GLOSS[k]||'');const h=(d.match(/[一-鿿豈-﫿]{2,}/g)||[]);if(h.length)L.push([k,h[0]])}L.sort((a,b)=>a[0].localeCompare(b[0],'ko'));
-  const g=new Map();L.forEach(x=>{const h=cho(x[0]);if(!g.has(h))g.set(h,[]);g.get(h).push(x)});
-  const hun=w=>[...w].map(c=>{const m=MEAN(c)[0];return m?m:(RD(c)||'?')}).join(' · ');
-  p.innerHTML=`<div class="kpbar"><button class="ib" data-kx aria-label="뒤로"><svg class="ic" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg></button><span>한자어 모아보기</span></div><div class="kpin tgall hjwall"><div class="kph"><h1>한자어</h1><p class="tgn">${L.length}개 · 가나다순 · 누르면 낱말 뜻</p></div>${L.length?[...g].map(([h,A])=>`<section class="tgg"><h3>${E(h)}</h3><div class="hjwl">${A.map(([k,hz])=>`<button type="button" data-hjwt="${E(k)}"><b>${E(k)}</b><span class="hjz">${E(hz)}</span><i>${E(hun(hz))}</i></button>`).join('')}</div></section>`).join(''):'<p class="tgn">아직 한자를 적은 낱말이 없어요. 낱말 뜻에 한자를 적으면 여기 모여요.</p>'}</div>`;p.hidden=false;p.scrollTop=0};
- document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('[data-hjwt]');if(!b)return;e.preventDefault();e.stopPropagation();try{openTerm(b.dataset.hjwt)}catch(_){}},true);
+  const rd=c=>{const m=MEAN(c)[0];return m?m.split(' ').pop():(RD(c)||'?')};const hun=c=>{const m=MEAN(c);return m.length?m.join(', '):rd(c)+' (뜻 미입력)'};
+  let body='';
+  if(mode==='w'){const g=new Map();L.forEach(x=>{const h=cho(x[0]);if(!g.has(h))g.set(h,[]);g.get(h).push(x)});
+    body='<div class="hjwl">'+[...g].map(([h,A])=>`${A.map(([k,hz],ix)=>`<button type="button" data-hjwt="${E(k)}" data-hjz="${E(hz)}"${ix?'':` data-ch="${E(h)}"`}><span class="hjz">${E(hz)}</span><b>${E(k)}</b><i>${[...hz].map(c=>E(hun(c).split(',')[0])).join(' · ')}</i></button>`).join('')}`).join('')+'</div>'}
+  else{const C=new Map();L.forEach(([k,hz])=>[...hz].forEach(c=>{if(!C.has(c))C.set(c,[]);const a=C.get(c);if(!a.includes(k))a.push(k)}));
+    const cs=[...C.keys()].sort((a,b)=>rd(a).localeCompare(rd(b),'ko'));const g=new Map();cs.forEach(c=>{const h=cho(rd(c));if(!g.has(h))g.set(h,[]);g.get(h).push(c)});
+    body='<div class="hjcl">'+[...g].map(([h,A])=>`${A.map((c,ix)=>`<div class="hjc"${ix?'':` data-ch="${E(h)}"`}><span class="hjz" data-hjz="${E(c)}" role="button">${E(c)}</span><div><b>${E(hun(c))}</b><p>${C.get(c).map(k=>`<button type="button" data-hjwt="${E(k)}" data-hjz="${E((L.find(x=>x[0]===k)||[])[1]||'')}">${E(k)}</button>`).join('')}</p></div></div>`).join('')}`).join('')+'</div>'}
+  p.innerHTML=`<div class="kpbar"><button class="ib" data-kx aria-label="뒤로"><svg class="ic" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg></button><span>한자어 모아보기</span></div><div class="kpin tgall hjwall"><div class="kph"><h1>한자어</h1><p class="tgn">낱말 ${L.length}개 · 가나다순</p><div class="hjtab"><button type="button" data-hjwm="w" class="${mode==='w'?'on':''}">낱말별</button><button type="button" data-hjwm="c" class="${mode==='c'?'on':''}">한자별</button></div></div>${L.length?body:'<p class="tgn">아직 한자를 적은 낱말이 없어요. 낱말 뜻에 한자를 적으면 여기 모여요.</p>'}</div>`;p.hidden=false;p.scrollTop=0};
+ document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('[data-hjwm]');if(!b)return;e.preventDefault();e.stopPropagation();window.__HJWALL(b.dataset.hjwm)},true);
+ document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('.hjwall [data-hjz],.hjwall [data-hjwt]');if(!b)return;e.preventDefault();e.stopImmediatePropagation();const w=b.dataset.hjz;if(!w){try{openTerm(b.dataset.hjwt)}catch(_){}return}
+   render(w,w.length>1?null:0);pop.hidden=false;const r=b.getBoundingClientRect();const W=Math.min(300,innerWidth-16);pop.style.width=W+'px';pop.style.left=Math.max(8,Math.min(innerWidth-W-8,r.left))+'px';const top=r.bottom+6;pop.style.top=(top+pop.offsetHeight>innerHeight-8?Math.max(8,r.top-pop.offsetHeight-6):top)+'px'},true);
 }
 
 /* ───────── 같은 뜻 다른 이름 (러시아 = 노서아 = 아라사 = 로국) ───────── */
@@ -8373,4 +8396,12 @@ new MutationObserver(()=>{if(!q)q=setTimeout(run,120)}).observe(document.body,{c
      p.hg.setAttribute('transform',`translate(${a.x.toFixed(1)},${a.y.toFixed(1)}) rotate(${(d<1?o.rot:ang).toFixed(1)}) scale(${k.toFixed(4)})`);
      if(t<1&&p.hg.classList.contains('draw')&&!p.hg.classList.contains('hide'))p.rid=requestAnimationFrame(step);else{p.hg.classList.add('rode');p.hg.classList.remove('ride');try{p.hg.setAttribute('transform',`translate(${o.x.toFixed(1)},${o.y.toFixed(1)}) rotate(${o.rot.toFixed(1)}) scale(${kNow().toFixed(4)})`)}catch(_){}}};p.rid=requestAnimationFrame(step)};
  new MutationObserver(ms=>{ms.forEach(m=>{const n=m.target;if(!n.classList||!n.classList.contains('ahd'))return;const was=(m.oldValue||'').split(/\s+/).includes('draw');if(n.classList.contains('draw')&&!was){const p=H.get(n);if(p)ride(p)}})}).observe(document.getElementById('map'),{attributes:true,attributeFilter:['class'],attributeOldValue:true,subtree:true})}
+
+/* 인물 미리보기: 같은 이름인 다른 사람을 제목 옆에 작게 */
+{const pp=personPopHTML;const E=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+ personPopHTML=function(n,T){let h=pp.apply(this,arguments);try{const nm=pName(n);const A=PEOPLE_ALL();const same=Object.entries(A).filter(([k])=>k.replace(/⁠/g,'')===nm);if(same.length<2)return h;
+   let cur=null;try{const K=(T!=null&&!isNaN(T))?kingOfName(n,T):null;if(K)cur=same.find(([k,m])=>m.king&&(m.tags||[]).some(t=>t.t.includes(K.D.n)&&t.t.includes((K.i+1)+'대')))}catch(_){}
+   if(!cur){const ts=same.filter(([k,m])=>T!=null&&m.T!=null);cur=ts.sort((a,b)=>Math.abs(a[1].T-T)-Math.abs(b[1].T-T))[0]||same[0]}
+   const oth=same.filter(x=>x!==cur).map(([k,m])=>{const lab=((m.tags||[])[0]||{}).t||m.nat||'';return `<button type="button" data-go-person="${E(nm)}" data-pt="${m.T??''}">${E(lab)}</button>`}).join('');
+   const lab0=((cur[1].tags||[])[0]||{}).t||'';h=h.replace(/^<b>([^<]*)<\/b>/,`<b>$1</b><span class="ppsame">${lab0?`<i>${E(lab0)}</i>`:''}<small>같은 이름</small>${oth}</span>`)}catch(_){}return h}}
 </script>
