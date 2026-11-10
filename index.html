@@ -2566,6 +2566,14 @@ body.tflmoving,body.tflmoving *{user-select:none!important}
 #trpbar .tpctr+.tpsd{margin-left:8px}
 /* 비율 조절 바: 주인 고치기 모드에서만 */
 body:not(.medit) #trbody .trsplit{display:none!important}
+#hjpop .hjlist{display:flex;flex-direction:column;gap:4px}
+#hjpop .hjrow{display:flex;align-items:center;gap:10px;font:inherit;text-align:left;border:1px solid var(--rule);background:var(--panel);border-radius:9px;padding:6px 10px;cursor:pointer;color:var(--ink);-webkit-text-stroke:0}
+#hjpop .hjrow:hover{border-color:var(--seal)}
+#hjpop .hjrow b{font-family:'Noto Serif KR','Batang',serif;font-size:24px;font-weight:500;line-height:1}
+#hjpop .hjrow span{flex:1;font-size:15px;font-weight:700}
+#hjpop .hjrow small{font-size:11px;color:var(--muted);font-weight:600}
+#hjpop .hjrow i{font-style:normal;color:var(--muted);font-size:18px}
+#hjpop .hjback{font:inherit;font-size:12px;border:1px solid var(--rule);background:var(--panel);border-radius:999px;padding:1px 8px;margin-right:6px;cursor:pointer;color:var(--muted);vertical-align:middle}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/flubber@0.4.2/build/flubber.min.js"></script>
 <script>
@@ -7920,19 +7928,21 @@ function charAt(h,x,y){let node=null,off=0;try{if(document.caretRangeFromPoint){
   for(const o of [off,off-1]){if(o<0||o>=node.nodeValue.length)continue;const rg=document.createRange();rg.setStart(node,o);rg.setEnd(node,o+1);const q=rg.getBoundingClientRect();if(x>=q.left-1&&x<=q.right+1)return Math.min(s.length-1,o)}return Math.max(0,Math.min(s.length-1,off))}
 /* 두음 법칙: 단어 첫 글자 ㄹ→ㅇ/ㄴ, ㄴ→ㅇ (한글 맞춤법 제10~12항) */
 const DUEUM=sy=>{const c=sy.charCodeAt(0)-0xAC00;if(c<0||c>11171)return sy;const ini=Math.floor(c/588),med=Math.floor((c%588)/28),fin=c%28;const Y=[2,3,6,7,12,17,20];let ni=ini;if(ini===5)ni=Y.includes(med)?11:2;else if(ini===2&&Y.includes(med))ni=11;return ni===ini?sy:String.fromCharCode(0xAC00+ni*588+med*28+fin)};
-function render(word,ci){const c=word[ci]||word[0];const own=OWN();const ms=MEAN(c);const r=RD(c);const rd=[...word].map(x=>{const v=HV(x);return v?String(v).split(/\s*[,/]\s*/)[0].split(' ').pop().replace(/\(.*$/,''):(RD(x)||'?')}).map((y,i)=>i?y:DUEUM(y)).join('');
+function renderAll(word){const own=OWN();const rd=[...word].map(x=>{const v=HV(x);return v?String(v).split(/\s*[,/]\s*/)[0].split(' ').pop().replace(/\(.*$/,''):(RD(x)||'?')}).map((y,i)=>i?y:DUEUM(y)).join('');
+  pop.innerHTML=`${word.length>1?`<div class="hjh">${E2(word)} <i>${E2(rd)}</i></div>`:''}<div class="hjlist">${[...word].map((x,i)=>{const ms=MEAN(x);const r=RD(x);return `<button type="button" class="hjrow" data-hji="${i}"><b>${E2(x)}</b><span>${ms.length?E2(ms[0]):(r?`음 ${E2(r)}`:'뜻·음 준비 중')}${ms.length>1?`<small> 외 ${ms.length-1}</small>`:''}</span><i>›</i></button>`}).join('')}</div>`;pop.dataset.word=word;pop.dataset.ci=''}
+function render(word,ci){if(ci==null||ci==='')return renderAll(word);const c=word[ci]||word[0];const own=OWN();const ms=MEAN(c);const r=RD(c);const rd=[...word].map(x=>{const v=HV(x);return v?String(v).split(/\s*[,/]\s*/)[0].split(' ').pop().replace(/\(.*$/,''):(RD(x)||'?')}).map((y,i)=>i?y:DUEUM(y)).join('');
   const used=[...((idx().get(c))||new Map())].filter(([w])=>w!==word).slice(0,14);
-  pop.innerHTML=`${word.length>1?`<div class="hjh">${E2(word)} <i>${E2(rd)}</i></div><div class="hjtabs">${[...word].map((x,i)=>`<button type="button" data-hji="${i}" aria-pressed="${i===ci}">${E2(x)}</button>`).join('')}</div>`:''}
+  pop.innerHTML=`${word.length>1?`<div class="hjh"><button type="button" class="hjback" data-hjall>‹ 전체</button>${E2(word)} <i>${E2(rd)}</i></div><div class="hjtabs">${[...word].map((x,i)=>`<button type="button" data-hji="${i}" aria-pressed="${i===ci}">${E2(x)}</button>`).join('')}</div>`:''}
    <div class="hjbig"><b>${E2(c)}</b><div class="hjms">${ms.length?ms.map((m,i)=>`<span class="${i?'hjalt':'hjm0'}">${E2(m)}</span>`).join(''):`<span class="hjm0">${r?`음 ${E2(r)}`:'뜻·음 준비 중'}</span>`}${own?`<button type="button" class="hjed" data-hjed="${E2(c)}">고치기</button>`:''}</div></div>
    ${ms.length>1?`<div class="hjsec"><em>다른 뜻</em>${ms.slice(1).map(m=>`<span>${E2(m)}</span>`).join('')}</div>`:''}
    <div class="hjsec"><em>쓰인 단어</em>${used.length?used.map(([w,n])=>`<button type="button" class="hjw2" data-hjterm="${E2(n)}">${E2(w)}<small>${E2(n)}</small></button>`).join(''):'<span class="hjnone">다른 단어가 아직 없어요</span>'}</div>`;
   pop.dataset.word=word;pop.dataset.ci=ci}
 document.addEventListener('click',e=>{const h=e.target.closest&&e.target.closest('.hjw');if(!h){if(!pop.hidden&&!e.target.closest('#hjpop'))pop.hidden=true;return}if(document.body.classList.contains('medit')&&h.closest('.xing'))return;e.preventDefault();e.stopPropagation();
-  const word=h.textContent;const ci=charAt(h,e.clientX,e.clientY);render(word,ci);pop.hidden=false;const r=h.getBoundingClientRect();const W=Math.min(300,innerWidth-16);pop.style.width=W+'px';pop.style.left=Math.max(8,Math.min(innerWidth-W-8,r.left))+'px';const top=r.bottom+6;pop.style.top=(top+pop.offsetHeight>innerHeight-8?Math.max(8,r.top-pop.offsetHeight-6):top)+'px'},true);
-pop.addEventListener('click',e=>{const t=e.target.closest('[data-hji]');if(t){e.stopPropagation();render(pop.dataset.word,+t.dataset.hji);return}const w=e.target.closest('[data-hjterm]');if(w){e.stopPropagation();pop.hidden=true;try{openTerm(w.dataset.hjterm)}catch(_){}}});
+  const word=h.textContent;render(word,word.length>1?null:0);pop.hidden=false;const r=h.getBoundingClientRect();const W=Math.min(300,innerWidth-16);pop.style.width=W+'px';pop.style.left=Math.max(8,Math.min(innerWidth-W-8,r.left))+'px';const top=r.bottom+6;pop.style.top=(top+pop.offsetHeight>innerHeight-8?Math.max(8,r.top-pop.offsetHeight-6):top)+'px'},true);
+pop.addEventListener('click',e=>{if(e.target.closest('[data-hjall]')){e.stopPropagation();renderAll(pop.dataset.word);return}const t=e.target.closest('[data-hji]');if(t){e.stopPropagation();render(pop.dataset.word,+t.dataset.hji);return}const w=e.target.closest('[data-hjterm]');if(w){e.stopPropagation();pop.hidden=true;try{openTerm(w.dataset.hjterm)}catch(_){}}});
 addEventListener('scroll',()=>{pop.hidden=true},true);
 pop.addEventListener('click',e=>{const b=e.target.closest('[data-hjed]');if(!b)return;e.preventDefault();e.stopPropagation();const c=b.dataset.hjed;const row=b.closest('.hjms')||b.closest('.hjr');const cur=HV(c)||'';row.innerHTML=`<b>${c}</b><input class="hjin" value="${cur.replace(/"/g,'&quot;')}" placeholder="뜻 음, 다른 뜻 음 (예: 즐길 락, 노래 악)"><button type="button" class="hjok">저장</button>`;const i=row.querySelector('input');i.focus();i.select();
-  const done=()=>{const v=i.value.trim();try{const T=window.__ME.tr;if(v)T.set('@hj:'+c,v);else T.delete('@hj:'+c);window.__MEX.save('T:@hj:'+c,v)}catch(_){}try{render(pop.dataset.word||c,+(pop.dataset.ci||0))}catch(_){}try{window.__MEX.toast('한자 뜻을 저장했어요')}catch(_){}};
+  const done=()=>{const v=i.value.trim();try{const T=window.__ME.tr;if(v)T.set('@hj:'+c,v);else T.delete('@hj:'+c);window.__MEX.save('T:@hj:'+c,v)}catch(_){}try{render(pop.dataset.word||c,pop.dataset.ci===''?null:+(pop.dataset.ci||0))}catch(_){}try{window.__MEX.toast('한자 뜻을 저장했어요')}catch(_){}};
   i.addEventListener('keydown',k=>{k.stopPropagation();if(k.key==='Enter'&&!k.isComposing){k.preventDefault();done()}else if(k.key==='Escape'){pop.hidden=true}});row.querySelector('.hjok').onclick=ev=>{ev.stopPropagation();done()}},true);
 }
 
