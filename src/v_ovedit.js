@@ -221,14 +221,12 @@ new MutationObserver(()=>{if(!q)q=setTimeout(run,120)}).observe(document.body,{c
 
 /* 화살표가 먼저 그려지고, 다 닿은 뒤에 사건 핀이 터짐 */
 {const pp=popPin;popPin=function(o){const e=o&&o.pin;const ps=e&&arrOf.get(e.id);
-  if(playing&&ps&&ps.length&&!reduceMotion){const D=e.seqAr?1100*ps.length-50:950;o.g.classList.add('arwait');clearTimeout(o.pa);
+  if(playing&&ps&&ps.length&&!reduceMotion){const D=e.seqAr?1100*ps.length-50:950;o.g.classList.add('arwait');try{freshId=e.id;clearTimeout(freshT);freshT=setTimeout(()=>{freshId=null},D+2800)}catch(_){}clearTimeout(o.pa);
     o.pa=setTimeout(()=>{o.g.classList.remove('arwait');if(pos.i===e.f)pp(o)},D);return}
   if(o&&o.g)o.g.classList.remove('arwait');return pp(o)}}
 
 /* 기록물·석탑: 고인돌처럼 그림 모양 핀 */
-{const BK='<path class="bkb" d="M-11,-6L-3,-2.5L-3,0.5L-11,-3Z"/><path class="bkp" d="M-3,-2.5L11,-6.5L11,-3.5L-3,0.5Z"/><path class="stl" d="M-3,-1.5L11,-5.5M-3,-0.5L11,-4.5"/><path class="bkc" d="M-11,-6L3,-10L11,-6.5L-3,-2.5Z"/>'+
-  [0.15,0.38,0.62,0.85].map(t=>{const x=-11+8*t,y=-6+3.5*t;return `<path class="bks" d="M${x.toFixed(2)},${y.toFixed(2)}l1.4,-0.4"/>`}).join('')+
-  '<path class="bkt" d="M-7.4,-6.2L-3.8,-4.6L-2.4,-5L-6,-6.6Z"/>';
+{const BK='<path class="bkp" d="M-5.4,-15.2H7V0.6H-5.4Z"/><path class="bkc" d="M-6.5,-16H6V0H-6.5Z"/><path class="bkb" d="M-6.5,-16H-4.3V0H-6.5Z"/><path class="bks" d="M-6.9,-14.2H-4.6"/><circle class="bkh" cx="-4.6" cy="-14.2" r=".38"/><path class="bks" d="M-6.9,-10.2H-4.6"/><circle class="bkh" cx="-4.6" cy="-10.2" r=".38"/><path class="bks" d="M-6.9,-6H-4.6"/><circle class="bkh" cx="-4.6" cy="-6" r=".38"/><path class="bks" d="M-6.9,-1.8H-4.6"/><circle class="bkh" cx="-4.6" cy="-1.8" r=".38"/><path class="bkt" d="M-3.2,-14.6H-0.6V-6.2H-3.2Z"/><path class="bkm" d="M-2.3,-13.4V-11.2M-1.5,-13.4V-10.2M-2.3,-9.8V-7.6"/>';
  const WP='<path class="wpb" d="M-6.5,0.3H6.5V-1.3H-6.5Z"/><path class="wpw" d="M-3.30,-1.30H3.30V-2.80H-3.30Z"/><path class="wpr" d="M-6.40,-2.80Q-7.10,-3.25 -6.90,-3.60L-5.00,-3.75H5.00L6.90,-3.60Q7.10,-3.25 6.40,-2.8Z"/><path class="wpw" d="M-3.03,-3.75H3.03V-5.25H-3.03Z"/><path class="wpr" d="M-5.90,-5.25Q-6.60,-5.70 -6.40,-6.05L-4.50,-6.20H4.50L6.40,-6.05Q6.60,-5.70 5.90,-5.25Z"/><path class="wpw" d="M-2.77,-6.20H2.77V-7.70H-2.77Z"/><path class="wpr" d="M-5.40,-7.70Q-6.10,-8.15 -5.90,-8.50L-4.00,-8.65H4.00L5.90,-8.50Q6.10,-8.15 5.40,-7.7Z"/><path class="wpw" d="M-2.50,-8.65H2.50V-10.15H-2.50Z"/><path class="wpr" d="M-4.90,-10.15Q-5.60,-10.60 -5.40,-10.95L-3.50,-11.10H3.50L5.40,-10.95Q5.60,-10.60 4.90,-10.15Z"/><path class="wpw" d="M-2.23,-11.10H2.23V-12.60H-2.23Z"/><path class="wpr" d="M-4.40,-12.60Q-5.10,-13.05 -4.90,-13.40L-3.00,-13.55H3.00L4.90,-13.40Q5.10,-13.05 4.40,-12.6Z"/><path class="wpw" d="M-1.97,-13.55H1.97V-15.05H-1.97Z"/><path class="wpr" d="M-3.90,-15.05Q-4.60,-15.50 -4.40,-15.85L-2.50,-16.00H2.50L4.40,-15.85Q4.60,-15.50 3.90,-15.049999999999999Z"/><path class="wpw" d="M-1.70,-16.00H1.70V-17.50H-1.70Z"/><path class="wpr" d="M-3.40,-17.50Q-4.10,-17.95 -3.90,-18.30L-2.00,-18.45H2.00L3.90,-18.30Q4.10,-17.95 3.40,-17.5Z"/><path class="wps" d="M-0.35,-18.45H0.35V-22.65H-0.35Z"/><path class="wps" d="M-0.9,-19.35H0.9V-19.70H-0.9Z"/><path class="wps" d="M-0.9,-20.25H0.9V-20.60H-0.9Z"/><path class="wps" d="M-0.9,-21.15H0.9V-21.50H-0.9Z"/><path class="wps" d="M-0.9,-22.05H0.9V-22.40H-0.9Z"/>';
  const PG='<path class="dmc" d="M-8,0.2H8V-2.2H-8Z"/><path class="dmc" d="M-6.4,-2.2H6.4V-4H-6.4Z"/>'+
   [[-4,3.2,2.6,6.9,1.2],[-7.8,2.6,1.9,5.9,1],[-10.7,2.0,1.5,4.9,0.9]].map(([y,bw,bh,rw,rh])=>{const yb=y-bh,yr=yb-rh;return `<path class="dms" d="M${-bw},${y}H${bw}V${yb}H${-bw}Z"/><path class="dmc" d="M${-rw},${yb}Q${-rw-0.6},${yb-0.5} ${-rw-0.4},${yb-0.9}L${-rw+1.3},${yr}H${rw-1.3}L${rw+0.4},${yb-0.9}Q${rw+0.6},${yb-0.5} ${rw},${yb}Z"/>`}).join('')+
@@ -237,6 +235,6 @@ new MutationObserver(()=>{if(!q)q=setTimeout(run,120)}).observe(document.body,{c
    const ob=o.g.querySelector('.dot');const wood=e.icon==='pagoda'&&/목탑/.test(e.t);gl.innerHTML=e.icon==='book'?BK:wood?WP:PG;o.g.classList.add('stelepin','dolpin','artpin',e.icon==='book'?'bookpin':'pagpin');if(wood)o.g.classList.add('woodpin')})}
  apply();setTimeout(apply,1500)}
 
-/* 화살촉: 손으로 그린 것처럼 선으로 된 V자 */
-{try{arrOf.forEach(ps=>ps.forEach(p=>{const f=p.hg.querySelector('.ahf');if(!f)return;const col=f.style.fill;const d=p.inv?'M-13.5,-9L1,0L-13.5,9':'M-11.5,-7.6L0.8,0L-11.5,7.6';const n=document.createElementNS('http://www.w3.org/2000/svg','path');n.setAttribute('class','ahl');n.setAttribute('d',d);n.style.stroke=col;n.style.fill='none';f.replaceWith(n)}))}catch(_){}}
+/* 화살촉 모양만 > (꺾쇠) — 몸통은 원래대로 */
+{try{arrOf.forEach(ps=>ps.forEach(p=>{const f=p.hg.querySelector('.ahf');if(!f)return;f.setAttribute('d',p.inv?'M-15,-9.5L4.5,0L-15,9.5L-15,4.9L-4.6,0L-15,-4.9Z':'M-12.5,-8L3.5,0L-12.5,8L-12.5,4.2L-3.6,0L-12.5,-4.2Z');f.setAttribute('stroke-linejoin','round')}))}catch(_){}}
 
