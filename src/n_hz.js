@@ -23,7 +23,7 @@ function layHZ(k,SC){
   const tw=s=>s.length*13.2+8,twe=e=>tw(e.t)+(e.treaty?20:0);
   // 1) 사건마다 x: 같은 해는 붙여서, 해가 바뀌면 조금 띄움
   const xs=[];let x=HZ_ONLY[k]?36:40,prevY=null;evs.forEach((e,i)=>{const y=Math.floor(e.T+1e-6);if(i){const fast=(['pre','early'].includes(k)?.7:1)*((isMajor(e)||e.top)?1:.85);const GF=(window.HZ_GAPF&&HZ_GAPF[k])||1;x+=GF*(HZ_ONLY[k]?165:(y===prevY?26:Math.max(yrTxt(y).length*8.2+10,Math.min(90,Math.max(40,yrTxt(y).length*8.5+14))*SC*fast)))}xs.push(x);prevY=y});
-  const W=Math.max(x+(HZ_ONLY[k]?190:260),(typeof ovBuilding!=='undefined'&&ovBuilding)?0:($('ovscroll').clientWidth||0));
+  const W=Math.max(x+(HZ_ONLY[k]?190:130),(typeof ovBuilding!=='undefined'&&ovBuilding)?0:($('ovscroll').clientWidth||0));
   const xT=t=>{if(t<=evs[0].T)return xs[0]-(HZ_ONLY[k]?36:30);for(let i=1;i<evs.length;i++)if(t<=evs[i].T)return xs[i-1]+(xs[i]-xs[i-1])*(t-evs[i-1].T)/Math.max(1e-6,evs[i].T-evs[i-1].T);return xs[xs.length-1]+(HZ_ONLY[k]?165:40)};
   const lanes=(items,gap=10)=>{const ends=[];items.forEach(it=>{let li=ends.findIndex(v=>v<=it.a-gap);if(li<0){li=ends.length;ends.push(-1e9)}ends[li]=it.b;it.li=li});return ends.length};
   let h='';
@@ -49,7 +49,7 @@ function layHZ(k,SC){
   const rowY=k=>y0-10-(k+1)*RH+3;const gcAt=x=>{const r=rg.find(r=>x>=r.a&&x<r.b);return r?`var(--g${r.c})`:'transparent'};
   [].forEach(o=>{h+=`<div class="hzog" data-rg="${o.ta}|${o.tb}|${esc(o.n)}" style="left:${o.a}px;top:${rowY(o.li)}px;width:${Math.max(8,o.b-o.a)}px;--tc:var(--t-${o.c})"><span>${esc(o.n)}</span></div>`});
   let rgH='',stH='';{const two=nBL>1;
-   rg2.forEach(r=>{const top=two?33+r.ln*13:34;rgH+=`<div class="hzrg hzrg2${two?' thin':''}${r.og?' og':''}" data-rg="${r.ts}|${r.te}|${esc(r.n)}" style="left:${r.a+2}px;top:${top}px;width:${Math.max(8,r.b-r.a-4)}px;--gc:${r.og?`var(--t-${r.c})`:`var(--g${r.c})`}"><span>${esc((r.b-r.a-4)<r.n.length*12.5+14?r.n.replace(/ ?시대$/,'').replace(/^(.+?)\s*\(.*\)$/,'$1'):r.n)}</span></div>`})}rg.forEach((r,ri)=>{const rb=ri===rg.length-1?Math.max(r.b,W):r.b;stH+=`<div class="hzst" style="left:${ri?r.a:Math.min(r.a,0)}px;width:${Math.max(0,rb-(ri?r.a:Math.min(r.a,0)))}px;--gc:var(--g${r.c})"></div>`;rgH+=`<div class="hzrg" data-rg="${r.ts}|${r.te}|${esc(r.n)}" style="left:${r.a}px;top:4px;width:${Math.max(8,rb-r.a-6)}px;--gc:var(--g${r.c})"><span>${esc(r.n)}</span></div><i class="hzsep" style="left:${r.a}px"></i>`});
+   rg2.forEach(r=>{const top=two?33+r.ln*13:34;const nearS=SEPS.concat(rg.length?[rg[0].a]:[]).some(s=>Math.abs(r.a-s)<8)||r.a<8;const ax=r.a+(nearS?8:2);rgH+=`<div class="hzrg hzrg2${two?' thin':''}${r.og?' og':''}" data-rg="${r.ts}|${r.te}|${esc(r.n)}" style="left:${ax}px;top:${top}px;width:${Math.max(8,r.b-r.a-4)}px;--gc:${r.og?`var(--t-${r.c})`:`var(--g${r.c})`}"><span>${esc((r.b-r.a-4)<r.n.length*12.5+14?r.n.replace(/ ?시대$/,'').replace(/^(.+?)\s*\(.*\)$/,'$1'):r.n)}</span></div>`})}rg.forEach((r,ri)=>{const rb=ri===rg.length-1?Math.max(r.b,W):r.b;stH+=`<div class="hzst" style="left:${ri?r.a:Math.min(r.a,0)}px;width:${Math.max(0,rb-(ri?r.a:Math.min(r.a,0)))}px;--gc:var(--g${r.c})"></div>`;rgH+=`<div class="hzrg" data-rg="${r.ts}|${r.te}|${esc(r.n)}" style="left:${r.a}px;top:4px;width:${Math.max(8,rb-r.a-6)}px;--gc:var(--g${r.c})"><span>${esc(r.n)}</span></div><i class="hzsep" style="left:${r.a}px"></i>`});
   const axY=y0+22;
   // 축 · 연도 · 표시
   h+=`<div class="hzax" style="top:${axY}px;width:${W}px"></div>`;
@@ -66,7 +66,9 @@ function layHZ(k,SC){
   let b='';const kr=ALL?[]:REIGNS.map(D=>({D,rs:D.r.filter(r=>Math.min(r.e,t1)-Math.max(r.s,t0)>.3)})).filter(x=>x.rs.length);
   /* 나라별 줄: 왕 재위 막대 + 그 밑에 왕 이름·업적 (교과서 정리표처럼) */
   let KY=6;kr.forEach(({D,rs},j)=>{const y0=KY;const cw=12.2;
-    rs.forEach(r=>{const a=xT(Math.max(r.s,t0)),bb=xT(Math.min(r.e,t1));if(bb-a<2)return;const n=r.name.replace('대통령 ','');b+=`<div class="hzk" data-king="${esc(D.n)}|${D.r.indexOf(r)}" style="left:${a}px;top:${y0+18}px;width:${bb-a-2}px;--rc:var(--c-${D.c})" title="${esc(n)}"><span>${(bb-a-2)>=n.length*11.5+8?esc(n):((bb-a-2)>=26?esc(n[0]):"")}</span></div>`});
+    {const KB=rs.map(r=>({r,a:xT(Math.max(r.s,t0)),bb:xT(Math.min(r.e,t1)),n:r.name.replace('대통령 ','')})).filter(o=>o.bb-o.a>=2);const G=[];KB.forEach(o=>{const nar=o.bb-o.a<30;const L=G[G.length-1];if(nar&&L&&L.nar&&o.a-L.bb<4){L.bb=o.bb;L.L.push(o)}else G.push({nar,a:o.a,bb:o.bb,L:[o]})});
+     G.forEach(g=>{if(g.L.length===1){const o=g.L[0],w=o.bb-o.a-2,n=o.n;b+=`<div class="hzk" data-king="${esc(D.n)}|${D.r.indexOf(o.r)}" style="left:${o.a}px;top:${y0+18}px;width:${w}px;--rc:var(--c-${D.c})" title="${esc(n)}"><span>${w>=n.length*11.5+8?esc(n):(w>=26?esc(n[0]):"")}</span></div>`;return}
+       const w=g.bb-g.a-2,nm=g.L.map(o=>o.n);const lab=w>=nm[0].length*11.5+40?`${nm[0]} 외 ${nm.length-1}명`:w>=34?`${nm.length}명`:'';b+=`<div class="hzk hzkg" data-king="${esc(D.n)}|${D.r.indexOf(g.L[0].r)}" style="left:${g.a}px;top:${y0+18}px;width:${w}px;--rc:var(--c-${D.c})" title="${esc(nm.join(' → '))}"><span>${esc(lab)}</span></div>`})}
     const blk=rs.map(r=>{const ach=(typeof kAch==='function'?kAch(D,r):[])||[];if(!ach.length)return null;const a=xT(Math.max(r.s,t0));const n=r.name.replace('대통령 ','');const L=Math.max(n.length*15,...ach.map(x=>x.length*cw));const w=Math.min(250,Math.max(120,L+22));const lines=Math.max(1,Math.ceil(ach[0].length*cw/(w-22)));return {r,n,ach,a,b:a+w,w,h:26+lines*17}}).filter(Boolean);
     const PL=[],Y0=y0+42;blk.forEach(o=>{const hit=y=>PL.some(p=>p.a<o.b+6&&o.a<p.b+6&&p.y<y+o.h+6&&y<p.y+p.h+6);const cs=[Y0,...PL.map(p=>p.y+p.h+6)].sort((p,q)=>p-q);o.y=cs.find(y=>!hit(y));PL.push({a:o.a,b:o.b,y:o.y,h:o.h})});
     let yy=PL.length?Math.max(...PL.map(p=>p.y+p.h+6)):Y0;

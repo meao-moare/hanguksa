@@ -2539,6 +2539,23 @@ h4.gh.ppnat small{font-size:12px;color:var(--muted);font-weight:600}
 #v-rl .rlc3 .rlrow b{font-size:16px;font-weight:800;line-height:1.35}
 #v-rl .rlc3 .rlrow .rk{font-size:11.5px}
 #v-rl .rlc3 .rlrow .rd{font-size:13px;line-height:1.55;color:var(--ink2,var(--ink))}
+.hzk.hzkg{background:repeating-linear-gradient(90deg,color-mix(in srgb,var(--rc) 18%,transparent) 0 6px,color-mix(in srgb,var(--rc) 10%,transparent) 6px 8px)!important}
+.hzk.hzkg span{font-size:11px;opacity:.85}
+#hjpop .hjtabs{display:flex;gap:4px;margin:2px 0 8px;flex-wrap:wrap}
+#hjpop .hjtabs button{font:inherit;font-family:'Noto Serif KR',serif;font-size:17px;width:34px;height:34px;border:1px solid var(--rule);border-radius:8px;background:var(--panel);cursor:pointer;color:var(--ink);-webkit-text-stroke:0}
+#hjpop .hjtabs button[aria-pressed=true]{background:var(--ink);color:var(--panel);border-color:var(--ink)}
+#hjpop .hjbig{display:flex;gap:12px;align-items:center;padding:4px 0 8px;border-bottom:1px solid var(--rule)}
+#hjpop .hjbig>b{font-family:'Noto Serif KR','Batang',serif;font-size:46px;line-height:1;font-weight:500}
+#hjpop .hjms{display:flex;flex-direction:column;gap:2px;flex:1;min-width:0}
+#hjpop .hjm0{font-size:17px;font-weight:800}
+#hjpop .hjalt{font-size:13px;color:var(--muted)}
+#hjpop .hjms .hjed{align-self:flex-start;margin:4px 0 0}
+#hjpop .hjsec{display:flex;flex-wrap:wrap;gap:5px;align-items:center;padding-top:8px}
+#hjpop .hjsec>em{font-style:normal;font-size:11.5px;font-weight:800;color:var(--muted);width:100%}
+#hjpop .hjsec>span{font-size:13px;background:color-mix(in srgb,var(--ink) 6%,transparent);border-radius:999px;padding:2px 9px}
+#hjpop .hjw2{font:inherit;font-size:14px;font-family:'Noto Serif KR',serif;border:1px solid var(--rule);border-radius:999px;background:var(--panel);padding:2px 10px;cursor:pointer;color:var(--ink);display:inline-flex;gap:5px;align-items:baseline;-webkit-text-stroke:0}
+#hjpop .hjw2 small{font-family:var(--ui);font-size:11px;color:var(--muted)}
+#hjpop .hjnone{font-size:12px;color:var(--muted);background:none!important}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/flubber@0.4.2/build/flubber.min.js"></script>
 <script>
@@ -5678,7 +5695,7 @@ function layHZ(k,SC){
   const tw=s=>s.length*13.2+8,twe=e=>tw(e.t)+(e.treaty?20:0);
   // 1) 사건마다 x: 같은 해는 붙여서, 해가 바뀌면 조금 띄움
   const xs=[];let x=HZ_ONLY[k]?36:40,prevY=null;evs.forEach((e,i)=>{const y=Math.floor(e.T+1e-6);if(i){const fast=(['pre','early'].includes(k)?.7:1)*((isMajor(e)||e.top)?1:.85);const GF=(window.HZ_GAPF&&HZ_GAPF[k])||1;x+=GF*(HZ_ONLY[k]?165:(y===prevY?26:Math.max(yrTxt(y).length*8.2+10,Math.min(90,Math.max(40,yrTxt(y).length*8.5+14))*SC*fast)))}xs.push(x);prevY=y});
-  const W=Math.max(x+(HZ_ONLY[k]?190:260),(typeof ovBuilding!=='undefined'&&ovBuilding)?0:($('ovscroll').clientWidth||0));
+  const W=Math.max(x+(HZ_ONLY[k]?190:130),(typeof ovBuilding!=='undefined'&&ovBuilding)?0:($('ovscroll').clientWidth||0));
   const xT=t=>{if(t<=evs[0].T)return xs[0]-(HZ_ONLY[k]?36:30);for(let i=1;i<evs.length;i++)if(t<=evs[i].T)return xs[i-1]+(xs[i]-xs[i-1])*(t-evs[i-1].T)/Math.max(1e-6,evs[i].T-evs[i-1].T);return xs[xs.length-1]+(HZ_ONLY[k]?165:40)};
   const lanes=(items,gap=10)=>{const ends=[];items.forEach(it=>{let li=ends.findIndex(v=>v<=it.a-gap);if(li<0){li=ends.length;ends.push(-1e9)}ends[li]=it.b;it.li=li});return ends.length};
   let h='';
@@ -5704,7 +5721,7 @@ function layHZ(k,SC){
   const rowY=k=>y0-10-(k+1)*RH+3;const gcAt=x=>{const r=rg.find(r=>x>=r.a&&x<r.b);return r?`var(--g${r.c})`:'transparent'};
   [].forEach(o=>{h+=`<div class="hzog" data-rg="${o.ta}|${o.tb}|${esc(o.n)}" style="left:${o.a}px;top:${rowY(o.li)}px;width:${Math.max(8,o.b-o.a)}px;--tc:var(--t-${o.c})"><span>${esc(o.n)}</span></div>`});
   let rgH='',stH='';{const two=nBL>1;
-   rg2.forEach(r=>{const top=two?33+r.ln*13:34;rgH+=`<div class="hzrg hzrg2${two?' thin':''}${r.og?' og':''}" data-rg="${r.ts}|${r.te}|${esc(r.n)}" style="left:${r.a+2}px;top:${top}px;width:${Math.max(8,r.b-r.a-4)}px;--gc:${r.og?`var(--t-${r.c})`:`var(--g${r.c})`}"><span>${esc((r.b-r.a-4)<r.n.length*12.5+14?r.n.replace(/ ?시대$/,'').replace(/^(.+?)\s*\(.*\)$/,'$1'):r.n)}</span></div>`})}rg.forEach((r,ri)=>{const rb=ri===rg.length-1?Math.max(r.b,W):r.b;stH+=`<div class="hzst" style="left:${ri?r.a:Math.min(r.a,0)}px;width:${Math.max(0,rb-(ri?r.a:Math.min(r.a,0)))}px;--gc:var(--g${r.c})"></div>`;rgH+=`<div class="hzrg" data-rg="${r.ts}|${r.te}|${esc(r.n)}" style="left:${r.a}px;top:4px;width:${Math.max(8,rb-r.a-6)}px;--gc:var(--g${r.c})"><span>${esc(r.n)}</span></div><i class="hzsep" style="left:${r.a}px"></i>`});
+   rg2.forEach(r=>{const top=two?33+r.ln*13:34;const nearS=SEPS.concat(rg.length?[rg[0].a]:[]).some(s=>Math.abs(r.a-s)<8)||r.a<8;const ax=r.a+(nearS?8:2);rgH+=`<div class="hzrg hzrg2${two?' thin':''}${r.og?' og':''}" data-rg="${r.ts}|${r.te}|${esc(r.n)}" style="left:${ax}px;top:${top}px;width:${Math.max(8,r.b-r.a-4)}px;--gc:${r.og?`var(--t-${r.c})`:`var(--g${r.c})`}"><span>${esc((r.b-r.a-4)<r.n.length*12.5+14?r.n.replace(/ ?시대$/,'').replace(/^(.+?)\s*\(.*\)$/,'$1'):r.n)}</span></div>`})}rg.forEach((r,ri)=>{const rb=ri===rg.length-1?Math.max(r.b,W):r.b;stH+=`<div class="hzst" style="left:${ri?r.a:Math.min(r.a,0)}px;width:${Math.max(0,rb-(ri?r.a:Math.min(r.a,0)))}px;--gc:var(--g${r.c})"></div>`;rgH+=`<div class="hzrg" data-rg="${r.ts}|${r.te}|${esc(r.n)}" style="left:${r.a}px;top:4px;width:${Math.max(8,rb-r.a-6)}px;--gc:var(--g${r.c})"><span>${esc(r.n)}</span></div><i class="hzsep" style="left:${r.a}px"></i>`});
   const axY=y0+22;
   // 축 · 연도 · 표시
   h+=`<div class="hzax" style="top:${axY}px;width:${W}px"></div>`;
@@ -5721,7 +5738,9 @@ function layHZ(k,SC){
   let b='';const kr=ALL?[]:REIGNS.map(D=>({D,rs:D.r.filter(r=>Math.min(r.e,t1)-Math.max(r.s,t0)>.3)})).filter(x=>x.rs.length);
   /* 나라별 줄: 왕 재위 막대 + 그 밑에 왕 이름·업적 (교과서 정리표처럼) */
   let KY=6;kr.forEach(({D,rs},j)=>{const y0=KY;const cw=12.2;
-    rs.forEach(r=>{const a=xT(Math.max(r.s,t0)),bb=xT(Math.min(r.e,t1));if(bb-a<2)return;const n=r.name.replace('대통령 ','');b+=`<div class="hzk" data-king="${esc(D.n)}|${D.r.indexOf(r)}" style="left:${a}px;top:${y0+18}px;width:${bb-a-2}px;--rc:var(--c-${D.c})" title="${esc(n)}"><span>${(bb-a-2)>=n.length*11.5+8?esc(n):((bb-a-2)>=26?esc(n[0]):"")}</span></div>`});
+    {const KB=rs.map(r=>({r,a:xT(Math.max(r.s,t0)),bb:xT(Math.min(r.e,t1)),n:r.name.replace('대통령 ','')})).filter(o=>o.bb-o.a>=2);const G=[];KB.forEach(o=>{const nar=o.bb-o.a<30;const L=G[G.length-1];if(nar&&L&&L.nar&&o.a-L.bb<4){L.bb=o.bb;L.L.push(o)}else G.push({nar,a:o.a,bb:o.bb,L:[o]})});
+     G.forEach(g=>{if(g.L.length===1){const o=g.L[0],w=o.bb-o.a-2,n=o.n;b+=`<div class="hzk" data-king="${esc(D.n)}|${D.r.indexOf(o.r)}" style="left:${o.a}px;top:${y0+18}px;width:${w}px;--rc:var(--c-${D.c})" title="${esc(n)}"><span>${w>=n.length*11.5+8?esc(n):(w>=26?esc(n[0]):"")}</span></div>`;return}
+       const w=g.bb-g.a-2,nm=g.L.map(o=>o.n);const lab=w>=nm[0].length*11.5+40?`${nm[0]} 외 ${nm.length-1}명`:w>=34?`${nm.length}명`:'';b+=`<div class="hzk hzkg" data-king="${esc(D.n)}|${D.r.indexOf(g.L[0].r)}" style="left:${g.a}px;top:${y0+18}px;width:${w}px;--rc:var(--c-${D.c})" title="${esc(nm.join(' → '))}"><span>${esc(lab)}</span></div>`})}
     const blk=rs.map(r=>{const ach=(typeof kAch==='function'?kAch(D,r):[])||[];if(!ach.length)return null;const a=xT(Math.max(r.s,t0));const n=r.name.replace('대통령 ','');const L=Math.max(n.length*15,...ach.map(x=>x.length*cw));const w=Math.min(250,Math.max(120,L+22));const lines=Math.max(1,Math.ceil(ach[0].length*cw/(w-22)));return {r,n,ach,a,b:a+w,w,h:26+lines*17}}).filter(Boolean);
     const PL=[],Y0=y0+42;blk.forEach(o=>{const hit=y=>PL.some(p=>p.a<o.b+6&&o.a<p.b+6&&p.y<y+o.h+6&&y<p.y+p.h+6);const cs=[Y0,...PL.map(p=>p.y+p.h+6)].sort((p,q)=>p-q);o.y=cs.find(y=>!hit(y));PL.push({a:o.a,b:o.b,y:o.y,h:o.h})});
     let yy=PL.length?Math.max(...PL.map(p=>p.y+p.h+6)):Y0;
@@ -7871,12 +7890,28 @@ function wrap(root){if(!root||!root.querySelectorAll)return;const w=document.cre
 let tm=0;const run=()=>{clearTimeout(tm);tm=setTimeout(()=>{if(document.querySelector('.xing'))return;['#kpage','#trpop','#glpop','#pppop','#tybody','#ogbody','#trbody','#dcbody','#ppbody','#tlbody','#srres','.evd'].forEach(q=>document.querySelectorAll(q).forEach(wrap))},250)};
 new MutationObserver(run).observe(document.body,{childList:true,subtree:true,characterData:false});run();
 const pop=document.createElement('div');pop.id='hjpop';pop.hidden=true;document.body.appendChild(pop);
+const POLY={'樂':['즐길 락','노래 악','좋아할 요'],'金':['쇠 금','성 김'],'車':['수레 거','수레 차'],'更':['다시 갱','고칠 경'],'不':['아닐 불','아닐 부'],'率':['비율 률','거느릴 솔'],'便':['편할 편','똥오줌 변'],'度':['법도 도','헤아릴 탁'],'見':['볼 견','뵈올 현'],'復':['회복할 복','다시 부'],'北':['북녘 북','달아날 배'],'說':['말씀 설','달랠 세','기쁠 열'],'易':['바꿀 역','쉬울 이'],'惡':['악할 악','미워할 오'],'行':['다닐 행','항렬 항'],'降':['내릴 강','항복할 항'],'宅':['집 택','댁 댁'],'省':['살필 성','덜 생'],'殺':['죽일 살','감할 쇄'],'塞':['막힐 색','변방 새'],'切':['끊을 절','온통 체'],'洞':['골 동','밝을 통'],'識':['알 식','기록할 지'],'參':['참여할 참','석 삼'],'暴':['사나울 폭','모질 포'],'讀':['읽을 독','구절 두'],'茶':['차 다','차 차'],'畫':['그림 화','그을 획'],'狀':['형상 상','문서 장'],'拓':['넓힐 척','박을 탁'],'葉':['잎 엽','성 섭'],'數':['셈 수','자주 삭'],'布':['베 포','펼 보'],'則':['법칙 칙','곧 즉'],'辰':['별 진','때 신'],'丹':['붉을 단','붉을 란']};
+const MEAN=c=>{const v=HV(c);const L=[];if(v)String(v).split(/\s*[,/]\s*/).forEach(x=>{if(x&&!L.includes(x))L.push(x)});(POLY[c]||[]).forEach(x=>{if(!L.some(y=>y.replace(/\(.*$/,'')===x))L.push(x)});return L};
+let IDX=null;const idx=()=>{if(IDX)return IDX;IDX=new Map();const add=(name,txt)=>{String(txt||'').replace(RE,w=>{[...new Set(w)].forEach(c=>{if(!IDX.has(c))IDX.set(c,new Map());const m=IDX.get(c);if(!m.has(w))m.set(w,name)});return w})};
+  try{Object.keys(GLOSS).forEach(k=>{add(k,k);add(k,GLOSS[k])})}catch(_){}try{Object.keys(PINFO).forEach(k=>add(k,PINFO[k]))}catch(_){}try{const A=window.__ALIAS&&window.__ALIAS().AL;if(A)Object.entries(A).forEach(([m,L])=>L.forEach(x=>add(m,x)))}catch(_){}return IDX};
+const E2=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function charAt(h,x,y){let node=null,off=0;try{if(document.caretRangeFromPoint){const r=document.caretRangeFromPoint(x,y);if(r){node=r.startContainer;off=r.startOffset}}else if(document.caretPositionFromPoint){const r=document.caretPositionFromPoint(x,y);if(r){node=r.offsetNode;off=r.offset}}}catch(_){}const s=h.textContent;if(!node||!h.contains(node)||node.nodeType!==3)return 0;
+  for(const o of [off,off-1]){if(o<0||o>=node.nodeValue.length)continue;const rg=document.createRange();rg.setStart(node,o);rg.setEnd(node,o+1);const q=rg.getBoundingClientRect();if(x>=q.left-1&&x<=q.right+1)return Math.min(s.length-1,o)}return Math.max(0,Math.min(s.length-1,off))}
+/* 두음 법칙: 단어 첫 글자 ㄹ→ㅇ/ㄴ, ㄴ→ㅇ (한글 맞춤법 제10~12항) */
+const DUEUM=sy=>{const c=sy.charCodeAt(0)-0xAC00;if(c<0||c>11171)return sy;const ini=Math.floor(c/588),med=Math.floor((c%588)/28),fin=c%28;const Y=[2,3,6,7,12,17,20];let ni=ini;if(ini===5)ni=Y.includes(med)?11:2;else if(ini===2&&Y.includes(med))ni=11;return ni===ini?sy:String.fromCharCode(0xAC00+ni*588+med*28+fin)};
+function render(word,ci){const c=word[ci]||word[0];const own=OWN();const ms=MEAN(c);const r=RD(c);const rd=[...word].map(x=>{const v=HV(x);return v?String(v).split(/\s*[,/]\s*/)[0].split(' ').pop().replace(/\(.*$/,''):(RD(x)||'?')}).map((y,i)=>i?y:DUEUM(y)).join('');
+  const used=[...((idx().get(c))||new Map())].filter(([w])=>w!==word).slice(0,14);
+  pop.innerHTML=`${word.length>1?`<div class="hjh">${E2(word)} <i>${E2(rd)}</i></div><div class="hjtabs">${[...word].map((x,i)=>`<button type="button" data-hji="${i}" aria-pressed="${i===ci}">${E2(x)}</button>`).join('')}</div>`:''}
+   <div class="hjbig"><b>${E2(c)}</b><div class="hjms">${ms.length?ms.map((m,i)=>`<span class="${i?'hjalt':'hjm0'}">${E2(m)}</span>`).join(''):`<span class="hjm0">${r?`음 ${E2(r)}`:'뜻·음 준비 중'}</span>`}${own?`<button type="button" class="hjed" data-hjed="${E2(c)}">고치기</button>`:''}</div></div>
+   ${ms.length>1?`<div class="hjsec"><em>다른 뜻</em>${ms.slice(1).map(m=>`<span>${E2(m)}</span>`).join('')}</div>`:''}
+   <div class="hjsec"><em>쓰인 단어</em>${used.length?used.map(([w,n])=>`<button type="button" class="hjw2" data-hjterm="${E2(n)}">${E2(w)}<small>${E2(n)}</small></button>`).join(''):'<span class="hjnone">다른 단어가 아직 없어요</span>'}</div>`;
+  pop.dataset.word=word;pop.dataset.ci=ci}
 document.addEventListener('click',e=>{const h=e.target.closest&&e.target.closest('.hjw');if(!h){if(!pop.hidden&&!e.target.closest('#hjpop'))pop.hidden=true;return}if(document.body.classList.contains('medit')&&h.closest('.xing'))return;e.preventDefault();e.stopPropagation();
-  const s=h.textContent;const own=OWN();const rows=[...s].map(c=>{const v=HV(c);const r=RD(c);return `<div class="hjr" data-hjc="${c}"><b>${c}</b><span>${v?v:(r?`음 ${r}${own?' · 뜻은 고치기로 넣기':''}`:(own?'뜻·음을 넣어 주세요':'뜻·음 준비 중'))}</span>${own?`<button type="button" class="hjed" data-hjed="${c}">고치기</button>`:''}</div>`}).join('');const rd=[...s].map(c=>{const v=HV(c);return v?v.split(' ').pop().replace(/\(.*$/,''):(RD(c)||'?')}).join('');
-  pop.innerHTML=`${s.length>1?`<div class="hjh">${s} <i>${rd}</i></div>`:''}${rows}`;pop.hidden=false;const r=h.getBoundingClientRect();const W=Math.min(240,innerWidth-16);pop.style.width=W+'px';pop.style.left=Math.max(8,Math.min(innerWidth-W-8,r.left))+'px';const top=r.bottom+6;pop.style.top=(top+pop.offsetHeight>innerHeight-8?Math.max(8,r.top-pop.offsetHeight-6):top)+'px'},true);
+  const word=h.textContent;const ci=charAt(h,e.clientX,e.clientY);render(word,ci);pop.hidden=false;const r=h.getBoundingClientRect();const W=Math.min(300,innerWidth-16);pop.style.width=W+'px';pop.style.left=Math.max(8,Math.min(innerWidth-W-8,r.left))+'px';const top=r.bottom+6;pop.style.top=(top+pop.offsetHeight>innerHeight-8?Math.max(8,r.top-pop.offsetHeight-6):top)+'px'},true);
+pop.addEventListener('click',e=>{const t=e.target.closest('[data-hji]');if(t){e.stopPropagation();render(pop.dataset.word,+t.dataset.hji);return}const w=e.target.closest('[data-hjterm]');if(w){e.stopPropagation();pop.hidden=true;try{openTerm(w.dataset.hjterm)}catch(_){}}});
 addEventListener('scroll',()=>{pop.hidden=true},true);
-pop.addEventListener('click',e=>{const b=e.target.closest('[data-hjed]');if(!b)return;e.preventDefault();e.stopPropagation();const c=b.dataset.hjed;const row=b.closest('.hjr');const cur=HV(c)||'';row.innerHTML=`<b>${c}</b><input class="hjin" value="${cur.replace(/"/g,'&quot;')}" placeholder="뜻 음 (예: 이슬 로)"><button type="button" class="hjok">저장</button>`;const i=row.querySelector('input');i.focus();i.select();
-  const done=()=>{const v=i.value.trim();try{const T=window.__ME.tr;if(v)T.set('@hj:'+c,v);else T.delete('@hj:'+c);window.__MEX.save('T:@hj:'+c,v)}catch(_){}row.innerHTML=`<b>${c}</b><span>${HV(c)||'뜻·음을 넣어 주세요'}</span><button type="button" class="hjed" data-hjed="${c}">고치기</button>`;try{window.__MEX.toast('한자 뜻을 저장했어요')}catch(_){}};
+pop.addEventListener('click',e=>{const b=e.target.closest('[data-hjed]');if(!b)return;e.preventDefault();e.stopPropagation();const c=b.dataset.hjed;const row=b.closest('.hjms')||b.closest('.hjr');const cur=HV(c)||'';row.innerHTML=`<b>${c}</b><input class="hjin" value="${cur.replace(/"/g,'&quot;')}" placeholder="뜻 음, 다른 뜻 음 (예: 즐길 락, 노래 악)"><button type="button" class="hjok">저장</button>`;const i=row.querySelector('input');i.focus();i.select();
+  const done=()=>{const v=i.value.trim();try{const T=window.__ME.tr;if(v)T.set('@hj:'+c,v);else T.delete('@hj:'+c);window.__MEX.save('T:@hj:'+c,v)}catch(_){}try{render(pop.dataset.word||c,+(pop.dataset.ci||0))}catch(_){}try{window.__MEX.toast('한자 뜻을 저장했어요')}catch(_){}};
   i.addEventListener('keydown',k=>{k.stopPropagation();if(k.key==='Enter'&&!k.isComposing){k.preventDefault();done()}else if(k.key==='Escape'){pop.hidden=true}});row.querySelector('.hjok').onclick=ev=>{ev.stopPropagation();done()}},true);
 }
 
