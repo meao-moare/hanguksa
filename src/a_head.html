@@ -2672,4 +2672,13 @@ body.ovedit #v-ov .hzld.up{border-left:1.5px solid color-mix(in srgb,var(--tc,va
 #v-ov .hzn.hzmr{text-align:left!important;justify-content:flex-start!important}
 #v-ov .hzmm{display:inline-block;min-width:26px;font-weight:800;color:#c2410c;margin-right:3px}
 #v-ov .hzmgb{position:absolute;width:0;border-left:1.5px solid color-mix(in srgb,var(--muted) 60%,transparent);pointer-events:none}
+#v-ov .hzst{background:#fff!important}#v-ov .hzwrap,#v-ov .hztop{background:#fff}
+#v-ov .hzsep{z-index:0}#v-ov .hzrg2{z-index:3}
+#v-ov .ovl{position:absolute;height:0;border-top:2.5px solid var(--lc);transform-origin:0 50%;z-index:4;pointer-events:none;border-radius:2px}
+body.ovedit #v-ov .ovl{pointer-events:auto;cursor:pointer;border-top-width:3px;padding:4px 0;margin-top:-4px;background-clip:content-box}
+body.ovline #v-ov section.ovsec{cursor:crosshair;touch-action:none}
+#ovline{position:fixed;right:150px;bottom:22px;z-index:60;font:inherit;font-weight:700;padding:10px 16px;border-radius:999px;border:1px solid var(--rule);background:var(--panel);color:var(--ink);box-shadow:0 4px 14px rgb(0 0 0/.12);cursor:pointer}
+#ovline[hidden]{display:none}#ovline.on{background:#dc2626;color:#fff;border-color:#dc2626}
+#ovpal .thl{color:var(--muted);margin-left:4px}
+#v-ov .hzn,#v-ov .hznt{--gc:#fff!important}#v-ov .hzn:not(.ovdrag){background:#fff!important}
 </style>
