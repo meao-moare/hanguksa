@@ -5,10 +5,10 @@ const $=id=>document.getElementById(id);
 const TRM=()=>window.__ME&&window.__ME.tr;
 const can=()=>document.body.classList.contains('medit')&&window.__MEX&&window.__MEX.own&&window.__MEX.own()&&!$('v-ov').hidden;
 const keyOf=el=>el.dataset.ovk||keyOf0(el);
-const keyOf0=el=>{if(el.matches('.hzn'))return 'n'+el.dataset.ev;if(el.matches('.hznt')){const b=el.querySelector('[data-ev]');return b?'t'+b.dataset.ev:'t'+(el.textContent||'').trim().slice(0,20)}if(el.matches('.hzrg'))return 'r'+el.dataset.rg;if(el.matches('.hzld')){const n=el.nextElementSibling;return n&&n.dataset.ev?'l'+n.dataset.ev:null}return null};
+const keyOf0=el=>{if(el.matches('.hzn'))return 'n'+el.dataset.ev;if(el.matches('.hznt')){const b=el.querySelector('[data-ev]');return b?'t'+b.dataset.ev:'t'+(el.textContent||'').trim().slice(0,20)}if(el.matches('.hzrg'))return 'r'+el.dataset.rg;if(el.matches('.hzach')){const b=el.querySelector('[data-king]');return b?'a'+b.dataset.king:null}if(el.matches('.hzld')){const n=el.nextElementSibling;return n&&n.dataset.ev?'l'+n.dataset.ev:null}return null};
 const get=k=>{const M=TRM();return (M&&M.get('@ov:'+k))||null};
 const put=(k,v)=>{const M=TRM();if(!M)return;M.set('@ov:'+k,v);try{window.__MEX.save('T:@ov:'+k,v)}catch(_){}};
-const SEL='#v-ov .hzn,#v-ov .hznt,#v-ov .hzrg';
+const SEL='#v-ov .hzn,#v-ov .hznt,#v-ov .hzrg,#v-ov .hzach';
 function applyAll(){const ed=can();const seen={};document.querySelectorAll(SEL).forEach(el=>{const k0=keyOf0(el);if(!k0)return;const nn=seen[k0]=(seen[k0]||0)+1;const k=nn>1?k0+'#'+nn:k0;el.dataset.ovk=k;const v=get(k);
   if(el.dataset.ow==null)el.dataset.ow=el.style.width||'';if(el.dataset.ogc==null)el.dataset.ogc=el.style.getPropertyValue('--gc')||'';if(el.dataset.oh==null)el.dataset.oh=el.style.height||'';
   el.style.translate=v&&(v.x||v.y)?`${v.x||0}px ${v.y||0}px`:'';
@@ -38,7 +38,7 @@ document.addEventListener('click',e=>{const l=e.target.closest&&e.target.closest
 /* 고치기 모드: 글자·형광펜을 누르면 색 바꾸기 / ✕ 표시 */
 {const pal=document.createElement('div');pal.id='ovpal';pal.hidden=true;document.body.appendChild(pal);let cur=null;
  const COLS=['#dc2626','#ea580c','#ca8a04','#16a34a','#0d9488','#2563eb','#7c3aed','#db2777','#57534e','#111827'];
- document.addEventListener('click',e=>{if(e.target.closest('#ovpal'))return;const el=can()&&e.target.closest&&e.target.closest(SEL);if(!el){pal.hidden=true;cur=null;return}if(e.target.closest('.ovgrip'))return;
+ document.addEventListener('click',e=>{if(e.target.closest('#ovpal'))return;const el=can()&&e.target.closest&&e.target.closest(SEL);if(!el||el.matches('.hzach')){pal.hidden=true;cur=null;return}if(e.target.closest('.ovgrip'))return;
    e.preventDefault();e.stopPropagation();cur=el;const v=get(keyOf(el))||{};const rg=el.matches('.hzrg');
    pal.innerHTML=`<span>${rg?'형광펜 색':'글씨 색'}</span>${COLS.map(c=>`<button type="button" data-oc="${c}" style="--c:${c}" class="${v.c===c?'on':''}"></button>`).join('')}<button type="button" data-oc="" class="rs" title="원래 색">원래</button><button type="button" data-ox class="xb ${v.xm?'on':''}">✕ 표시</button>${rg&&el.matches('.hzrg2')?`<span class="thl">두께</span>${[[8,'얇게'],[0,'보통'],[26,'두껍게']].map(([t,n])=>`<button type="button" data-oth="${t}" class="rs ${(v.th||0)===t?'on':''}">${n}</button>`).join('')}`:''}`;
    pal.hidden=false;const r=el.getBoundingClientRect();pal.style.left=Math.max(8,Math.min(innerWidth-pal.offsetWidth-8,r.left))+'px';const y=r.bottom+6;pal.style.top=(y+pal.offsetHeight>innerHeight-8?r.top-pal.offsetHeight-6:y)+'px'},true);
