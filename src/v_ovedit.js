@@ -106,3 +106,14 @@ function tf(){document.querySelectorAll('#v-rl section.rltle').forEach(sec=>{con
   ol.replaceWith(wrap)})}
 let t=0;new MutationObserver(()=>{clearTimeout(t);t=setTimeout(tf,60)}).observe(document.body,{childList:true,subtree:true});setTimeout(tf,800);
 }
+
+/* 구조도 선 옮기기: 고치기 모드에서 선을 끌면 꺾이는 자리가 옮겨짐 */
+{
+document.addEventListener('pointerdown',e=>{const t=e.target;if(!t.classList||!t.classList.contains('tflh'))return;if(!(window.__MEX&&window.__MEX.can&&window.__MEX.can()))return;e.preventDefault();e.stopPropagation();
+  const c=t.closest('.trcard');const k=c.id.replace(/^tree-/,'');const key=t.dataset.e,ax=t.dataset.ax,sg=+t.dataset.sg||1;const M=window.__ME.tr;const LO=Object.assign({},M.get('@lo:'+k)||{});const v0=+LO[key]||0;const p0=ax==='x'?e.clientX:e.clientY;
+  const z=(()=>{const r=c.querySelector('.tfin').getBoundingClientRect();const w=c.querySelector('.tfin').offsetWidth;return w?r.width/w:1})();document.body.classList.add('tflmoving');
+  const mv=ev=>{ev.preventDefault();const d=((ax==='x'?ev.clientX:ev.clientY)-p0)/z*sg;LO[key]=Math.round(v0+d);M.set('@lo:'+k,Object.assign({},LO));try{window.__DRAWLINES(c)}catch(_){}};
+  const up=()=>{removeEventListener('pointermove',mv);removeEventListener('pointerup',up);removeEventListener('pointercancel',up);document.body.classList.remove('tflmoving');const v=Object.assign({},M.get('@lo:'+k)||{});try{window.__MEX.save('T:@lo:'+k,v)}catch(_){}};
+  addEventListener('pointermove',mv,{passive:false});addEventListener('pointerup',up);addEventListener('pointercancel',up)},true);
+new MutationObserver(()=>{document.querySelectorAll('#trbody .trcard .tfin').forEach(f=>{const has=!!f.querySelector('.tflh');if(has!==document.body.classList.contains('medit')){try{window.__DRAWLINES(f.closest('.trcard'))}catch(_){}}})}).observe(document.body,{attributes:true,attributeFilter:['class']});
+}
