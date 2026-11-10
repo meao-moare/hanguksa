@@ -2658,4 +2658,18 @@ body.medit #dcbody .gl2>.gp.dchid{opacity:.45}
 .ppsame button{font:inherit;font-size:11px;padding:1px 7px;border-radius:999px;border:1px solid var(--rule);background:none;color:var(--accent,#2563eb);cursor:pointer}
 .hjc .hjz[data-hjz]{cursor:pointer}
 body.ovedit #v-ov .hzn,body.ovedit #v-ov .hznt,body.ovedit #v-ov .hzrg{touch-action:none;-webkit-user-select:none;user-select:none}
+body.ovedit #v-ov .hzld{pointer-events:none!important;min-width:0!important;margin-left:0!important;border-left:0!important;background-clip:border-box!important}
+#ovpal{position:fixed;z-index:3000;display:flex;align-items:center;gap:5px;flex-wrap:wrap;max-width:330px;padding:7px 9px;background:var(--panel);border:1px solid var(--rule);border-radius:10px;box-shadow:0 8px 24px rgb(0 0 0/.16);font-size:12px}
+#ovpal[hidden]{display:none}#ovpal>span{color:var(--muted);margin-right:2px}
+#ovpal button{font:inherit;cursor:pointer;border:1px solid var(--rule);background:var(--panel);color:var(--ink);border-radius:999px}
+#ovpal button[data-oc]:not(.rs){width:20px;height:20px;padding:0;background:var(--c);border:2px solid #fff;box-shadow:0 0 0 1px var(--rule)}
+#ovpal button.on{box-shadow:0 0 0 2px var(--ink)!important}#ovpal .rs,#ovpal .xb{padding:2px 8px;font-size:12px}#ovpal .xb.on{background:#dc2626;color:#fff;border-color:#dc2626}
+#v-ov .ovx::before{content:'✕';color:#dc2626;font-weight:900;margin-right:3px}
+#v-ov .hzrg.ovx::before{position:absolute;right:-12px;top:50%;transform:translateY(-50%);font-size:12px;margin:0}
+#v-ov .ovc,#v-ov .ovc *{color:var(--oc)!important}
+body.ovedit #v-ov .hzld{border-left:1px solid color-mix(in srgb,var(--muted) 60%,transparent)!important}
+body.ovedit #v-ov .hzld.up{border-left:1.5px solid color-mix(in srgb,var(--tc,var(--muted)) 55%,transparent)!important}
+#v-ov .hzn.hzmr{text-align:left!important;justify-content:flex-start!important}
+#v-ov .hzmm{display:inline-block;min-width:26px;font-weight:800;color:#c2410c;margin-right:3px}
+#v-ov .hzmgb{position:absolute;width:0;border-left:1.5px solid color-mix(in srgb,var(--muted) 60%,transparent);pointer-events:none}
 </style>

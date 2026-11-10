@@ -10,9 +10,10 @@ const get=k=>{const M=TRM();return (M&&M.get('@ov:'+k))||null};
 const put=(k,v)=>{const M=TRM();if(!M)return;M.set('@ov:'+k,v);try{window.__MEX.save('T:@ov:'+k,v)}catch(_){}};
 const SEL='#v-ov .hzn,#v-ov .hznt,#v-ov .hzrg';
 function applyAll(){const ed=can();const seen={};document.querySelectorAll(SEL).forEach(el=>{const k0=keyOf0(el);if(!k0)return;const nn=seen[k0]=(seen[k0]||0)+1;const k=nn>1?k0+'#'+nn:k0;el.dataset.ovk=k;const v=get(k);
-  if(el.dataset.ow==null)el.dataset.ow=el.style.width||'';if(el.dataset.oh==null)el.dataset.oh=el.style.height||'';
+  if(el.dataset.ow==null)el.dataset.ow=el.style.width||'';if(el.dataset.ogc==null)el.dataset.ogc=el.style.getPropertyValue('--gc')||'';if(el.dataset.oh==null)el.dataset.oh=el.style.height||'';
   el.style.translate=v&&(v.x||v.y)?`${v.x||0}px ${v.y||0}px`:'';
   if(el.matches('.hzrg'))el.style.width=v&&v.w?v.w+'px':el.dataset.ow;
+  if(el.matches('.hzrg')){if(v&&v.c)el.style.setProperty('--gc',v.c);else if(el.dataset.ogc!=null)el.style.setProperty('--gc',el.dataset.ogc)}else{if(v&&v.c){el.style.setProperty('--oc',v.c);el.classList.add('ovc')}else el.classList.remove('ovc')}el.classList.toggle('ovx',!!(v&&v.xm));
   if(el.matches('.hzld'))el.style.height=v&&v.h?v.h+'px':el.dataset.oh;
   let g=el.querySelector(':scope>.ovgrip');if(ed&&!g&&el.matches('.hzrg')){el.insertAdjacentHTML('beforeend',`<ovg class="ovgrip ${el.matches('.hzld')?'ovgv':'ovgh'}" title="${el.matches('.hzld')?'세로줄 길이':'길이'}"></ovg>`)}else if(!ed&&g)g.remove()});
   document.querySelectorAll('#v-ov .hzld').forEach(link);document.body.classList.toggle('ovedit',ed);const ab=$('ovadd');if(ab)ab.hidden=!ed}
@@ -22,6 +23,16 @@ function link(ld){const n=ld.nextElementSibling;if(!n||!n.matches('.hzn'))return
   const L=n.offsetLeft+tx,T=n.offsetTop+ty,W=n.offsetWidth,H=n.offsetHeight;const Bx=Math.max(L+3,Math.min(L+W-3,Ax)),By=(T+H/2<Ay)?T+H:T;const dx=Bx-Ax,dy=By-Ay;const len=Math.hypot(dx,dy);const ang=Math.atan2(dy,dx)*180/Math.PI-90;
   ld.classList.add('lnk');ld.style.left=Ax+'px';ld.style.top=Ay+'px';ld.style.height=len+'px';ld.style.rotate=ang+'deg'}
 window.__ovLink=()=>document.querySelectorAll('#v-ov .hzld').forEach(link);
+/* 고치기 모드: 글자·형광펜을 누르면 색 바꾸기 / ✕ 표시 */
+{const pal=document.createElement('div');pal.id='ovpal';pal.hidden=true;document.body.appendChild(pal);let cur=null;
+ const COLS=['#dc2626','#ea580c','#ca8a04','#16a34a','#0d9488','#2563eb','#7c3aed','#db2777','#57534e','#111827'];
+ document.addEventListener('click',e=>{if(e.target.closest('#ovpal'))return;const el=can()&&e.target.closest&&e.target.closest(SEL);if(!el){pal.hidden=true;cur=null;return}if(e.target.closest('.ovgrip'))return;
+   e.preventDefault();e.stopPropagation();cur=el;const v=get(keyOf(el))||{};const rg=el.matches('.hzrg');
+   pal.innerHTML=`<span>${rg?'형광펜 색':'글씨 색'}</span>${COLS.map(c=>`<button type="button" data-oc="${c}" style="--c:${c}" class="${v.c===c?'on':''}"></button>`).join('')}<button type="button" data-oc="" class="rs" title="원래 색">원래</button><button type="button" data-ox class="xb ${v.xm?'on':''}">✕ 표시</button>`;
+   pal.hidden=false;const r=el.getBoundingClientRect();pal.style.left=Math.max(8,Math.min(innerWidth-pal.offsetWidth-8,r.left))+'px';const y=r.bottom+6;pal.style.top=(y+pal.offsetHeight>innerHeight-8?r.top-pal.offsetHeight-6:y)+'px'},true);
+ pal.addEventListener('click',e=>{if(!cur)return;const k=keyOf(cur);const v=Object.assign({},get(k)||{});const b=e.target.closest('button');if(!b)return;
+   if(b.hasAttribute('data-ox'))v.xm=v.xm?0:1;else{const c=b.dataset.oc;if(c)v.c=c;else delete v.c}put(k,v);applyAll();pal.querySelectorAll('[data-oc]').forEach(x=>x.classList.toggle('on',!!v.c&&x.dataset.oc===v.c));pal.querySelector('[data-ox]').classList.toggle('on',!!v.xm)});
+ addEventListener('scroll',e=>{if(!e.target.closest||!e.target.closest('#ovpal'))pal.hidden=true},true)}
 let t=0;const sched=()=>{const v=$('v-ov');if(!v||v.hidden)return;clearTimeout(t);t=setTimeout(applyAll,80)};
 new MutationObserver(m=>{if(m.some(x=>[...x.addedNodes].some(n=>n.nodeType===1&&!n.classList.contains('ovgrip'))))sched()}).observe(document.body,{childList:true,subtree:true});
 new MutationObserver(sched).observe(document.body,{attributes:true,attributeFilter:['class']});
