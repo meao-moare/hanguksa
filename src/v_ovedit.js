@@ -8,18 +8,25 @@ const keyOf=el=>el.dataset.ovk||keyOf0(el);
 const keyOf0=el=>{if(el.matches('.hzn'))return 'n'+el.dataset.ev;if(el.matches('.hznt')){const b=el.querySelector('[data-ev]');return b?'t'+b.dataset.ev:'t'+(el.textContent||'').trim().slice(0,20)}if(el.matches('.hzrg'))return 'r'+el.dataset.rg;if(el.matches('.hzld')){const n=el.nextElementSibling;return n&&n.dataset.ev?'l'+n.dataset.ev:null}return null};
 const get=k=>{const M=TRM();return (M&&M.get('@ov:'+k))||null};
 const put=(k,v)=>{const M=TRM();if(!M)return;M.set('@ov:'+k,v);try{window.__MEX.save('T:@ov:'+k,v)}catch(_){}};
-const SEL='#v-ov .hzn,#v-ov .hznt,#v-ov .hzrg,#v-ov .hzld';
+const SEL='#v-ov .hzn,#v-ov .hznt,#v-ov .hzrg';
 function applyAll(){const ed=can();const seen={};document.querySelectorAll(SEL).forEach(el=>{const k0=keyOf0(el);if(!k0)return;const nn=seen[k0]=(seen[k0]||0)+1;const k=nn>1?k0+'#'+nn:k0;el.dataset.ovk=k;const v=get(k);
   if(el.dataset.ow==null)el.dataset.ow=el.style.width||'';if(el.dataset.oh==null)el.dataset.oh=el.style.height||'';
   el.style.translate=v&&(v.x||v.y)?`${v.x||0}px ${v.y||0}px`:'';
   if(el.matches('.hzrg'))el.style.width=v&&v.w?v.w+'px':el.dataset.ow;
   if(el.matches('.hzld'))el.style.height=v&&v.h?v.h+'px':el.dataset.oh;
-  let g=el.querySelector(':scope>.ovgrip');if(ed&&!g&&(el.matches('.hzrg')||el.matches('.hzld'))){el.insertAdjacentHTML('beforeend',`<ovg class="ovgrip ${el.matches('.hzld')?'ovgv':'ovgh'}" title="${el.matches('.hzld')?'세로줄 길이':'길이'}"></ovg>`)}else if(!ed&&g)g.remove()});
-  document.body.classList.toggle('ovedit',ed)}
+  let g=el.querySelector(':scope>.ovgrip');if(ed&&!g&&el.matches('.hzrg')){el.insertAdjacentHTML('beforeend',`<ovg class="ovgrip ${el.matches('.hzld')?'ovgv':'ovgh'}" title="${el.matches('.hzld')?'세로줄 길이':'길이'}"></ovg>`)}else if(!ed&&g)g.remove()});
+  document.querySelectorAll('#v-ov .hzld').forEach(link);document.body.classList.toggle('ovedit',ed);const ab=$('ovadd');if(ab)ab.hidden=!ed}
+/* 이끔선: 축의 연도 자리에서 글자까지 바로 잇기 (글자를 옮기면 따라감) */
+function link(ld){const n=ld.nextElementSibling;if(!n||!n.matches('.hzn'))return;if(ld.dataset.ol==null){ld.dataset.ol=parseFloat(ld.style.left)||0;ld.dataset.ot=parseFloat(ld.style.top)||0;ld.dataset.oh0=parseFloat(ld.style.height)||0}
+  const up=ld.classList.contains('up');const Ax=+ld.dataset.ol,Ay=up?(+ld.dataset.ot)+(+ld.dataset.oh0):+ld.dataset.ot;const tr=(n.style.translate||'').split(/\s+/).map(parseFloat);const tx=tr[0]||0,ty=tr[1]||0;
+  const L=n.offsetLeft+tx,T=n.offsetTop+ty,W=n.offsetWidth,H=n.offsetHeight;const Bx=Math.max(L+3,Math.min(L+W-3,Ax)),By=(T+H/2<Ay)?T+H:T;const dx=Bx-Ax,dy=By-Ay;const len=Math.hypot(dx,dy);const ang=Math.atan2(dy,dx)*180/Math.PI-90;
+  ld.classList.add('lnk');ld.style.left=Ax+'px';ld.style.top=Ay+'px';ld.style.height=len+'px';ld.style.rotate=ang+'deg'}
+window.__ovLink=()=>document.querySelectorAll('#v-ov .hzld').forEach(link);
 let t=0;const sched=()=>{const v=$('v-ov');if(!v||v.hidden)return;clearTimeout(t);t=setTimeout(applyAll,80)};
 new MutationObserver(m=>{if(m.some(x=>[...x.addedNodes].some(n=>n.nodeType===1&&!n.classList.contains('ovgrip'))))sched()}).observe(document.body,{childList:true,subtree:true});
 new MutationObserver(sched).observe(document.body,{attributes:true,attributeFilter:['class']});
 setTimeout(applyAll,500);
+{const b=document.createElement('button');b.id='ovadd';b.type='button';b.hidden=true;b.textContent='+ 사건 추가';document.body.appendChild(b);b.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();try{window.__vForm()}catch(_){}})}
 /* 끌기 */
 document.addEventListener('pointerdown',e=>{if(!can())return;const t=e.target;if(!t.closest||t.closest('[contenteditable]'))return;const grip=t.closest('.ovgrip');const el=t.closest(SEL);if(!el)return;if(e.button!==0&&e.pointerType==='mouse')return;const k=keyOf(el);if(!k)return;
   const v0=Object.assign({},get(k)||{});const x0=e.clientX,y0=e.clientY;let st=false;const w0=el.offsetWidth,h0=el.offsetHeight;
@@ -27,7 +34,7 @@ document.addEventListener('pointerdown',e=>{if(!can())return;const t=e.target;if
   const mv=ev=>{const dx=ev.clientX-x0,dy=ev.clientY-y0;if(!st){if(!grip&&Math.abs(dx)+Math.abs(dy)<6)return;st=true;el.classList.add('ovdrag');try{getSelection().removeAllRanges()}catch(_){}}ev.preventDefault();
     if(grip&&el.matches('.hzld')){const h=Math.max(4,Math.round(h0+dy));el.style.height=h+'px';v0.h=h}
     else if(grip){const w=Math.max(20,Math.round(w0+dx));el.style.width=w+'px';v0.w=w}
-    else{const nx=Math.round((get(k)||{}).x||0)+Math.round(dx),ny=Math.round((get(k)||{}).y||0)+Math.round(dy);el.style.translate=`${nx}px ${ny}px`;v0.x=nx;v0.y=ny}};
+    else{const nx=Math.round((get(k)||{}).x||0)+Math.round(dx),ny=Math.round((get(k)||{}).y||0)+Math.round(dy);el.style.translate=`${nx}px ${ny}px`;v0.x=nx;v0.y=ny;const pl=el.previousElementSibling;if(pl&&pl.matches('.hzld'))link(pl)}};
   const up=()=>{removeEventListener('pointermove',mv);removeEventListener('pointerup',up);removeEventListener('pointercancel',up);if(!st)return;el.classList.remove('ovdrag');put(k,v0);const kill=ev=>{ev.preventDefault();ev.stopImmediatePropagation();removeEventListener('click',kill,true)};addEventListener('click',kill,true);setTimeout(()=>removeEventListener('click',kill,true),60)};
   addEventListener('pointermove',mv,{passive:false});addEventListener('pointerup',up);addEventListener('pointercancel',up)},true);
 /* 고치기 모드에서는 눌러도 다른 곳으로 가지 않음 (글씨 고치기만) */
