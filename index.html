@@ -2577,6 +2577,7 @@ body:not(.medit) #trbody .trsplit{display:none!important}
 i.gptag.gprole{font-style:normal;font-weight:800;border-radius:999px}
 i.gptag.gprole.indp{background:#047857!important;color:#fff!important;border:0!important}
 i.gptag.gprole.chin{background:#3f3f46!important;color:#fff!important;border:0!important}
+body.medit #trbody.trpg,body.medit #trbody.trpg>.trcard{overscroll-behavior-x:none;touch-action:pan-y pinch-zoom!important}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/flubber@0.4.2/build/flubber.min.js"></script>
 <script>
@@ -7688,7 +7689,7 @@ function side(){const sd=$('trside');if(!sd||IX||!ALLP[PAGE])return;const pk=ALL
 let PROG=0,LASTG=-2;
 function goPage(i,instant){if(IX)return;PROG=Date.now()+(instant?0:500);PAGE=Math.max(0,Math.min(ALLP.length-1,i));const tb=$('trbody');const c=cur();if(tb&&c){fitNear();vis(true);tb.scrollTo({left:relX(tb,c),behavior:instant?'auto':'smooth'});if(instant)vis(false)}afterMove()}
 function afterMove(){const gi=G();if(gi!==LASTG){LASTG=gi;bar()}else{const d=$('trpbar');d&&d.querySelectorAll('[data-tpk]').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.tpk===PAGE))}nav()}
-function openG(gi,k){if(store&&store.get('view','map')!=='tr'){try{showView('tr')}catch(_){}}IX=false;syncOrder();PAGE=k?pageOfKey(k):firstOfGroup(gi);LASTG=-2;apply();requestAnimationFrame(()=>{goPage(PAGE,true);const rd=$('trread');if(rd)rd.scrollTop=0})}
+function openG(gi,k){window.__trnavT=performance.now();if(store&&store.get('view','map')!=='tr'){try{showView('tr')}catch(_){}}IX=false;syncOrder();PAGE=k?pageOfKey(k):firstOfGroup(gi);LASTG=-2;apply();requestAnimationFrame(()=>{goPage(PAGE,true);const rd=$('trread');if(rd)rd.scrollTop=0})}
 function toIndex(){IX=true;apply();const rd=$('trread');if(rd)rd.scrollTop=0}
 window.__TROPEN=k=>{syncOrder();const i=ALLP.findIndex(x=>x.p.includes(k));if(i>=0)openG(ALLP[i].g,k)};
 window.__TRINDEX=()=>toIndex();window.__TROPENG=(i,k)=>openG(i,k);
@@ -8168,11 +8169,14 @@ new MutationObserver(ms=>{let hit=false;for(const m of ms){if(!m.removedNodes.le
 let lastU=0;const now=()=>performance.now();const mark=()=>{lastU=now()};
 ['wheel','touchmove','touchend'].forEach(t=>addEventListener(t,mark,{capture:true,passive:true}));
 addEventListener('keydown',e=>{const a=document.activeElement;if(a&&(a.isContentEditable||/INPUT|TEXTAREA|SELECT/.test(a.tagName)))return;if(/Page|Arrow|Home|End|^ $/.test(e.key))mark()},true);
-addEventListener('pointerdown',e=>{const t=e.target;if(!t||!t.closest)return;if((t.id&&t.scrollHeight>t.clientHeight)||t.closest('#trside,#trpbar,#trnavl,#trnavr,.trnav,#trindex,[data-tpg],[data-tpk],[data-tsj],nav,header,.tabs,#menupop'))mark()},true);
+addEventListener('pointerdown',e=>{const t=e.target;if(!t||!t.closest)return;if(t.closest('#trside,#trpbar,#trnavl,#trnavr,.trnav,#trindex,[data-tpg],[data-tpk],[data-tsj],#trimpm,[data-tj]'))window.__trnavT=now();if((t.id&&t.scrollHeight>t.clientHeight)||t.closest('#trside,#trpbar,#trnavl,#trnavr,.trnav,#trindex,[data-tpg],[data-tpk],[data-tsj],nav,header,.tabs,#menupop'))mark()},true);
+addEventListener('click',e=>{const t=e.target;if(t&&t.closest&&t.closest('#trside,#trpbar,#trnavl,#trnavr,.trnav,#trimpm'))window.__trnavT=now()},true);
+addEventListener('keydown',e=>{if(/^Arrow(Left|Right)$|^Page/.test(e.key))window.__trnavT=now()},true);
 const on=()=>document.body.classList.contains('medit')&&document.body.classList.contains('trpgon');
 const POS=new WeakMap();const keyEl=el=>el===document?document.scrollingElement||document.documentElement:el;
 const rec=el=>POS.set(el,[el.scrollTop,el.scrollLeft]);
 document.addEventListener('scroll',e=>{const el=keyEl(e.target);if(!el||el.nodeType!==1)return;if(!(el.id==='trbody'||el.id==='trread'||el===document.scrollingElement||el.classList.contains('trcard')))return;
+  if(on()&&el.id==='trbody'){const p=POS.get(el);const nav=now()-(window.__trnavT||-1e9)<1500;if(nav||!p){rec(el);return}if(Math.abs(el.scrollLeft-p[1])>2){el.scrollLeft=p[1]}if(Math.abs(el.scrollTop-p[0])>2)el.scrollTop=p[0];return}
   if(!on()||now()-lastU<1300){rec(el);return}const p=POS.get(el);if(!p){rec(el);return}if(Math.abs(el.scrollTop-p[0])>2||Math.abs(el.scrollLeft-p[1])>2){el.scrollTop=p[0];el.scrollLeft=p[1]}},true);
 new MutationObserver(()=>{if(on()){['trbody','trread'].forEach(id=>{const el=document.getElementById(id);if(el)rec(el)});document.querySelectorAll('#trbody>.trcard').forEach(rec);rec(document.scrollingElement||document.documentElement)}}).observe(document.body,{attributes:true,attributeFilter:['class']});
 }
@@ -8224,13 +8228,13 @@ onAuthStateChanged(auth,async u=>{uid=u?u.uid:null;render(u);if(!u)return;
  /* 모음마다 Firestore 듣기는 하나만, 처음 받을 때까지 기다렸다가 보여 줌 (예전 자료로 잠깐 바뀌지 않게) */
  const LIS={};
  const listen=name=>{if(LIS[name])return LIS[name];const L={fs:new Map(),live:false,subs:new Set()};LIS[name]=L;
-   onSnapshot(collection(db,name),snap=>{L.fs=new Map(snap.docs.map(x=>[x.id,dec(x.data())]));L.live=true;L.subs.forEach(f=>f())},e=>{console.warn(e);L.live=true;L.subs.forEach(f=>f())});
-   setTimeout(()=>{if(!L.live){L.live=true;L.subs.forEach(f=>f())}},4000);return L};
+   onSnapshot(collection(db,name),snap=>{L.fs=new Map(snap.docs.map(x=>[x.id,dec(x.data())]));L.live=true;L.real=true;L.subs.forEach(f=>f())},e=>{console.warn(e);L.live=true;L.subs.forEach(f=>f())});
+   setTimeout(()=>{if(!L.live){L.live=true;L.subs.forEach(f=>f())}},15000);return L};
  const adapter={collection:name=>({onSnapshot:(cb,err)=>{const L=listen(name);
      const base=()=>name==='mine'?J.mine.filter(d=>d&&d.k).map(d=>[hidf(d.k),d]):Object.entries(J.sanon).map(([k,v])=>[hidf(k),{k,v}]);
      const emit=()=>{if(!L.live)return;const m=new Map(base());L.fs.forEach((d,id)=>{const b=m.get(id);const at=+(d&&d.at)||0,bt=+(b&&b.at)||0;if(d&&d.del){if(!b||at>bt)m.delete(id)}else if(d&&d.k&&(!b||at>=bt))m.set(id,d)});cb({docs:[...m.values()].filter(d=>!d.del).map(d=>({data:()=>d}))})};
      let tq=0;const f=()=>{clearTimeout(tq);tq=setTimeout(()=>jp.then(emit),60)};L.subs.clear();L.subs.add(f);f();return ()=>L.subs.delete(f)},
-   doc:id=>({set:v=>setDoc(doc(db,name,id),enc(v)),delete:()=>setDoc(doc(db,name,id),{del:true,at:Date.now()})})})};
+   doc:id=>({set:v=>{const L=LIS[name];if(L&&!L.real)return Promise.reject(new Error('not loaded'));return setDoc(doc(db,name,id),enc(v))},delete:()=>setDoc(doc(db,name,id),{del:true,at:Date.now()})})})};
  let owner=false;const attach=()=>{try{window.__mineAttach&&window.__mineAttach(adapter,owner);window.__sanonAttach&&window.__sanonAttach(adapter,owner)}catch(e){console.warn(e)}};
  attach();
  onAuthStateChanged(auth,async u=>{if(!u){if(owner){owner=false;attach()}return}

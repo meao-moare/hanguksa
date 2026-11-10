@@ -150,11 +150,14 @@ new MutationObserver(ms=>{let hit=false;for(const m of ms){if(!m.removedNodes.le
 let lastU=0;const now=()=>performance.now();const mark=()=>{lastU=now()};
 ['wheel','touchmove','touchend'].forEach(t=>addEventListener(t,mark,{capture:true,passive:true}));
 addEventListener('keydown',e=>{const a=document.activeElement;if(a&&(a.isContentEditable||/INPUT|TEXTAREA|SELECT/.test(a.tagName)))return;if(/Page|Arrow|Home|End|^ $/.test(e.key))mark()},true);
-addEventListener('pointerdown',e=>{const t=e.target;if(!t||!t.closest)return;if((t.id&&t.scrollHeight>t.clientHeight)||t.closest('#trside,#trpbar,#trnavl,#trnavr,.trnav,#trindex,[data-tpg],[data-tpk],[data-tsj],nav,header,.tabs,#menupop'))mark()},true);
+addEventListener('pointerdown',e=>{const t=e.target;if(!t||!t.closest)return;if(t.closest('#trside,#trpbar,#trnavl,#trnavr,.trnav,#trindex,[data-tpg],[data-tpk],[data-tsj],#trimpm,[data-tj]'))window.__trnavT=now();if((t.id&&t.scrollHeight>t.clientHeight)||t.closest('#trside,#trpbar,#trnavl,#trnavr,.trnav,#trindex,[data-tpg],[data-tpk],[data-tsj],nav,header,.tabs,#menupop'))mark()},true);
+addEventListener('click',e=>{const t=e.target;if(t&&t.closest&&t.closest('#trside,#trpbar,#trnavl,#trnavr,.trnav,#trimpm'))window.__trnavT=now()},true);
+addEventListener('keydown',e=>{if(/^Arrow(Left|Right)$|^Page/.test(e.key))window.__trnavT=now()},true);
 const on=()=>document.body.classList.contains('medit')&&document.body.classList.contains('trpgon');
 const POS=new WeakMap();const keyEl=el=>el===document?document.scrollingElement||document.documentElement:el;
 const rec=el=>POS.set(el,[el.scrollTop,el.scrollLeft]);
 document.addEventListener('scroll',e=>{const el=keyEl(e.target);if(!el||el.nodeType!==1)return;if(!(el.id==='trbody'||el.id==='trread'||el===document.scrollingElement||el.classList.contains('trcard')))return;
+  if(on()&&el.id==='trbody'){const p=POS.get(el);const nav=now()-(window.__trnavT||-1e9)<1500;if(nav||!p){rec(el);return}if(Math.abs(el.scrollLeft-p[1])>2){el.scrollLeft=p[1]}if(Math.abs(el.scrollTop-p[0])>2)el.scrollTop=p[0];return}
   if(!on()||now()-lastU<1300){rec(el);return}const p=POS.get(el);if(!p){rec(el);return}if(Math.abs(el.scrollTop-p[0])>2||Math.abs(el.scrollLeft-p[1])>2){el.scrollTop=p[0];el.scrollLeft=p[1]}},true);
 new MutationObserver(()=>{if(on()){['trbody','trread'].forEach(id=>{const el=document.getElementById(id);if(el)rec(el)});document.querySelectorAll('#trbody>.trcard').forEach(rec);rec(document.scrollingElement||document.documentElement)}}).observe(document.body,{attributes:true,attributeFilter:['class']});
 }

@@ -71,7 +71,7 @@ function side(){const sd=$('trside');if(!sd||IX||!ALLP[PAGE])return;const pk=ALL
 let PROG=0,LASTG=-2;
 function goPage(i,instant){if(IX)return;PROG=Date.now()+(instant?0:500);PAGE=Math.max(0,Math.min(ALLP.length-1,i));const tb=$('trbody');const c=cur();if(tb&&c){fitNear();vis(true);tb.scrollTo({left:relX(tb,c),behavior:instant?'auto':'smooth'});if(instant)vis(false)}afterMove()}
 function afterMove(){const gi=G();if(gi!==LASTG){LASTG=gi;bar()}else{const d=$('trpbar');d&&d.querySelectorAll('[data-tpk]').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.tpk===PAGE))}nav()}
-function openG(gi,k){if(store&&store.get('view','map')!=='tr'){try{showView('tr')}catch(_){}}IX=false;syncOrder();PAGE=k?pageOfKey(k):firstOfGroup(gi);LASTG=-2;apply();requestAnimationFrame(()=>{goPage(PAGE,true);const rd=$('trread');if(rd)rd.scrollTop=0})}
+function openG(gi,k){window.__trnavT=performance.now();if(store&&store.get('view','map')!=='tr'){try{showView('tr')}catch(_){}}IX=false;syncOrder();PAGE=k?pageOfKey(k):firstOfGroup(gi);LASTG=-2;apply();requestAnimationFrame(()=>{goPage(PAGE,true);const rd=$('trread');if(rd)rd.scrollTop=0})}
 function toIndex(){IX=true;apply();const rd=$('trread');if(rd)rd.scrollTop=0}
 window.__TROPEN=k=>{syncOrder();const i=ALLP.findIndex(x=>x.p.includes(k));if(i>=0)openG(ALLP[i].g,k)};
 window.__TRINDEX=()=>toIndex();window.__TROPENG=(i,k)=>openG(i,k);
