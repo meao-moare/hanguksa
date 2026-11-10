@@ -79,7 +79,7 @@ const SR_COL={'인물':'#047857','왕':'#7c3aed','구조도':'#c2410c','낱말':
   ['침입당함 · 전쟁',ic(`<path class="burst" d="${BURST}"/><path class="burst2" d="${BURST2}"/>`)],
   ['막아냄 · 승리',gl('def')],['공격 · 진출',gl('atk')],['작전',gl('op')],
   ['조약',ic(`<circle class="seal" r="8.5"/><text class="sealt" x="0" y="3.6">조</text>`)],
-  ['백성의 봉기 (난·농민 봉기)',gl('rev')],['권력 다툼 · 정변',gl('coup')],['유물 · 유적',gl('relic')],['사건 · 사고',gl('inc')],
+  ['백성의 봉기 (난·농민 봉기)',gl('rev')],['권력 다툼 · 정변',gl('coup')],['유물 · 유적',gl('relic')],['기록물 · 옛 책',gl('book')],['탑',gl('pagoda')],['사건 · 사고',gl('inc')],
   ['정치 · 민족 운동',`<svg viewBox="-6 -30 26 34" class="lgi"><g class="pin"><path class="pole" d="M0,1.5V-26"/><path class="flg" d="M0.8,-25.5C5,-28.5,9.5,-22,15,-25.2V-14.8C9.5,-11.6,5,-18.1,0.8,-15.1Z" style="fill:var(--t-ind)"/></g></svg>`]];
  const tps=(typeof TOPICS!=='undefined'?TOPICS:[]).map(t=>`<span><i style="background:var(--t-${t.k})"></i>${esc(t.n)}</span>`).join('');
  pop.innerHTML=`<div class="lghd"><b>지도 아이콘</b><button type="button" class="lgx" aria-label="닫기">✕</button></div><ul>${rows.map(([n,s])=>`<li>${s}<span>${n}</span></li>`).join('')}</ul>${tps?`<div class="lgt"><b>그 밖의 점 색 = 주제</b><div>${tps}</div></div>`:''}`;
@@ -465,7 +465,8 @@ function applyStates(fresh){try{const t=curT();for(const [id,S] of Object.entrie
 {const af=applyFrame;applyFrame=function(){const r=af.apply(this,arguments);applyStates(true);return r}}
 applyStates(true);
 /* 갔다가 돌아오는 화살표(위화도 회군): 가는 길을 다 그린 뒤 돌아오는 길을 그림 */
-{const sa=setArrows;setArrows=function(e,state){const r=sa.apply(this,arguments);const ps=arrOf.get(e.id);
+{let SEQ=null;const sa=setArrows;setArrows=function(e,state){const r=sa.apply(this,arguments);const ps=arrOf.get(e.id);
+  if(ps&&e.seqAr&&state==='on'&&SEQ!==e.id){SEQ=e.id;[ps[0].g,ps[0].hg].forEach(n=>{if(!n)return;n.classList.remove('draw','drawn');void n.getBoundingClientRect();n.classList.add('draw')});clearTimeout(ps[0].dT);ps[0].dT=setTimeout(()=>ps[0].g.classList.add('drawn'),1050);state='draw'}else if(ps&&e.seqAr&&state!=='on'&&state!=='draw')SEQ=null;
   if(ps&&e.seqAr){ps.forEach((p,k)=>{clearTimeout(p.sqT);if(!k)return;if(state==='draw'){p.g.style.visibility=p.hg.style.visibility='hidden';
       p.sqT=setTimeout(()=>{p.g.style.visibility=p.hg.style.visibility='';[p.g,p.hg].forEach(n=>{n.classList.remove('draw','drawn');void n.getBoundingClientRect();n.classList.add('draw')});clearTimeout(p.dT);p.dT=setTimeout(()=>p.g.classList.add('drawn'),1050)},1100*k)}
     else p.g.style.visibility=p.hg.style.visibility=''})}return r}}

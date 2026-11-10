@@ -3942,7 +3942,7 @@ EVENTS.forEach(e=>{if(TPFIX[e.t])e.tp=TPFIX[e.t]});
 const ICON_SET={def:['매소성 전투','기벌포 전투 · 삼국 통일','노량 해전','옥포 해전','처인성 전투','봉오동 전투','청산리 대첩','황토현 전투','장성 황룡촌 전투'],hit:['중국군 참전','우금치 전투'],atk:['영릉가 전투','쌍성보 전투','대전자령 전투']};
 const RELIC=/유적|동굴|패총|암각화|고인돌|대장경|석굴암|불국사|첨성대|[^골]탑|비 건립|정계비|순수비|금관|토기|동검|불상|신종|고분|무덤|왕릉|능비|직지|여지도|화성 축조|중건|종묘|실록|의궤|활자|측우기|자격루|혼천의|거북선|팔만/;
 function iconOf(e){const t=e.t;for(const k in ICON_SET)if(ICON_SET[k].includes(t))return k;
-  if(!e.tp.includes('war')&&!/건국|멸망/.test(t)&&RELIC.test(t))return 'relic';
+  if(!e.tp.includes('war')&&!/건국|멸망/.test(t)&&RELIC.test(t)){if(/대장경|팔만|직지|실록|의궤|여지도|훈민정음|활자|『|일기|문집|보감/.test(t))return 'book';if(/석탑|목탑|[^골지]탑(?!리)/.test(t))return 'pagoda';return 'relic'}
   if(/작전|철수|후퇴|회담 시작/.test(t))return 'op';
   if(/사건|참변|사태|학살/.test(t)&&!/전쟁/.test(t))return 'inc';
   if(/침입|침략|양요|호란|왜란|왜변|남침|발발|사변|침공|도굴/.test(t))return 'hit';
@@ -3957,6 +3957,8 @@ const ICON_GL={def:['M0,-5.2L4.3,-3.5V0.1C4.3,2.7,2.4,4.6,0,5.4C-2.4,4.6,-4.3,2.
  op:['M0,-3.4A3.4,3.4 0 1 1 -0.01,-3.4M0,-6V-1.8M0,1.8V6M-6,0H-1.8M1.8,0H6',0,'#4b5b6b','작전'],
  inc:['M0,-4.6V1M0,3.9V4.1',0,null,'사건'],
  relic:['M-1.9,-5.6H1.9V-4.5H1.1C1.1,-3.7,1.6,-3.2,2.5,-2.8C4.7,-1.8,5.1,1.1,4.2,3.2C3.7,4.4,2.7,5.2,1.7,5.4H-1.7C-2.7,5.2,-3.7,4.4,-4.2,3.2C-5.1,1.1,-4.7,-1.8,-2.5,-2.8C-1.6,-3.2,-1.1,-3.7,-1.1,-4.5H-1.9ZM-4.2,-0.25H4.2V0.65H-4.2Z',1,'#b07a2a','유물·유적'],
+ book:['M-4.2,-5.4H4.2V5.4H-4.2ZM-3.3,-4.2V-3.4H-2.5V-4.2ZM-3.3,-1.6V-0.8H-2.5V-1.6ZM-3.3,1.0V1.8H-2.5V1.0ZM-3.3,3.6V4.4H-2.5V3.6ZM0.6,-4.4V0.8H2.8V-4.4Z',1,'#047857','기록물·옛 책'],
+ pagoda:['M-0.35,-6H0.35V-4.6H-0.35ZM-2.4,-4.6H2.4L2.9,-4H-2.9ZM-1.4,-3.95H1.4V-2.95H-1.4ZM-3.2,-2.9H3.2L3.8,-2.2H-3.8ZM-1.8,-2.15H1.8V-0.95H-1.8ZM-4,-0.9H4L4.7,-0.1H-4.7ZM-2.3,-0.05H2.3V2.2H-2.3ZM-3.6,2.25H3.6V3.35H-3.6ZM-4.6,3.4H4.6V5.2H-4.6Z',1,'#8a5a1f','석탑·탑'],
  rev:['M0,-5.6C2.8,-3,4,-0.8,3.7,1.6C3.4,4,1.8,5.4,0,5.4C-1.8,5.4,-3.4,4,-3.7,1.6C-3.9,-0.4,-2.6,-1.9,-1.5,-3.1C-1.3,-1.6,-0.7,-0.7,0.1,-0.5C0.6,-2.3,0.5,-4,0,-5.6Z',1,'var(--t-soc)','백성의 봉기'],
  coup:['M1.4,-5.8L-3.6,0.8H-0.3L-1.4,5.8L3.6,-1H0.3Z',1,'#6b21a8','권력 다툼·정변']};
 
@@ -5822,7 +5824,7 @@ const SR_COL={'인물':'#047857','왕':'#7c3aed','구조도':'#c2410c','낱말':
   ['침입당함 · 전쟁',ic(`<path class="burst" d="${BURST}"/><path class="burst2" d="${BURST2}"/>`)],
   ['막아냄 · 승리',gl('def')],['공격 · 진출',gl('atk')],['작전',gl('op')],
   ['조약',ic(`<circle class="seal" r="8.5"/><text class="sealt" x="0" y="3.6">조</text>`)],
-  ['백성의 봉기 (난·농민 봉기)',gl('rev')],['권력 다툼 · 정변',gl('coup')],['유물 · 유적',gl('relic')],['사건 · 사고',gl('inc')],
+  ['백성의 봉기 (난·농민 봉기)',gl('rev')],['권력 다툼 · 정변',gl('coup')],['유물 · 유적',gl('relic')],['기록물 · 옛 책',gl('book')],['탑',gl('pagoda')],['사건 · 사고',gl('inc')],
   ['정치 · 민족 운동',`<svg viewBox="-6 -30 26 34" class="lgi"><g class="pin"><path class="pole" d="M0,1.5V-26"/><path class="flg" d="M0.8,-25.5C5,-28.5,9.5,-22,15,-25.2V-14.8C9.5,-11.6,5,-18.1,0.8,-15.1Z" style="fill:var(--t-ind)"/></g></svg>`]];
  const tps=(typeof TOPICS!=='undefined'?TOPICS:[]).map(t=>`<span><i style="background:var(--t-${t.k})"></i>${esc(t.n)}</span>`).join('');
  pop.innerHTML=`<div class="lghd"><b>지도 아이콘</b><button type="button" class="lgx" aria-label="닫기">✕</button></div><ul>${rows.map(([n,s])=>`<li>${s}<span>${n}</span></li>`).join('')}</ul>${tps?`<div class="lgt"><b>그 밖의 점 색 = 주제</b><div>${tps}</div></div>`:''}`;
@@ -6208,7 +6210,8 @@ function applyStates(fresh){try{const t=curT();for(const [id,S] of Object.entrie
 {const af=applyFrame;applyFrame=function(){const r=af.apply(this,arguments);applyStates(true);return r}}
 applyStates(true);
 /* 갔다가 돌아오는 화살표(위화도 회군): 가는 길을 다 그린 뒤 돌아오는 길을 그림 */
-{const sa=setArrows;setArrows=function(e,state){const r=sa.apply(this,arguments);const ps=arrOf.get(e.id);
+{let SEQ=null;const sa=setArrows;setArrows=function(e,state){const r=sa.apply(this,arguments);const ps=arrOf.get(e.id);
+  if(ps&&e.seqAr&&state==='on'&&SEQ!==e.id){SEQ=e.id;[ps[0].g,ps[0].hg].forEach(n=>{if(!n)return;n.classList.remove('draw','drawn');void n.getBoundingClientRect();n.classList.add('draw')});clearTimeout(ps[0].dT);ps[0].dT=setTimeout(()=>ps[0].g.classList.add('drawn'),1050);state='draw'}else if(ps&&e.seqAr&&state!=='on'&&state!=='draw')SEQ=null;
   if(ps&&e.seqAr){ps.forEach((p,k)=>{clearTimeout(p.sqT);if(!k)return;if(state==='draw'){p.g.style.visibility=p.hg.style.visibility='hidden';
       p.sqT=setTimeout(()=>{p.g.style.visibility=p.hg.style.visibility='';[p.g,p.hg].forEach(n=>{n.classList.remove('draw','drawn');void n.getBoundingClientRect();n.classList.add('draw')});clearTimeout(p.dT);p.dT=setTimeout(()=>p.g.classList.add('drawn'),1050)},1100*k)}
     else p.g.style.visibility=p.hg.style.visibility=''})}return r}}
