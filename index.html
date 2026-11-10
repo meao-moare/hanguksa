@@ -2712,6 +2712,9 @@ body.ovedit #v-ov .hzach{cursor:move;touch-action:none}body.ovedit #v-ov .hzach.
 #ovscroll .hzall .hzbot,#v-ov .hzbot{overflow:visible!important;flex:none!important}
 #ovscroll .hzall{align-items:stretch!important}
 #ovscroll .hzall>.ovsec.hsec>.hzwrap{min-height:100%!important}
+/* 설명란 진한 선 없애기 */
+#v-ov .hzbot{border-top:1px solid var(--rule)!important}
+#v-ov .hzall .hzbot>.hzsep:first-child,#v-ov .hzbot .hzsep{border-left:1px solid var(--rule)!important}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/flubber@0.4.2/build/flubber.min.js"></script>
 <script>
