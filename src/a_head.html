@@ -2714,4 +2714,21 @@ body.ovedit #v-ov .hzach{cursor:move;touch-action:none}body.ovedit #v-ov .hzach.
 /* 설명란 진한 선 없애기 */
 #v-ov .hzbot{border-top:1px solid var(--rule)!important}
 #v-ov .hzall .hzbot>.hzsep:first-child,#v-ov .hzbot .hzsep{border-left:1px solid var(--rule)!important}
+/* 시대 경계: 넘어가도 밑으로 숨지 않게, 설명란은 경계 없이 */
+#v-ov .hsec,#v-ov section.ovsec{overflow:visible!important}
+#v-ov .hzst{background:transparent!important}#v-ov .hzwrap,#v-ov .hztop{background:transparent!important}
+#ovscroll .hzall{background:#fff}
+#v-ov .hztop .hzsep{z-index:0!important;border-left:1.5px solid color-mix(in srgb,var(--ink) 22%,transparent)!important}
+#v-ov .hzbot .hzsep{display:none!important}
+#v-ov .hzn,#v-ov .hznt,#v-ov .ovl,#v-ov .ovdw,#v-ov .ovhl{z-index:6}
+#v-ov .hzsep{display:none!important}
+#v-ov .hzbot{border-top:1px solid var(--rule)!important}
+#v-ov .hztop,#v-ov .hzbot,#v-ov .hzwrap,#v-ov .hsec{box-shadow:none!important}
+#v-ov .hzbot{border-top:0!important}
+#v-ov .hzach .ovgc{pointer-events:auto!important;position:absolute;right:1px;top:1px;bottom:auto;width:14px;height:14px;border-radius:4px;background:#2563eb;border:2px solid #fff;box-shadow:0 1px 4px rgb(0 0 0/.25);cursor:nwse-resize;touch-action:none;z-index:3}
+#v-ov .hzach.ovsz{overflow:auto}
+#v-ov .hzbot,#v-ov .hztop,#v-ov .hzwrap,#v-ov .hsec{z-index:auto!important}
+#v-ov .hzach{z-index:7}#v-ov .hzband{z-index:1}
+#v-ov .ovhl{border-radius:999px!important;padding:0 8px!important}
+#v-ov .hzach p,#v-ov .xed,.xed{white-space:pre-wrap}
 </style>
