@@ -166,3 +166,15 @@ document.addEventListener('scroll',e=>{const el=keyEl(e.target);if(!el||el.nodeT
   if(!on()||now()-lastU<1300){rec(el);return}const p=POS.get(el);if(!p){rec(el);return}if(Math.abs(el.scrollTop-p[0])>2||Math.abs(el.scrollLeft-p[1])>2){el.scrollTop=p[0];el.scrollLeft=p[1]}},true);
 new MutationObserver(()=>{if(on()){['trbody','trread'].forEach(id=>{const el=document.getElementById(id);if(el)rec(el)});document.querySelectorAll('#trbody>.trcard').forEach(rec);rec(document.scrollingElement||document.documentElement)}}).observe(document.body,{attributes:true,attributeFilter:['class']});
 }
+
+/* 용어 사전에서만 인물 빼기 (인물 사전에는 그대로) */
+{
+const TRM=()=>window.__ME&&window.__ME.tr;const HID=()=>{const M=TRM();const v=M&&M.get('@dch');return new Set(Array.isArray(v)?v:[])};
+const ed=()=>document.body.classList.contains('medit')&&window.__MEX&&window.__MEX.own&&window.__MEX.own();
+const keyOfGp=g=>{const b=g.querySelector('.gpn');return g.dataset.k||(b&&(b.dataset.person||b.textContent.trim()))||''};
+let busy=false;function deco(){const b=document.getElementById('dcbody');if(!b||busy)return;busy=true;const H=HID();const E=ed();
+  b.querySelectorAll('.gl2>.gp').forEach(g=>{const k=keyOfGp(g);const h=H.has(k);g.classList.toggle('dchid',h);let x=g.querySelector(':scope>dt>.dchbtn');if(E){if(!x){g.querySelector('dt')?.insertAdjacentHTML('beforeend','<button type="button" class="dchbtn"></button>');x=g.querySelector(':scope>dt>.dchbtn')}if(x){x.textContent=h?'사전에 다시 넣기':'사전에서 빼기';x.dataset.k=k}}else if(x)x.remove()});busy=false}
+document.addEventListener('click',e=>{const x=e.target.closest&&e.target.closest('#dcbody .dchbtn');if(!x)return;e.preventDefault();e.stopImmediatePropagation();const M=TRM();if(!M)return;const H=HID();const k=x.dataset.k;if(H.has(k))H.delete(k);else H.add(k);const v=[...H];M.set('@dch',v);try{window.__MEX.save('T:@dch',v)}catch(_){}deco();try{window.__MEX.toast(H.has(k)?'「'+k+'」 용어 사전에서 뺐어요 (인물 사전엔 그대로)':'다시 넣었어요')}catch(_){}},true);
+let t=0;new MutationObserver(()=>{clearTimeout(t);t=setTimeout(deco,150)}).observe(document.body,{attributes:true,attributeFilter:['class']});
+const wait=()=>{const b=document.getElementById('dcbody');if(!b)return setTimeout(wait,800);new MutationObserver(()=>{clearTimeout(t);t=setTimeout(deco,150)}).observe(b,{childList:true});deco()};wait();
+}
