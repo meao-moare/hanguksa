@@ -1285,8 +1285,8 @@ document.addEventListener('touchend',selUp,true);
  /* ☰ 메뉴: 화면 + 내가 넣는 메뉴(주소·앱 안 항목) + 고른 메뉴를 묶음으로 */
  {const sb=$('setbtn');if(sb&&!$('menubtn')){const b=document.createElement('button');b.id='menubtn';b.type='button';b.className='tib';b.setAttribute('aria-label','메뉴');b.innerHTML='<svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg>';sb.after(b);
    const m=document.createElement('div');m.id='menupop';m.hidden=true;document.body.appendChild(m);
-   const VS0=[['map','지도'],['tl','연표'],['ov','연대표'],['ev','사건 모아보기'],['tr','구조도'],['kg','왕계표'],['dc','용어 사전'],['pp','인물'],['ty','조약'],['rl','문화유산']];const VN=Object.fromEntries(VS0);const VS=[['map','지도'],['tr','구조도'],['kg','왕계표'],['ty','조약'],['rl','문화유산'],['tags','#태그']];const BG=[{b:'@tl',n:'연표',items:[['tl','연표'],['ov','연대표'],['ev','사건 모아보기']],at:1},{b:'@dc',n:'사전',items:[['dc','용어 사전'],['pp','인물']],at:4}];
-   const goV=v=>{if(v==='tags'){m.hidden=true;try{window.__TAGALL()}catch(_){}return}if(v==='ev'){const t=document.querySelector('#tlmenu [data-tv=ev]');if(t){t.click();return}}showView(v)};
+   const VS0=[['map','지도'],['tl','연표'],['ov','연대표'],['ev','사건 모아보기'],['tr','구조도'],['kg','왕계표'],['dc','용어 사전'],['pp','인물'],['ty','조약'],['rl','문화유산']];const VN=Object.fromEntries(VS0);const VS=[['map','지도'],['tr','구조도'],['kg','왕계표'],['ty','조약'],['rl','문화유산'],['tags','#태그'],['hjw','한자어']];const BG=[{b:'@tl',n:'연표',items:[['tl','연표'],['ov','연대표'],['ev','사건 모아보기']],at:1},{b:'@dc',n:'사전',items:[['dc','용어 사전'],['pp','인물']],at:4}];
+   const goV=v=>{if(v==='tags'){m.hidden=true;try{window.__TAGALL()}catch(_){}return}if(v==='hjw'){m.hidden=true;try{window.__HJWALL()}catch(_){}return}if(v==='ev'){const t=document.querySelector('#tlmenu [data-tv=ev]');if(t){t.click();return}}showView(v)};
    let fold={};try{fold=JSON.parse(localStorage.getItem('hgs_mfold')||'{}')}catch(_){}
    let pend=null;const pick=new Set();
    const cb=key=>`<input type="checkbox" class="mncb" data-sel="${E(key)}"${pick.has(key)?' checked':''}>`;

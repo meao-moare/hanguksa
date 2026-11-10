@@ -2587,9 +2587,7 @@ body.medit #dcbody .gl2>.gp.dchid{opacity:.45}
 #dcbody .dchbtn:hover{color:var(--seal);border-color:var(--seal)}
 #v-tl ol.tl>li[data-nb]{position:relative}
 #v-tl ol.tl>li[data-nb]::after{content:'';position:absolute;left:calc(var(--nbx,96px) - 8px);top:0;bottom:0;width:56px;background-image:var(--nbg,none);background-position:var(--nbp,0 0);background-size:var(--nbs,0 0);background-repeat:no-repeat;opacity:.8;pointer-events:none}
-#v-ov .hzrg2{border-left:2.5px solid color-mix(in srgb,var(--gc) 85%,#000)!important}
-#v-ov .hzrg2:not(.og){background:color-mix(in srgb,var(--gc) 48%,var(--panel))!important;color:var(--ink)}
-#v-ov .hzrg2.cont{border-left:0!important;border-top-left-radius:0!important;border-bottom-left-radius:0!important}
+
 #kgpop{position:fixed;z-index:3000;background:var(--panel);border:1px solid var(--rule);border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.16);padding:6px;display:flex;flex-direction:column;gap:2px;min-width:180px}
 #kgpop button{font:inherit;display:flex;justify-content:space-between;gap:12px;border:0;background:none;padding:5px 8px;border-radius:6px;cursor:pointer;color:var(--ink);text-align:left}
 #kgpop button:hover{background:color-mix(in srgb,var(--ink) 6%,transparent)}
@@ -2613,4 +2611,11 @@ body.medit #dcbody .gl2>.gp.dchid{opacity:.45}
 .hjsum .hjtot b{font-family:'Noto Serif KR',serif;-webkit-text-stroke:0}
 .hjsum .hjsr b .hjw,.hjsum .hjsr b{font-size:28px!important}
 .pagpin .dmc,.pagpin .dms{stroke-width:.7!important}.pagpin .dmc{fill:#b8bec2!important}
+.hjwl{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px}
+.hjwl button{font:inherit;text-align:left;display:flex;flex-direction:column;gap:2px;padding:10px 12px;border:1px solid var(--rule);border-left:4px solid #8b5e34;border-radius:10px;background:var(--panel);color:var(--ink);cursor:pointer}
+.hjwl button b{font-size:16px}.hjwl .hjz{font-family:'Noto Serif KR',serif;font-size:20px;-webkit-text-stroke:0}.hjwl i{font-style:normal;font-size:12px;color:var(--muted)}
+#v-ov .hzrg2{border:0!important}
+#v-ov .hzrg2:not(.og){background:color-mix(in srgb,var(--gc) 26%,var(--panel))!important;color:var(--ink)}
+#v-ov .hzrg2.cont{border-top-left-radius:0!important;border-bottom-left-radius:0!important}
+#v-ov .hzrg2.cend{border-top-right-radius:0!important;border-bottom-right-radius:0!important}
 </style>

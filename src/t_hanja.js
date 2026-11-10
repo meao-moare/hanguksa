@@ -78,4 +78,13 @@ pop.addEventListener('click',e=>{const b=e.target.closest('[data-hjed]');if(!b)r
      return `<div class="hjsw">${cs.map((c,i)=>{const m=MEAN(c);return `<div class="hjsr"><b>${E(c)}</b><span>${m.length?E(m.join(', ')):E(rd[i])+' <i>(뜻 미입력)</i>'}</span></div>`}).join('')}<div class="hjtot">합쳐서 <b>${E(w)}</b> = ${E(rd.join(''))}</div></div>`}).join('');
    const sec=document.createElement('section');sec.className='kband hjsum';sec.dataset.s=sig;sec.style.setProperty('--bc','#8b5e34');sec.innerHTML='<h3>한자 풀이</h3>'+html;const sn=pin.querySelector('.snote');pin.insertBefore(sec,sn||null)};
   let q=0;new MutationObserver(()=>{if(!q)q=requestAnimationFrame(()=>{q=0;try{sum()}catch(_){}})}).observe(document.body,{childList:true,subtree:true,characterData:true})}
+
+ /* 전체 메뉴 "한자어": 뜻에 한자가 적힌 낱말 모아보기 (가나다순) */
+ window.__HJWALL=()=>{const E=x=>String(x).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));const p=document.getElementById('kpage');if(!p)return;
+  const CHO='ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ';const cho=w=>{const c=w.charCodeAt(0);if(c>=0xAC00&&c<=0xD7A3){const x=CHO[Math.floor((c-0xAC00)/588)];return {'ㄲ':'ㄱ','ㄸ':'ㄷ','ㅃ':'ㅂ','ㅆ':'ㅅ','ㅉ':'ㅈ'}[x]||x}return '기타'};
+  const L=[];for(const k in GLOSS){const d=String(GLOSS[k]||'');const h=(d.match(/[一-鿿豈-﫿]{2,}/g)||[]);if(h.length)L.push([k,h[0]])}L.sort((a,b)=>a[0].localeCompare(b[0],'ko'));
+  const g=new Map();L.forEach(x=>{const h=cho(x[0]);if(!g.has(h))g.set(h,[]);g.get(h).push(x)});
+  const hun=w=>[...w].map(c=>{const m=MEAN(c)[0];return m?m:(RD(c)||'?')}).join(' · ');
+  p.innerHTML=`<div class="kpbar"><button class="ib" data-kx aria-label="뒤로"><svg class="ic" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg></button><span>한자어 모아보기</span></div><div class="kpin tgall hjwall"><div class="kph"><h1>한자어</h1><p class="tgn">${L.length}개 · 가나다순 · 누르면 낱말 뜻</p></div>${L.length?[...g].map(([h,A])=>`<section class="tgg"><h3>${E(h)}</h3><div class="hjwl">${A.map(([k,hz])=>`<button type="button" data-hjwt="${E(k)}"><b>${E(k)}</b><span class="hjz">${E(hz)}</span><i>${E(hun(hz))}</i></button>`).join('')}</div></section>`).join(''):'<p class="tgn">아직 한자를 적은 낱말이 없어요. 낱말 뜻에 한자를 적으면 여기 모여요.</p>'}</div>`;p.hidden=false;p.scrollTop=0};
+ document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('[data-hjwt]');if(!b)return;e.preventDefault();e.stopPropagation();try{openTerm(b.dataset.hjwt)}catch(_){}},true);
 }
