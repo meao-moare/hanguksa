@@ -288,7 +288,7 @@ GLRE_SET();
 function GLRE_SET(){window.GLRE2=new RegExp('('+Object.keys(GLOSS).sort((a,b)=>b.length-a.length).map(k=>k.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')).join('|')+')','g')}
 /* 낱말이 더 긴 다른 말의 일부일 때는 표시하지 않음 (동인도의 '동인' 등) */
 const GL_NOT={'대북':/^\s?(정책|송금|지원|관계|특사|전단|방송|협상|제재)/,'동인':/^도/,'서인':/^도|^주/,'남인':/^도/,'북인':/^도/,'노론':/^문/,'사림':/^원/};
-glx=function(s,skip){const seen=new Set();return esc(s).replace(GLRE2,(m,...a)=>{const off=a[a.length-2],str=a[a.length-1];const nx=str.slice(off+m.length,off+m.length+2);if(GL_NOT[m]&&GL_NOT[m].test(nx))return m;if(seen.has(m)||(skip&&skip.includes(m)))return m;seen.add(m);return `<span class="gw${TREE_OF[m]?' tr':''}" role="button" tabindex="0" data-gl="${m}">${m}</span>`})};
+glx=function(s,skip){const seen=new Set();return esc(s).replace(GLRE2,(m,...a)=>{const off=a[a.length-2],str=a[a.length-1];const nx=str.slice(off+m.length,off+m.length+2);if(GL_NOT[m]&&GL_NOT[m].test(nx))return m;if(/^[하한할함했해합된되됨될됐받케켰킨킬키시셨]/.test(nx)&&!/[다]$/.test(m))return m;{const pv=str.slice(Math.max(0,off-1),off);if(m.length<=2&&/[가-힣]/.test(pv)&&!/[의와과및·]/.test(pv))return m}if(seen.has(m)||(skip&&skip.includes(m)))return m;seen.add(m);return `<span class="gw${TREE_OF[m]?' tr':''}" role="button" tabindex="0" data-gl="${m}">${m}</span>`})};
 
 /* 자주 나오는 사건 이름도 낱말 풀이에 */
 Object.assign(GLOSS,Object.fromEntries(Object.entries({
