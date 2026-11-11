@@ -8318,6 +8318,7 @@ function krAlign(){const secs=[...document.querySelectorAll('#v-ov section.ovsec
   let prev=null;secs.forEach(sec=>{const R=rowsOf(sec);if(!R.length){prev=null;return}const PM={};(prev||[]).forEach(r=>{PM[r.nat]=r.t});const fix=R.filter(r=>PM[r.nat]!=null),rest=R.filter(r=>PM[r.nat]==null).sort((p,q)=>p.t-q.t);
     if(fix.length){const pl=[];const hit=(r,y)=>pl.some(p=>p.a<r.b+8&&r.a<p.b+8&&p.t<y+r.h+6&&y<p.t+p.h+6);
       fix.sort((p,q)=>PM[p.nat]-PM[q.nat]).forEach(r=>{let y=PM[r.nat];while(hit(r,y)){y=Math.max(...pl.filter(p=>p.a<r.b+8&&r.a<p.b+8&&p.t<y+r.h+6&&y<p.t+p.h+6).map(p=>p.t+p.h+6))}r.t=y;pl.push(r)});
+      {const sl=fix.find(r=>r.nat==='신라'),gi=rest.findIndex(r=>r.nat==='고려');if(sl&&gi>=0){const g=rest.splice(gi,1)[0];g.t=sl.t;g.el.style.zIndex=2;pl.push(g)}}
       rest.forEach(r=>{const cs=[6,...pl.map(p=>p.t+p.h+6)].sort((p,q)=>p-q);r.t=cs.find(y=>!hit(r,y));pl.push(r)});
       const H0=Math.max(...R.map(r=>(parseFloat(r.el.style.top)||0)+r.h)),H1=Math.max(...R.map(r=>r.t+r.h));if(window.__KAL)console.log('KAL',sec.dataset.sec,Math.round(H0),Math.round(H1));const top0=R.reduce((m,r)=>(parseFloat(r.el.style.top)||0)<(parseFloat(m.el.style.top)||0)?r:m,R[0]);if(R.length>1&&(top0.t>(parseFloat(top0.el.style.top)||0)+2||H1-H0>150)){R.forEach(r=>r.t=parseFloat(r.el.style.top)||0);prev=R;return}
       R.forEach(r=>r.el.style.top=r.t+'px');
