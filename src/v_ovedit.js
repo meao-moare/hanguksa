@@ -5,10 +5,10 @@ const $=id=>document.getElementById(id);
 const TRM=()=>window.__ME&&window.__ME.tr;
 const can=()=>document.body.classList.contains('medit')&&window.__MEX&&window.__MEX.own&&window.__MEX.own()&&!$('v-ov').hidden;
 const keyOf=el=>el.dataset.ovk||keyOf0(el);
-const keyOf0=el=>{if(el.matches('.hzn'))return 'n'+el.dataset.ev;if(el.matches('.hznt')){const b=el.querySelector('[data-ev]');return b?'t'+b.dataset.ev:'t'+(el.textContent||'').trim().slice(0,20)}if(el.matches('.hzrg'))return 'r'+el.dataset.rg;if(el.matches('.hzach')){const b=el.querySelector('[data-king]');return b?'a'+b.dataset.king:null}if(el.matches('.hzld')){const n=el.nextElementSibling;return n&&n.dataset.ev?'l'+n.dataset.ev:null}return null};
+const keyOf0=el=>{if(el.matches('.hzyr'))return 'y'+(el.dataset.yev||el.textContent.trim());if(el.matches('.hzn'))return 'n'+el.dataset.ev;if(el.matches('.hznt')){const b=el.querySelector('[data-ev]');return b?'t'+b.dataset.ev:'t'+(el.textContent||'').trim().slice(0,20)}if(el.matches('.hzrg'))return 'r'+el.dataset.rg;if(el.matches('.hzach')){const b=el.querySelector('[data-king]');return b?'a'+b.dataset.king:null}if(el.matches('.hzld')){const n=el.nextElementSibling;return n&&n.dataset.ev?'l'+n.dataset.ev:null}return null};
 const get=k=>{const M=TRM();return (M&&M.get('@ov:'+k))||null};
 const put=(k,v)=>{const M=TRM();if(!M)return;M.set('@ov:'+k,v);try{window.__MEX.save('T:@ov:'+k,v)}catch(_){}};
-const SEL='#v-ov .hzn,#v-ov .hznt,#v-ov .hzrg,#v-ov .hzach';
+const SEL='#v-ov .hzn,#v-ov .hznt,#v-ov .hzrg,#v-ov .hzach,#v-ov .hzyr';
 function applyAll(){const ed=can();const seen={};document.querySelectorAll(SEL).forEach(el=>{const k0=keyOf0(el);if(!k0)return;const nn=seen[k0]=(seen[k0]||0)+1;const k=nn>1?k0+'#'+nn:k0;el.dataset.ovk=k;const v=get(k);
   if(el.dataset.ow==null)el.dataset.ow=el.style.width||'';if(el.dataset.ogc==null)el.dataset.ogc=el.style.getPropertyValue('--gc')||'';if(el.dataset.oh==null)el.dataset.oh=el.style.height||'';
   el.style.translate=v&&(v.x||v.y)?`${v.x||0}px ${v.y||0}px`:'';
@@ -17,7 +17,7 @@ function applyAll(){const ed=can();const seen={};document.querySelectorAll(SEL).
   if(el.matches('.hzrg')){if(v&&v.c)el.style.setProperty('--gc',v.c);else if(el.dataset.ogc!=null)el.style.setProperty('--gc',el.dataset.ogc)}else{if(v&&v.c){el.style.setProperty('--oc',v.c);el.classList.add('ovc')}else el.classList.remove('ovc')}el.classList.toggle('ovx',!!(v&&v.xm));if(el.matches('.hzrg2')){if(v&&v.th){el.style.setProperty('height',v.th+'px','important');el.style.setProperty('line-height',v.th+'px','important')}else{el.style.removeProperty('height');el.style.removeProperty('line-height')}}
   if(el.matches('.hzld'))el.style.height=v&&v.h?v.h+'px':el.dataset.oh;
   let g=el.querySelector(':scope>.ovgrip');if(ed&&!g&&el.matches('.hzach')){el.insertAdjacentHTML('beforeend','<ovg class="ovgrip ovgc" title="크기 조절"></ovg>')}else if(ed&&!g&&el.matches('.hzrg')){el.insertAdjacentHTML('beforeend','<ovg class="ovgrip ovgh ovgl" title="왼쪽 길이"></ovg>');el.insertAdjacentHTML('beforeend',`<ovg class="ovgrip ${el.matches('.hzld')?'ovgv':'ovgh'}" title="${el.matches('.hzld')?'세로줄 길이':'길이'}"></ovg>`)}else if(!ed&&g)el.querySelectorAll(':scope>.ovgrip').forEach(x=>x.remove())});
-  try{contFix()}catch(_){}document.querySelectorAll('#v-ov .hzld').forEach(link);try{marks()}catch(_){}drawL();document.body.classList.toggle('ovedit',ed);if(!ed)document.body.classList.remove('ovline');const lb=$('ovline');if(lb)lb.hidden=true;const ab=$('ovadd');if(ab)ab.hidden=!ed}
+  try{declut()}catch(_){}try{contFix()}catch(_){}document.querySelectorAll('#v-ov .hzld').forEach(link);try{marks()}catch(_){}drawL();document.body.classList.toggle('ovedit',ed);if(!ed)document.body.classList.remove('ovline');const lb=$('ovline');if(lb)lb.hidden=true;const ab=$('ovadd');if(ab)ab.hidden=!ed}
 /* 이끔선: 축의 연도 자리에서 글자까지 바로 잇기 (글자를 옮기면 따라감) */
 function link(ld){const n=ld.nextElementSibling;if(!n||!n.matches('.hzn'))return;if(ld.dataset.ol==null){ld.dataset.ol=parseFloat(ld.style.left)||0;ld.dataset.ot=parseFloat(ld.style.top)||0;ld.dataset.oh0=parseFloat(ld.style.height)||0}
   const up=ld.classList.contains('up');const Ax=+ld.dataset.ol,Ay=up?(+ld.dataset.ot)+(+ld.dataset.oh0):+ld.dataset.ot;const tr=(n.style.translate||'').split(/\s+/).map(parseFloat);const tx=tr[0]||0,ty=tr[1]||0;
@@ -42,8 +42,13 @@ document.addEventListener('click',e=>{const l=e.target.closest&&e.target.closest
 /* 고치기 모드: 글자·형광펜을 누르면 색 바꾸기 / ✕ 표시 */
 {const pal=document.createElement('div');pal.id='ovpal';pal.hidden=true;document.body.appendChild(pal);let cur=null;
  const COLS=['#dc2626','#ea580c','#ca8a04','#16a34a','#0d9488','#2563eb','#7c3aed','#db2777','#57534e','#111827'];
- document.addEventListener('click',e=>{if(e.target.closest('#ovpal'))return;const el=can()&&e.target.closest&&e.target.closest(SEL);if(!el||el.matches('.hzach')){pal.hidden=true;cur=null;return}if(e.target.closest('.ovgrip'))return;
+ document.addEventListener('click',e=>{if(e.target.closest('#ovpal'))return;const el=can()&&e.target.closest&&e.target.closest(SEL);if(el&&el.matches('.hzyr'))return;if(!el||el.matches('.hzach')){pal.hidden=true;cur=null;return}if(e.target.closest('.ovgrip'))return;
    e.preventDefault();e.stopPropagation();cur=el;const v=get(keyOf(el))||{};const rg=el.matches('.hzrg');
+   if(!rg){pal.hidden=true;let xb=$('ovxb');if(!xb){xb=document.createElement('button');xb.type='button';xb.id='ovxb';xb.title='✕ 표시 켜기/끄기';xb.textContent='✕';document.body.appendChild(xb);
+       xb.addEventListener('pointerdown',ev=>{ev.preventDefault();ev.stopPropagation()},true);
+       xb.addEventListener('click',ev=>{ev.preventDefault();ev.stopPropagation();const c=xb._el;if(!c)return;const k=keyOf(c);const w=Object.assign({},get(k)||{});w.xm=w.xm?0:1;put(k,w);applyAll();xb.classList.toggle('on',!!w.xm)},true);
+       addEventListener('scroll',()=>{xb.hidden=true},true);document.addEventListener('click',ev=>{if(ev.target!==xb&&!(ev.target.closest&&ev.target.closest(SEL)))xb.hidden=true},true)}
+     xb._el=el;xb.classList.toggle('on',!!v.xm);xb.hidden=false;const r=el.getBoundingClientRect();xb.style.left=(r.right-6)+'px';xb.style.top=(r.top-12)+'px';return}
    pal.innerHTML=!rg?`<button type="button" data-ox class="xb ${v.xm?'on':''}">✕ 표시</button>${v.c?'<button type="button" data-oc="" class="rs">글씨 색 원래대로</button>':''}<span class="phint">글씨 색·크기는 필통에서</span>`:`<span>형광펜 색</span>${COLS.map(c=>`<button type="button" data-oc="${c}" style="--c:${c}" class="${v.c===c?'on':''}"></button>`).join('')}<button type="button" data-oc="" class="rs" title="원래 색">원래</button><button type="button" data-ox class="xb ${v.xm?'on':''}">✕ 표시</button>${rg&&el.matches('.hzrg2')?`<span class="thl">두께</span>${[[8,'얇게'],[0,'보통'],[26,'두껍게']].map(([t,n])=>`<button type="button" data-oth="${t}" class="rs ${(v.th||0)===t?'on':''}">${n}</button>`).join('')}`:''}`;
    pal.hidden=false;const r=el.getBoundingClientRect();pal.style.left=Math.max(8,Math.min(innerWidth-pal.offsetWidth-8,r.left))+'px';const y=r.bottom+6;pal.style.top=(y+pal.offsetHeight>innerHeight-8?r.top-pal.offsetHeight-6:y)+'px'},true);
  pal.addEventListener('click',e=>{if(!cur)return;const k=keyOf(cur);const v=Object.assign({},get(k)||{});const b=e.target.closest('button');if(!b)return;
@@ -69,6 +74,18 @@ document.addEventListener('pointerdown',e=>{if(!can())return;const t=e.target;if
 /* 고치기 모드에서는 눌러도 다른 곳으로 가지 않음 (글씨 고치기만) */
 window.addEventListener('click',e=>{if(!can())return;const b=e.target.closest&&e.target.closest('#v-ov [data-ev],#v-ov [data-grp],#v-ov [data-tip],#v-ov .hzrg');if(!b)return;if(e.target.closest('[contenteditable],.hzn>span,.hznt button,.hznt span,.hzrg>span'))return;e.preventDefault();e.stopImmediatePropagation()},true);
 /* 형광펜을 줄여 범위를 끝냈으면 다음 칸으로 이어지는 같은 막대는 숨김 */
+/* 위 줄 글자로 가는 이끔선이 가까운 줄 다른 글자를 뚫고 지나가면, 그 글자를 옆으로 살짝 비켜 놓기 */
+function declut(){document.querySelectorAll('#v-ov .hztop').forEach(top=>{if(top.dataset.dcl)return;const L=[...top.querySelectorAll('.hzn')];if(!L.length||!top.getBoundingClientRect().width)return;top.dataset.dcl=1;const R0=top.getBoundingClientRect();
+  const I=L.map(n=>{const ld=n.previousElementSibling&&n.previousElementSibling.matches('.hzld')?n.previousElementSibling:null;const up=n.classList.contains('up');const sp=n.querySelector('span')||n;const r=sp.getBoundingClientRect(),lr=ld&&ld.getBoundingClientRect();const P=(n.offsetParent||top).getBoundingClientRect();const ox=ld?+(ld.dataset.ol!=null?ld.dataset.ol:parseFloat(ld.style.left)):null;return {n,ld,up,x:ld?P.left-R0.left+ox:r.left+r.width/2-R0.left,l:r.left-R0.left,w:r.width,t:r.top-R0.top,h:r.height,ln:!!ld,P}});
+  const ax=I.filter(o=>o.ld&&!o.up).map(o=>o.P.top-R0.top+(+(o.ld.dataset.ot!=null?o.ld.dataset.ot:parseFloat(o.ld.style.top))));const axY=ax.length?Math.min(...ax):1e9;const dist=o=>o.up?axY-(o.t+o.h):o.t-axY;
+  const hasLine=o=>o.ln&&dist(o)>=24;const farther=(a,b)=>a.up===b.up&&dist(a)>dist(b)+4;
+  const crossAt=(B,l)=>I.filter(A=>A!==B&&hasLine(A)&&farther(A,B)&&A.x>=l-3&&A.x<=l+B.w+3);
+  const free=(B,l,t)=>!I.some(o=>o!==B&&o.up===B.up&&Math.abs(o.t-t)<4&&o.l<l+B.w+4&&l<o.l+o.w+4);
+  const okAt=(B,l,t)=>B.x>=l+3&&B.x<=l+B.w-3&&!crossAt(B,l).length&&free(B,l,t);
+  const mv=(B,l,t)=>{const s=B.n.style;s.left=(parseFloat(s.left)||0)+(l-B.l)+'px';if(t!==B.t)s.top=(parseFloat(s.top)||B.n.offsetTop)+(t-B.t)+'px';B.l=l;B.t=t};
+  const tryShift=B=>{const c=[B.l];I.forEach(A=>{if(A===B)return;if(hasLine(A)&&farther(A,B)){c.push(A.x+5,A.x-5-B.w)}if(A.up===B.up&&Math.abs(A.t-B.t)<4)c.push(A.l+A.w+5,A.l-5-B.w)});c.sort((p,q)=>Math.abs(p-B.l)-Math.abs(q-B.l));const l=c.find(l=>okAt(B,l,B.t));if(l==null)return false;if(l!==B.l)mv(B,l,B.t);return true};
+  I.slice().sort((a,b)=>dist(a)-dist(b)).forEach(B=>{const X=crossAt(B,B.l);if(!X.length)return;if(tryShift(B))return;
+    for(const A of X){const ta=A.t,tb=B.t,la=A.l,lb=B.l;mv(A,A.l,tb);mv(B,B.l,ta);if(tryShift(B)&&tryShift(A)&&tryShift(B))return;mv(A,la,ta);mv(B,lb,tb)}})})}
 function contFix(){const all=[...document.querySelectorAll('#v-ov .hzrg2')];all.forEach((el,i)=>{if(!el.classList.contains('cont'))return;el.style.display='';if(get(el.dataset.ovk))return;let P=null;for(let j=i-1;j>=0;j--)if(all[j].dataset.rg===el.dataset.rg){P=all[j];break}if(!P)return;if(P.style.display==='none'){el.style.display='none';return}const v=get(P.dataset.ovk);if(!v||!(v.w||v.x))return;const end=P.offsetLeft+(v.x||0)+P.offsetWidth;const W=P.offsetParent?P.offsetParent.clientWidth:1e9;if(end<W-6)el.style.display='none'})}
 }
 
