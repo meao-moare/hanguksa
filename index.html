@@ -2736,7 +2736,8 @@ body.ovedit #v-ov .hzach{cursor:move;touch-action:none}body.ovedit #v-ov .hzach.
 #v-ov .hzrg:not(.hzrg2)>span{position:relative!important;left:0!important;will-change:transform}
 .ovgrip.ovgl{right:auto!important;left:-5px}
 /* 한 장의 종이처럼: 나라별 상자 테두리·바탕 없애기 */
-#v-ov .hzband{background:transparent!important;border:0!important;box-shadow:none!important;border-radius:0!important}
+#v-ov .hzband>b{line-height:14px!important;padding-top:0!important;padding-bottom:0!important;top:-3px!important}
+#v-ov .hzband{border:0!important;box-shadow:none!important;border-radius:0!important}
 #v-ov .hzbot,#v-ov .hztop,#ovscroll .hzall,#ovscroll{background:#fff!important}
 #v-ov .hzach{background:transparent!important;box-shadow:none!important}
 #v-ov .hzax{left:-40px!important;width:calc(100% + 80px)!important}
@@ -5953,7 +5954,7 @@ function layHZ(k,SC){
   const MGB={};nm.filter(o=>o.li<NLc).forEach(o=>{const y=nmTop+o.li*24;if(o.mg){const B=MGB[o.mg.y]=MGB[o.mg.y]||{x:o.x,t:y,b:y};B.t=Math.min(B.t,y);B.b=Math.max(B.b,y)}h+=`${o.mg?'':`<i class="hzld" style="left:${o.x}px;top:${axY+6}px;height:${y-axY-2}px"></i>`}<button class="hzn${hzW(o.e)?' wld':''}${o.mg?' hzmr':''}${o.ra?' ra':''}${isMajor(o.e)?' mj':''}${o.e.top?' bin':''}${hzSt(o.e)?' st-'+hzSt(o.e):''}${HEARTS.has(o.e.t)?' hearted':''}" data-ev="${o.e.id}" style="left:${o.a}px;top:${y}px;width:${o.b-o.a}px;--tc:var(--t-${o.e.tp[0]});--gc:${gcAt(o.x)}"><span>${o.mg?`<b class="hzmm">${o.mg.sm?'':o.e.m+'月'}</b>`:''}${o.e.treaty?'<i class="tseal">조</i>':''}${esc(o.e.t)}</span></button>`});Object.values(MGB).forEach(B=>{h+=`<i class="hzmgb" style="left:${B.x-9}px;top:${axY+6}px;height:${B.b+20-axY-6}px"></i>`});
   const topH0=nmTop+NLc*24+10,aboveH=axY+3,belowH=topH0-axY-3,padT=0,topH=aboveH+belowH;
   // 아래 칸: 왕 줄 + 주요 사건 풀이
-  let b='';const kr=ALL?[]:REIGNS.map(D=>({D,rs:D.r.filter(r=>Math.min(r.e,t1)-Math.max(r.s,t0)>.3)})).filter(x=>x.rs.length&&(Math.min(t1,Math.max(...x.rs.map(r=>r.e)))-Math.max(t0,Math.min(...x.rs.map(r=>r.s)))>=2||x.rs.length>1));
+  let b='';const kr=ALL?[]:REIGNS.map(D=>({D,rs:D.r.filter(r=>Math.min(r.e,t1)-Math.max(r.s,t0)>.3)})).filter(x=>x.D.n!=='고조선').filter(x=>x.rs.length&&(Math.min(t1,Math.max(...x.rs.map(r=>r.e)))-Math.max(t0,Math.min(...x.rs.map(r=>r.s)))>=2||x.rs.length>1));
   /* 나라별 줄: 왕 재위 막대 + 그 밑에 왕 이름·업적 (교과서 정리표처럼) */
   let KY=6;const KPL=[];kr.forEach(({D,rs},j)=>{const y0=0;const b0=b;b='';const cw=12.2;const SX=xT(Math.max(t0,Math.min(...rs.map(r=>r.s)))),EX=Math.max(...rs.map(r=>r.e))>t1+.01?W:xT(Math.max(...rs.map(r=>r.e)));
     {const KB=rs.map(r=>({r,a:r.s<t0-.01?0:xT(r.s),bb:r.e>t1+.01?W:xT(Math.min(r.e,t1)),n:r.name.replace('대통령 ','')})).filter(o=>o.bb-o.a>=2);const G=[];KB.forEach(o=>{const nar=o.bb-o.a<30;const L=G[G.length-1];if(nar&&L&&L.nar&&o.a-L.bb<4){L.bb=o.bb;L.L.push(o)}else G.push({nar,a:o.a,bb:o.bb,L:[o]})});
@@ -8250,7 +8251,7 @@ function applyAll(){const ed=can();const seen={};document.querySelectorAll(SEL).
   if(el.matches('.hzrg')){if(v&&v.c)el.style.setProperty('--gc',v.c);else if(el.dataset.ogc!=null)el.style.setProperty('--gc',el.dataset.ogc)}else{if(v&&v.c){el.style.setProperty('--oc',v.c);el.classList.add('ovc')}else el.classList.remove('ovc')}el.classList.toggle('ovx',!!(v&&v.xm));if(el.matches('.hzrg2')){if(v&&v.th){el.style.setProperty('height',v.th+'px','important');el.style.setProperty('line-height',v.th+'px','important')}else{el.style.removeProperty('height');el.style.removeProperty('line-height')}}
   if(el.matches('.hzld'))el.style.height=v&&v.h?v.h+'px':el.dataset.oh;
   let g=el.querySelector(':scope>.ovgrip');if(ed&&!g&&el.matches('.hzach')){el.insertAdjacentHTML('beforeend','<ovg class="ovgrip ovgc" title="크기 조절"></ovg>')}else if(ed&&!g&&el.matches('.hzrg')){el.insertAdjacentHTML('beforeend','<ovg class="ovgrip ovgh ovgl" title="왼쪽 길이"></ovg>');el.insertAdjacentHTML('beforeend',`<ovg class="ovgrip ${el.matches('.hzld')?'ovgv':'ovgh'}" title="${el.matches('.hzld')?'세로줄 길이':'길이'}"></ovg>`)}else if(!ed&&g)el.querySelectorAll(':scope>.ovgrip').forEach(x=>x.remove())});
-  document.querySelectorAll('#v-ov .hzld').forEach(link);try{marks()}catch(_){}drawL();document.body.classList.toggle('ovedit',ed);if(!ed)document.body.classList.remove('ovline');const lb=$('ovline');if(lb)lb.hidden=true;const ab=$('ovadd');if(ab)ab.hidden=!ed}
+  try{contFix()}catch(_){}document.querySelectorAll('#v-ov .hzld').forEach(link);try{marks()}catch(_){}drawL();document.body.classList.toggle('ovedit',ed);if(!ed)document.body.classList.remove('ovline');const lb=$('ovline');if(lb)lb.hidden=true;const ab=$('ovadd');if(ab)ab.hidden=!ed}
 /* 이끔선: 축의 연도 자리에서 글자까지 바로 잇기 (글자를 옮기면 따라감) */
 function link(ld){const n=ld.nextElementSibling;if(!n||!n.matches('.hzn'))return;if(ld.dataset.ol==null){ld.dataset.ol=parseFloat(ld.style.left)||0;ld.dataset.ot=parseFloat(ld.style.top)||0;ld.dataset.oh0=parseFloat(ld.style.height)||0}
   const up=ld.classList.contains('up');const Ax=+ld.dataset.ol,Ay=up?(+ld.dataset.ot)+(+ld.dataset.oh0):+ld.dataset.ot;const tr=(n.style.translate||'').split(/\s+/).map(parseFloat);const tx=tr[0]||0,ty=tr[1]||0;
@@ -8301,6 +8302,8 @@ document.addEventListener('pointerdown',e=>{if(!can())return;const t=e.target;if
   addEventListener('pointermove',mv,{passive:false});addEventListener('pointerup',up);addEventListener('pointercancel',up)},true);
 /* 고치기 모드에서는 눌러도 다른 곳으로 가지 않음 (글씨 고치기만) */
 window.addEventListener('click',e=>{if(!can())return;const b=e.target.closest&&e.target.closest('#v-ov [data-ev],#v-ov [data-grp],#v-ov [data-tip],#v-ov .hzrg');if(!b)return;if(e.target.closest('[contenteditable],.hzn>span,.hznt button,.hznt span,.hzrg>span'))return;e.preventDefault();e.stopImmediatePropagation()},true);
+/* 형광펜을 줄여 범위를 끝냈으면 다음 칸으로 이어지는 같은 막대는 숨김 */
+function contFix(){const all=[...document.querySelectorAll('#v-ov .hzrg2')];all.forEach((el,i)=>{if(!el.classList.contains('cont'))return;el.style.display='';if(get(el.dataset.ovk))return;let P=null;for(let j=i-1;j>=0;j--)if(all[j].dataset.rg===el.dataset.rg){P=all[j];break}if(!P)return;if(P.style.display==='none'){el.style.display='none';return}const v=get(P.dataset.ovk);if(!v||!(v.w||v.x))return;const end=P.offsetLeft+(v.x||0)+P.offsetWidth;const W=P.offsetParent?P.offsetParent.clientWidth:1e9;if(end<W-6)el.style.display='none'})}
 }
 
 /* 고치는 중 Tab = 띄어쓰기 4칸 */
@@ -8609,6 +8612,12 @@ document.addEventListener('keydown',e=>{if(e.key!=='ArrowDown'&&e.key!=='ArrowUp
  document.addEventListener('click',e=>{const a=e.target.closest&&e.target.closest('#mpen [data-fcadd]');if(!a)return;e.preventDefault();e.stopImmediatePropagation();const inp=a.parentElement.querySelector('[data-fcc]');const col=inp&&inp.value;if(!col)return;const st=LS();st.hide=st.hide.filter(x=>x!==col);if(!st.add.includes(col))st.add.push(col);SV(st);ensure();T('팔레트에 색을 넣었어요')},true);
  let lp=0,lpEl=null;document.addEventListener('pointerdown',e=>{const b=e.target.closest&&e.target.closest('#mpen .mfpal [data-fc]');if(!b||!b.dataset.fc)return;lpEl=b;clearTimeout(lp);lp=setTimeout(()=>{const col=b.dataset.fc;const st=LS();if(b.classList.contains('mfcu'))st.add=st.add.filter(x=>x!==col);else if(!st.hide.includes(col))st.hide.push(col);SV(st);ensure();T('팔레트에서 뺐어요');const kill=ev=>{ev.preventDefault();ev.stopImmediatePropagation();removeEventListener('click',kill,true)};addEventListener('click',kill,true);setTimeout(()=>removeEventListener('click',kill,true),600)},650)},true);
  ['pointerup','pointercancel','pointermove'].forEach(t=>document.addEventListener(t,e=>{if(t==='pointermove'&&lpEl&&e.pressure===0)return;if(t!=='pointermove')clearTimeout(lp)},true))}
+
+/* 설명칸 위에서 휠·손가락으로 내려도 연대표 전체가 같이 내려가게 (끝까지) */
+{let vel=0,lt=0,raf=0;const sc=()=>document.getElementById('ovscroll');
+ let hold=false;addEventListener('touchstart',e=>{const t=e.target;hold=!!(t&&t.closest&&(document.body.classList.contains('drawing')||(document.body.classList.contains('ovedit')&&t.closest('#v-ov .hzn,#v-ov .hznt,#v-ov .hzrg,#v-ov .hzach,.ovgrip,[contenteditable=true]'))))},{capture:true,passive:true});
+ window.hzScrollBy=dy=>{const s=sc();if(!s)return false;if(hold||document.body.classList.contains('drawing')||document.querySelector('.ovdrag'))return true;s.scrollTop+=dy;const t=performance.now();const dt=Math.max(8,t-lt);vel=t-lt<80?vel*.5+dy/dt*.5:dy/dt;lt=t;cancelAnimationFrame(raf);return true};
+ addEventListener('touchend',()=>{const s=sc();if(!s||performance.now()-lt>60||Math.abs(vel)<.1)return;let v=vel*16,p=performance.now();const f=t=>{const d=Math.min(40,t-p);p=t;v*=Math.pow(.95,d/16);s.scrollTop+=v*d/16;if(Math.abs(v)>.4)raf=requestAnimationFrame(f)};raf=requestAnimationFrame(f)},{passive:true})}
 </script>
 <script type="module">
 /* 구글 로그인 + 하트·책갈피·설정 동기화 (GitHub 사이트 전용) */
