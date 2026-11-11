@@ -22,7 +22,7 @@ function applyAll(){const ed=can();const seen={};document.querySelectorAll(SEL).
 function link(ld){const n=ld.nextElementSibling;if(!n||!n.matches('.hzn'))return;if(ld.dataset.ol==null){ld.dataset.ol=parseFloat(ld.style.left)||0;ld.dataset.ot=parseFloat(ld.style.top)||0;ld.dataset.oh0=parseFloat(ld.style.height)||0}
   const up=ld.classList.contains('up');const Ax=+ld.dataset.ol,Ay=up?(+ld.dataset.ot)+(+ld.dataset.oh0):+ld.dataset.ot;const tr=(n.style.translate||'').split(/\s+/).map(parseFloat);const tx=tr[0]||0,ty=tr[1]||0;
   const L=n.offsetLeft+tx,T=n.offsetTop+ty,W=n.offsetWidth,H=n.offsetHeight;const Bx=Math.max(L+3,Math.min(L+W-3,Ax)),By=(T+H/2<Ay)?T+H:T;const dx=Bx-Ax,dy=By-Ay;const len=Math.hypot(dx,dy);const ang=Math.atan2(dy,dx)*180/Math.PI-90;
-  ld.classList.add('lnk');ld.style.left=Ax+'px';ld.style.top=Ay+'px';ld.style.height=len+'px';ld.style.rotate=ang+'deg';ld.style.display=Math.abs(dy)<50?'none':''}
+  ld.classList.add('lnk');ld.style.left=Ax+'px';ld.style.top=Ay+'px';ld.style.height=len+'px';ld.style.rotate=ang+'deg';ld.style.display=Math.abs(dy)<30?'none':''}
 window.__ovLink=()=>document.querySelectorAll('#v-ov .hzld').forEach(link);
 /* 축의 | ↔ ✕ : 고치기 모드에서 누르면 바뀜 */
 function marks(){document.querySelectorAll('#v-ov [data-mev]').forEach(m=>{if(m.dataset.m0==null)m.dataset.m0=m.classList.contains('hzx')?'1':'0';const v=get('k'+m.dataset.mev);const on=v&&v.mj!=null?!!v.mj:m.dataset.m0==='1';m.classList.toggle('hzx',on);m.classList.toggle('hztk',!on);m.textContent=on?'×':'';const y=document.querySelector(`#v-ov .hzyr[data-yev="${m.dataset.mev}"]`);if(y){if(y.dataset.m0==null)y.dataset.m0=y.classList.contains('mj')?'1':'0';y.classList.toggle('mj',v&&v.mj!=null?!!v.mj:y.dataset.m0==='1')}})}
@@ -350,6 +350,9 @@ new MutationObserver(()=>{if(!q)q=setTimeout(run,120)}).observe(document.body,{c
      const k=C.key;const D=getD(k);const q={t:S.tool,p:S.tool==='line'||S.tool==='hl'||snap?[P[0],P[P.length-1]]:P,c:S.c,w:W()};if(hl)q.o=S.o;const ns=(D.s||[]).concat([q]);putD(k,{s:ns});render();
      if(S.tool==='hl')setTimeout(()=>{const el=cv.querySelector(`.ovhl[data-si="${ns.length-1}"]`);if(el)editHL(C,el)},60)};
    addEventListener('pointermove',mv,{passive:false});addEventListener('pointerup',up);addEventListener('pointercancel',up)},true);
+ /* 아이패드(사파리·크롬): 그리는 동안 화면이 같이 밀려 선이 끊기지 않게 터치 자체를 막음 */
+ {const blk=e=>{if(!S.tool||bar.hidden||!own())return;const t=e.target;if(!t||!t.closest||t.closest('#drawbar,#mpen,.ovhl span[contenteditable],input,textarea,button'))return;if(e.touches&&e.touches.length>1)return;if(!contOf(t))return;if(t.closest('.ovhl')&&S.tool==='hl')return;e.preventDefault()};
+  addEventListener('touchstart',blk,{passive:false,capture:true});addEventListener('touchmove',blk,{passive:false,capture:true})}
  function editHL(C,el){const sp=el.querySelector('span');sp.contentEditable='true';sp.focus();try{const r=document.createRange();r.selectNodeContents(sp);r.collapse(false);const s=getSelection();s.removeAllRanges();s.addRange(r)}catch(_){}
    const done=()=>{sp.removeEventListener('blur',done);sp.removeAttribute('contenteditable');const k=C.key;const D=getD(k);const i=+el.dataset.si;if(D.s[i]){const v=sp.textContent.trim();if((D.s[i].tx||'')!==v){D.s[i]=Object.assign({},D.s[i],{tx:v});putD(k,{s:D.s.slice()})}}};sp.addEventListener('blur',done);sp.addEventListener('keydown',ev=>{ev.stopPropagation();if(ev.key==='Enter'){ev.preventDefault();sp.blur()}})}
  setTimeout(render,1200);let rq=0;new MutationObserver(()=>{if(!rq)rq=setTimeout(()=>{rq=0;try{render()}catch(_){}},400)}).observe(document.body,{childList:true,subtree:true})}
