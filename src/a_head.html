@@ -2841,3 +2841,24 @@ body #mpen .mptop [data-undo],body #mpen .mptop [data-redo],body #mpen.mini .mpt
 </style>
 <style>#drawbar .dbt [data-dt="hl"] .tipf,#drawbar .dbt [data-dt="hlf"] .tip,#drawbar .dbt [data-dt="hl"] .tip{opacity:1}#drawbar .dbt [data-dt="hl"] .tipf{opacity:.55}</style>
 <style>#drawbar .dbt .tipo{fill:color-mix(in srgb,var(--dcol,#111) 30%,transparent)}</style>
+<style>
+.ovtx{position:absolute;z-index:4;min-width:14px;max-width:380px;padding:1px 3px;white-space:pre-wrap;word-break:keep-all;line-height:1.35;pointer-events:none;outline:none;border-radius:4px}
+.ovtx[contenteditable="true"]{pointer-events:auto;box-shadow:0 0 0 1.5px #3b82f6;background:rgb(255 255 255/.85);cursor:text;min-width:60px}
+body.drawing[data-dtool="tx"] .ovtx,body.drawing[data-dtool="er"] .ovtx{pointer-events:auto}
+body.drawing[data-dtool="tx"] .ovtx:not([contenteditable]){cursor:text;box-shadow:0 0 0 1px rgb(59 130 246/.35)}
+body.drawing[data-dtool="tx"] .view,body.drawing[data-dtool="tx"] #trbody .trcard{cursor:text!important}
+#drawbar .dbtx{display:flex;gap:4px;align-items:center}
+#drawbar .dbtx button{height:34px;min-width:40px;padding:0 10px;border:0;border-radius:10px;background:#f3f4f6;font:inherit;font-size:14px;font-weight:600;color:#111827;display:flex;align-items:center;gap:3px;cursor:pointer}
+#drawbar .dbtx small{font-size:10px;color:#6b7280}
+#drawbar .dbtx b{font-weight:900}#drawbar .dbtx .dti{font-family:serif;font-style:italic;font-size:15px}
+#drawbar .dbtx svg{width:20px;height:20px;fill:none;stroke:#111827;stroke-width:2;stroke-linecap:round}
+#dtpop{position:fixed;z-index:10040;background:#f7f7f8;border-radius:20px;box-shadow:0 14px 40px rgb(0 0 0/.18);padding:12px 14px}
+#dtpop::before{content:'';position:absolute;top:-8px;left:var(--ax,50%);width:16px;height:16px;background:#f7f7f8;transform:translateX(-50%) rotate(45deg);border-radius:3px}
+#dtpop .dtsz{display:flex;align-items:center;gap:10px}
+#dtpop .dtsz b{min-width:48px;height:40px;border-radius:12px;background:#fff;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:600}
+#dtpop .dtsz input{width:170px}
+#dtpop .dtsz button{width:42px;height:38px;border:0;border-radius:10px;background:#ececee;font-size:20px;cursor:pointer;color:#111827}
+#dtpop .dtbi{display:flex;gap:6px}
+#dtpop .dtbi button{width:52px;height:46px;border:0;border-radius:12px;background:none;font-size:24px;color:#111827;cursor:pointer}
+#dtpop .dtbi button.on{background:#fff;box-shadow:0 1px 4px rgb(0 0 0/.1);color:#1d4ed8}
+</style>
