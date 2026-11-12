@@ -2868,3 +2868,32 @@ body.drawing.ponly #v-ov section.ovsec,body.drawing.ponly #ovscroll,body.drawing
 #drawbar .dpon{height:30px;padding:0 10px;border-radius:999px;border:1px solid #e5e7eb;background:#fff;font:inherit;font-size:12px;font-weight:700;color:#374151;white-space:nowrap;cursor:pointer;margin-left:4px}
 #drawbar .dpon.on{background:#111827;border-color:#111827;color:#fff}
 </style>
+<style>
+body #mpen .mpfmt:not(.on){display:none!important}
+body #mpen .mpfmt.on,body #mpen.mini>.mpfmt.on{display:block!important;position:fixed;top:64px;left:50%;transform:translateX(-50%);z-index:9900;width:auto!important;margin:0!important;padding:6px 10px!important;border:0!important;background:#fff;border-radius:999px;box-shadow:0 8px 28px rgb(0 0 0/.14),0 0 0 1px rgb(0 0 0/.05)}
+body #mpen .mpfmt .mfmain{display:flex;align-items:center;gap:4px;flex-wrap:nowrap}
+body #mpen .mpfmt .mfmain>button{height:40px!important;min-width:40px;width:auto!important;padding:0 10px!important;border:0!important;border-radius:12px!important;background:transparent!important;display:flex;align-items:center;gap:4px;font:inherit;font-size:16px!important;font-weight:600;color:#111827;cursor:pointer}
+body #mpen .mpfmt .mfmain>button:hover{background:#f3f4f6!important}
+body #mpen .mpfmt .mfmain>button.on{background:#e0edff!important;color:#1d4ed8}
+body #mpen .mpfmt .mfmain small{font-size:10px;color:#6b7280}
+body #mpen .mpfmt .mfdot i{width:26px;height:26px;border-radius:50%;box-shadow:0 0 0 2px #fff,0 0 0 3px #d1d5db;display:block}
+body #mpen .mpfmt .mfszb{background:#f3f4f6!important;min-width:64px!important;justify-content:center}
+body #mpen .mpfmt .mfbib b{font-weight:900;font-size:18px}body #mpen .mpfmt .mfbib .mfit{font-family:Georgia,serif;font-style:italic;font-size:18px}
+body #mpen .mpfmt svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round}
+body #mpen .mpfmt .mfsep{width:1px;height:24px;background:#e5e7eb;margin:0 4px}
+body #mpen .mpfmt .mftg{font-size:11px;color:#6b7280;padding:0 6px 0 2px;white-space:nowrap}
+body #mpen .mpfmt .mfpop{position:absolute;top:calc(100% + 12px);background:#f7f7f8;border-radius:20px;box-shadow:0 14px 40px rgb(0 0 0/.18);padding:12px 14px;display:flex;align-items:center;gap:10px}
+body #mpen .mpfmt .mfpop[hidden]{display:none!important}
+body #mpen .mpfmt .mfszp b{min-width:48px;height:40px;border-radius:12px;background:#fff;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:600}
+body #mpen .mpfmt .mfszp input{width:170px}
+body #mpen .mpfmt .mfszp button{width:42px;height:38px;border:0;border-radius:10px;background:#ececee;font-size:20px;cursor:pointer;color:#111827}
+body #mpen .mpfmt .mfbius{display:flex!important;gap:6px}
+body #mpen .mpfmt .mfbius button,body #mpen .mpfmt .mfalp button{width:52px!important;height:46px!important;border:0!important;border-radius:12px!important;background:none!important;font-size:24px!important;color:#111827;cursor:pointer;display:grid;place-items:center;padding:0!important}
+body #mpen .mpfmt .mfbius button.on,body #mpen .mpfmt .mfalp button.on{background:#fff!important;box-shadow:0 1px 4px rgb(0 0 0/.1);color:#1d4ed8}
+body #mpen .mpfmt .mfbius i{font-family:Georgia,serif}
+body #mpen .mpfmt .mfpal{position:absolute;top:calc(100% + 12px);left:0;background:#f7f7f8;border-radius:20px;box-shadow:0 14px 40px rgb(0 0 0/.18);padding:12px 14px;min-width:260px}
+body #mpen .mpfmt .mfpal[hidden]{display:none!important}
+body #mpen .mpfmt.box .mfszb,body #mpen .mpfmt.box .mfbib,body #mpen .mpfmt.box .mfalb{opacity:.3;pointer-events:none}
+</style>
+<style>.ovdw.ovhlw{mix-blend-mode:multiply}.ovhlw path{mix-blend-mode:normal!important}.ovhl{mix-blend-mode:multiply}</style>
+<style>body.drawing #mpen .mpfmt.on{top:122px}</style>
