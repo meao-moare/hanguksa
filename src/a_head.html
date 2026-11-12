@@ -2780,3 +2780,12 @@ body.drawing #trbody .trcard,body.drawing #kpage .kpin,body.drawing .view:not(#v
 #v-tl .sumbox .sumblk h4{display:block!important;background:none!important;padding:0!important;margin:0 0 4px!important;font-size:14px!important;font-weight:800!important;color:var(--ink)!important;border-radius:0!important}
 #v-tl .sumbox .sumblk ul{margin:0!important;padding-left:18px!important;gap:3px!important}
 </style>
+<style>
+#mpen .mprow{display:flex;gap:4px;align-items:stretch}
+#mpen .mprow>[data-pen]{flex:1 1 auto}
+#mpen .mpdrawb{display:flex;align-items:center;gap:4px;padding:7px 9px;border:0;border-radius:10px;background:none;color:var(--ink);font:inherit;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap}
+#mpen .mpdrawb svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:2;stroke-linejoin:round}
+#mpen .mpdrawb:hover{background:color-mix(in srgb,var(--ink) 6%,transparent)}
+#mpen .mpdrawb.on{background:var(--ink);color:var(--panel)}
+#mpen.mini .mpdrawb span{display:none}
+</style>
