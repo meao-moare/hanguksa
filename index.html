@@ -8396,10 +8396,10 @@ const $=id=>document.getElementById(id);
 const TRM=()=>window.__ME&&window.__ME.tr;
 const can=()=>document.body.classList.contains('medit')&&window.__MEX&&window.__MEX.own&&window.__MEX.own()&&!$('v-ov').hidden;
 const keyOf=el=>el.dataset.ovk||keyOf0(el);
-const keyOf0=el=>{if(el.matches('.hzyr'))return 'y'+(el.dataset.yev||el.textContent.trim());if(el.matches('.hzmo')){const sc=el.closest('[data-sec]');return 'mo'+(sc?sc.dataset.sec:'')+':'+el.textContent.trim()}if(el.matches('.hztk'))return 'tk'+el.dataset.mev;if(el.matches('.hzn'))return 'n'+el.dataset.ev;if(el.matches('.hznt')){const b=el.querySelector('[data-ev]');return b?'t'+b.dataset.ev:'t'+(el.textContent||'').trim().slice(0,20)}if(el.matches('.hzrg'))return 'r'+el.dataset.rg;if(el.matches('.hzach')){const b=el.querySelector('[data-king]');return b?'a'+b.dataset.king:null}if(el.matches('.hzld')){const n=el.nextElementSibling;return n&&n.dataset.ev?'l'+n.dataset.ev:null}return null};
+const keyOf0=el=>{if(el.matches('.hzyr'))return 'y'+(el.dataset.yev||el.textContent.trim());if(el.matches('.hzmo')){const sc=el.closest('[data-sec]');return 'mo'+(sc?sc.dataset.sec:'')+':'+el.textContent.trim()}if(el.matches('.hztk,.hzx')&&el.dataset.mev)return 'tk'+el.dataset.mev;if(el.matches('.hzn'))return 'n'+el.dataset.ev;if(el.matches('.hznt')){const b=el.querySelector('[data-ev]');return b?'t'+b.dataset.ev:'t'+(el.textContent||'').trim().slice(0,20)}if(el.matches('.hzrg'))return 'r'+el.dataset.rg;if(el.matches('.hzach')){const b=el.querySelector('[data-king]');return b?'a'+b.dataset.king:null}if(el.matches('.hzld')){const n=el.nextElementSibling;return n&&n.dataset.ev?'l'+n.dataset.ev:null}return null};
 const get=k=>{const M=TRM();return (M&&M.get('@ov:'+k))||null};
 const put=(k,v)=>{const M=TRM();if(!M)return;M.set('@ov:'+k,v);try{window.__MEX.save('T:@ov:'+k,v)}catch(_){}};
-const SEL='#v-ov .hzn,#v-ov .hznt,#v-ov .hzrg,#v-ov .hzach,#v-ov .hzyr,#v-ov .hzmo,#v-ov .hztk[data-mev]';
+const SEL='#v-ov .hzn,#v-ov .hznt,#v-ov .hzrg,#v-ov .hzach,#v-ov .hzyr,#v-ov .hzmo,#v-ov .hztk[data-mev],#v-ov .hzx[data-mev]';
 function applyAll(){const ed=can();const seen={};document.querySelectorAll(SEL).forEach(el=>{const k0=keyOf0(el);if(!k0)return;const nn=seen[k0]=(seen[k0]||0)+1;const k=nn>1?k0+'#'+nn:k0;el.dataset.ovk=k;const v=get(k);
   if(el.dataset.ow==null)el.dataset.ow=el.style.width||'';if(el.dataset.ogc==null)el.dataset.ogc=el.style.getPropertyValue('--gc')||'';if(el.dataset.oh==null)el.dataset.oh=el.style.height||'';
   el.style.translate=v&&(v.x||v.y)?`${v.x||0}px ${v.y||0}px`:'';
@@ -8433,7 +8433,7 @@ document.addEventListener('click',e=>{const l=e.target.closest&&e.target.closest
 /* 고치기 모드: 글자·형광펜을 누르면 색 바꾸기 / ✕ 표시 */
 {const pal=document.createElement('div');pal.id='ovpal';pal.hidden=true;document.body.appendChild(pal);let cur=null;
  const COLS=['#dc2626','#ea580c','#ca8a04','#16a34a','#0d9488','#2563eb','#7c3aed','#db2777','#57534e','#111827'];
- document.addEventListener('click',e=>{if(e.target.closest('#ovpal'))return;const el=can()&&e.target.closest&&e.target.closest(SEL);if(el&&el.matches('.hzyr,.hzmo,.hztk'))return;if(!el||el.matches('.hzach')){pal.hidden=true;cur=null;return}if(e.target.closest('.ovgrip'))return;
+ document.addEventListener('click',e=>{if(e.target.closest('#ovpal'))return;const el=can()&&e.target.closest&&e.target.closest(SEL);if(el&&el.matches('.hzyr,.hzmo,.hztk,.hzx'))return;if(!el||el.matches('.hzach')){pal.hidden=true;cur=null;return}if(e.target.closest('.ovgrip'))return;
    e.preventDefault();e.stopPropagation();cur=el;const v=get(keyOf(el))||{};const rg=el.matches('.hzrg');
    if(!rg){pal.hidden=true;let xb=$('ovxb');if(!xb){xb=document.createElement('button');xb.type='button';xb.id='ovxb';xb.title='✕ 표시 켜기/끄기';xb.textContent='✕';document.body.appendChild(xb);
        xb.addEventListener('pointerdown',ev=>{ev.preventDefault();ev.stopPropagation()},true);
@@ -8456,6 +8456,7 @@ setTimeout(applyAll,500);
 /* 끌기 */
 document.addEventListener('pointerdown',e=>{if(!can())return;const t=e.target;if(!t.closest||t.closest('[contenteditable]'))return;const grip=t.closest('.ovgrip');const el=t.closest(SEL);if(!el)return;if(e.button!==0&&e.pointerType==='mouse')return;const k=keyOf(el);if(!k)return;
   const grp=(!grip&&el.matches('.hzrg'))?rgChain(el).map(o=>{const kk=keyOf(o);const vv=Object.assign({},get(kk)||{});return {el:o,k:kk,v:vv,x0:Math.round(vv.x||0),y0:Math.round(vv.y||0)}}):[];
+  if(!grip){const pe=el.matches('.hzyr')&&el.dataset.yev?document.querySelector(`#v-ov [data-mev="${el.dataset.yev}"]`):el.dataset.mev?document.querySelector(`#v-ov .hzyr[data-yev="${el.dataset.mev}"]`):null;const pk=pe&&keyOf(pe);if(pk){const vv=Object.assign({},get(pk)||{});grp.push({el:pe,k:pk,v:vv,x0:Math.round(vv.x||0),y0:Math.round(vv.y||0)})}}
   const v0=Object.assign({},get(k)||{});const x0=e.clientX,y0=e.clientY;let st=false;const w0=el.offsetWidth,h0=el.offsetHeight;const SC=document.getElementById('ovscroll');const sl0=SC?SC.scrollLeft:0,stp0=SC?SC.scrollTop:0;const hold=()=>{if(SC&&(SC.scrollLeft!==sl0||SC.scrollTop!==stp0)){SC.scrollLeft=sl0;SC.scrollTop=stp0}};SC&&SC.addEventListener('scroll',hold);
   if(grip){e.preventDefault();e.stopPropagation()}
   const mv=ev=>{const dx=ev.clientX-x0,dy=ev.clientY-y0;if(!st){if(!grip&&Math.abs(dx)+Math.abs(dy)<6)return;st=true;el.classList.add('ovdrag');try{getSelection().removeAllRanges()}catch(_){}}ev.preventDefault();
