@@ -2813,3 +2813,23 @@ body #mpen .mptop [data-undo],body #mpen .mptop [data-redo],body #mpen.mini .mpt
 #drawbar [data-dsc]{touch-action:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
 #drawbar [data-dsc].lift{z-index:5;box-shadow:0 6px 16px rgb(0 0 0/.25),0 0 0 2px #fff!important;transition:none}
 </style>
+<style>
+#dwpop{position:fixed;z-index:10040;width:300px;max-width:calc(100vw - 16px);background:#f7f7f8;border-radius:22px;box-shadow:0 14px 40px rgb(0 0 0/.18);padding:16px 18px 18px;font-size:14px;color:#111827}
+#dwpop::before{content:'';position:absolute;top:-8px;left:var(--ax,50%);width:16px;height:16px;background:#f7f7f8;transform:translateX(-50%) rotate(45deg);border-radius:3px}
+#dwpop .dwt{display:block;text-align:center;font-size:16px;font-weight:700;margin-bottom:12px}
+#dwpop .dwds{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:14px}
+#dwpop .dwds button{display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 4px 10px;border:0;border-radius:14px;background:none;font:inherit;font-size:13px;color:#111827;cursor:pointer}
+#dwpop .dwds button.on{background:#fff;box-shadow:0 1px 4px rgb(0 0 0/.08)}
+#dwpop .dwds svg{width:40px;height:10px}
+#dwpop .dwr{display:flex;align-items:center;gap:10px;margin-top:6px;color:#6b7280;font-size:13px}
+#dwpop .dwr input{flex:1}
+#dwpop .dwr b{min-width:34px;text-align:right;color:#111827;font-weight:600}
+</style>
+<style>
+#drawbar .dbt svg{width:26px!important;height:26px!important;fill:none;stroke:currentColor;stroke-width:1.6!important;stroke-linejoin:round;stroke-linecap:round}
+#drawbar .dbt button{width:46px!important;height:42px!important}
+#drawbar .dbt .tip{fill:var(--dcol,#111);stroke:currentColor}
+#drawbar .dbt .tipf{fill:var(--dcol,#111);stroke:none;opacity:.85}
+#drawbar .dbt [data-dt="hl"] .tipf,#drawbar .dbt [data-dt="hlf"] .tip{opacity:.6}
+#drawbar .dbt button.on{background:#cfe8f3!important;color:#0f172a!important}
+</style>
