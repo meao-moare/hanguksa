@@ -475,7 +475,7 @@ const HOLDMS=2000;
  addEventListener('pointerdown',e=>{if(e.pointerType!=='mouse'&&('ontouchstart' in window)){if(PON()&&e.pointerType==='touch'&&S.tool!=='tx')return;if(S.tool&&!bar.hidden&&own()&&e.target.closest&&!e.target.closest('#drawbar,#mpen,.ovhl')&&contOf(e.target)){e.stopPropagation();e.stopImmediatePropagation()}return}startDraw(e,0)},true);
  addEventListener('touchstart',e=>{if(e.touches.length!==1)return;const t=e.touches[0];if(PON()&&t.touchType!=='stylus'&&S.tool!=='tx')return;startDraw({target:e.target,clientX:t.clientX,clientY:t.clientY,preventDefault:()=>{if(e.cancelable)e.preventDefault()},stopPropagation:()=>e.stopPropagation()},1)},{capture:true,passive:false});
 /* 아이패드(사파리·크롬): 그리는 동안 화면이 같이 밀려 선이 끊기지 않게 터치 자체를 막음 */
- {const blk=e=>{if(!S.tool||bar.hidden||!own())return;const t=e.target;if(!t||!t.closest||t.closest('#drawbar,#mpen,.ovhl span[contenteditable],input,textarea,button'))return;if(e.touches&&e.touches.length>1)return;if(!contOf(t))return;if(t.closest('.ovhl')&&S.tool==='hl')return;e.preventDefault()};
+ {const blk=e=>{if(!S.tool||bar.hidden||!own())return;const t=e.target;if(!t||!t.closest||t.closest('#drawbar,#mpen,.ovhl span[contenteditable],input,textarea,button'))return;if(e.touches&&e.touches.length>1)return;if(PON()&&S.tool!=='tx'&&!(e.touches&&e.touches[0]&&e.touches[0].touchType==='stylus'))return;if(!contOf(t))return;if(t.closest('.ovhl')&&S.tool==='hl')return;e.preventDefault()};
   addEventListener('touchstart',blk,{passive:false,capture:true});addEventListener('touchmove',blk,{passive:false,capture:true})}
 
  /* 내가 그은 가로 형광펜: 끝 점으로 길이, 몸통 끌어 옮기기, 끝이 닿으면 점 하나(같이 조절, 누르면 풀림), 자석, 안 겹치게 */
@@ -573,8 +573,8 @@ document.addEventListener('keydown',e=>{if(e.key!=='ArrowDown'&&e.key!=='ArrowUp
 
 /* 설명칸 위에서 휠·손가락으로 내려도 연대표 전체가 같이 내려가게 (끝까지) */
 {let vel=0,lt=0,raf=0;const sc=()=>document.getElementById('ovscroll');
- let hold=false;addEventListener('touchstart',e=>{const t=e.target;hold=!!(t&&t.closest&&(document.body.classList.contains('drawing')||(document.body.classList.contains('ovedit')&&t.closest('#v-ov .hzn,#v-ov .hznt,#v-ov .hzrg,#v-ov .hzach,.ovgrip,[contenteditable=true]'))))},{capture:true,passive:true});
- window.hzScrollBy=dy=>{const s=sc();if(!s)return false;if(hold||document.body.classList.contains('drawing')||document.querySelector('.ovdrag'))return true;s.scrollTop+=dy;const t=performance.now();const dt=Math.max(8,t-lt);vel=t-lt<80?vel*.5+dy/dt*.5:dy/dt;lt=t;cancelAnimationFrame(raf);return true};
+ let hold=false;const DRW=()=>document.body.classList.contains('drawing')&&!document.body.classList.contains('ponly');addEventListener('touchstart',e=>{const t=e.target;const st=e.touches[0]&&e.touches[0].touchType==='stylus';hold=!!(t&&t.closest&&((document.body.classList.contains('drawing')&&(st||DRW()))||(document.body.classList.contains('ovedit')&&t.closest('#v-ov .hzn,#v-ov .hznt,#v-ov .hzrg,#v-ov .hzach,.ovgrip,[contenteditable=true]'))))},{capture:true,passive:true});
+ window.hzScrollBy=dy=>{const s=sc();if(!s)return false;if(hold||DRW()||document.querySelector('.ovdrag'))return true;s.scrollTop+=dy;const t=performance.now();const dt=Math.max(8,t-lt);vel=t-lt<80?vel*.5+dy/dt*.5:dy/dt;lt=t;cancelAnimationFrame(raf);return true};
  addEventListener('touchend',()=>{const s=sc();if(!s||performance.now()-lt>60||Math.abs(vel)<.1)return;let v=vel*16,p=performance.now();const f=t=>{const d=Math.min(40,t-p);p=t;v*=Math.pow(.95,d/16);s.scrollTop+=v*d/16;if(Math.abs(v)>.4)raf=requestAnimationFrame(f)};raf=requestAnimationFrame(f)},{passive:true})}
 
 /* 글씨 고칠 때 (1). + 스페이스 → ①, (1).] 또는 [1]. + 스페이스 → ❶ ; 동그라미 숫자는 진한 회색으로 */
