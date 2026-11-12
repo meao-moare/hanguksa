@@ -2862,3 +2862,9 @@ body.drawing[data-dtool="tx"] .view,body.drawing[data-dtool="tx"] #trbody .trcar
 #dtpop .dtbi button{width:52px;height:46px;border:0;border-radius:12px;background:none;font-size:24px;color:#111827;cursor:pointer}
 #dtpop .dtbi button.on{background:#fff;box-shadow:0 1px 4px rgb(0 0 0/.1);color:#1d4ed8}
 </style>
+<style>
+body.drawing.ponly:not([data-dtool="tx"]) #trbody .trcard,body.drawing.ponly:not([data-dtool="tx"]) #kpage .kpin,body.drawing.ponly .view:not(#v-map){touch-action:pan-x pan-y pinch-zoom}
+body.drawing.ponly #v-ov section.ovsec,body.drawing.ponly #ovscroll,body.drawing.ponly #ovscroll *{touch-action:pan-x pan-y pinch-zoom!important}
+#drawbar .dpon{height:30px;padding:0 10px;border-radius:999px;border:1px solid #e5e7eb;background:#fff;font:inherit;font-size:12px;font-weight:700;color:#374151;white-space:nowrap;cursor:pointer;margin-left:4px}
+#drawbar .dpon.on{background:#111827;border-color:#111827;color:#fff}
+</style>
