@@ -62,6 +62,8 @@ function layHZ(k,SC){
   let lastY=null;const yc={};evs.forEach(e=>{const y=Math.floor(e.T+1e-6);yc[y]=(yc[y]||0)+1});const MG={};{const c={};evs.forEach((e,i)=>{if(isUp(e)||!e.m)return;const y=Math.floor(e.T+1e-6);(c[y]=c[y]||[]).push(i)});for(const y in c)if(c[y].length>=3)c[y].forEach((i,j)=>{MG[i]={y:+y,x:xs[c[y][0]],j,n:c[y].length,sm:j>0&&evs[c[y][j-1]].m===evs[i].m}})}let lastM=null;evs.forEach((e,i)=>{const yy=Math.floor(e.T+1e-6);const maj=isMajor(e)&&!hzW(e);if(yc[yy]>1&&e.m&&!MG[i]){const mk=yy+'-'+e.m;if(!(lastM instanceof Set))lastM=new Set();if(!lastM.has(mk)){lastM.add(mk);h+=`<span class="hzmo" style="left:${xs[i]}px;top:${axY+8}px">${e.m}월</span>`}}
     if(yy!==lastY){h+=`<span class="hzyr${maj?' mj':''}" data-yev="${e.id}" style="left:${xs[i]}px;top:${axY-21}px">${yrTxt(yy)}</span>`;lastY=yy}
     if(MG[i]&&MG[i].j>0)return;h+=maj?`<span class="hzx${evs[i].top?' bin':''}" data-mev="${e.id}" style="left:${xs[i]}px;top:${axY-6}px">×</span>`:`<span class="hztk" data-mev="${e.id}" style="left:${xs[i]}px;top:${axY-6}px"></span>`});
+  // 100년(짧은 시대는 10년) 눈금
+  let CL='';{const lo=evs[0].T,hi=evs[evs.length-1].T,sp=hi-lo;const st=sp>2500?1000:sp>250?100:sp>40?10:5;if(sp/st<=60)for(let c=Math.ceil((lo+1e-6)/st)*st;c<hi;c+=st){const x=Math.round(xT(c));h+=`<i class="hzcl" style="left:${x}px;top:0;height:${axY+4}px"></i><span class="hzcy" style="left:${x}px;top:${axY+7}px">${yrTxt(c)}</span>`;CL+=`<i class="hzcl hzclb" style="left:${x}px"></i>`}}
   // 축 아래: 사건 이름만
   upN.filter(o=>o.row>=0).forEach(o=>{const y=rowY(o.row);h+=`<i class="hzld up" style="left:${o.x}px;top:${y+19}px;height:${axY-6-(y+19)}px"></i><button class="hzn up${hzW(o.e)?' wld':''}${o.ra?' ra':''}${isMajor(o.e)?' mj':''}${o.e.top?' bin':''}${hzSt(o.e)?' st-'+hzSt(o.e):''}${HEARTS.has(o.e.t)?' hearted':''}" data-ev="${o.e.id}" style="left:${o.a}px;top:${y}px;width:${o.b-o.a}px;--tc:var(--t-${o.e.tp[0]});--gc:${gcAt(o.x)}"><span>${esc(o.e.t)}</span></button>`});
   const nm=evs.map((e,i)=>{const g=MG[i];if(g){const w=twe(e)+28;return {e,x:g.x,a:g.x-6,b:g.x-6+w,mg:g}}return {e,x:xs[i],a:xs[i]-twe(e)/2,b:xs[i]+twe(e)/2}}).filter(o=>!isUp(o.e)).map(o=>o.mg?o:fitSep(o,o.x)).sort((p,q)=>(p.a-q.a)||((p.mg&&q.mg)?p.mg.j-q.mg.j:0));const NL=lanes(nm,6);
@@ -87,7 +89,7 @@ function layHZ(k,SC){
   rg.forEach(r=>{stH+=`<i class="hzsep" style="left:${r.a}px"></i>`});
   const usedB=det.length?LT(DL)+4:KH;if(false)b+=`<div class="hzsum" style="margin-top:${usedB}px">${sumHTML(E)}</div>`;
   const botH=Math.max(KH+DB,HZAV-topH-4);
-  return {H:topH+botH+4,html:`<div class="hzwrap" style="width:${W}px">${stH}<div class="hztop" style="height:${topH}px">${rgH}<div style="position:absolute;left:0;right:0;top:${padT}px;height:${topH0}px">${h}</div></div><div class="hzbot" style="height:${botH}px">${rg.map((r,ri)=>`<i class="hzsep" style="left:${ri?r.a:Math.min(r.a,0)}px"></i>`).join('')}${b}</div></div>`}
+  return {H:topH+botH+4,html:`<div class="hzwrap" style="width:${W}px">${stH}<div class="hztop" style="height:${topH}px">${rgH}<div style="position:absolute;left:0;right:0;top:${padT}px;height:${topH0}px">${h}</div></div><div class="hzbot" style="height:${botH}px">${CL}${rg.map((r,ri)=>`<i class="hzsep" style="left:${ri?r.a:Math.min(r.a,0)}px"></i>`).join('')}${b}</div></div>`}
 }
 {const de=drawEra;drawEra=function(k){if(ovDir==='h'&&k!=='heart'){$('ovscroll').classList.add('hz');drawHZ(k)}else{$('v-ov').classList.remove('hzsplit');de(k)}}}
 
