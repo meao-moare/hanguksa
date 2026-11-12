@@ -2789,3 +2789,18 @@ body.drawing #trbody .trcard,body.drawing #kpage .kpin,body.drawing .view:not(#v
 #mpen .mpdrawb.on{background:var(--ink);color:var(--panel)}
 #mpen.mini .mpdrawb span{display:none}
 </style>
+<style>
+#drawbar [data-dsc],#dcpop [data-c]{position:relative}
+.dcx{position:absolute;top:-7px;right:-7px;width:17px;height:17px;border-radius:50%;background:#111827;color:#fff;font-style:normal;font-size:13px;font-weight:700;line-height:17px;text-align:center;box-shadow:0 0 0 2px #fff;cursor:pointer;z-index:2}
+#drawbar .dbc.ced [data-dsc],#dcpop .cpg.ced [data-c]{animation:dcwig .25s ease-in-out infinite alternate}
+@keyframes dcwig{from{transform:rotate(-4deg)}to{transform:rotate(4deg)}}
+.dced{font:inherit;font-size:12px;font-weight:700;padding:3px 9px;border-radius:999px;border:1px solid var(--rule);background:var(--panel);color:var(--ink);cursor:pointer;white-space:nowrap}
+.dced.on{background:#2563eb;border-color:#2563eb;color:#fff;font-size:14px;padding:2px 10px}
+#dcpop .cph{display:flex;align-items:center;justify-content:space-between}
+#dcask{position:fixed;z-index:10050;background:var(--panel);border:1px solid var(--rule);border-radius:14px;box-shadow:0 10px 30px rgba(15,23,42,.18);padding:12px 14px;font-size:14px}
+#dcask p{margin:0 0 10px;display:flex;align-items:center;gap:8px;font-weight:600}
+#dcask p i{width:18px;height:18px;border-radius:50%;box-shadow:0 0 0 1px var(--rule)}
+#dcask div{display:flex;gap:6px;justify-content:flex-end}
+#dcask button{font:inherit;font-size:13px;font-weight:600;padding:6px 12px;border-radius:9px;border:1px solid var(--rule);background:var(--panel);color:var(--ink);cursor:pointer}
+#dcask [data-y]{background:#dc2626;border-color:#dc2626;color:#fff}
+</style>
