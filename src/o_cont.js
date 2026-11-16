@@ -981,7 +981,7 @@ document.addEventListener('click',e=>{const c=e.target.closest&&e.target.closest
  let fmtOff=null,FT=null;
  /* T = {kind:'el',el,h,o} | {kind:'sel',el,o,str} | {kind:'box',box,key} */
  window.__fmtOpen=T=>fmtOpen(T);function fmtOpen(T){penBox();const p=$('mpen');if(!p)return;const f=p.querySelector('.mpfmt');if(fmtOff)fmtOff();FT=T;if(T.o&&T.el&&(T.kind==='el'||T.kind==='sel'))T.o=YK(T.el,T.o);
-   if(T.kind==='el'&&!T.bx){const bx=T.el.closest(BOXSEL);if(bx){T.bx=bx;T.bkey=boxKey(bx)}}let y;if(T.kind==='el'){y=Object.assign({},ME.y.get(T.o)||{});if(T.bx)y.c=ME.bx.get(T.bkey)}else if(T.kind==='sel'){const L=ME.f.get(T.o)||[];y=Object.assign({},L.find(x=>x.s===T.str)||{})}else y={c:T.kind==='cb'?(T.get()||''):ME.bx.get(T.key)};
+   let y;if(T.kind==='el'){y=Object.assign({},ME.y.get(T.o)||{});if(T.bx)y.c=ME.bx.get(T.bkey)}else if(T.kind==='sel'){const L=ME.f.get(T.o)||[];y=Object.assign({},L.find(x=>x.s===T.str)||{})}else y={c:T.kind==='cb'?(T.get()||''):ME.bx.get(T.key)};
    f.classList.add('on');f.classList.toggle('box',T.kind==='box'||T.kind==='cb');f.innerHTML=FMTH();f.querySelector('.mftg').textContent=T.kind==='cb'?(T.label||'색'):T.kind==='box'?'칸 색':T.kind==='sel'?'고른 글씨':T.bx?'색: 칸 · B/크기: 글씨':'글씨 전체';
    const sel=f.querySelector('[data-fs]');const pal=f.querySelector('.mfpal');const tgt=T.kind==='box'?T.box:T.el;
    const curPx=()=>Math.round(parseFloat(getComputedStyle(tgt).fontSize)||16);
