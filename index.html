@@ -6190,7 +6190,7 @@ function layHZ(k,SC){
   const t0=fs[0].t,t1=fs[fs.length-1].t2;
   const tw=s=>s.length*13.2+8,twe=e=>tw(e.t)+(e.treaty?20:0);
   // 1) 사건마다 x: 같은 해는 붙여서, 해가 바뀌면 조금 띄움
-  const xs=[];let x=HZ_ONLY[k]?36:40,prevY=null;evs.forEach((e,i)=>{const y=Math.floor(e.T+1e-6);if(i){const fast=(['pre','early'].includes(k)?.7:1)*((isMajor(e)||e.top)?1:.85);const GF=(window.HZ_GAPF&&HZ_GAPF[k])||1;x+=GF*(HZ_ONLY[k]?135:(y===prevY?26:Math.max(yrTxt(y).length*8.2+10,Math.min(90,Math.max(40,yrTxt(y).length*8.5+14))*SC*fast,Math.min(220,(y-prevY)*1.6*SC))))}xs.push(x);prevY=y});
+  const xs=[];let x=HZ_ONLY[k]?36:40,prevY=null;evs.forEach((e,i)=>{const y=Math.floor(e.T+1e-6);if(i){const fast=(['pre','early'].includes(k)?.7:1)*((isMajor(e)||e.top)?1:.85);const GF=(window.HZ_GAPF&&HZ_GAPF[k])||1;x+=GF*(HZ_ONLY[k]?135:(y===prevY?26:Math.max(yrTxt(y).length*8.2+10,Math.min(90,Math.max(40,yrTxt(y).length*8.5+14))*SC*fast,Math.min(150,(y-prevY)*1.1*SC))))}xs.push(x);prevY=y});
   const W=Math.max(x+(HZ_ONLY[k]?150:130),(typeof ovBuilding!=='undefined'&&ovBuilding)?0:($('ovscroll').clientWidth||0));
   const xT=t=>{if(t<=evs[0].T)return xs[0]-(HZ_ONLY[k]?36:30);for(let i=1;i<evs.length;i++)if(t<=evs[i].T)return xs[i-1]+(xs[i]-xs[i-1])*(t-evs[i-1].T)/Math.max(1e-6,evs[i].T-evs[i-1].T);return xs[xs.length-1]+(HZ_ONLY[k]?165:40)};
   const lanes=(items,gap=10)=>{const ends=[];items.forEach(it=>{let li=ends.findIndex(v=>v<=it.a-gap);if(li<0){li=ends.length;ends.push(-1e9)}ends[li]=it.b;it.li=li});return ends.length};
