@@ -114,3 +114,22 @@ const EVX={
  evDetailHTML=function(e){const h=ed.apply(this,arguments);const S=e&&EVX[e.t];if(!S)return h;const row=(k,c,v)=>v?`<div class="sty-r"><b style="--c:${c}">${k}</b><p>${g(v)}</p></div>`:'';
   const box=`<div class="sty">${row('배경','#b45309',S.bg)}${row('전개','#1d4ed8',S.dv)}${row('결과·영향','#be185d',S.rs)}${S.src?`<div class="sty-src"><b>근거 사료</b>${E(S.src)}</div>`:''}</div>`;
   return h.replace(/(<p class="ds">[\s\S]*?<\/p>)/,'$1'+box)}})();
+/* 사건 맨 밑: 연결(그때 왕 · 관련 문화유산) + 연대표에 추가 */
+(function(){if(typeof evDetailHTML!=='function')return;const ed=evDetailHTML;const E=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+ const base=n=>String(n||'').replace(/\s*\(.*?\)\s*/g,'').trim();
+ const kingsAt=e=>{try{const h=reignHTML(e.T);const d=document.createElement('div');d.innerHTML=h;return [...d.querySelectorAll('.rg1')].map(s=>{const em=s.querySelector('em');const nat=em?em.textContent:'';const nm=base(s.textContent.replace(nat,''));return nm?{nat,nm}:null}).filter(Boolean)}catch(_){return []}};
+ const sitesOf=e=>{try{const L=RLITEMS();const txt=(e.t||'')+' '+(e.x||'');const out=[];L.forEach(x=>{if(x.id===e.id)return;const n=base(rlName(x));if([...n].length<2)return;if(txt.includes(n)&&!out.some(o=>o.id===x.id))out.push(x)});return out.slice(0,8)}catch(_){return []}};
+ evDetailHTML=function(e){const h=ed.apply(this,arguments);if(!e||e.id==null)return h;const K=kingsAt(e),S=sitesOf(e);const can=!!(window.__MEX&&window.__MEX.own&&window.__MEX.own());
+  if(!K.length&&!S.length&&!can)return h;
+  const kh=K.length?`<div class="lk-r"><b style="--c:#7c3aed">그때 왕</b><div>${K.map(k=>`<button type="button" class="lkc" data-person="${E(k.nm)}" data-pt="${e.T}"><small>${E(k.nat)}</small>${E(k.nm)}</button>`).join('')}</div></div>`:'';
+  const sh=S.length?`<div class="lk-r"><b style="--c:#be185d">문화유산</b><div>${S.map(x=>`<button type="button" class="lkc" data-rle="${E(x.id)}">${E(rlName(x))}</button>`).join('')}</div></div>`:'';
+  const ad=can?`<button type="button" class="lkadd" data-ovadd="${E(e.id)}">+ 연대표에 추가</button>`:'';
+  return h+`<div class="lk">${kh}${sh}${ad}</div>`};
+ const flash=el=>{el.scrollIntoView({block:'center',inline:'center',behavior:'smooth'});el.classList.add('ovflash');setTimeout(()=>el.classList.remove('ovflash'),1800)};
+ window.addEventListener('click',ev=>{const b=ev.target.closest&&ev.target.closest('[data-ovadd]');if(!b)return;ev.preventDefault();ev.stopImmediatePropagation();const id=b.dataset.ovadd;const e=EVENTS.find(x=>String(x.id)===id);if(!e)return;
+  try{document.querySelectorAll('#trpop,#trdim,#glpop,#pppop').forEach(x=>x.hidden=true);const kp=document.getElementById('kpage');if(kp)kp.hidden=true}catch(_){}
+  const tab=document.querySelector('[data-v="ov"]');if(tab)tab.click();
+  setTimeout(()=>{const lab=document.querySelector(`#v-ov .hzn[data-ev="${e.id}"]`);const M=window.__ME&&window.__ME.tr;const T=m=>{try{window.__MEX.toast(m)}catch(_){}};
+   if(lab){let un=0;[lab,...document.querySelectorAll(`#v-ov [data-mev="${e.id}"],#v-ov .hzyr[data-yev="${e.id}"]`)].forEach(x=>{const k=x.dataset.ovk;if(!k||!M)return;const v=M.get('@ov:'+k);if(v&&v.hid){const w=Object.assign({},v);delete w.hid;M.set('@ov:'+k,w);try{window.__MEX.save('T:@ov:'+k,w)}catch(_){}un++}});setTimeout(()=>flash(lab),200);T(un?'숨겨 둔 사건을 연대표에 다시 보였어요':'이미 연대표에 있어요 · 그 자리로 옮겼어요');return}
+   try{window.__vForm();const f=document.getElementById('mvform');const set=(s,v)=>{const x=f.querySelector(s);if(x)x.value=v??''};set('#mvt',e.t);set('#mvy',Math.floor(e.T));set('#mvm',e.m||'');set('#mvx',e.x||'');set('#mvpp',e.pp||'');set('#mvp',e.p||'');f.querySelectorAll('.mtp input').forEach(c=>{c.checked=(e.tp||[]).includes(c.value)});T('연대표에 자리가 없어 새 사건으로 채웠어요 · 저장하면 들어가요')}catch(_){}},700)},true);
+})();

@@ -3068,3 +3068,14 @@ html body #mpen .mptop [data-undo],html body #mpen .mptop [data-redo],html body 
 .sty-src{padding:6px 10px;font-size:11.5px;color:var(--muted,#6b7280);background:#f8fafc;border-top:1px dashed var(--rule,#e5e7eb)}
 .sty-src b{font-size:11px;color:#57534e;margin-right:6px}
 </style>
+<style>
+/* 사건 맨 밑 연결 */
+.lk{margin:10px 0 4px;border:1px solid var(--rule,#e5e7eb);border-radius:10px;overflow:hidden}
+.lk-r{display:grid;grid-template-columns:62px 1fr;border-bottom:1px solid var(--rule,#e5e7eb)}
+.lk-r>b{font-size:12px;font-weight:800;color:var(--c);padding:8px 0 8px 9px;border-left:4px solid var(--c);background:color-mix(in srgb,var(--c) 7%,transparent)}
+.lk-r>div{display:flex;flex-wrap:wrap;gap:5px;padding:6px 8px}
+.lkc{font:inherit;font-size:13px;padding:3px 9px;border:1px solid var(--rule,#e5e7eb);border-radius:999px;background:var(--panel,#fff);color:var(--ink);cursor:pointer}
+.lkc small{font-size:10.5px;color:var(--muted,#6b7280);margin-right:4px}
+.lkadd{display:block;width:100%;font:inherit;font-size:13px;font-weight:700;padding:8px;border:0;background:#f8fafc;color:#1d4ed8;cursor:pointer}
+.lk>.lk-r:last-child{border-bottom:0}
+</style>
