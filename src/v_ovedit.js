@@ -729,3 +729,9 @@ document.addEventListener('click',e=>{if(!(e.target.closest&&e.target.closest('#
    L.forEach(n=>{n.style.marginTop=''});const G=L.map(n=>{const tr=(n.style.translate||'').split(/\s+/).map(parseFloat);const tx=tr[0]||0,ty=tr[1]||0;return {n,l:n.offsetLeft+tx,r:n.offsetLeft+tx+n.offsetWidth,t:n.offsetTop+ty,h:n.offsetHeight,m:0}}).sort((a,b)=>b.t-a.t);
    G.forEach(a=>{const ex=a.h-21;if(ex<4)return;a.m-=ex;G.forEach(b=>{if(b===a)return;if(b.t+b.h<=a.t+2&&b.l<a.r+4&&a.l<b.r+4)b.m-=ex})});
    G.forEach(o=>{o.n.style.marginTop=o.m?o.m+'px':''})});if(ch)try{window.__ovLink&&window.__ovLink()}catch(_){}}finally{busy=0}};setInterval(fix,1200)}
+
+/* 고치는 중 동그라미 글자(⦇ㄱ⦈ 등) 지우기: 바로 앞·뒤가 동그라미면 통째로 지움 */
+document.addEventListener('beforeinput',e=>{if(e.inputType!=='deleteContentBackward'&&e.inputType!=='deleteContentForward')return;const t=e.target;if(!t||!t.isContentEditable)return;const sl=getSelection();if(!sl.rangeCount||!sl.isCollapsed)return;const back=e.inputType==='deleteContentBackward';let n=sl.anchorNode,o=sl.anchorOffset,cand=null;
+  if(n.nodeType===3){if(back&&o===0)cand=n.previousSibling;else if(!back&&o===n.nodeValue.length)cand=n.nextSibling;else if(back&&o===1&&/^[  ]$/.test(n.nodeValue[0])&&n.previousSibling&&n.previousSibling.classList&&n.previousSibling.classList.contains('cnum')){/* 동그라미 바로 뒤 빈칸 지우기는 그냥 둠 */}}
+  else if(n.nodeType===1){cand=back?n.childNodes[o-1]:n.childNodes[o]}
+  if(cand&&cand.nodeType===1&&cand.classList.contains('cnum')){e.preventDefault();const r=document.createRange();const p=cand.parentNode,i=[...p.childNodes].indexOf(cand);cand.remove();r.setStart(p,Math.min(i,p.childNodes.length));r.collapse(true);sl.removeAllRanges();sl.addRange(r);t.dispatchEvent(new Event('input',{bubbles:true}))}},true);
