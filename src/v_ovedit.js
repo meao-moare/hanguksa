@@ -691,3 +691,23 @@ document.addEventListener('beforeinput',e=>{if(e.inputType!=='insertText'||e.dat
 
 /* 필통 되돌리기·다시 하기 뒤에 그림도 다시 그리기 */
 document.addEventListener('click',e=>{if(!(e.target.closest&&e.target.closest('#mpen [data-undo],#mpen [data-redo]')))return;setTimeout(()=>{document.querySelectorAll('[data-dsig]').forEach(x=>x.dataset.dsig='');try{window.__ovDraw&&window.__ovDraw()}catch(_){}},300)},true);
+
+/* 연대표 축 표시(✕ · |) 지우기·더하기 */
+{const can=()=>window.__ovCan&&window.__ovCan();const TR=()=>window.__ME&&window.__ME.tr;const E=x=>String(x).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+ const getK=sec=>{const M=TR();return (M&&M.get('@ovk:'+sec))||{l:[]}};const putK=(sec,v)=>{const M=TR();if(!M)return;M.set('@ovk:'+sec,v);try{window.__MEX.save('T:@ovk:'+sec,v)}catch(_){}render()};
+ function render(){document.querySelectorAll('#v-ov section.ovsec[data-sec]').forEach(s=>{const ax=s.querySelector('.hzax');if(!ax)return;const host=ax.parentElement;const D=getK(s.dataset.sec);const sig=JSON.stringify(D.l||[]);if(host.dataset.cks===sig&&(host.querySelector('.hzck')||!(D.l||[]).length))return;host.dataset.cks=sig;host.querySelectorAll('.hzck').forEach(x=>x.remove());const y=parseFloat(ax.style.top)||0;
+   (D.l||[]).forEach((q,i)=>{const c=q.c?`color:${q.c};`:'';host.insertAdjacentHTML('beforeend',(q.xm?`<span class="hzck hzckm hzx" data-ck="${i}" style="left:${q.x}px;top:${y-6}px;${c}">×</span>`:`<span class="hzck hzckm hztk" data-ck="${i}" style="left:${q.x}px;top:${y-6}px;${q.c?'background:'+q.c:''}"></span>`)+(q.t?`<span class="hzck hzckl" data-ck="${i}" style="left:${q.x}px;top:${y-21}px;${c}">${E(q.t)}</span>`:''))})})}
+ setInterval(()=>{if(!document.getElementById('v-ov').hidden)render()},900);
+ let menu=null;const close=()=>{if(menu){menu.remove();menu=null}};
+ const show=(x,y,html,on)=>{close();menu=document.createElement('div');menu.id='ovckm';menu.innerHTML=html;document.body.appendChild(menu);menu.style.left=Math.max(6,Math.min(innerWidth-menu.offsetWidth-6,x))+'px';menu.style.top=Math.max(60,y)+'px';menu.addEventListener('pointerdown',e=>e.stopPropagation(),true);menu.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;e.preventDefault();e.stopPropagation();on(b.dataset.a);close()})};
+ addEventListener('scroll',close,true);
+ document.addEventListener('click',e=>{if(!can()){close();return}if(e.target.closest&&e.target.closest('#ovckm'))return;const t=e.target;
+   /* 내가 더한 표시 */
+   const ck=t.closest&&t.closest('#v-ov .hzck');if(ck){e.preventDefault();e.stopImmediatePropagation();const sec=ck.closest('section.ovsec').dataset.sec;const i=+ck.dataset.ck;const D=getK(sec);const q=(D.l||[])[i];if(!q)return;const r=ck.getBoundingClientRect();
+     show(r.left-20,r.bottom+8,`<button data-a="xm">${q.xm?'| 로':'✕ 로'}</button><button data-a="t">글씨</button><button data-a="del" class="del">지우기</button>`,a=>{const L=(D.l||[]).slice();if(a==='del')L.splice(i,1);else if(a==='xm')L[i]=Object.assign({},q,{xm:q.xm?0:1});else if(a==='t'){const v=prompt('표시 옆에 쓸 글씨 (연도 등)',q.t||'');if(v==null)return;L[i]=Object.assign({},q,{t:v.trim()})}putK(sec,{l:L})});return}
+   /* 원래 있던 표시·연도: 지우기 단추 */
+   const tk=t.closest&&t.closest('#v-ov .hzyr[data-yev],#v-ov .hztk[data-mev],#v-ov .hzx[data-mev]');if(tk){setTimeout(()=>{const id=tk.dataset.yev||tk.dataset.mev;const r=tk.getBoundingClientRect();show(r.right+6,r.top-28,`<button data-a="hide" class="del">이 표시 지우기</button>`,()=>{document.querySelectorAll(`#v-ov .hzyr[data-yev="${id}"],#v-ov [data-mev="${id}"]`).forEach(x=>{try{window.__ovHide(x)}catch(_){}});try{window.__MEX.toast('표시를 지웠어요 (되돌리기로 살릴 수 있어요)')}catch(_){}})},30);return}
+   /* 축을 누르면 그 자리에 표시 더하기 */
+   const ax=t.closest&&t.closest('#v-ov .hzax');if(ax){e.preventDefault();e.stopPropagation();const sec=ax.closest('section.ovsec').dataset.sec;const hr=ax.parentElement.getBoundingClientRect();const x=Math.round(e.clientX-hr.left);
+     show(e.clientX-40,e.clientY+14,`<button data-a="tk">| 더하기</button><button data-a="x">✕ 더하기</button>`,a=>{const v=prompt('표시 옆에 쓸 글씨 (연도 등, 비워도 돼요)','');if(v==null)return;const D=getK(sec);putK(sec,{l:(D.l||[]).concat([{x,t:v.trim(),xm:a==='x'?1:0}])})});return}
+   if(!(t.closest&&t.closest('#v-ov')))close()},true)}
