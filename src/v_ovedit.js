@@ -711,3 +711,9 @@ document.addEventListener('click',e=>{if(!(e.target.closest&&e.target.closest('#
    const ax=t.closest&&t.closest('#v-ov .hzax');if(ax){e.preventDefault();e.stopPropagation();const sec=ax.closest('section.ovsec').dataset.sec;const hr=ax.parentElement.getBoundingClientRect();const x=Math.round(e.clientX-hr.left);
      show(e.clientX-40,e.clientY+14,`<button data-a="tk">| 더하기</button><button data-a="x">✕ 더하기</button>`,a=>{const v=prompt('표시 옆에 쓸 글씨 (연도 등, 비워도 돼요)','');if(v==null)return;const D=getK(sec);putK(sec,{l:(D.l||[]).concat([{x,t:v.trim(),xm:a==='x'?1:0}])})});return}
    if(!(t.closest&&t.closest('#v-ov')))close()},true)}
+
+/* 축 위 글씨가 두 줄 이상이면 위로 자라고, 그 위에 있는 글씨들도 그만큼 위로 비켜 줌 */
+{let busy=0;const fix=()=>{if(busy||document.getElementById('v-ov').hidden)return;if(document.querySelector('#v-ov .hzn [contenteditable="true"],#v-ov .ovdrag'))return;busy=1;try{let ch=false;document.querySelectorAll('#v-ov section.ovsec').forEach(s=>{const L=[...s.querySelectorAll('.hzn.up')].filter(n=>n.offsetParent&&!n.classList.contains('ovhid'));if(!L.length)return;const sig=L.map(n=>n.offsetHeight).join(',');if(s.dataset.upml===sig)return;s.dataset.upml=sig;ch=true;
+   L.forEach(n=>{n.style.marginTop=''});const G=L.map(n=>{const tr=(n.style.translate||'').split(/\s+/).map(parseFloat);const tx=tr[0]||0,ty=tr[1]||0;return {n,l:n.offsetLeft+tx,r:n.offsetLeft+tx+n.offsetWidth,t:n.offsetTop+ty,h:n.offsetHeight,m:0}}).sort((a,b)=>b.t-a.t);
+   G.forEach(a=>{const ex=a.h-21;if(ex<4)return;a.m-=ex;G.forEach(b=>{if(b===a)return;if(b.t+b.h<=a.t+2&&b.l<a.r+4&&a.l<b.r+4)b.m-=ex})});
+   G.forEach(o=>{o.n.style.marginTop=o.m?o.m+'px':''})});if(ch)try{window.__ovLink&&window.__ovLink()}catch(_){}}finally{busy=0}};setInterval(fix,1200)}
