@@ -3131,3 +3131,10 @@ figure.mimg img{object-fit:contain}
 </style>
 <style>figure.mimg .mimgw{position:relative;display:block}figure.mimg .mimgw>img{display:block;width:100%}figure.mimg .mimgsrc{top:auto;bottom:6px}</style>
 <style>#v-rl .rlhid{opacity:.4;filter:grayscale(.7)}#v-rl .rlhid::after{content:'목록에서 뺌';position:absolute;top:8px;right:8px;font-size:11px;font-weight:700;color:#fff;background:#78716c;padding:2px 7px;border-radius:6px}#v-rl .rlhid{position:relative}</style>
+<style>
+/* 미리보기·카드 사진 틀: 사진 비율대로 세로까지 늘어나게 (너무 길면 420px까지) */
+#v-rl .rlimg.ok,#rlpop .rlimg.rlpv.ok,#glpop .rlimg.rlpv.ok{aspect-ratio:auto!important;height:auto!important;display:block!important;background:#f5f5f4}
+#v-rl .rlimg.ok>img,#rlpop .rlimg.rlpv.ok>img,#glpop .rlimg.rlpv.ok>img{position:static!important;display:block;width:100%!important;height:auto!important;max-height:420px;object-fit:contain!important;margin:0 auto}
+#v-rl .rlimg:not(.ok),#rlpop .rlimg.rlpv:not(.ok),#glpop .rlimg.rlpv:not(.ok){aspect-ratio:4/3!important}
+#rlpop .rlimg.rlpv.ok>img,#glpop .rlimg.rlpv.ok>img{max-height:360px}
+</style>
