@@ -241,3 +241,9 @@ const RLX={
   const rows=[['언제 만들었나','#b45309',X.w],['발견·내력','#0e7490',X.f],['무엇에 썼나 · 왜 만들었나','#be185d',X.u],['지정','#7c3aed',X.d],['지금 있는 곳','#047857',X.at]].filter(x=>x[2]);
   const sec=document.createElement('section');sec.className='rlx';sec.innerHTML='<h3>한눈에 보기</h3><div class="sty">'+rows.map(([k,c,v])=>`<div class="sty-r"><b style="--c:${c}">${k}</b><p>${E(v)}</p></div>`).join('')+'</div>';
   const first=pin.querySelector('section');if(first)first.after(sec);else pin.appendChild(sec)}catch(_){}return r}})();
+/* 낱말 미리보기(glpop): 문화유산이면 사진 */
+(function(){const E=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));const base=n=>String(n||'').replace(/\s*\(.*?\)\s*/g,'').trim();
+ const find=k=>{try{const L=RLITEMS();k=base(k);return L.find(x=>base(rlName(x))===k)||L.find(x=>base(rlName(x)).startsWith(k)&&[...k].length>=2)}catch(_){return null}};
+ document.addEventListener('click',ev=>{const w=ev.target.closest&&ev.target.closest('[data-gl]');if(!w)return;const k=w.dataset.gl;setTimeout(()=>{const gp=document.getElementById('glpop');if(!gp||gp.hidden||gp.querySelector('.rlimg'))return;const it=find(k);if(!it)return;let col='#8b5e34';try{col=RL_COL[HCLS(it)[0]]||col}catch(_){}
+  gp.insertAdjacentHTML('afterbegin',`<div class="rlimg rlpv" data-rq="${E(rlName(it))}" data-rle="${E(String(it.id))}" style="--kc:${col}"><svg viewBox="0 0 24 24"><path d="M3 21h18M5 21V10l7-5 7 5v11M9 21v-6h6v6"/></svg></div>`);
+  const r=w.getBoundingClientRect(),gh=gp.offsetHeight;gp.style.top=(r.bottom+8+gh<innerHeight-8?r.bottom+8:Math.max(8,r.top-gh-8))+'px'},0)},true)})();
