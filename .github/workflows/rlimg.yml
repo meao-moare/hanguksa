@@ -1,7 +1,7 @@
 name: 국가유산 사진 받기
 on:
   push:
-    paths: ['tools/rl_names.tsv','tools/rl_fetch.py','.github/workflows/rlimg.yml']
+    paths: ['tools/rl_targets.tsv','tools/rl_names.tsv','tools/rl_fetch.py','.github/workflows/rlimg.yml']
   workflow_dispatch:
 permissions:
   contents: write

@@ -38,30 +38,32 @@ except Exception as e:
     LOG.append('API 연결 실패: '+repr(e))
     os.makedirs(os.path.join(ROOT,'assets'),exist_ok=True)
     open(os.path.join(ROOT,'tools','rl_fetch_log.txt'),'w',encoding='utf-8').write('\n'.join(LOG)+'\n');print('\n'.join(LOG));raise SystemExit(0)
-for line in open(os.path.join(ROOT,'tools','rl_names.tsv'),encoding='utf-8'):
+TG={}
+for line in open(os.path.join(ROOT,'tools','rl_targets.tsv'),encoding='utf-8'):
     line=line.rstrip('\n')
-    if not line: continue
-    name,era=(line.split('\t')+[''])[:2]
+    if '\t' in line:
+        a,b=line.split('\t',1);TG[a]=[x.strip() for x in b.split('|') if x.strip()]
+# 목록에 없는 것은 지우고, 이름이 정확히 맞지 않던 기존 사진도 지움
+for k in list(DB):
+    if k not in TG or sq(DB[k].get('n',''))not in [sq(x) for x in TG[k]]:
+        try: os.remove(os.path.join(ROOT,DB[k]['f']))
+        except Exception: pass
+        LOG.append(f'{k}: 맞지 않아 지움 ({DB[k].get("n")})');del DB[k]
+for name,targets in TG.items():
     if name in DB and os.path.exists(os.path.join(ROOT,DB[name].get('f',''))): continue
-    nm=re.sub(r'\s*\(.*?\)\s*',' ',name);nm=re.sub(r'[·『』]',' ',nm).strip()
-    tk=[t for t in nm.split() if len(t)>=2]
     found=None
-    try:
-        for q in [nm]+sorted(tk,key=len,reverse=True)[:1]:
-            L=api('SearchKindOpenapiList.do?pageUnit=30&ccbaMnm1='+urllib.parse.quote(q))
+    for tg in targets:
+        try:
+            L=api('SearchKindOpenapiList.do?pageUnit=30&ccbaMnm1='+urllib.parse.quote(tg))
             its=[dict(n=tx(i,'ccbaMnm1'),k=tx(i,'ccbaKdcd'),a=tx(i,'ccbaAsno'),c=tx(i,'ccbaCtcd')) for i in L.iter('item')]
-            its=[i for i in its if i['k'] and i['a']]
-            sc=lambda i:100 if sq(i['n'])==sq(nm) else sum(1 for t in tk if t in sq(i['n']))
-            its=sorted([i for i in its if sc(i)>=max(1,(len(tk)+1)//2)],key=sc,reverse=True)
-            for it in its[:6]:
+            its=[i for i in its if i['k'] and i['a'] and sq(i['n'])==sq(tg)]
+            for it in its[:2]:
                 ps='ccbaKdcd=%s&ccbaAsno=%s&ccbaCtcd=%s'%(it['k'],it['a'],it['c'])
                 D=api('SearchKindOpenapiDt.do?'+ps);y=tx(D,'ccceName')
-                if y and era in ERAK and not re.search(ERAK[era],y):
-                    LOG.append(f'{name}: 시대 안 맞아 건너뜀 {it["n"]} ({y})');continue
                 us=[]
                 try: us=[(e.text or '').strip() for e in api('SearchImageOpenapi.do?'+ps).iter('imageUrl') if e.text]
                 except Exception: pass
-                if tx(D,'imageUrl'): us.append(tx(D,'imageUrl'))
+                if tx(D,'imageUrl'): us.insert(0,tx(D,'imageUrl'))
                 for u in us:
                     try:
                         im=Image.open(io.BytesIO(get(u,60))).convert('RGB')
@@ -73,12 +75,12 @@ for line in open(os.path.join(ROOT,'tools','rl_names.tsv'),encoding='utf-8'):
                     except Exception as e:
                         LOG.append(f'{name}: 사진 실패 {u} {e}')
                 if found: break
-            if found: break
-    except Exception as e:
-        LOG.append(f'{name}: API 오류 {e}')
+        except Exception as e:
+            LOG.append(f'{name}: API 오류 {tg} {e}')
+        if found: break
+        time.sleep(1.2)
     if found: DB[name]=found;LOG.append(f'{name}: OK {found["n"]} ({found["y"]})')
-    else: LOG.append(f'{name}: 못 찾음')
-    time.sleep(1.5)
+    else: LOG.append(f'{name}: 못 찾음 {targets}')
 json.dump(DB,open(JP,'w',encoding='utf-8'),ensure_ascii=False,indent=0)
 open(os.path.join(ROOT,'tools','rl_fetch_log.txt'),'w',encoding='utf-8').write('\n'.join(LOG)+'\n')
 print('\n'.join(LOG))
