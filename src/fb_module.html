@@ -2,7 +2,7 @@
 /* 구글 로그인 + 하트·책갈피·설정 동기화 (GitHub 사이트 전용) */
 import {initializeApp} from "https://www.gstatic.com/firebasejs/13.1.0/firebase-app.js";
 import {getAuth,GoogleAuthProvider,signInWithPopup,signInWithRedirect,onAuthStateChanged,signOut} from "https://www.gstatic.com/firebasejs/13.1.0/firebase-auth.js";
-import {getFirestore,doc,getDoc,setDoc,serverTimestamp,collection,onSnapshot} from "https://www.gstatic.com/firebasejs/13.1.0/firebase-firestore.js";
+import {getFirestore,doc,getDoc,setDoc,serverTimestamp,collection,onSnapshot,query,where} from "https://www.gstatic.com/firebasejs/13.1.0/firebase-firestore.js";
 const app=initializeApp({apiKey:"AIzaSyAPHs56cX-nqgmU9tR3eVGu8cJo5MqalQY",authDomain:"hanguksa-dbb5e.firebaseapp.com",projectId:"hanguksa-dbb5e",storageBucket:"hanguksa-dbb5e.firebasestorage.app",messagingSenderId:"1038931533852",appId:"1:1038931533852:web:4e919a13ebf9e9be8fffd9"});
 const auth=getAuth(app),db=getFirestore(app);
 const KEYS=['hearts','books','kh','snd','words','hord','hsort'],SETS=['hearts','books','kh','words'],LS=k=>'ksh-'+k;
@@ -37,7 +37,7 @@ onAuthStateChanged(auth,async u=>{uid=u?u.uid:null;render(u);if(!u)return;
 /* 관리자(주인) 편집: 고친 글씨·사론·태그·사건을 Firebase에 저장 → 사이트 보는 모든 사람에게 바로 보임.
    쓰기는 Firebase 규칙이 주인 계정만 허락함 (코드에는 계정 정보 없음) */
 {const hidf=k=>[...new TextEncoder().encode(k)].map(b=>b.toString(16).padStart(2,'0')).join('').slice(0,190);
- let J={mine:[],sanon:{}};const jp=fetch('mine.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).then(j=>{if(j)J={mine:j.mine||[],sanon:j.sanon||{}}}).catch(()=>{});
+ let J={mine:[],sanon:{}};const jp=fetch('mine.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).then(j=>{if(j)J={mine:j.mine||[],sanon:j.sanon||{},at:j._at||{}}}).catch(()=>{});
  /* Firestore는 배열 안 배열·undefined를 못 받음 → 값을 글자로 바꿔 저장 */
  const nest=v=>Array.isArray(v)?v.some(x=>Array.isArray(x)||nest(x)):(v&&typeof v==='object'?Object.values(v).some(nest):false);
  const enc=d=>{d=JSON.parse(JSON.stringify(d));if(d&&'v' in d&&d.v!==null&&typeof d.v==='object'&&nest(d.v)){d.vj=JSON.stringify(d.v);delete d.v}return d};
@@ -45,7 +45,7 @@ onAuthStateChanged(auth,async u=>{uid=u?u.uid:null;render(u);if(!u)return;
  /* 모음마다 Firestore 듣기는 하나만, 처음 받을 때까지 기다렸다가 보여 줌 (예전 자료로 잠깐 바뀌지 않게) */
  const LIS={};
  const listen=name=>{if(LIS[name])return LIS[name];const L={fs:new Map(),live:false,subs:new Set()};LIS[name]=L;
-   onSnapshot(collection(db,name),snap=>{L.fs=new Map(snap.docs.map(x=>[x.id,dec(x.data())]));L.live=true;L.real=true;L.subs.forEach(f=>f())},e=>{console.warn(e);L.live=true;L.subs.forEach(f=>f())});
+   jp.then(()=>{const after=J.at&&+J.at[name]||0;/* 굳혀 둔 mine.json 뒤로 바뀐 것만 듣기 → 읽기 한도 아낌 */const src=after?query(collection(db,name),where('at','>',after)):collection(db,name);onSnapshot(src,snap=>{L.fs=new Map(snap.docs.map(x=>[x.id,dec(x.data())]));L.live=true;L.real=true;L.subs.forEach(f=>f())},e=>{console.warn(e);L.live=true;L.subs.forEach(f=>f())})});
    setTimeout(()=>{if(!L.live){L.live=true;L.subs.forEach(f=>f())}},15000);return L};
  const adapter={collection:name=>({onSnapshot:(cb,err)=>{const L=listen(name);
      const base=()=>name==='mine'?J.mine.filter(d=>d&&d.k).map(d=>[hidf(d.k),d]):Object.entries(J.sanon).map(([k,v])=>[hidf(k),{k,v}]);

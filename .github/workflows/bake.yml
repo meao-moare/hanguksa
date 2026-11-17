@@ -1,7 +1,7 @@
 name: 고친 내용 굳히기
 on:
   schedule:
-    - cron: '*/10 * * * *'
+    - cron: '*/15 * * * *'
   push:
     paths: ['tools/bake.py','.github/workflows/bake.yml']
   workflow_dispatch:

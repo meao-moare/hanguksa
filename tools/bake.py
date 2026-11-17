@@ -14,6 +14,22 @@ def dec(v):
     if 'mapValue' in v: return {k:dec(x) for k,x in (v['mapValue'].get('fields') or {}).items()}
     if 'arrayValue' in v: return [dec(x) for x in (v['arrayValue'].get('values') or [])]
     return None
+def query(col,after):
+    body=json.dumps({'structuredQuery':{'from':[{'collectionId':col}],'where':{'fieldFilter':{'field':{'fieldPath':'at'},'op':'GREATER_THAN','value':{'doubleValue':after}}}}}).encode()
+    req=urllib.request.Request(f'https://firestore.googleapis.com/v1/projects/{PROJ}/databases/(default)/documents:runQuery?key={KEY}',data=body,headers={'Content-Type':'application/json'})
+    out={}
+    for x in json.loads(urllib.request.urlopen(req,timeout=60).read()):
+        d=x.get('document')
+        if not d: continue
+        o={k:dec(v) for k,v in (d.get('fields') or {}).items()}
+        if isinstance(o.get('vj'),str):
+            try: o['v']=json.loads(o['vj'])
+            except Exception: pass
+            o.pop('vj',None)
+        out[d['name'].split('/')[-1]]=o
+    return out
+def fetch_since(col,after):
+    return query(col,after) if after else fetch(col)
 def fetch(col):
     out={};tok=''
     while True:
@@ -42,15 +58,17 @@ LOGP=os.path.join(ROOT,'tools','bake_log.txt')
 try:
   MJ=os.path.join(ROOT,'mine.json')
   old=json.load(open(MJ,encoding='utf-8')) if os.path.exists(MJ) else {'mine':[],'sanon':{}}
-  mine=merge(old.get('mine',[]),fetch('mine'))
+  A=old.get('_at') or {}
+  fm=fetch_since('mine',A.get('mine',0));mine=merge(old.get('mine',[]),fm)
   mine.sort(key=lambda d:d['k'])
   sb=[{'k':k,'v':v} for k,v in (old.get('sanon') or {}).items()]
-  sl=merge(sb,fetch('sanon'))
+  fsn=fetch_since('sanon',A.get('sanon',0));sl=merge(sb,fsn)
   sanon={}
   for d in sorted(sl,key=lambda d:d['k']):
       v=d.get('v');v=(v.get('v') or v.get('t') or '') if isinstance(v,dict) else v
       if v: sanon[d['k']]=str(v)
-  json.dump({'sanon':sanon,'mine':mine},open(MJ,'w',encoding='utf-8'),ensure_ascii=False,separators=(',',':'))
+  mx=lambda D,prev:max([prev]+[float(d.get('at') or 0) for d in D.values()])
+  json.dump({'_at':{'mine':mx(fm,A.get('mine',0)),'sanon':mx(fsn,A.get('sanon',0))},'sanon':sanon,'mine':mine},open(MJ,'w',encoding='utf-8'),ensure_ascii=False,separators=(',',':'))
   txt=[d for d in mine if not d['k'].startswith('p:')]
   open(os.path.join(ROOT,'baked.js'),'w',encoding='utf-8').write('window.__BAKED='+json.dumps({'mine':txt,'sanon':sanon},ensure_ascii=False,separators=(',',':'))+';\n')
   print('mine',len(mine),'text',len(txt),'sanon',len(sanon))
