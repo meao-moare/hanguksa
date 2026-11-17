@@ -3163,3 +3163,19 @@ figure.mimg img{object-fit:contain}
 .lkadd{background:none;border-top:1px solid color-mix(in srgb,var(--rule,#e7e5e4) 70%,transparent);text-align:left;padding:9px 0}
 </style>
 <style>#v-rl .rlqw{margin:10px 0 6px;width:100%;box-sizing:border-box;max-width:640px}</style>
+<style>
+#kpage .rlhcap[data-empty="1"]{display:none}
+body.medit #kpage .rlhcap[data-empty="1"]{display:block;color:#a8a29e}
+body.medit #kpage .rlhcap[data-empty="1"]::before{content:'+ 사진 설명 쓰기'}
+#kpage .rlhcap{color:#78716c!important;cursor:default}body.medit #kpage .rlhcap{cursor:text}
+body.medit #kpage .rlhero .rlcap{cursor:pointer;outline:1px dashed rgba(255,255,255,.7)}
+#kpage .rlhero .rlht.arm{background:#dc2626}#kpage .rlhero .rlht.arm svg{stroke:#fff}
+.rlinl{display:flex;gap:6px;margin:-4px 0 12px}.rlinl input{flex:1;min-width:0;font:inherit;font-size:15px;padding:7px 9px;border:1.5px solid #d6d3d1;border-radius:9px}.rlinl button{font:inherit;font-size:13px;padding:6px 12px;border-radius:9px;border:1px solid #d6d3d1;background:#fff;cursor:pointer}.rlinl .ok{background:#1c1917;border-color:#1c1917;color:#fff}
+body.medit figure.mimg .mimgsrc.no{background:rgba(0,0,0,.5)!important}
+/* 자르기 창: 아이패드 주소창 높이까지 감안 */
+.crp{height:100vh;height:100dvh;padding:10px;box-sizing:border-box}
+.crp-in{max-height:100%!important;height:100%;display:flex;flex-direction:column}
+.crp-st{flex:1 1 0!important;min-height:0}
+.crp-st img{max-height:100%!important;max-width:100%}
+</style>
+<style>.rlxdel{position:absolute;top:8px;right:8px;z-index:4;font:inherit;font-size:12px;font-weight:700;padding:4px 9px;border-radius:8px;border:0;background:rgba(28,25,23,.78);color:#fff;cursor:pointer}.rlxdel[data-ok="1"]{background:#dc2626}</style>
