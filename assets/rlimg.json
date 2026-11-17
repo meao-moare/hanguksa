@@ -41,13 +41,6 @@
 "y": "초기 철기시대(기원전 약 2세기)",
 "h": "https://www.heritage.go.kr/heri/cul/culSelectDetail.do?ccbaKdcd=12&ccbaAsno=0020330000000&ccbaCtcd=35"
 },
-"신라 금관": {
-"f": "assets/rl/11_0000030000000_11.jpg",
-"s": "국가유산청",
-"n": "서울 북한산 신라 진흥왕 순수비",
-"y": "신라 진흥왕대",
-"h": "https://www.heritage.go.kr/heri/cul/culSelectDetail.do?ccbaKdcd=11&ccbaAsno=0000030000000&ccbaCtcd=11"
-},
 "무령왕릉 석수 · 지석": {
 "f": "assets/rl/11_0001620000000_34.jpg",
 "s": "국가유산청",
@@ -69,13 +62,6 @@
 "y": "백제시대 후기 7세기",
 "h": "https://www.heritage.go.kr/heri/cul/culSelectDetail.do?ccbaKdcd=11&ccbaAsno=0000110000000&ccbaCtcd=35"
 },
-"불국사": {
-"f": "assets/rl/11_0000200000000_37.jpg",
-"s": "국가유산청",
-"n": "경주 불국사 다보탑",
-"y": "통일신라시대 8세기",
-"h": "https://www.heritage.go.kr/heri/cul/culSelectDetail.do?ccbaKdcd=11&ccbaAsno=0000200000000&ccbaCtcd=37"
-},
 "성덕 대왕 신종": {
 "f": "assets/rl/11_0000290000000_37.jpg",
 "s": "국가유산청",
@@ -96,20 +82,6 @@
 "n": "청자 투각칠보문뚜껑 향로",
 "y": "고려시대(12세기)",
 "h": "https://www.heritage.go.kr/heri/cul/culSelectDetail.do?ccbaKdcd=11&ccbaAsno=0000950000000&ccbaCtcd=11"
-},
-"나전 칠기": {
-"f": "assets/rl/22_0000110000300_32.jpg",
-"s": "국가유산청",
-"n": "나전칠기장",
-"y": "",
-"h": "https://www.heritage.go.kr/heri/cul/culSelectDetail.do?ccbaKdcd=22&ccbaAsno=0000110000300&ccbaCtcd=32"
-},
-"수월관음도": {
-"f": "assets/rl/12_0012040000000_11.jpg",
-"s": "국가유산청",
-"n": "의겸 등 필 수월관음도",
-"y": "",
-"h": "https://www.heritage.go.kr/heri/cul/culSelectDetail.do?ccbaKdcd=12&ccbaAsno=0012040000000&ccbaCtcd=11"
 },
 "천상열차분야지도 각석": {
 "f": "assets/rl/11_0002280000000_11.jpg",
@@ -230,20 +202,6 @@
 "y": "",
 "h": "https://www.heritage.go.kr/heri/cul/culSelectDetail.do?ccbaKdcd=23&ccbaAsno=0000160000000&ccbaCtcd=23"
 },
-"반달 돌칼": {
-"f": "assets/rl/16_0003290000000_ZZ.jpg",
-"s": "국가유산청",
-"n": "반달가슴곰",
-"y": "",
-"h": "https://www.heritage.go.kr/heri/cul/culSelectDetail.do?ccbaKdcd=16&ccbaAsno=0003290000000&ccbaCtcd=ZZ"
-},
-"창원 다호리 붓": {
-"f": "assets/rl/13_0003270000000_38.jpg",
-"s": "국가유산청",
-"n": "창원 다호리 고분군",
-"y": "",
-"h": "https://www.heritage.go.kr/heri/cul/culSelectDetail.do?ccbaKdcd=13&ccbaAsno=0003270000000&ccbaCtcd=38"
-},
 "천마총 천마도": {
 "f": "assets/rl/11_0002070000000_37.jpg",
 "s": "국가유산청",
@@ -257,13 +215,6 @@
 "n": "도기 기마인물형 명기",
 "y": "신라시대(5세기)",
 "h": "https://www.heritage.go.kr/heri/cul/culSelectDetail.do?ccbaKdcd=11&ccbaAsno=0000910000000&ccbaCtcd=11"
-},
-"무령왕릉": {
-"f": "assets/rl/11_0001610000000_34.jpg",
-"s": "국가유산청",
-"n": "무령왕릉 청동거울 일괄",
-"y": "백제시대",
-"h": "https://www.heritage.go.kr/heri/cul/culSelectDetail.do?ccbaKdcd=11&ccbaAsno=0001610000000&ccbaCtcd=34"
 },
 "연가 7년명 금동 여래 입상": {
 "f": "assets/rl/11_0001190000000_11.jpg",
@@ -300,13 +251,6 @@
 "y": "신라시대",
 "h": "https://www.heritage.go.kr/heri/cul/culSelectDetail.do?ccbaKdcd=11&ccbaAsno=0000310000000&ccbaCtcd=37"
 },
-"황룡사 9층 목탑": {
-"f": "assets/rl/12_0018700000000_37.jpg",
-"s": "국가유산청",
-"n": "경주 황룡사 구층목탑 금동찰주본기",
-"y": "",
-"h": "https://www.heritage.go.kr/heri/cul/culSelectDetail.do?ccbaKdcd=12&ccbaAsno=0018700000000&ccbaCtcd=37"
-},
 "석굴암": {
 "f": "assets/rl/11_0000240000000_37.jpg",
 "s": "국가유산청",
@@ -314,26 +258,12 @@
 "y": "통일신라시대",
 "h": "https://www.heritage.go.kr/heri/cul/culSelectDetail.do?ccbaKdcd=11&ccbaAsno=0000240000000&ccbaCtcd=37"
 },
-"발해 석등": {
-"f": "assets/rl/79_0006650000000_11.jpg",
-"s": "국가유산청",
-"n": "발해태조건국지·명림답부전",
-"y": "",
-"h": "https://www.heritage.go.kr/heri/cul/culSelectDetail.do?ccbaKdcd=79&ccbaAsno=0006650000000&ccbaCtcd=11"
-},
 "하남 하사창동 철조 석가여래 좌상": {
 "f": "assets/rl/12_0003320000000_11.jpg",
 "s": "국가유산청",
 "n": "하남 하사창동 철조석가여래좌상",
 "y": "고려시대",
 "h": "https://www.heritage.go.kr/heri/cul/culSelectDetail.do?ccbaKdcd=12&ccbaAsno=0003320000000&ccbaCtcd=11"
-},
-"영주 부석사 소조 아미타여래 좌상": {
-"f": "assets/rl/11_0002820000000_37.jpg",
-"s": "국가유산청",
-"n": "영주 흑석사 목조아미타여래좌상 및 복장유물",
-"y": "",
-"h": "https://www.heritage.go.kr/heri/cul/culSelectDetail.do?ccbaKdcd=11&ccbaAsno=0002820000000&ccbaCtcd=37"
 },
 "『삼국사기』": {
 "f": "assets/rl/21_0000790000000_22.jpg",
@@ -426,13 +356,6 @@
 "y": "조선 성종 2년(1471년)",
 "h": "https://www.heritage.go.kr/heri/cul/culSelectDetail.do?ccbaKdcd=12&ccbaAsno=0015210000200&ccbaCtcd=11"
 },
-"백운동 서원": {
-"f": "assets/rl/15_0001150000000_36.jpg",
-"s": "국가유산청",
-"n": "강진 백운동 원림",
-"y": "조선시대",
-"h": "https://www.heritage.go.kr/heri/cul/culSelectDetail.do?ccbaKdcd=15&ccbaAsno=0001150000000&ccbaCtcd=36"
-},
 "『동의보감』": {
 "f": "assets/rl/12_0010850000100_11.jpg",
 "s": "국가유산청",
@@ -461,13 +384,6 @@
 "y": "조선 영조 27년(1751)",
 "h": "https://www.heritage.go.kr/heri/cul/culSelectDetail.do?ccbaKdcd=11&ccbaAsno=0002160000000&ccbaCtcd=11"
 },
-"김홍도 풍속화": {
-"f": "assets/rl/11_0001390000000_11.jpg",
-"s": "국가유산청",
-"n": "김홍도 필 군선도 병풍",
-"y": "1776년(조선 영조 52년)",
-"h": "https://www.heritage.go.kr/heri/cul/culSelectDetail.do?ccbaKdcd=11&ccbaAsno=0001390000000&ccbaCtcd=11"
-},
 "수원 화성": {
 "f": "assets/rl/13_0000030000000_31.jpg",
 "s": "국가유산청",
@@ -482,18 +398,81 @@
 "y": "조선 헌종 10년(1844)",
 "h": "https://www.heritage.go.kr/heri/cul/culSelectDetail.do?ccbaKdcd=11&ccbaAsno=0001800000000&ccbaCtcd=11"
 },
-"민화(까치와 호랑이)": {
-"f": "assets/rl/22_0000180000000_11.jpg",
+"잔무늬 거울": {
+"f": "assets/rl/11_0001410000000_11.jpg",
 "s": "국가유산청",
-"n": "민화장",
-"y": "",
-"h": "https://www.heritage.go.kr/heri/cul/culSelectDetail.do?ccbaKdcd=22&ccbaAsno=0000180000000&ccbaCtcd=11"
+"n": "정문경",
+"y": "청동기시대(BC 4∼3)",
+"h": "https://www.heritage.go.kr/heri/cul/culSelectDetail.do?ccbaKdcd=11&ccbaAsno=0001410000000&ccbaCtcd=11"
+},
+"무령왕릉": {
+"f": "assets/rl/13_0000130000000_34.jpg",
+"s": "국가유산청",
+"n": "공주 무령왕릉과 왕릉원",
+"y": "백제시대 중기",
+"h": "https://www.heritage.go.kr/heri/cul/culSelectDetail.do?ccbaKdcd=13&ccbaAsno=0000130000000&ccbaCtcd=34"
+},
+"황룡사 9층 목탑": {
+"f": "assets/rl/13_0000060000000_37.jpg",
+"s": "국가유산청",
+"n": "경주 황룡사지",
+"y": "신라 진흥왕 14년(553)",
+"h": "https://www.heritage.go.kr/heri/cul/culSelectDetail.do?ccbaKdcd=13&ccbaAsno=0000060000000&ccbaCtcd=37"
+},
+"불국사": {
+"f": "assets/rl/13_0005020000000_37.jpg",
+"s": "국가유산청",
+"n": "경주 불국사",
+"y": "통일신라시대",
+"h": "https://www.heritage.go.kr/heri/cul/culSelectDetail.do?ccbaKdcd=13&ccbaAsno=0005020000000&ccbaCtcd=37"
+},
+"영주 부석사 소조 아미타여래 좌상": {
+"f": "assets/rl/11_0000450000000_37.jpg",
+"s": "국가유산청",
+"n": "영주 부석사 소조여래좌상",
+"y": "고려 중엽",
+"h": "https://www.heritage.go.kr/heri/cul/culSelectDetail.do?ccbaKdcd=11&ccbaAsno=0000450000000&ccbaCtcd=37"
+},
+"팔만대장경": {
+"f": "assets/rl/11_0000320000000_38.jpg",
+"s": "국가유산청",
+"n": "합천 해인사 대장경판",
+"y": "고려시대(1237∼1248년)",
+"h": "https://www.heritage.go.kr/heri/cul/culSelectDetail.do?ccbaKdcd=11&ccbaAsno=0000320000000&ccbaCtcd=38"
+},
+"『삼국유사』": {
+"f": "assets/rl/11_0003060000200_11.jpg",
+"s": "국가유산청",
+"n": "삼국유사",
+"y": "조선 중종 7년(1512)",
+"h": "https://www.heritage.go.kr/heri/cul/culSelectDetail.do?ccbaKdcd=11&ccbaAsno=0003060000200&ccbaCtcd=11"
+},
+"백운동 서원": {
+"f": "assets/rl/13_0000550000000_37.jpg",
+"s": "국가유산청",
+"n": "영주 소수서원",
+"y": "조선 중종 38년(1543)",
+"h": "https://www.heritage.go.kr/heri/cul/culSelectDetail.do?ccbaKdcd=13&ccbaAsno=0000550000000&ccbaCtcd=37"
+},
+"김홍도 풍속화": {
+"f": "assets/rl/12_0005270000000_11.jpg",
+"s": "국가유산청",
+"n": "김홍도 필 풍속도 화첩",
+"y": "조선시대(18세기)",
+"h": "https://www.heritage.go.kr/heri/cul/culSelectDetail.do?ccbaKdcd=12&ccbaAsno=0005270000000&ccbaCtcd=11"
+},
+"『한성순보』": {
+"f": "assets/rl/79_0005050000000_11.jpg",
+"s": "국가유산청",
+"n": "한성순보",
+"y": "1883.10.31~1884.10.9",
+"h": "https://www.heritage.go.kr/heri/cul/culSelectDetail.do?ccbaKdcd=79&ccbaAsno=0005050000000&ccbaCtcd=11"
 },
 "진관사 태극기": {
-"f": "assets/rl/17_0001260000000_11.jpg",
+"f": "assets/rl/12_0021420000000_11.jpg",
 "s": "국가유산청",
-"n": "진관사 수륙재",
-"y": "",
-"h": "https://www.heritage.go.kr/heri/cul/culSelectDetail.do?ccbaKdcd=17&ccbaAsno=0001260000000&ccbaCtcd=11"
+"n": "서울 진관사 태극기",
+"y": "1919년 경",
+"h": "https://www.heritage.go.kr/heri/cul/culSelectDetail.do?ccbaKdcd=12&ccbaAsno=0021420000000&ccbaCtcd=11"
 }
 }
