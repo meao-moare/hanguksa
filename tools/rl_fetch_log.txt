@@ -1,174 +1,101 @@
+API 연결 OK: https://www.khs.go.kr/cha/
 상원 검은모루 동굴: 못 찾음
-연천 전곡리 유적: OK 연천 전곡리 유적 (구석기시대)
-주먹도끼: API 오류 Remote end closed connection without response
 주먹도끼: 못 찾음
-공주 석장리 유적: API 오류 Remote end closed connection without response
-공주 석장리 유적: 못 찾음
-청원 두루봉 동굴(흥수아이): API 오류 Remote end closed connection without response
+공주 석장리 유적: OK 공주 석장리 유적 (구석기시대)
 청원 두루봉 동굴(흥수아이): 못 찾음
-단양 수양개 유적: API 오류 Remote end closed connection without response
-단양 수양개 유적: 못 찾음
-제주 고산리 유적: OK 제주 고산리 유적 (후기구석기시대 ~ 초기신석기시대)
-양양 오산리 유적: API 오류 Remote end closed connection without response
-양양 오산리 유적: 못 찾음
+단양 수양개 유적: OK 단양 수양개 유적 (구석기시대~초기철기시대)
+양양 오산리 유적: OK 양양 오산리 유적 (신석기시대)
 덧무늬 토기: 못 찾음
-부산 동삼동 패총: OK 부산 동삼동 패총 (신석기시대)
-서울 암사동 유적: API 오류 Remote end closed connection without response
-서울 암사동 유적: 못 찾음
-빗살무늬 토기: API 오류 Remote end closed connection without response
+서울 암사동 유적: OK 서울 암사동 유적 (신석기시대)
 빗살무늬 토기: 못 찾음
 봉산 지탑리 유적: 못 찾음
-울주 대곡리 반구대 암각화: 시대 안 맞아 건너뜀 울주 대곡리 반구대 암각화 (신석기시대)
-울주 대곡리 반구대 암각화: 시대 안 맞아 건너뜀 울주 대곡리 반구대 암각화 (신석기시대)
-울주 대곡리 반구대 암각화: 사진 실패 http://www.khs.go.kr/unisearch/images/tangible_cult_prop/1639642.jpg Remote end closed connection without response
-울주 대곡리 반구대 암각화: OK 울산대곡리암각화 ()
-고인돌 (고창·화순·강화): API 오류 Remote end closed connection without response
-고인돌 (고창·화순·강화): 못 찾음
-민무늬 토기: API 오류 Remote end closed connection without response
+고인돌 (고창·화순·강화): OK 강화 오상리 고인돌 ()
 민무늬 토기: 못 찾음
-부여 송국리 유적: OK 부여 송국리 유적 (선사시대)
-반달 돌칼: API 오류 Remote end closed connection without response
-반달 돌칼: 못 찾음
-비파형 동검: API 오류 Remote end closed connection without response
+반달 돌칼: OK 반달가슴곰 ()
 비파형 동검: 못 찾음
 미송리식 토기: 못 찾음
-세형 동검 · 거푸집: 사진 실패 http://www.khs.go.kr/unisearch/images/treasure/2019062716174600.jpg Remote end closed connection without response
-세형 동검 · 거푸집: 사진 실패 http://www.khs.go.kr/unisearch/images/treasure/2019062716180900.jpg Remote end closed connection without response
-세형 동검 · 거푸집: OK 완주 갈동 출토 동검동과 거푸집 일괄 (초기 철기시대(기원전 약 2세기))
 잔무늬 거울: 못 찾음
 명도전 · 반량전 · 오수전: 못 찾음
-창원 다호리 붓: API 오류 Remote end closed connection without response
-창원 다호리 붓: 못 찾음
-칠지도: API 오류 Remote end closed connection without response
+창원 다호리 붓: OK 창원 다호리 고분군 ()
 칠지도: 못 찾음
 가야 판갑옷 · 덩이쇠: 못 찾음
 광개토 대왕릉비: 못 찾음
 호우명 그릇: 못 찾음
-무용총 수렵도 · 무용도: API 오류 Remote end closed connection without response
 무용총 수렵도 · 무용도: 못 찾음
-천마총 천마도: API 오류 Remote end closed connection without response
-천마총 천마도: 못 찾음
-신라 금관: OK 서울 북한산 신라 진흥왕 순수비 (신라 진흥왕대)
-기마 인물형 토기: API 오류 Remote end closed connection without response
-기마 인물형 토기: 못 찾음
-무령왕릉: API 오류 Remote end closed connection without response
-무령왕릉: 못 찾음
-무령왕릉 석수 · 지석: OK 무령왕릉 석수 (백제시대)
-연가 7년명 금동 여래 입상: API 오류 Remote end closed connection without response
-연가 7년명 금동 여래 입상: 못 찾음
-북한산 순수비: API 오류 Remote end closed connection without response
-북한산 순수비: 못 찾음
-백제 금동 대향로: OK 백제 금동대향로 (백제시대(6∼7세기))
+천마총 천마도: OK 경주 천마총 장니 천마도 (신라시대(5세기))
+기마 인물형 토기: OK 도기 기마인물형 명기 (신라시대(5세기))
+무령왕릉: OK 무령왕릉 청동거울 일괄 (백제시대)
+연가 7년명 금동 여래 입상: OK 금동연가7년명여래입상 (삼국시대(고구려 6세기))
+북한산 순수비: OK 서울 북한산 신라 진흥왕 순수비 (신라 진흥왕대)
 황초령비·마운령비: 못 찾음
-서산 용현리 마애 여래 삼존상: API 오류 Remote end closed connection without response
-서산 용현리 마애 여래 삼존상: 못 찾음
+서산 용현리 마애 여래 삼존상: OK 서산 용현리 마애여래삼존상 (백제시대 후기)
 강서대묘 사신도: 못 찾음
-금동 미륵보살 반가 사유상: API 오류 Remote end closed connection without response
-금동 미륵보살 반가 사유상: 못 찾음
-첨성대: API 오류 Remote end closed connection without response
-첨성대: 못 찾음
-미륵사지 석탑: OK 익산 미륵사지 석탑 (백제시대 후기 7세기)
-황룡사 9층 목탑: API 오류 Remote end closed connection without response
-황룡사 9층 목탑: 못 찾음
-불국사: OK 경주 불국사 다보탑 (통일신라시대 8세기)
-무구정광대다라니경: API 오류 Remote end closed connection without response
+금동 미륵보살 반가 사유상: OK 금동미륵보살반가사유상(1962-1) (삼국시대)
+첨성대: OK 경주 첨성대 (신라시대)
+황룡사 9층 목탑: OK 경주 황룡사 구층목탑 금동찰주본기 ()
 무구정광대다라니경: 못 찾음
-석굴암: API 오류 Remote end closed connection without response
-석굴암: 못 찾음
-성덕 대왕 신종: OK 성덕대왕신종 (통일신라 혜공왕 7년(771))
-발해 이불병좌상: API 오류 Remote end closed connection without response
+석굴암: OK 경주 석굴암 석굴 (통일신라시대)
+발해 이불병좌상: 시대 안 맞아 건너뜀 괴산 원풍리 마애이불병좌상 (고려시대)
 발해 이불병좌상: 못 찾음
-발해 석등: API 오류 Remote end closed connection without response
-발해 석등: 못 찾음
-하남 하사창동 철조 석가여래 좌상: API 오류 Remote end closed connection without response
-하남 하사창동 철조 석가여래 좌상: 못 찾음
-논산 관촉사 석조 미륵보살 입상: OK 논산 관촉사 석조미륵보살입상 (고려시대 전기)
-영주 부석사 소조 아미타여래 좌상: API 오류 Remote end closed connection without response
-영주 부석사 소조 아미타여래 좌상: 못 찾음
-초조대장경: API 오류 Remote end closed connection without response
+발해 석등: OK 발해태조건국지·명림답부전 ()
+하남 하사창동 철조 석가여래 좌상: OK 하남 하사창동 철조석가여래좌상 (고려시대)
+영주 부석사 소조 아미타여래 좌상: OK 영주 흑석사 목조아미타여래좌상 및 복장유물 ()
 초조대장경: 못 찾음
-청자 투각 칠보문 향로: OK 청자 투각칠보문뚜껑 향로 (고려시대(12세기))
-『삼국사기』: API 오류 Remote end closed connection without response
-『삼국사기』: 못 찾음
-상감 청자: API 오류 Remote end closed connection without response
-상감 청자: 못 찾음
-청동 은입사 포류수금문 정병: API 오류 Remote end closed connection without response
-청동 은입사 포류수금문 정병: 못 찾음
-나전 칠기: OK 나전칠기장 ()
-팔만대장경: API 오류 Remote end closed connection without response
+『삼국사기』: 시대 안 맞아 건너뜀 삼국사기 (조선시대)
+『삼국사기』: 시대 안 맞아 건너뜀 삼국사기 (조선 중종 3년(1512))
+『삼국사기』: OK 삼국사기 ()
+상감 청자: 시대 안 맞아 건너뜀 구완동상감청자가마터 (여말선초)
+상감 청자: OK 청자 상감연지원앙문 정병 (고려시대(12세기))
+청동 은입사 포류수금문 정병: OK 청동 은입사 포류수금문 정병 (고려시대(12세기))
+팔만대장경: 시대 안 맞아 건너뜀 팔만대장경 (조선 고종 2년 (1865))
+팔만대장경: 시대 안 맞아 건너뜀 팔만대장경 (조선 고종 2년 (1865))
 팔만대장경: 못 찾음
-『삼국유사』: API 오류 Remote end closed connection without response
+『삼국유사』: 시대 안 맞아 건너뜀 삼국유사 (조선 중종 7년(1512))
+『삼국유사』: 시대 안 맞아 건너뜀 삼국유사 (조선 중종(1512))
+『삼국유사』: 시대 안 맞아 건너뜀 삼국유사 권3~5 (14세기말)
+『삼국유사』: 시대 안 맞아 건너뜀 삼국유사 권1~2 (조선시대 초기)
+『삼국유사』: 시대 안 맞아 건너뜀 삼국유사 권4~5 (1394(조선 태조 3) 판각, 조선 초기 인출)
+『삼국유사』: 시대 안 맞아 건너뜀 삼국유사 권제3-5 (14세기말)
+『삼국유사』: 시대 안 맞아 건너뜀 삼국유사 (조선 중종 7년(1512))
+『삼국유사』: 시대 안 맞아 건너뜀 삼국유사 (조선 중종(1512))
+『삼국유사』: 시대 안 맞아 건너뜀 삼국유사 권3~5 (14세기말)
+『삼국유사』: 시대 안 맞아 건너뜀 삼국유사 권1~2 (조선시대 초기)
+『삼국유사』: 시대 안 맞아 건너뜀 삼국유사 권4~5 (1394(조선 태조 3) 판각, 조선 초기 인출)
+『삼국유사』: 시대 안 맞아 건너뜀 삼국유사 권제3-5 (14세기말)
 『삼국유사』: 못 찾음
-수월관음도: OK 의겸 등 필 수월관음도 ()
-『직지심체요절』: API 오류 Remote end closed connection without response
-『직지심체요절』: 못 찾음
-경복궁: API 오류 Remote end closed connection without response
-경복궁: 못 찾음
-천상열차분야지도 각석: OK 천상열차분야지도 각석 (조선 태조 4년(1395))
-종묘: API 오류 Remote end closed connection without response
-종묘: 못 찾음
-혼일강리역대국도지도: API 오류 Remote end closed connection without response
+『직지심체요절』: OK 백운화상초록불조직지심체요절 ()
+경복궁: OK 경복궁 (조선 태조 4년(1395))
+종묘: 시대 안 맞아 건너뜀 종묘 (1395년 (태조 4))
+종묘: OK 종묘 정전 (조선 광해군)
 혼일강리역대국도지도: 못 찾음
-창덕궁: OK 창덕궁 (조선 태종 5년(1405))
-『농사직설』: API 오류 Remote end closed connection without response
-『농사직설』: 못 찾음
-분청사기: OK 분청사기 인화국화문 태항아리 (조선시대(15세기))
-혼천의: API 오류 Remote end closed connection without response
-혼천의: 못 찾음
-자격루: API 오류 Remote end closed connection without response
-자격루: 못 찾음
-앙부일구: API 오류 Remote end closed connection without response
-앙부일구: 못 찾음
-측우기: OK 공주 충청감영 측우기 (조선시대)
-훈민정음: API 오류 Remote end closed connection without response
-훈민정음: 못 찾음
-몽유도원도: API 오류 Remote end closed connection without response
+『농사직설』: OK 농사직설 (조선시대)
+혼천의: 시대 안 맞아 건너뜀 혼천의 (1876년)
+혼천의: OK 혼천의 및 혼천시계 (조선 현종 10년(1669))
+자격루: OK 창경궁 자격루 누기 (조선 중종 31년(1536))
+앙부일구: OK 앙부일구 (조선시대)
+훈민정음: OK 훈민정음 (조선 세종 28년(1446))
 몽유도원도: 못 찾음
 고사관수도: 시대 안 맞아 건너뜀 조영석 필 고사관수도 (1735년, 1743년)
 고사관수도: 시대 안 맞아 건너뜀 조영석 필 고사관수도 (1735년, 1743년)
 고사관수도: 못 찾음
 신기전 · 화차: 못 찾음
-종묘 제례악: API 오류 Remote end closed connection without response
-종묘 제례악: 못 찾음
-『경국대전』: API 오류 Remote end closed connection without response
-『경국대전』: 못 찾음
-초충도: 시대 안 맞아 건너뜀 자수 초충도 병풍 (미상)
-초충도: OK 신사임당초충도병 ()
-백운동 서원: API 오류 Remote end closed connection without response
-백운동 서원: 못 찾음
-『동의보감』: API 오류 Remote end closed connection without response
-『동의보감』: 못 찾음
-백자 달항아리: OK 백자 달항아리 (조선시대)
-금강전도: API 오류 Remote end closed connection without response
-금강전도: 못 찾음
-판소리: OK 판소리 ()
-청화 백자: API 오류 Remote end closed connection without response
-청화 백자: 못 찾음
-인왕제색도: API 오류 Remote end closed connection without response
-인왕제색도: 못 찾음
+종묘 제례악: OK 종묘제례악 ()
+『경국대전』: 시대 안 맞아 건너뜀 경국대전 (辛丑년(1661))
+『경국대전』: 시대 안 맞아 건너뜀 경국대전 권3 (1470)
+『경국대전』: OK 경국대전 권1∼2 (조선 성종 2년(1471년))
+백운동 서원: OK 강진 백운동 원림 (조선시대)
+『동의보감』: OK 동의보감 ()
+금강전도: OK 정선 필 금강전도 (조선 영조 10년(1734))
+청화 백자: OK 청화백자철사진사국화문병 (조선시대      18세기)
+인왕제색도: OK 정선 필 인왕제색도 (조선 영조 27년(1751))
 영통동구도: 못 찾음
-탈춤: OK 봉산탈춤 ()
-김홍도 풍속화: API 오류 Remote end closed connection without response
-김홍도 풍속화: 못 찾음
-수원 화성: API 오류 Remote end closed connection without response
-수원 화성: 못 찾음
-신윤복 풍속화(미인도 · 단오풍정): OK 신윤복 필 풍속도 화첩 (조선시대(18세기말∼19세기초))
-세한도: API 오류 Remote end closed connection without response
-세한도: 못 찾음
-민화(까치와 호랑이): API 오류 Remote end closed connection without response
-민화(까치와 호랑이): 못 찾음
-대동여지도: 시대 안 맞아 건너뜀 대동여지도 (1861년(철종12))
-대동여지도: 시대 안 맞아 건너뜀 대동여지도 (1864)
-대동여지도: 사진 실패 http://www.khs.go.kr/unisearch/images/tangible_cult_prop/2022112810321200.jpg Remote end closed connection without response
-대동여지도: 사진 실패 http://www.khs.go.kr/unisearch/images/tangible_cult_prop/2022112810321200.jpg Remote end closed connection without response
-대동여지도: OK 대동여지도(1985) (조선시대)
-척화비: 시대 안 맞아 건너뜀 척화비 (19세기)
-척화비: 사진 실패 http://www.khs.go.kr/unisearch/images/monument/1645018.jpg Remote end closed connection without response
-척화비: 사진 실패 http://www.khs.go.kr/unisearch/images/monument/1645020.jpg Remote end closed connection without response
-척화비: OK 척화비 ()
+김홍도 풍속화: OK 김홍도 필 군선도 병풍 (1776년(조선 영조 52년))
+수원 화성: OK 수원 화성 (조선 정조       20년(1796))
+세한도: OK 김정희 필 세한도 (조선 헌종 10년(1844))
+민화(까치와 호랑이): OK 민화장 ()
 『한성순보』: 시대 안 맞아 건너뜀 한성순보 (1883.10.31~1884.10.9)
 『한성순보』: 시대 안 맞아 건너뜀 한성순보 (1883.10.31~1884.10.9)
 『한성순보』: 못 찾음
-독도: OK 독도 천연보호구역 ()
-진관사 태극기: API 오류 Remote end closed connection without response
-진관사 태극기: 못 찾음
+진관사 태극기: 시대 안 맞아 건너뜀 서울 진관사 태극기 (1919년 경)
+진관사 태극기: 시대 안 맞아 건너뜀 서울 진관사 태극기 (1919년 경)
+진관사 태극기: OK 진관사 수륙재 ()
