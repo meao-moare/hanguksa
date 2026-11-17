@@ -38,6 +38,14 @@ except Exception as e:
     LOG.append('API 연결 실패: '+repr(e))
     os.makedirs(os.path.join(ROOT,'assets'),exist_ok=True)
     open(os.path.join(ROOT,'tools','rl_fetch_log.txt'),'w',encoding='utf-8').write('\n'.join(LOG)+'\n');print('\n'.join(LOG));raise SystemExit(0)
+OWN=set()
+try:
+    MJ=json.load(open(os.path.join(ROOT,'mine.json'),encoding='utf-8'))
+    for d in MJ.get('mine',[]):
+        k=d.get('k','')
+        if k.startswith('T:@rlimg:') and isinstance(d.get('v'),dict) and (d['v'].get('img') or d['v'].get('u')): OWN.add(k[9:])
+except Exception: pass
+OWN.add('주먹도끼')
 TG={}
 for line in open(os.path.join(ROOT,'tools','rl_targets.tsv'),encoding='utf-8'):
     line=line.rstrip('\n')
@@ -50,7 +58,13 @@ for k in list(DB):
         try: os.remove(os.path.join(ROOT,DB[k]['f']))
         except Exception: pass
         LOG.append(f'{k}: 맞지 않아 지움 ({DB[k].get("n")})');del DB[k]
+for k in list(DB):
+    if k in OWN:
+        try: os.remove(os.path.join(ROOT,DB[k]['f']))
+        except Exception: pass
+        LOG.append(f'{k}: 주인 사진이 있어 자동 사진 지움');del DB[k]
 for name,targets in TG.items():
+    if name in OWN: continue
     if name in DB and os.path.exists(os.path.join(ROOT,DB[name].get('f',''))): continue
     found=None
     for tg in targets:
