@@ -7662,7 +7662,7 @@ function MSBODY0(v){return String(v||'').split('\n').map(l=>{const t=l.trim();if
    if(loose(list)===loose(oldL.map(canon))){window.__MYEV_SIG=sig;const ob=$('mevbar');if(ob)ob.remove();return}if(window.__fromCache)return;
    let lt=0;try{lt=+sessionStorage.getItem('hgs_rlt')||0}catch(_){}
    if(now&&Date.now()-lt>20000){try{sessionStorage.setItem('hgs_rlt',String(Date.now()))}catch(_){}toast('새 사건 반영 중…');(window.__RELOADING=1,setTimeout(()=>location.reload(),window.__MEWAIT?0:600));return}
-   /* 다른 기기에서 바뀐 사건: 알림 없이 다음에 열 때 반영 */}
+   /* 다른 기기에서 바뀐 사건: 불러오기 화면이 떠 있을 때 바로 새로고침해서 반영 (반복 방지) */if(window.__MEWAIT){let lr=0;try{lr=+sessionStorage.getItem('hgs_rlt2')||0}catch(_){}if(Date.now()-lr>20000){try{sessionStorage.setItem('hgs_rlt2',String(Date.now()))}catch(_){}window.__RELOADING=1;location.reload()}}}
  /* 떠 있는 추가 단추: 사전 화면이면 낱말, 지도·연표면 사건 */
  /* 추가 단추는 그 자리에: 사건 목록 머리(지도 옆 사건 칸·연표), 사전 머리 */
  let fbN=-1;const fBtn=()=>{if(document.querySelector('.xing'))return;const on=editOn&&canW;const old=$('mwadd');if(old)old.hidden=true;
