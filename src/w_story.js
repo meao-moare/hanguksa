@@ -270,17 +270,24 @@ const RLX={
  document.addEventListener('click',ev=>{const w=ev.target.closest&&ev.target.closest('[data-gl]');if(!w)return;const k=w.dataset.gl;setTimeout(()=>{const gp=document.getElementById('glpop');if(!gp||gp.hidden||gp.querySelector('.rlimg'))return;const it=find(k);if(!it)return;let col='#8b5e34';try{col=RL_COL[HCLS(it)[0]]||col}catch(_){}
   gp.insertAdjacentHTML('afterbegin',`<div class="rlimg rlpv" data-rq="${E(rlName(it))}" data-rle="${E(String(it.id))}" style="--kc:${col}"><svg viewBox="0 0 24 24"><path d="M3 21h18M5 21V10l7-5 7 5v11M9 21v-6h6v6"/></svg></div>`);
   const r=w.getBoundingClientRect(),gh=gp.offsetHeight;gp.style.top=(r.bottom+8+gh<innerHeight-8?r.bottom+8:Math.max(8,r.top-gh-8))+'px'},0)},true)})();
-/* 사진 자르기: 올리기 전에 원하는 부분만 끌어서 고르기 (안 고르면 그대로) */
-window.__cropPick=(file,only)=>new Promise(res=>{const isS=typeof file==='string';const u=isS?file:URL.createObjectURL(file);const ov=document.createElement('div');ov.className='crp';ov.innerHTML='<div class="crp-in"><div class="crp-h"><b>사진 자르기</b><small>남길 부분을 손가락으로 끌어 고르세요.</small></div><div class="crp-st"><img alt=""><div class="crp-box" hidden></div></div><div class="crp-b"><button type="button" data-c="x">취소</button><button type="button" data-c="r">다시 고르기</button><button type="button" data-c="ok" class="pri">자르기</button></div></div>';document.body.appendChild(ov);
- const im=ov.querySelector('img'),st=ov.querySelector('.crp-st'),bx=ov.querySelector('.crp-box');im.src=u;let R=null,s0=null;
- const pt=e=>{const r=im.getBoundingClientRect();return [Math.min(Math.max(e.clientX-r.left,0),r.width),Math.min(Math.max(e.clientY-r.top,0),r.height)]};
- const draw=()=>{if(!R){bx.hidden=true;return}const r=im.getBoundingClientRect(),q=st.getBoundingClientRect();bx.hidden=false;bx.style.left=(r.left-q.left+R[0])+'px';bx.style.top=(r.top-q.top+R[1])+'px';bx.style.width=R[2]+'px';bx.style.height=R[3]+'px'};
- st.addEventListener('pointerdown',e=>{e.preventDefault();try{st.setPointerCapture(e.pointerId)}catch(_){}s0=pt(e);R=[s0[0],s0[1],0,0];draw()});
- st.addEventListener('pointermove',e=>{if(!s0)return;const p=pt(e);R=[Math.min(s0[0],p[0]),Math.min(s0[1],p[1]),Math.abs(p[0]-s0[0]),Math.abs(p[1]-s0[1])];draw()});
- st.addEventListener('pointerup',()=>{s0=null;if(R&&(R[2]<12||R[3]<12)){R=null;draw()}});
+/* 사진 자르기: 처음엔 사진 전체가 테두리 안 → 모서리·변을 당겨 줄이고, 안쪽을 끌면 옮김 */
+window.__cropPick=(file,only)=>new Promise(res=>{const isS=typeof file==='string';const u=isS?file:URL.createObjectURL(file);const ov=document.createElement('div');ov.className='crp';
+ ov.innerHTML='<div class="crp-in"><div class="crp-h"><b>사진 자르기</b><small>모서리나 테두리를 당겨서 남길 부분을 정하세요.</small></div><div class="crp-st"><div class="crp-wrap"><img alt=""><div class="crp-box">'+['nw','n','ne','e','se','s','sw','w'].map(k=>'<i class="crp-hd" data-h="'+k+'"></i>').join('')+'</div></div></div><div class="crp-b"><button type="button" data-c="x">취소</button><button type="button" data-c="r">처음대로</button><button type="button" data-c="ok" class="pri">자르기</button></div></div>';document.body.appendChild(ov);
+ const im=ov.querySelector('img'),bx=ov.querySelector('.crp-box'),wr=ov.querySelector('.crp-wrap');let R=null,W=0,H=0,drag=null;
+ const draw=()=>{bx.style.left=R[0]+'px';bx.style.top=R[1]+'px';bx.style.width=R[2]+'px';bx.style.height=R[3]+'px'};
+ const full=()=>{W=im.clientWidth;H=im.clientHeight;R=[0,0,W,H];draw()};
+ im.onload=()=>requestAnimationFrame(full);im.src=u;window.addEventListener('resize',()=>{if(R){const k=im.clientWidth/W;W=im.clientWidth;H=im.clientHeight;R=R.map(v=>v*k);draw()}});
+ const MIN=30;
+ wr.addEventListener('pointerdown',e=>{if(!R)return;e.preventDefault();const h=e.target.closest('.crp-hd');const inBox=e.target.closest('.crp-box');if(!h&&!inBox)return;try{wr.setPointerCapture(e.pointerId)}catch(_){}drag={h:h?h.dataset.h:'m',x:e.clientX,y:e.clientY,r:R.slice()}});
+ wr.addEventListener('pointermove',e=>{if(!drag)return;const dx=e.clientX-drag.x,dy=e.clientY-drag.y;let [x,y,w,h]=drag.r;const k=drag.h;
+   if(k==='m'){x=Math.min(Math.max(0,x+dx),W-w);y=Math.min(Math.max(0,y+dy),H-h)}
+   else{if(k.includes('w')){const nx=Math.min(Math.max(0,x+dx),x+w-MIN);w=w+(x-nx);x=nx}if(k.includes('e')){w=Math.min(Math.max(MIN,w+dx),W-x)}if(k.includes('n')){const ny=Math.min(Math.max(0,y+dy),y+h-MIN);h=h+(y-ny);y=ny}if(k.includes('s')){h=Math.min(Math.max(MIN,h+dy),H-y)}}
+   R=[x,y,w,h];draw()});
+ const up=()=>{drag=null};wr.addEventListener('pointerup',up);wr.addEventListener('pointercancel',up);
  const end=v=>{if(!isS)URL.revokeObjectURL(u);ov.remove();res(v)};
- ov.addEventListener('click',e=>{const b=e.target.closest('[data-c]');if(!b)return;const c=b.dataset.c;if(c==='x')return end(null);if(c==='r'){R=null;draw();return}
-  if(!R){if(only){try{window.__MEX.toast('남길 부분을 먼저 끌어 고르세요')}catch(_){}return}return end(file)}const r=im.getBoundingClientRect();const k=im.naturalWidth/r.width;const cv=document.createElement('canvas');cv.width=Math.round(R[2]*k);cv.height=Math.round(R[3]*k);cv.getContext('2d').drawImage(im,R[0]*k,R[1]*k,cv.width,cv.height,0,0,cv.width,cv.height);cv.toBlob(bl=>end(bl?new File([bl],'crop.jpg',{type:'image/jpeg'}):file),'image/jpeg',.92)})});
+ ov.addEventListener('click',e=>{const b=e.target.closest('[data-c]');if(!b)return;const c=b.dataset.c;if(c==='x')return end(null);if(c==='r'){full();return}
+  if(!R)return;const whole=R[0]<1&&R[1]<1&&R[2]>W-1&&R[3]>H-1;if(whole){if(only){try{window.__MEX.toast('테두리를 당겨서 남길 부분을 정하세요')}catch(_){}return}return end(file)}
+  const k=im.naturalWidth/W;const cv=document.createElement('canvas');cv.width=Math.round(R[2]*k);cv.height=Math.round(R[3]*k);cv.getContext('2d').drawImage(im,R[0]*k,R[1]*k,cv.width,cv.height,0,0,cv.width,cv.height);cv.toBlob(bl=>end(bl?new File([bl],'crop.jpg',{type:'image/jpeg'}):file),'image/jpeg',.92)})});
 /* 목록에서 뺀 국가유산: 고치기 중에만 흐리게 보임 */
 (function(){if(typeof rlShow!=='function')return;const rs=rlShow;rlShow=function(){const r=rs.apply(this,arguments);try{const T=window.__ME.tr;const L=RLITEMS();document.querySelectorAll('#v-rl [data-rle]').forEach(c=>{const it=L.find(x=>String(x.id)===c.dataset.rle);const h=it&&T.get('@rlhide:'+rlName(it));(c.closest('.rlc3')||c).classList.toggle('rlhid',!!h)})}catch(_){}return r}})();
 (function(){let was=document.body.classList.contains('medit');new MutationObserver(()=>{const now=document.body.classList.contains('medit');if(now===was)return;was=now;const v=document.getElementById('v-rl');if(v&&!v.hidden)try{rlShow()}catch(_){}}).observe(document.body,{attributes:true,attributeFilter:['class']})})();
