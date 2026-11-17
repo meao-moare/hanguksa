@@ -81,6 +81,48 @@ for name,targets in TG.items():
         time.sleep(1.2)
     if found: DB[name]=found;LOG.append(f'{name}: OK {found["n"]} ({found["y"]})')
     else: LOG.append(f'{name}: 못 찾음 {targets}')
+# 국립중앙박물관 e뮤지엄: 국가유산청에서 못 찾은 것만 (열쇠 없이 되는지 먼저 확인)
+def emu(path):
+    for h in ['https://www.emuseum.go.kr/openapi/','http://www.emuseum.go.kr/openapi/']:
+        try:
+            d=get(h+path,30);return ET.fromstring(d),d[:300]
+        except Exception as e: last=e
+    raise last
+try:
+    x,head=emu('relic/list?numOfRows=1&name='+urllib.parse.quote('빗살무늬토기'))
+    LOG.append('e뮤지엄 응답: '+head.decode('utf-8','replace').replace('\n',' '))
+    EMU_OK=any(True for _ in x.iter('data')) or any(True for _ in x.iter('item'))
+except Exception as e:
+    LOG.append('e뮤지엄 연결 실패: '+repr(e));EMU_OK=False
+ALL=[l.split('\t')[0] for l in open(os.path.join(ROOT,'tools','rl_names.tsv'),encoding='utf-8') if l.strip()]+list(TG)
+if EMU_OK:
+    for name in dict.fromkeys(ALL):
+        if name in DB: continue
+        base=re.sub(r'\s*\(.*?\)\s*',' ',name);base=re.sub(r'[『』]','',base).split('·')[0].strip()
+        try:
+            x,_=emu('relic/list?numOfRows=20&name='+urllib.parse.quote(sq(base)))
+            rows=[]
+            for it in list(x.iter('data'))+list(x.iter('item')):
+                f={}
+                for c in it:
+                    k=c.get('key') or c.tag;f[k]=(c.get('value') or c.text or '').strip()
+                rows.append(f)
+            rows=[r for r in rows if sq(base) in sq(r.get('nameKr','')) and (r.get('imgUri') or r.get('imgThumUriL'))]
+            rows.sort(key=lambda r:(0 if '국립중앙박물관' in r.get('museumName2','')+r.get('museumName1','') else 1,len(r.get('nameKr',''))))
+            for r in rows[:3]:
+                u=r.get('imgUri') or r.get('imgThumUriL')
+                try:
+                    im=Image.open(io.BytesIO(get(u,60))).convert('RGB')
+                    if im.width<300: continue
+                    if im.width>1600: im=im.resize((1600,round(im.height*1600/im.width)))
+                    fn='assets/rl/emu_%s.jpg'%re.sub(r'\W','',r.get('id','x'))
+                    im.save(os.path.join(ROOT,fn),'JPEG',quality=85,optimize=True)
+                    DB[name]=dict(f=fn,s='국립중앙박물관 e뮤지엄',n=r.get('nameKr',''),y=r.get('nationalityName2','') or r.get('nationalityName1',''),h='https://www.emuseum.go.kr/detail?relicId='+r.get('id',''))
+                    LOG.append(f'{name}: e뮤지엄 OK {DB[name]["n"]}');break
+                except Exception as e: LOG.append(f'{name}: e뮤지엄 사진 실패 {e}')
+            if name not in DB: LOG.append(f'{name}: e뮤지엄 못 찾음')
+        except Exception as e: LOG.append(f'{name}: e뮤지엄 오류 {e}')
+        time.sleep(1)
 json.dump(DB,open(JP,'w',encoding='utf-8'),ensure_ascii=False,indent=0)
 open(os.path.join(ROOT,'tools','rl_fetch_log.txt'),'w',encoding='utf-8').write('\n'.join(LOG)+'\n')
 print('\n'.join(LOG))
