@@ -1,0 +1,22 @@
+name: 국가유산 사진 받기
+on:
+  push:
+    paths: ['tools/rl_names.tsv','tools/rl_fetch.py','.github/workflows/rlimg.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - run: pip install pillow
+      - run: python tools/rl_fetch.py
+      - run: |
+          git config user.name "hanguksa"
+          git config user.email "hanguksa@users.noreply.github.com"
+          git add assets tools/rl_fetch_log.txt
+          git commit -m "국가유산청 사진 받기 (자동)" || echo "no change"
+          git pull --rebase origin main && git push origin HEAD:main
