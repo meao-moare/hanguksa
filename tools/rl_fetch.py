@@ -45,6 +45,7 @@ for line in open(os.path.join(ROOT,'tools','rl_targets.tsv'),encoding='utf-8'):
         a,b=line.split('\t',1);TG[a]=[x.strip() for x in b.split('|') if x.strip()]
 # 목록에 없는 것은 지우고, 이름이 정확히 맞지 않던 기존 사진도 지움
 for k in list(DB):
+    if DB[k].get('s','').startswith('국립중앙박물관'): continue
     if k not in TG or sq(DB[k].get('n',''))not in [sq(x) for x in TG[k]]:
         try: os.remove(os.path.join(ROOT,DB[k]['f']))
         except Exception: pass
