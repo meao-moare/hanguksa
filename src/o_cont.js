@@ -1377,7 +1377,7 @@ document.addEventListener('touchend',selUp,true);
  /* 자료 불러오기: claude.ai면 공유 저장소, 웹사이트면 mine.json */
  try{const B=window.__BAKED;if(B&&Array.isArray(B.mine)&&B.mine.length){window.__fromCache=true;try{load(B.mine)}finally{window.__fromCache=false}}if(B&&B.sanon&&window.__sanonSet)window.__sanonSet(B.sanon)}catch(_){}
  (async()=>{let ok=false;try{if(window.claude&&claude.use){const [db,us]=await Promise.all([claude.use('db'),claude.use('user')]);if(db){ok=true;canW=!!(us&&await us.isOwner());DB=canW?db:null;if(canW)mkBtn();{let base=[],fs=null;const ap=()=>load(__mergeFS(base,fs));db.collection('mine').onSnapshot(q=>{base=q.docs.map(d=>d.data());ap()},()=>{});__fsPoll('mine',m=>{fs=m;ap()})}applyAll()}}}catch(_){}
-   if(!ok){try{const r=await fetch('mine.json',{cache:'no-store'});if(r.ok){const j=await r.json();load(j.mine||[]);if(window.__sanonSet&&j.sanon)window.__sanonSet(j.sanon)}}catch(_){}}})()}
+   /* 웹사이트에서는 fb_module이 mine.json과 Firestore를 합쳐 한 번에 넘겨 줌 → 여기서 예전 mine.json을 따로 그리지 않음 */})()}
 /* 땅 속 구멍(호수 등 안쪽 고리)을 메워 영토 안에 흰 점이 안 생기게 */
 {const P=d=>(d||'').split(/(?=M)/).filter(s=>s.trim());const pts=s=>s.replace(/[MZ]/g,' ').trim().split(/[ L]+/).filter(Boolean).map(t=>t.split(',').map(Number));
  const A=r=>{let a=0;for(let i=0;i<r.length;i++){const [x1,y1]=r[i],[x2,y2]=r[(i+1)%r.length];a+=x1*y2-x2*y1}return Math.abs(a/2)};
