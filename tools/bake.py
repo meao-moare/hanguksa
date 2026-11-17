@@ -37,17 +37,24 @@ def merge(base,fs):
             if not b or at>bt: m.pop(i,None)
         elif d.get('k') and (not b or at>=bt): m[i]=d
     return [d for d in m.values() if not d.get('del') and d.get('k')!='_']
-MJ=os.path.join(ROOT,'mine.json')
-old=json.load(open(MJ,encoding='utf-8')) if os.path.exists(MJ) else {'mine':[],'sanon':{}}
-mine=merge(old.get('mine',[]),fetch('mine'))
-mine.sort(key=lambda d:d['k'])
-sb=[{'k':k,'v':v} for k,v in (old.get('sanon') or {}).items()]
-sl=merge(sb,fetch('sanon'))
-sanon={}
-for d in sorted(sl,key=lambda d:d['k']):
-    v=d.get('v');v=(v.get('v') or v.get('t') or '') if isinstance(v,dict) else v
-    if v: sanon[d['k']]=str(v)
-json.dump({'sanon':sanon,'mine':mine},open(MJ,'w',encoding='utf-8'),ensure_ascii=False,separators=(',',':'))
-txt=[d for d in mine if not d['k'].startswith('p:')]
-open(os.path.join(ROOT,'baked.js'),'w',encoding='utf-8').write('window.__BAKED='+json.dumps({'mine':txt,'sanon':sanon},ensure_ascii=False,separators=(',',':'))+';\n')
-print('mine',len(mine),'text',len(txt),'sanon',len(sanon))
+import traceback,sys
+LOGP=os.path.join(ROOT,'tools','bake_log.txt')
+try:
+  MJ=os.path.join(ROOT,'mine.json')
+  old=json.load(open(MJ,encoding='utf-8')) if os.path.exists(MJ) else {'mine':[],'sanon':{}}
+  mine=merge(old.get('mine',[]),fetch('mine'))
+  mine.sort(key=lambda d:d['k'])
+  sb=[{'k':k,'v':v} for k,v in (old.get('sanon') or {}).items()]
+  sl=merge(sb,fetch('sanon'))
+  sanon={}
+  for d in sorted(sl,key=lambda d:d['k']):
+      v=d.get('v');v=(v.get('v') or v.get('t') or '') if isinstance(v,dict) else v
+      if v: sanon[d['k']]=str(v)
+  json.dump({'sanon':sanon,'mine':mine},open(MJ,'w',encoding='utf-8'),ensure_ascii=False,separators=(',',':'))
+  txt=[d for d in mine if not d['k'].startswith('p:')]
+  open(os.path.join(ROOT,'baked.js'),'w',encoding='utf-8').write('window.__BAKED='+json.dumps({'mine':txt,'sanon':sanon},ensure_ascii=False,separators=(',',':'))+';\n')
+  print('mine',len(mine),'text',len(txt),'sanon',len(sanon))
+
+  open(LOGP,'w',encoding='utf-8').write('OK mine=%d text=%d sanon=%d\n'%(len(mine),len(txt),len(sanon)))
+except Exception as e:
+  open(LOGP,'w',encoding='utf-8').write('ERROR\n'+traceback.format_exc());print(traceback.format_exc())
