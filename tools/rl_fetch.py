@@ -10,7 +10,7 @@ DB=json.load(open(JP,encoding='utf-8')) if os.path.exists(JP) else {}
 LOG=[]
 HOSTS=['https://www.khs.go.kr/cha/','http://www.khs.go.kr/cha/','https://www.cha.go.kr/cha/','http://www.cha.go.kr/cha/']
 UA={'User-Agent':'Mozilla/5.0 (hanguksa study app)'}
-def get(u,t=30):
+def get(u,t=15):
     return urllib.request.urlopen(urllib.request.Request(u,headers=UA),timeout=t).read()
 BASE=None
 def api(path):
@@ -26,6 +26,13 @@ def tx(n,k):
     e=n.find('.//'+k);return (e.text or '').strip() if e is not None and e.text else ''
 ERAK={'prehist':'선사|구석기|신석기','pre':'선사|청동기|철기|고조선|초기','early':'삼한|원삼국|철기|초기|삼국|가야|백제|고구려|신라','three':'삼국|고구려|백제|신라|가야','nsk':'통일신라|통일 신라|발해|남북국|신라','goryeo':'고려','joseon1':'조선','joseon2':'조선','modern1':'조선|대한제국|근대|개항','colonial':'일제|근대|대한제국'}
 sq=lambda s:re.sub(r'\s','',s)
+try:
+    api('SearchKindOpenapiList.do?pageUnit=1&ccbaMnm1='+urllib.parse.quote('석굴암'))
+    LOG.append('API 연결 OK: '+BASE)
+except Exception as e:
+    LOG.append('API 연결 실패: '+repr(e))
+    os.makedirs(os.path.join(ROOT,'assets'),exist_ok=True)
+    open(os.path.join(ROOT,'tools','rl_fetch_log.txt'),'w',encoding='utf-8').write('\n'.join(LOG)+'\n');print('\n'.join(LOG));raise SystemExit(0)
 for line in open(os.path.join(ROOT,'tools','rl_names.tsv'),encoding='utf-8'):
     line=line.rstrip('\n')
     if not line: continue
