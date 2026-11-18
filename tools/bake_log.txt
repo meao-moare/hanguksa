@@ -1,1 +1,1 @@
-OK mine=1665 text=1628 sanon=21
+OK mine=1661 text=1624 sanon=21
