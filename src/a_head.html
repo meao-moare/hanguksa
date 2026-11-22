@@ -3214,3 +3214,33 @@ body.medit figure.mimg .mimgsrc.no{background:rgba(0,0,0,.5)!important}
 <style>#kpage .rlttl{position:absolute;left:8px;top:8px;z-index:2;max-width:60%;font:700 13px/1.35 'Noto Sans KR',sans-serif;color:#fff;background:rgba(0,0,0,.5);padding:4px 9px;border-radius:7px;pointer-events:none}#kpage .rlht .rlT{font:800 16px/1 Georgia,serif;color:#1f2937}</style>
 <style>.mimgbig{z-index:2147483600!important;place-items:center!important;align-content:center}.mimgbig img{max-width:calc(100vw - 40px)!important;max-height:calc(100vh - 40px)!important;max-height:calc(100dvh - 40px)!important;object-fit:contain;margin:auto}</style>
 <style>body.medit #kpage .rlimg.rlhero.none{display:grid!important;aspect-ratio:16/9!important;min-height:180px}body.medit #kpage .rlimg.rlhero.none::after{content:'사진 없음 · 오른쪽 위 연필로 넣기';color:#a8a29e;font-size:13px}</style>
+<style>
+/* ===== 휴대폰 화면 ===== */
+.mnav .mi,.mnav .mf{display:none}
+@media (max-width:640px){
+ body.mob header.top{padding:8px 12px calc(8px);gap:6px;display:flex;align-items:center;flex-wrap:nowrap;min-height:52px;box-shadow:0 1px 0 rgba(0,0,0,.06)}
+ body.mob header.top h1{font-size:17px;gap:7px;margin-right:auto;flex:none}
+ body.mob header.top h1>span:not(.seal){display:inline!important;font-size:16px;font-weight:800;letter-spacing:-.02em}body.mob header.top h1 .full{display:inline!important}
+ body.mob header.top h1 .seal{width:30px;height:30px;font-size:16px;border-radius:8px}
+ body.mob header.top .srbtn{order:3;width:38px;height:38px;padding:0;justify-content:center;border-radius:50%}
+ body.mob header.top .srbtn span{display:none}
+ body.mob header.top .hnav,body.mob #fsbtn{display:none!important}
+ body.mob header.top .tbtns{order:4;gap:2px}
+ body.mob header.top .tib{width:38px;height:38px}
+ /* 아래 탭 막대 */
+ body.mob nav.tabs.mnav{order:99;position:relative;z-index:60;display:flex!important;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;gap:0;margin:0;padding:6px 4px calc(6px + env(safe-area-inset-bottom));background:rgba(255,255,255,.96);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-top:1px solid rgba(0,0,0,.08);border-radius:0;box-shadow:0 -4px 16px rgba(0,0,0,.05);width:100%;box-sizing:border-box;flex:none}
+ body.mob nav.tabs.mnav::-webkit-scrollbar{display:none}
+ body.mob nav.tabs.mnav button[data-v]{flex:1 1 0;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:4px 2px;border:0;background:none;border-radius:12px;color:#78716c;font-size:10.5px;font-weight:600;line-height:1.1;box-shadow:none}
+ body.mob nav.tabs.mnav button[data-v] .mi{display:block;width:23px;height:23px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+ body.mob nav.tabs.mnav button[data-v] .ml{white-space:nowrap}
+ body.mob nav.tabs.mnav button[aria-selected="true"]{color:#b91c1c;background:rgba(185,28,28,.07)}
+ body.mob nav.tabs.mnav button[aria-selected="true"] .mi{stroke-width:2.2}
+ /* 탭에서 펼쳐지는 목록: 머리와 아래 막대 사이를 채우는 판 */
+ body.mob .tabmenu.tdrop{position:fixed!important;left:0!important;right:0!important;top:var(--mhh,56px)!important;bottom:var(--mnh,64px)!important;width:auto!important;max-width:none!important;max-height:none!important;overflow:auto!important;border-radius:0!important;margin:0!important;transform:none!important}
+ /* 카드와 글: 여백 조금 줄이고 둥글게 */
+ body.mob #v-rl .rlcard,body.mob #v-rl .rlc3{border-radius:16px}
+ body.mob #kpage .kpin{padding-left:16px;padding-right:16px}
+ body.mob .rlqw{height:42px;border-radius:12px}
+}
+</style>
+<style>@media (max-width:640px){body.mob #kpage{bottom:var(--mnh,64px)!important;height:auto!important}body.mob nav.tabs.mnav{z-index:80}}</style>
