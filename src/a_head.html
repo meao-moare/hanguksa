@@ -3244,3 +3244,13 @@ body.medit figure.mimg .mimgsrc.no{background:rgba(0,0,0,.5)!important}
 }
 </style>
 <style>@media (max-width:640px){body.mob #kpage{bottom:var(--mnh,64px)!important;height:auto!important}body.mob nav.tabs.mnav{z-index:80}}</style>
+<style>
+#trld{position:fixed;inset:0;z-index:2147483500;display:grid;place-items:center;background:rgba(247,246,243,.86);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);animation:trin .15s ease}
+#trld.out{opacity:0;transition:opacity .18s}
+@keyframes trin{from{opacity:0}to{opacity:1}}
+#trld .trld-c{width:min(340px,86vw);display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;padding:18px 20px 20px;background:#fff;border-radius:20px;box-shadow:0 12px 40px rgba(0,0,0,.12)}
+#trld img{width:110px;height:110px;object-fit:contain}
+#trld .trld-y{font:800 12.5px/1.3 'Noto Sans KR',sans-serif;color:#b45309;background:#fef3c7;padding:3px 10px;border-radius:999px}
+#trld .trld-t{font:500 14.5px/1.6 'Noto Sans KR',sans-serif;color:#292524;word-break:keep-all}
+</style>
+<style>#trld img{width:170px;height:170px;margin:-30px 0 -28px}#trld .trld-c{padding-top:8px;overflow:hidden}</style>
