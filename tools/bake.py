@@ -69,7 +69,22 @@ try:
       if v: sanon[d['k']]=str(v)
   mx=lambda D,prev:max([prev]+[float(d.get('at') or 0) for d in D.values()])
   json.dump({'_at':{'mine':mx(fm,A.get('mine',0)),'sanon':mx(fsn,A.get('sanon',0))},'sanon':sanon,'mine':mine},open(MJ,'w',encoding='utf-8'),ensure_ascii=False,separators=(',',':'))
-  txt=[d for d in mine if not d['k'].startswith('p:')]
+  # 사진(p:)은 글자 데이터(dataURL) 대신 파일로 빼서 mine.json을 가볍게 → 사이트가 빨리 열림
+  import base64,re as _re
+  PD=os.path.join(ROOT,'assets','pimg');os.makedirs(PD,exist_ok=True)
+  keep=set()
+  for d in mine:
+      if not d['k'].startswith('p:'): continue
+      v=d.get('v')
+      if isinstance(v,str) and v.startswith('data:image'):
+          m=_re.match(r'data:image/(\w+);base64,(.*)$',v,_re.S)
+          if not m: continue
+          ext={'jpeg':'jpg'}.get(m.group(1),m.group(1));fn='assets/pimg/'+_re.sub(r'[^\w-]','_',d['k'][2:])+'.'+ext
+          open(os.path.join(ROOT,fn),'wb').write(base64.b64decode(m.group(2)));d['v']=fn
+      if isinstance(d.get('v'),str) and d['v'].startswith('assets/pimg/'): keep.add(os.path.basename(d['v']))
+  for f in os.listdir(PD):
+      if f not in keep: os.remove(os.path.join(PD,f))
+  txt=mine
   open(os.path.join(ROOT,'baked.js'),'w',encoding='utf-8').write('window.__BAKED='+json.dumps({'mine':txt,'sanon':sanon},ensure_ascii=False,separators=(',',':'))+';\n')
   print('mine',len(mine),'text',len(txt),'sanon',len(sanon))
 
