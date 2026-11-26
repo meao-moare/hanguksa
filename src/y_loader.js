@@ -49,10 +49,10 @@ const TMI=[
 ['1919','유관순은 고향 천안 아우내 장터에서 만세 운동을 이끌었다.'],
 ['1945 · 1948','8월 15일은 광복(1945)과 대한민국 정부 수립(1948)이 겹친 날이다.']
 ];
-(function(){const ov=document.createElement('div');ov.id='trld';ov.hidden=true;ov.innerHTML='<div class="trld-c"><div class="spr" aria-hidden="true"><i></i></div><div class="trld-y"></div><div class="trld-t"></div></div>';document.body.appendChild(ov);
+(function(){const ov=document.createElement('div');ov.id='trld';ov.hidden=true;ov.innerHTML='<div class="trld-c"><div class="spr" aria-hidden="true"><i></i></div><div class="trld-y"></div><div class="trld-t"></div><div class="trld-x">눌러서 바로 넘어가기</div></div>';document.body.appendChild(ov);
  let last=-1,shownAt=0,hideT=0;const pick=()=>{let i;do{i=Math.floor(Math.random()*TMI.length)}while(i===last&&TMI.length>1);last=i;return TMI[i]};
  const show=()=>{const [y,t]=pick();ov.querySelector('.trld-y').textContent=y;ov.querySelector('.trld-t').textContent=t;clearTimeout(hideT);ov.hidden=false;ov.classList.remove('out');shownAt=performance.now()};
- const hide=()=>{const wait=0;hideT=setTimeout(()=>{ov.classList.add('out');setTimeout(()=>{ov.hidden=true;ov.classList.remove('out')},120)},wait)};
+ const hide=()=>{const wait=Math.max(0,1600-(performance.now()-shownAt));hideT=setTimeout(()=>{ov.classList.add('out');setTimeout(()=>{ov.hidden=true;ov.classList.remove('out')},120)},wait)};
  ov.addEventListener('click',()=>{clearTimeout(hideT);ov.hidden=true});
  window.__trLoad=fn=>{show();requestAnimationFrame(()=>requestAnimationFrame(()=>{try{fn()}finally{hide()}}))};
  let bypass=false;
