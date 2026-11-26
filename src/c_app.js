@@ -467,6 +467,7 @@ function loop(now){const dt=now-tPrev;tPrev=now;if(now<holdUntil){raf=requestAni
   else setPos(i,f);raf=requestAnimationFrame(loop)}
 function step(d){pause();const i=Math.max(0,Math.min(N-1,pos.i+d));userMoved=false;setPos(i,0,{fit:true})}
 $('play').onclick=toggle;$('prev').onclick=()=>step(-1);$('next').onclick=()=>step(1);
+$('rst').onclick=()=>{try{pause()}catch(_){}setPos(0,0,{fit:true})};
 $('spd').onclick=()=>{const S=[.5,1,1.5,2,3];speed=S[(S.indexOf(speed)+1)%S.length]||1;$('spd').textContent=speed+'×'};
 
 /* ───────── 시대 카드 ───────── */

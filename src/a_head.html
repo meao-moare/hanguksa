@@ -1172,7 +1172,7 @@ html,html *{font-synthesis-weight:none!important;font-synthesis:none!important}
           <div class="yr" id="yrbox"><span class="y" id="yr"></span><span class="ft" id="yr-ft"></span></div>
           <button class="ib" id="prev" type="button" aria-label="이전 시기"><svg class="ic" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg></button>
           <button class="ib" id="next" type="button" aria-label="다음 시기"><svg class="ic" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button>
-          <button class="ib spd" id="spd" type="button" aria-label="재생 속도">1×</button>
+          <button class="ib spd" id="spd" type="button" aria-label="재생 속도">1×</button><button class="ib rst" id="rst" type="button" aria-label="처음부터 보기" title="처음부터 보기"><svg class="ic" viewBox="0 0 24 24"><path d="M6 5v14"/><path d="M19 5.5v13L9 12z"/></svg></button>
           <button class="ib listbtn" id="listbtn" type="button"><svg class="ic" viewBox="0 0 24 24"><path d="M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01"/></svg><span id="listn">사건</span></button>
         </div>
         <div class="reign" id="reign" aria-live="polite"></div>
@@ -3266,3 +3266,12 @@ body.medit figure.mimg .mimgsrc.no{background:rgba(0,0,0,.5)!important}
 <style>#kpage .rlimg.rlperson.none{display:none}body.medit #kpage .rlimg.rlperson.none{display:grid!important}#kpage .rlperson.ok>img{max-height:70vh!important}</style>
 <style>#hjpop .hjused .hjul{display:flex;flex-wrap:wrap;gap:5px;max-height:5.6em;overflow:hidden}#hjpop .hjused .hjul.open{max-height:none}#hjpop .hjused em small{font-style:normal;color:#a8a29e;font-weight:600}#hjpop .hjmore{display:block;margin:6px auto 0;font:inherit;font-size:12px;font-weight:700;color:#57534e;background:#f5f5f4;border:0;border-radius:8px;padding:4px 12px;cursor:pointer}</style>
 <style>#trld .trld-x{margin-top:4px;font-size:11px;color:#a8a29e}#trld{cursor:pointer}</style>
+<style>.dock .rst{order:0}.dock .rst svg{width:18px;height:18px}</style>
+<style>
+/* 화면 전환 캐릭터: 더 작게 + 통통 튀는 움직임(계산 중에도 멈추지 않는 transform 애니메이션) */
+#trld .trld-c{width:min(300px,82vw)!important;padding:14px 16px 14px!important;gap:6px!important}
+#trld .spr{width:72px!important;height:91px!important}
+#trld .sprb{animation:sprbob .7s ease-in-out infinite alternate;will-change:transform;transform:translateZ(0)}
+@keyframes sprbob{from{transform:translate3d(0,0,0) rotate(-4deg)}to{transform:translate3d(0,-7px,0) rotate(4deg)}}
+#trld .trld-t{font-size:13.5px!important}
+</style>
