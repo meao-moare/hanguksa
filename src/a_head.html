@@ -3254,3 +3254,12 @@ body.medit figure.mimg .mimgsrc.no{background:rgba(0,0,0,.5)!important}
 #trld .trld-t{font:500 14.5px/1.6 'Noto Sans KR',sans-serif;color:#292524;word-break:keep-all}
 </style>
 <style>#trld img{width:170px;height:170px;margin:-30px 0 -28px}#trld .trld-c{padding-top:8px;overflow:hidden}</style>
+<style>
+/* 화면 전환 캐릭터: 움직임을 transform(그래픽 처리 쪽)으로만 → 화면 계산 중에도 안 멈춤 */
+.spr{position:relative;overflow:hidden;width:104px;height:131px;contain:strict}
+.spr>i{position:absolute;left:0;top:0;width:400%;height:100%;background:url(assets/loading_sprite.png) 0 0/100% 100% no-repeat;animation:sprmv .36s steps(4) infinite;will-change:transform}
+@keyframes sprmv{to{transform:translateX(-100%)}}
+#trld{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;background:rgba(247,246,243,.92)!important;will-change:opacity}
+#trld .trld-c{padding-top:16px!important;gap:8px!important;will-change:transform}
+#trld .spr{width:104px;height:131px}
+</style>
