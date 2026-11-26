@@ -3280,8 +3280,8 @@ nav.tabs:not(.mnav) button[aria-selected="true"] .mi{opacity:1;stroke-width:2.2}
 /* 화면 전환 캐릭터: 더 작게 + 통통 튀는 움직임(계산 중에도 멈추지 않는 transform 애니메이션) */
 #trld .trld-c{width:min(300px,82vw)!important;padding:14px 16px 14px!important;gap:6px!important}
 #trld .spr{width:72px!important;height:91px!important}
-#trld .sprb{animation:sprbob .7s ease-in-out infinite alternate;will-change:transform;transform:translateZ(0)}
-@keyframes sprbob{from{transform:translate3d(0,0,0)}to{transform:translate3d(0,-5px,0)}}
+#trld .sprb{animation:sprbob .36s linear infinite;will-change:transform;transform:translateZ(0)}
+@keyframes sprbob{0%{transform:translate3d(0,0,0);animation-timing-function:cubic-bezier(.2,.7,.4,1)}45%{transform:translate3d(0,-9px,0);animation-timing-function:cubic-bezier(.6,0,.8,.3)}85%,100%{transform:translate3d(0,0,0)}}
 #trld .trld-t{font-size:13.5px!important}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/flubber@0.4.2/build/flubber.min.js"></script>
