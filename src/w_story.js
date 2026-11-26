@@ -324,6 +324,9 @@ window.__cropPick=(file,only)=>new Promise(res=>{const isS=typeof file==='string
    c.classList.toggle('multi',n>1);requestAnimationFrame(()=>{if(at)c.scrollLeft=Math.min(at,n-1)*c.clientWidth;sync(q)})};
  const sync=q=>{const c=car();if(!c)return;const v=get(q)||{};const n=1+(v.more||[]).length;const i=Math.min(curI(),n-1);const s=slot(v,i)||{};const cp=document.querySelector('#kpage .rlhcap');if(cp){cp.textContent=s.c||'';cp.dataset.empty=s.c?'':'1';cp.dataset.i=i}document.querySelectorAll('#kpage .rldots i').forEach((d,k)=>d.classList.toggle('on',k===i))};
  const ro=rlOpen;rlOpen=function(e){const r=ro.apply(this,arguments);try{const h=document.querySelector('#kpage .rlhero');if(h)paint(h.dataset.rq,0)}catch(_){}return r};
+ window.__rlPaint=paint;
+ /* 인물 화면에도 대표 사진(어진·초상) 자리 */
+ if(typeof openPerson==='function'){const op=openPerson;openPerson=function(){const r=op.apply(this,arguments);try{const p=document.getElementById('kpage');const ph=p&&p.querySelector('.kph');if(ph&&!p.querySelector('.rlhero')){const nm=(ph.querySelector('h1')||{}).textContent||'';const sub=(p.querySelector('.kpsub')||{}).textContent||'';const by=(sub.match(/(\d{3,4})\s*~/)||[])[1];const key='인물:'+nm.replace(/\s*\(.*?\)\s*/g,'').trim()+(by?' '+by:'');const sb=p.querySelector('.kpsub');(sb||ph).insertAdjacentHTML('afterend',`<div class="rlimg rlhero rlperson" data-rq="${E(key)}"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg></div>`);paint(key,0)}}catch(_){}return r}}
  /* 사진 자료가 늦게 오면 다시 그리기 */
  setInterval(()=>{const c=car();if(!c||!c.querySelector('.rlwait'))return;const h=c.querySelector('.rlhero');if(h)paint(h.dataset.rq)},1500);
  const act=async(q,a,i,btn)=>{const v=get(q)||{};v.more=v.more||[];const s=slot(v,i);

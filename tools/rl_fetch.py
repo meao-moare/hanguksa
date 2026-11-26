@@ -54,7 +54,7 @@ for line in open(os.path.join(ROOT,'tools','rl_targets.tsv'),encoding='utf-8'):
 # 목록에 없는 것은 지우고, 이름이 정확히 맞지 않던 기존 사진도 지움
 for k in list(DB):
     if DB[k].get('s','').startswith('국립중앙박물관'): continue
-    if k not in TG or sq(DB[k].get('n',''))not in [sq(x) for x in TG[k]]:
+    if k not in TG or not any((sq(x[1:]) in sq(DB[k].get('n',''))) if x.startswith('~') else sq(x)==sq(DB[k].get('n','')) for x in TG[k]):
         try: os.remove(os.path.join(ROOT,DB[k]['f']))
         except Exception: pass
         LOG.append(f'{k}: 맞지 않아 지움 ({DB[k].get("n")})');del DB[k]
@@ -69,9 +69,10 @@ for name,targets in TG.items():
     found=None
     for tg in targets:
         try:
-            L=api('SearchKindOpenapiList.do?pageUnit=30&ccbaMnm1='+urllib.parse.quote(tg))
+            L=api('SearchKindOpenapiList.do?pageUnit=40&ccbaMnm1='+urllib.parse.quote(tg.lstrip('~')))
             its=[dict(n=tx(i,'ccbaMnm1'),k=tx(i,'ccbaKdcd'),a=tx(i,'ccbaAsno'),c=tx(i,'ccbaCtcd')) for i in L.iter('item')]
-            its=[i for i in its if i['k'] and i['a'] and sq(i['n'])==sq(tg)]
+            fz=tg.startswith('~');tq=tg.lstrip('~')
+            its=[i for i in its if i['k'] and i['a'] and (sq(tq) in sq(i['n']) if fz else sq(i['n'])==sq(tq))]
             for it in its[:2]:
                 ps='ccbaKdcd=%s&ccbaAsno=%s&ccbaCtcd=%s'%(it['k'],it['a'],it['c'])
                 D=api('SearchKindOpenapiDt.do?'+ps);y=tx(D,'ccceName')
