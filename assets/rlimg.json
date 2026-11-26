@@ -48,20 +48,6 @@
 "y": "백제시대",
 "h": "https://www.heritage.go.kr/heri/cul/culSelectDetail.do?ccbaKdcd=11&ccbaAsno=0001620000000&ccbaCtcd=34"
 },
-"백제 금동 대향로": {
-"f": "assets/rl/11_0002870000000_34.jpg",
-"s": "국가유산청",
-"n": "백제 금동대향로",
-"y": "백제시대(6∼7세기)",
-"h": "https://www.heritage.go.kr/heri/cul/culSelectDetail.do?ccbaKdcd=11&ccbaAsno=0002870000000&ccbaCtcd=34"
-},
-"미륵사지 석탑": {
-"f": "assets/rl/11_0000110000000_35.jpg",
-"s": "국가유산청",
-"n": "익산 미륵사지 석탑",
-"y": "백제시대 후기 7세기",
-"h": "https://www.heritage.go.kr/heri/cul/culSelectDetail.do?ccbaKdcd=11&ccbaAsno=0000110000000&ccbaCtcd=35"
-},
 "성덕 대왕 신종": {
 "f": "assets/rl/11_0000290000000_37.jpg",
 "s": "국가유산청",
@@ -89,13 +75,6 @@
 "n": "천상열차분야지도 각석",
 "y": "조선 태조 4년(1395)",
 "h": "https://www.heritage.go.kr/heri/cul/culSelectDetail.do?ccbaKdcd=11&ccbaAsno=0002280000000&ccbaCtcd=11"
-},
-"창덕궁": {
-"f": "assets/rl/13_0001220000000_11.jpg",
-"s": "국가유산청",
-"n": "창덕궁",
-"y": "조선 태종 5년(1405)",
-"h": "https://www.heritage.go.kr/heri/cul/culSelectDetail.do?ccbaKdcd=13&ccbaAsno=0001220000000&ccbaCtcd=11"
 },
 "분청사기": {
 "f": "assets/rl/11_0001770000000_11.jpg",
@@ -314,13 +293,6 @@
 "y": "조선시대",
 "h": "https://www.heritage.go.kr/heri/cul/culSelectDetail.do?ccbaKdcd=21&ccbaAsno=0004130000000&ccbaCtcd=33"
 },
-"혼천의": {
-"f": "assets/rl/11_0002300000000_11.jpg",
-"s": "국가유산청",
-"n": "혼천의 및 혼천시계",
-"y": "조선 현종 10년(1669)",
-"h": "https://www.heritage.go.kr/heri/cul/culSelectDetail.do?ccbaKdcd=11&ccbaAsno=0002300000000&ccbaCtcd=11"
-},
 "자격루": {
 "f": "assets/rl/11_0002290000000_11.jpg",
 "s": "국가유산청",
@@ -398,13 +370,6 @@
 "y": "조선 헌종 10년(1844)",
 "h": "https://www.heritage.go.kr/heri/cul/culSelectDetail.do?ccbaKdcd=11&ccbaAsno=0001800000000&ccbaCtcd=11"
 },
-"잔무늬 거울": {
-"f": "assets/rl/11_0001410000000_11.jpg",
-"s": "국가유산청",
-"n": "정문경",
-"y": "청동기시대(BC 4∼3)",
-"h": "https://www.heritage.go.kr/heri/cul/culSelectDetail.do?ccbaKdcd=11&ccbaAsno=0001410000000&ccbaCtcd=11"
-},
 "무령왕릉": {
 "f": "assets/rl/13_0000130000000_34.jpg",
 "s": "국가유산청",
@@ -432,13 +397,6 @@
 "n": "영주 부석사 소조여래좌상",
 "y": "고려 중엽",
 "h": "https://www.heritage.go.kr/heri/cul/culSelectDetail.do?ccbaKdcd=11&ccbaAsno=0000450000000&ccbaCtcd=37"
-},
-"팔만대장경": {
-"f": "assets/rl/11_0000320000000_38.jpg",
-"s": "국가유산청",
-"n": "합천 해인사 대장경판",
-"y": "고려시대(1237∼1248년)",
-"h": "https://www.heritage.go.kr/heri/cul/culSelectDetail.do?ccbaKdcd=11&ccbaAsno=0000320000000&ccbaCtcd=38"
 },
 "『삼국유사』": {
 "f": "assets/rl/11_0003060000200_11.jpg",
@@ -621,5 +579,131 @@
 "n": "서울 풍납동 토성",
 "y": "삼국시대",
 "h": "https://www.heritage.go.kr/heri/cul/culSelectDetail.do?ccbaKdcd=13&ccbaAsno=0000110000000&ccbaCtcd=11"
+},
+"수월관음도": {
+"f": "assets/rl/12_0012040000000_11.jpg",
+"s": "국가유산청",
+"n": "의겸 등 필 수월관음도",
+"y": "",
+"h": "https://www.heritage.go.kr/heri/cul/culSelectDetail.do?ccbaKdcd=12&ccbaAsno=0012040000000&ccbaCtcd=11"
+},
+"경천사지 십층석탑": {
+"f": "assets/rl/11_0000860000000_11.jpg",
+"s": "국가유산청",
+"n": "개성 경천사지 십층석탑",
+"y": "고려 충목왕 4년(1348)",
+"h": "https://www.heritage.go.kr/heri/cul/culSelectDetail.do?ccbaKdcd=11&ccbaAsno=0000860000000&ccbaCtcd=11"
+},
+"태조 어진": {
+"f": "assets/rl/11_0003170000000_35.jpg",
+"s": "국가유산청",
+"n": "조선태조어진",
+"y": "1872년(고종9)",
+"h": "https://www.heritage.go.kr/heri/cul/culSelectDetail.do?ccbaKdcd=11&ccbaAsno=0003170000000&ccbaCtcd=35"
+},
+"나전 칠기": {
+"f": "assets/rl/12_0022780000000_11.jpg",
+"s": "국가유산청",
+"n": "나전국화넝쿨무늬상자",
+"y": "고려 후기",
+"h": "https://www.heritage.go.kr/heri/cul/culSelectDetail.do?ccbaKdcd=12&ccbaAsno=0022780000000&ccbaCtcd=11"
+},
+"초조대장경": {
+"f": "assets/rl/11_0002410000000_11.jpg",
+"s": "국가유산청",
+"n": "초조본 대반야바라밀다경 권249",
+"y": "고려 현종 연간",
+"h": "https://www.heritage.go.kr/heri/cul/culSelectDetail.do?ccbaKdcd=11&ccbaAsno=0002410000000&ccbaCtcd=11"
+},
+"고사관수도": {
+"f": "assets/rl/21_0006790000000_38.jpg",
+"s": "국가유산청",
+"n": "조영석 필 고사관수도",
+"y": "1735년, 1743년",
+"h": "https://www.heritage.go.kr/heri/cul/culSelectDetail.do?ccbaKdcd=21&ccbaAsno=0006790000000&ccbaCtcd=38"
+},
+"인물:태조 1335": {
+"f": "assets/rl/11_0003170000000_35.jpg",
+"s": "국가유산청",
+"n": "조선태조어진",
+"y": "1872년(고종9)",
+"h": "https://www.heritage.go.kr/heri/cul/culSelectDetail.do?ccbaKdcd=11&ccbaAsno=0003170000000&ccbaCtcd=35"
+},
+"인물:영조 1694": {
+"f": "assets/rl/12_0009320000000_11.jpg",
+"s": "국가유산청",
+"n": "영조어진",
+"y": "조선시대",
+"h": "https://www.heritage.go.kr/heri/cul/culSelectDetail.do?ccbaKdcd=12&ccbaAsno=0009320000000&ccbaCtcd=11"
+},
+"인물:철종 1831": {
+"f": "assets/rl/12_0014920000000_11.jpg",
+"s": "국가유산청",
+"n": "철종어진",
+"y": "조선 철종 12년(1861년)",
+"h": "https://www.heritage.go.kr/heri/cul/culSelectDetail.do?ccbaKdcd=12&ccbaAsno=0014920000000&ccbaCtcd=11"
+},
+"인물:흥선 대원군 1820": {
+"f": "assets/rl/12_0014990000100_11.jpg",
+"s": "국가유산청",
+"n": "이하응 초상 일괄 - 흑단령포본, 금관조복본, 와룡관학창의본, 흑건청포본, 복건심의본",
+"y": "19세기",
+"h": "https://www.heritage.go.kr/heri/cul/culSelectDetail.do?ccbaKdcd=12&ccbaAsno=0014990000100&ccbaCtcd=11"
+},
+"인물:송시열 1607": {
+"f": "assets/rl/11_0002390000000_11.jpg",
+"s": "국가유산청",
+"n": "송시열 초상",
+"y": "조선 효종 2년(1651)",
+"h": "https://www.heritage.go.kr/heri/cul/culSelectDetail.do?ccbaKdcd=11&ccbaAsno=0002390000000&ccbaCtcd=11"
+},
+"인물:최익현 1833": {
+"f": "assets/rl/12_0015100000000_11.jpg",
+"s": "국가유산청",
+"n": "최익현 초상",
+"y": "1905",
+"h": "https://www.heritage.go.kr/heri/cul/culSelectDetail.do?ccbaKdcd=12&ccbaAsno=0015100000000&ccbaCtcd=11"
+},
+"인물:정몽주 1337": {
+"f": "assets/rl/12_0011100000100_37.jpg",
+"s": "국가유산청",
+"n": "정몽주 초상(1991)",
+"y": "1629년",
+"h": "https://www.heritage.go.kr/heri/cul/culSelectDetail.do?ccbaKdcd=12&ccbaAsno=0011100000100&ccbaCtcd=37"
+},
+"인물:안향 1243": {
+"f": "assets/rl/11_0001110000000_37.jpg",
+"s": "국가유산청",
+"n": "안향 초상",
+"y": "고려 충숙왕 5년(1318)",
+"h": "https://www.heritage.go.kr/heri/cul/culSelectDetail.do?ccbaKdcd=11&ccbaAsno=0001110000000&ccbaCtcd=37"
+},
+"인물:이색 1328": {
+"f": "assets/rl/12_0012150000100_11.jpg",
+"s": "국가유산청",
+"n": "이색 초상 - 목은영당본",
+"y": "조선 효종 5년(1654)",
+"h": "https://www.heritage.go.kr/heri/cul/culSelectDetail.do?ccbaKdcd=12&ccbaAsno=0012150000100&ccbaCtcd=11"
+},
+"인물:신숙주 1417": {
+"f": "assets/rl/12_0006130000000_33.jpg",
+"s": "국가유산청",
+"n": "신숙주 초상",
+"y": "미상",
+"h": "https://www.heritage.go.kr/heri/cul/culSelectDetail.do?ccbaKdcd=12&ccbaAsno=0006130000000&ccbaCtcd=33"
+},
+"인물:윤두서 1668": {
+"f": "assets/rl/11_0002400000000_36.jpg",
+"s": "국가유산청",
+"n": "윤두서 자화상",
+"y": "조선 숙종 36년(1710)",
+"h": "https://www.heritage.go.kr/heri/cul/culSelectDetail.do?ccbaKdcd=11&ccbaAsno=0002400000000&ccbaCtcd=36"
+},
+"인물:강세황 1713": {
+"f": "assets/rl/12_0005220000000_11.jpg",
+"s": "국가유산청",
+"n": "강세황 필 도산서원도",
+"y": "조선 영조 27년(1751년)",
+"h": "https://www.heritage.go.kr/heri/cul/culSelectDetail.do?ccbaKdcd=12&ccbaAsno=0005220000000&ccbaCtcd=11"
 }
 }
