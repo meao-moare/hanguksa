@@ -52,7 +52,7 @@ const TMI=[
 (function(){const ov=document.createElement('div');ov.id='trld';ov.hidden=true;ov.innerHTML='<div class="trld-c"><div class="spr" aria-hidden="true"><i></i></div><div class="trld-y"></div><div class="trld-t"></div></div>';document.body.appendChild(ov);
  let last=-1,shownAt=0,hideT=0;const pick=()=>{let i;do{i=Math.floor(Math.random()*TMI.length)}while(i===last&&TMI.length>1);last=i;return TMI[i]};
  const show=()=>{const [y,t]=pick();ov.querySelector('.trld-y').textContent=y;ov.querySelector('.trld-t').textContent=t;clearTimeout(hideT);ov.hidden=false;ov.classList.remove('out');shownAt=performance.now()};
- const hide=()=>{const wait=Math.max(0,1100-(performance.now()-shownAt));hideT=setTimeout(()=>{ov.classList.add('out');setTimeout(()=>{ov.hidden=true;ov.classList.remove('out')},180)},wait)};
+ const hide=()=>{const wait=0;hideT=setTimeout(()=>{ov.classList.add('out');setTimeout(()=>{ov.hidden=true;ov.classList.remove('out')},120)},wait)};
  ov.addEventListener('click',()=>{clearTimeout(hideT);ov.hidden=true});
  window.__trLoad=fn=>{show();requestAnimationFrame(()=>requestAnimationFrame(()=>{try{fn()}finally{hide()}}))};
  let bypass=false;
