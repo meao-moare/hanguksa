@@ -3217,6 +3217,12 @@ body.medit figure.mimg .mimgsrc.no{background:rgba(0,0,0,.5)!important}
 <style>
 /* ===== 휴대폰 화면 ===== */
 .mnav .mi,.mnav .mf{display:none}
+nav.tabs:not(.mnav) button[data-v]{display:inline-flex;align-items:center;gap:5px}
+nav.tabs:not(.mnav) button[data-v] .ml,nav.tabs button[data-v] .mv{display:none}
+@media (max-width:1360px){nav.tabs:not(.mnav) button[data-v] .mf{display:none}nav.tabs:not(.mnav) button[data-v] .ml,nav.tabs:not(.mnav) button[data-v] .mv{display:inline}nav.tabs:not(.mnav) button[data-v]{gap:4px}nav.tabs:not(.mnav) button[data-v] .mv{margin-left:-3px}}
+@media (min-width:641px) and (max-width:960px){nav.tabs:not(.mnav) button[data-v]{flex-direction:column;gap:1px;padding:3px 7px;font-size:10.5px;line-height:1.1}nav.tabs:not(.mnav) button[data-v] .mi{width:18px;height:18px}nav.tabs:not(.mnav) button[data-v] .mv{display:none}}
+nav.tabs:not(.mnav) button[data-v] .mi{width:16px;height:16px;flex:none;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;opacity:.85}
+nav.tabs:not(.mnav) button[aria-selected="true"] .mi{opacity:1;stroke-width:2.2}
 @media (max-width:640px){
  body.mob header.top{padding:8px 12px calc(8px);gap:6px;display:flex;align-items:center;flex-wrap:nowrap;min-height:52px;box-shadow:0 1px 0 rgba(0,0,0,.06)}
  body.mob header.top h1{font-size:17px;gap:7px;margin-right:auto;flex:none}
@@ -3272,6 +3278,6 @@ body.medit figure.mimg .mimgsrc.no{background:rgba(0,0,0,.5)!important}
 #trld .trld-c{width:min(300px,82vw)!important;padding:14px 16px 14px!important;gap:6px!important}
 #trld .spr{width:72px!important;height:91px!important}
 #trld .sprb{animation:sprbob .7s ease-in-out infinite alternate;will-change:transform;transform:translateZ(0)}
-@keyframes sprbob{from{transform:translate3d(0,0,0) rotate(-4deg)}to{transform:translate3d(0,-7px,0) rotate(4deg)}}
+@keyframes sprbob{from{transform:translate3d(0,0,0)}to{transform:translate3d(0,-5px,0)}}
 #trld .trld-t{font-size:13.5px!important}
 </style>
