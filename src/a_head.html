@@ -3263,8 +3263,8 @@ nav.tabs:not(.mnav) button[aria-selected="true"] .mi{opacity:1;stroke-width:2.2}
 <style>
 /* 화면 전환 캐릭터: 움직임을 transform(그래픽 처리 쪽)으로만 → 화면 계산 중에도 안 멈춤 */
 .spr{position:relative;overflow:hidden;width:104px;height:131px;contain:strict}
-.spr>i{position:absolute;left:0;top:0;width:400%;height:100%;background:url(assets/loading_sprite.png) 0 0/100% 100% no-repeat;animation:sprmv .36s steps(4) infinite;will-change:transform}
-@keyframes sprmv{to{transform:translateX(-100%)}}
+.spr>i{position:absolute;left:0;top:0;width:400%;height:100%;background:url(assets/loading_sprite.png) 0 0/100% 100% no-repeat;animation:sprmv .36s linear infinite;will-change:transform}
+@keyframes sprmv{0%,24.9%{transform:translate3d(0,0,0)}25%,49.9%{transform:translate3d(-25%,0,0)}50%,74.9%{transform:translate3d(-50%,0,0)}75%,100%{transform:translate3d(-75%,0,0)}}
 #trld{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;background:rgba(247,246,243,.92)!important;will-change:opacity}
 #trld .trld-c{padding-top:16px!important;gap:8px!important;will-change:transform}
 #trld .spr{width:104px;height:131px}
